@@ -1,0 +1,88 @@
+// FUNCTIONS
+@mixin heading3($size-font, $weight) {
+  h3 {
+    font-family: "Montserrat", sans-serif;
+    color: $color4;
+    font-weight: $weight;
+    font-size: $size-font;
+  }
+}
+@mixin heading2($size-font, $weight) {
+  h2 {
+    font-family: "Montserrat", sans-serif;
+    color: $color4;
+    font-weight: $weight;
+    font-size: $size-font;
+  }
+}
+@mixin outerBox($width, $height) {
+  height: $height;
+  width: $width;
+  background-color: $color2;
+  border: 1px solid $color3;
+  margin: auto;
+  border-radius: 1rem;
+  @include heading2(2rem, 700);
+}
+@mixin button1() {
+  Button {
+    width: 50%;
+    margin: auto;
+    background: $color2;
+    border-radius: 0.5rem;
+    font-family: "Montserrat", sans-serif;
+    color: $color4;
+  }
+}
+@mixin innerBox($width, $height) {
+  background-color: $color3;
+  height: $height;
+  width: $width;
+  border-radius: 1rem;
+  @include button1();
+}
+// REGISTER
+.outer-box {
+  @include outerBox(25%, 50%);
+}
+.inner-box {
+  @include innerBox(80%, 60%);
+}
+// REGISTER USER
+// step1
+.outer-box-step1 {
+  @include outerBox(60%, 80%);
+}
+.inner-box-step1 {
+  @include heading3(1.25rem, 600);
+
+  @include innerBox(90%, 70%);
+  input {
+    background-color: $color2;
+    width: 90%;
+    margin: auto;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    color: $color4;
+    font-family: "Montserrat", sans-serif;
+    padding-left: 10px;
+  }
+  .radio input {
+    height: 1rem;
+    width: 1rem;
+  }
+  p {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+  }
+}
+.step1-btn,
+.buttons-step1 {
+  width: 90%;
+  font-family: "Montserrat", sans-serif;
+  Button {
+    width: 10%;
+  }
+}
+// step2
