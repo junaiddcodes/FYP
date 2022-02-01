@@ -60,15 +60,6 @@
   font-size: 1.25rem;
 }
 
-.inner-box-step1 Button {
-  width: 50%;
-  margin: auto;
-  background: #001e3c;
-  border-radius: 0.5rem;
-  font-family: "Montserrat", sans-serif;
-  color: white;
-}
-
 .inner-box-step1 input {
   background-color: #001e3c;
   width: 90%;
@@ -92,14 +83,215 @@
 }
 
 .step1-btn,
-.buttons-step1 {
+.step2-btn,
+.buttons-step1,
+.buttons-step2 {
   width: 90%;
   font-family: "Montserrat", sans-serif;
 }
 
 .step1-btn Button,
-.buttons-step1 Button {
+.step2-btn Button,
+.buttons-step1 Button,
+.buttons-step2 Button {
   width: 10%;
+}
+
+.outer-box-step2 {
+  height: 90%;
+  width: 60%;
+  background-color: #001e3c;
+  border: 1px solid #007fff;
+  margin: auto;
+  border-radius: 1rem;
+}
+
+.outer-box-step2 h2 {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.inner-box-step2 {
+  background-color: #007fff;
+  height: 70%;
+  width: 90%;
+  border-radius: 1rem;
+}
+
+.inner-box-step2 h3 {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.inner-box-step2 input {
+  background-color: #001e3c;
+  width: 40%;
+  margin: auto;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  padding-left: 10px;
+}
+
+.inner-box-step2 .radio input {
+  height: 1rem;
+  width: 1rem;
+}
+
+.inner-box-step2 p {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+}
+
+.dropdown {
+  width: 30%;
+  border-radius: 5px;
+  background-color: #001e3c;
+}
+
+.dropdown #demo-simple-select-label {
+  color: white;
+}
+
+.dropdown #demo-simple-select {
+  color: white;
+}
+
+.btn-group .activity-btn {
+  width: 90%;
+  margin: auto;
+  background: #001e3c;
+  border-radius: 0.5rem;
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  border: none;
+}
+
+.btn-group input {
+  margin-left: 10px;
+  width: 1rem;
+  height: 1rem;
+  border: none;
+}
+
+.btn-group h4 {
+  margin: 5px;
+  margin-bottom: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.btn-group p {
+  margin: 5px;
+  margin-top: 0;
+  font-size: 0.75rem;
+  font-weight: 400;
+  text-align: left;
+}
+
+.outer-box-step3 {
+  height: 70%;
+  width: 40%;
+  background-color: #001e3c;
+  border: 1px solid #007fff;
+  margin: auto;
+  border-radius: 1rem;
+}
+
+.outer-box-step3 h2 {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.inner-box-step3 {
+  background-color: #007fff;
+  height: 70%;
+  width: 90%;
+  border-radius: 1rem;
+}
+
+.inner-box-step3 h3 {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.btn-group2 .activity-btn {
+  width: 90%;
+  margin: auto;
+  background: #001e3c;
+  border-radius: 0.5rem;
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  border: none;
+  height: 20%;
+}
+
+.btn-group2 input {
+  margin-left: 10px;
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 1rem;
+  height: 1rem;
+  border: none;
+}
+
+.btn-group2 h4 {
+  margin: 5px;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.buttons-step3 {
+  width: 90%;
+  font-family: "Montserrat", sans-serif;
+}
+
+.buttons-step3 Button {
+  width: 20%;
+}
+
+.outer-box-step4 {
+  height: 60%;
+  width: 40%;
+  background-color: #001e3c;
+  border: 1px solid #007fff;
+  margin: auto;
+  border-radius: 1rem;
+}
+
+.outer-box-step4 h2 {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.inner-box-step4 {
+  background-color: #007fff;
+  height: 60%;
+  width: 90%;
+  border-radius: 1rem;
+}
+
+.inner-box-step4 h3 {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  font-weight: 600;
+  font-size: 1.25rem;
 }
 
 * {

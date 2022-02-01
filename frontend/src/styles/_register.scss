@@ -39,7 +39,6 @@
   height: $height;
   width: $width;
   border-radius: 1rem;
-  @include button1();
 }
 // REGISTER
 .outer-box {
@@ -47,6 +46,7 @@
 }
 .inner-box {
   @include innerBox(80%, 60%);
+  @include button1();
 }
 // REGISTER USER
 // step1
@@ -78,7 +78,9 @@
   }
 }
 .step1-btn,
-.buttons-step1 {
+.step2-btn,
+.buttons-step1,
+.buttons-step2 {
   width: 90%;
   font-family: "Montserrat", sans-serif;
   Button {
@@ -86,3 +88,130 @@
   }
 }
 // step2
+.outer-box-step2 {
+  @include outerBox(60%, 90%);
+}
+.inner-box-step2 {
+  @include heading3(1.25rem, 600);
+
+  @include innerBox(90%, 70%);
+  // @include button1();
+  input {
+    background-color: $color2;
+    width: 40%;
+    margin: auto;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    color: $color4;
+    font-family: "Montserrat", sans-serif;
+    padding-left: 10px;
+  }
+  .radio input {
+    height: 1rem;
+    width: 1rem;
+  }
+  p {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
+  }
+}
+.dropdown {
+  width: 30%;
+  border-radius: 5px;
+
+  background-color: $color2;
+  #demo-simple-select-label {
+    color: $color4;
+  }
+  #demo-simple-select {
+    color: $color4;
+  }
+}
+.btn-group {
+  .activity-btn {
+    width: 90%;
+    margin: auto;
+    background: $color2;
+    border-radius: 0.5rem;
+    font-family: "Montserrat", sans-serif;
+    color: $color4;
+    border: none;
+  }
+  input {
+    margin-left: 10px;
+    width: 1rem;
+    height: 1rem;
+    border: none;
+  }
+
+  h4 {
+    margin: 5px;
+    margin-bottom: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: left;
+  }
+  p {
+    margin: 5px;
+    margin-top: 0;
+    font-size: 0.75rem;
+    font-weight: 400;
+    text-align: left;
+  }
+}
+// STEP3
+.outer-box-step3 {
+  @include outerBox(40%, 70%);
+}
+.inner-box-step3 {
+  @include heading3(1.25rem, 600);
+
+  @include innerBox(90%, 70%);
+}
+.btn-group2 {
+  .activity-btn {
+    width: 90%;
+    margin: auto;
+    background: $color2;
+    border-radius: 0.5rem;
+    font-family: "Montserrat", sans-serif;
+    color: $color4;
+    border: none;
+    height: 20%;
+  }
+  input {
+    margin-left: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 1rem;
+    height: 1rem;
+    border: none;
+  }
+
+  h4 {
+    margin: 5px;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: left;
+  }
+}
+
+.buttons-step3 {
+  width: 90%;
+  font-family: "Montserrat", sans-serif;
+  Button {
+    width: 20%;
+  }
+}
+// STEP4
+.outer-box-step4 {
+  @include outerBox(40%, 60%);
+}
+.inner-box-step4 {
+  @include heading3(1.25rem, 600);
+
+  @include innerBox(90%, 60%);
+}
