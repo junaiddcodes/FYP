@@ -294,6 +294,66 @@
   font-size: 1.25rem;
 }
 
+.buttons-trainer {
+  width: 90%;
+  font-family: "Montserrat", sans-serif;
+}
+
+.buttons-trainer Button {
+  width: 20%;
+}
+
+.outer-box-gym {
+  height: 70%;
+  width: 40%;
+  background-color: #001e3c;
+  border: 1px solid #007fff;
+  margin: auto;
+  border-radius: 1rem;
+}
+
+.outer-box-gym h2 {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.inner-box-gym {
+  background-color: #007fff;
+  height: 70%;
+  width: 90%;
+  border-radius: 1rem;
+}
+
+.inner-box-gym h3 {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.inner-box-gym input {
+  background-color: #001e3c;
+  width: 90%;
+  margin: auto;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  padding-left: 10px;
+}
+
+.buttons-gym {
+  width: 90%;
+  font-family: "Montserrat", sans-serif;
+}
+
+.buttons-gym Button {
+  width: 20%;
+}
+
 * {
   margin: 0;
   padding: 0;

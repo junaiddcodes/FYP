@@ -12,10 +12,13 @@ const Register = () => {
           <Link className="d-flex justify-content-center text-decoration-none" to="/register-user">
             <Button variant="primary">User</Button>
           </Link>
-          <Link className="d-flex justify-content-center text-decoration-none " to="/register-user">
+          <Link
+            className="d-flex justify-content-center text-decoration-none "
+            to="/register-trainer"
+          >
             <Button variant="primary">Trainer</Button>
           </Link>
-          <Link className="d-flex justify-content-center text-decoration-none" to="/register-user">
+          <Link className="d-flex justify-content-center text-decoration-none" to="/register-gym">
             <Button variant="primary">Gym Owner</Button>
           </Link>
         </div>

@@ -215,3 +215,40 @@
 
   @include innerBox(90%, 60%);
 }
+
+// TRAINER
+.buttons-trainer {
+  width: 90%;
+  font-family: "Montserrat", sans-serif;
+  Button {
+    width: 20%;
+  }
+}
+// GYM
+
+.outer-box-gym {
+  @include outerBox(40%, 70%);
+}
+.inner-box-gym {
+  @include heading3(1.25rem, 600);
+
+  @include innerBox(90%, 70%);
+  input {
+    background-color: $color2;
+    width: 90%;
+    margin: auto;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    color: $color4;
+    font-family: "Montserrat", sans-serif;
+    padding-left: 10px;
+  }
+}
+.buttons-gym {
+  width: 90%;
+  font-family: "Montserrat", sans-serif;
+  Button {
+    width: 20%;
+  }
+}
