@@ -12,9 +12,13 @@ const {
   registerCustomer,
 } = require('../../controllers/customerControl')
 
-router.route('/register').Verify().post(registerCustomer)
+router.route('/register').post(Verify, registerCustomer)
 router.route('/').get(getAllData)
-router.route('/:userId').get(getOneData).patch(updateData).delete(deleteData)
+router
+  .route('/:userId')
+  .get(getOneData)
+  .patch(Verify, updateData)
+  .delete(deleteData)
 
 module.exports = router
 
