@@ -1,8 +1,12 @@
 const { customerDetails } = require('../models/customerDetails')
+var { Validate } = require('../models/customerDetails')
 
 //Customer Register to the system
 
 const registerCustomer = async (req, res) => {
+  // let { error } = Validate(req.body)
+  // if (error) return res.status(400).send(error.details[0].message)
+
   var customerData = new customerDetails({
     user_id: {
       first_name: req.body.first_name,

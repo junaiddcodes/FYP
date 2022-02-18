@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { userSchema } = require('./userModel')
 
-const Hapi = require('@hapi/hapi')
+const Joi = require('joi')
 
 var customerDetailsSchema = mongoose.Schema({
   user_id: userSchema,
@@ -17,5 +17,24 @@ var customerDetailsSchema = mongoose.Schema({
 
 var customerDetails = mongoose.model('Customer_Details', customerDetailsSchema)
 
-function validateCoustomers() {}
+function validateCoustomers(data) {
+  const schema = Joi.object({
+    first_name: Joi.string().min(3).max(24).required(),
+    last_name: Joi.string().min(3).max(24).required(),
+    email: Joi.string().min(3).required().email(),
+    password: Joi.string().min(8).required(),
+    user_type: Joi.string().min(3).max(30).required(),
+
+    gender: Joi.string().min(3).max(10).required(),
+    weight: Joi.number().positive().required(),
+    height: Joi.number().positive().required(),
+    activity_level: Joi.string().required(),
+    weight_goal: Joi.number().positive().required(),
+    weekly_goal: Joi.number().positive().required(),
+    dob: Joi.date().required(),
+    calorie_goal: Joi.number().positive().required(),
+  })
+  return schema.validate(data)
+}
 module.exports = { customerDetails }
+module.exports.Validate = validateCoustomers
