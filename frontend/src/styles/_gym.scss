@@ -1,0 +1,52 @@
+.page-container-gym {
+  table {
+    color: $color4;
+  }
+  h2 {
+    color: $color4;
+    font-weight: 600;
+  }
+  h4 {
+    font-size: 1rem;
+    color: $color4;
+    font-weight: 200;
+  }
+  .gym-box {
+    background-color: $color2;
+    padding: 2rem;
+    border-radius: 10px;
+    .input-text input {
+      width: 500px;
+      margin-top: 10px;
+      height: 2.5rem;
+      border-radius: 5px;
+      border: none;
+      background: $color3;
+      color: $color4;
+      padding: 10px;
+    }
+    p {
+      color: $color4;
+      font-weight: 300;
+    }
+    label {
+      color: $color4;
+      margin-top: 20px;
+    }
+    .gender-radio {
+      input {
+        width: 4rem;
+      }
+    }
+  }
+}
+
+.text-field {
+  height: 250px;
+  width: 500px;
+  border: none;
+  border-radius: 5px;
+  background-color: $color3;
+  color: $color4;
+  padding: 10px;
+}
