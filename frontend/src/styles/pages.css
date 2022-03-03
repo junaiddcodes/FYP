@@ -569,12 +569,13 @@
   border: none;
   height: 40px;
   width: 600px;
-  background-color: white;
+  background-color: #007fff;
   border-radius: 20px;
   padding: 0px 10px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  color: white;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -587,12 +588,30 @@
 }
 
 .search input {
+  background: transparent;
+  color: white;
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
   height: 30px;
   border: none;
   outline: none;
+}
+
+.search input::-webkit-input-placeholder {
+  color: white;
+}
+
+.search input:-ms-input-placeholder {
+  color: white;
+}
+
+.search input::-ms-input-placeholder {
+  color: white;
+}
+
+.search input::placeholder {
+  color: white;
 }
 
 .search-btns {
@@ -863,6 +882,22 @@
   padding: 10px;
 }
 
+.page-container-gym .gym-box .input-text input::-webkit-input-placeholder {
+  color: white;
+}
+
+.page-container-gym .gym-box .input-text input:-ms-input-placeholder {
+  color: white;
+}
+
+.page-container-gym .gym-box .input-text input::-ms-input-placeholder {
+  color: white;
+}
+
+.page-container-gym .gym-box .input-text input::placeholder {
+  color: white;
+}
+
 .page-container-gym .gym-box p {
   color: white;
   font-weight: 300;
@@ -885,6 +920,68 @@
   background-color: #007fff;
   color: white;
   padding: 10px;
+}
+
+.text-field::-webkit-input-placeholder {
+  color: #0a1929;
+}
+
+.text-field:-ms-input-placeholder {
+  color: #0a1929;
+}
+
+.text-field::-ms-input-placeholder {
+  color: #0a1929;
+}
+
+.text-field::placeholder {
+  color: #0a1929;
+}
+
+.dropdown-trainer {
+  border-radius: 5px;
+  background-color: #007fff;
+}
+
+.dropdown-trainer #demo-simple-select-label {
+  color: white;
+}
+
+.dropdown-trainer #demo-simple-select {
+  color: white;
+  background-color: #007fff;
+}
+
+.text-field-trainer {
+  height: 100px;
+  width: 500px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007fff;
+  color: white;
+  padding: 10px;
+}
+
+.text-field-trainer::-webkit-input-placeholder {
+  color: #0a1929;
+}
+
+.text-field-trainer:-ms-input-placeholder {
+  color: #0a1929;
+}
+
+.text-field-trainer::-ms-input-placeholder {
+  color: #0a1929;
+}
+
+.text-field-trainer::placeholder {
+  color: #0a1929;
+}
+
+.add-icon {
+  width: 2rem;
+  height: 2rem;
+  color: white;
 }
 
 .top-header {
@@ -1022,7 +1119,7 @@ body {
 .page-container-gym,
 .page-container-admin {
   background-color: #0a1929;
-  min-height: 90vh;
+  min-height: 100vh;
   margin-top: 0;
   margin-left: 15rem;
   padding-left: 40px;

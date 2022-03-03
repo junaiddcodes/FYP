@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const SideMenu = () => {
+const SideMenuTrainer = () => {
   return (
     <div className="sidebar">
       <div className="logo-content">
@@ -12,23 +12,23 @@ const SideMenu = () => {
       </div>
       <ul className="nav_list">
         <li>
-          <Link to="/user-dashboard">
-            <i class="bx bx-grid-alt">
-              <span className="links_name">Dashbaord</span>
+          <Link to="/trainer-dashboard">
+            <i class="bx bxs-home-circle">
+              <span className="links_name">Home</span>
             </i>
           </Link>
         </li>
         <li>
-          <Link to="/search-gym">
-            <i class="bx bx-search">
-              <span className="links_name">Gym</span>
+          <Link to="/trainer-profile">
+            <i class="bx bxs-user">
+              <span className="links_name">Profile</span>
             </i>
           </Link>
         </li>
         <li>
-          <Link to="/search-trainer">
-            <i class="bx bx-search-alt">
-              <span className="links_name">Trainer</span>
+          <Link to="/trainer-activity-plans">
+            <i class="bx bx-run">
+              <span className="links_name">Activity plans</span>
             </i>
           </Link>
         </li>
@@ -39,13 +39,6 @@ const SideMenu = () => {
             </i>
           </Link>
         </li>
-        {/* <li>
-          <Link to="/activity-plans">
-            <i class="bx bx-run">
-              <span className="links_name">Activity Plans</span>
-            </i>
-          </Link>
-        </li> */}
       </ul>
 
       <div className="profile_content">
@@ -62,4 +55,4 @@ const SideMenu = () => {
   );
 };
 
-export default SideMenu;
+export default SideMenuTrainer;

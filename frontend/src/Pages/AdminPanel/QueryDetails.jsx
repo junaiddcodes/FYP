@@ -10,10 +10,14 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import TopBar from "../../Components/TopBar";
+import SideMenu from "../../Components/SideMenu";
 
 const QueryDetails = () => {
   return (
     <div className="page-container-admin">
+      <TopBar />
+      <SideMenu />
       <h2>Query Details</h2>
       <div className="admin-box d-flex flex-column">
         <h4 className="mt-2">Query Id: </h4>
@@ -32,7 +36,7 @@ const QueryDetails = () => {
           PageMaker including versions of Lorem Ipsum.
         </p>
         <h4 className="mt-2">Admin Response: </h4>
-        <textarea className="text-field mt-2" />
+        <textarea className="text-field mt-2" placeholder="Enter your response" />
         <Button type="submit" className="w-25 mt-3">
           Submit
         </Button>

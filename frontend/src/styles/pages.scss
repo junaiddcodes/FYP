@@ -5,6 +5,7 @@
 @import "./user";
 @import "./admin";
 @import "./gym";
+@import "./trainer";
 @import "./topbar";
 @import "./progress";
 ::-webkit-scrollbar {
@@ -38,7 +39,7 @@ body {
 .page-container-gym,
 .page-container-admin {
   background-color: $color1;
-  min-height: 90vh;
+  min-height: 100vh;
   margin-top: 0;
   margin-left: 15rem;
   padding-left: 40px;

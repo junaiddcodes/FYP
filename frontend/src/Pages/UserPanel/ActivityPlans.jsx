@@ -10,10 +10,14 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import TopBar from "../../Components/TopBar";
+import SideMenu from "../../Components/SideMenu";
 
 const ActivityPlans = () => {
   return (
     <div className="page-container-user">
+      <TopBar />
+      <SideMenu />
       <h2>Activity Plans by Hamza Kasim:</h2>
       <div className=" mt-5">
         <div className="activity-grid-container">

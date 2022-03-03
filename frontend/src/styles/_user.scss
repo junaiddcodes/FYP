@@ -86,10 +86,11 @@
   border: none;
   height: 40px;
   width: 600px;
-  background-color: $color4;
+  background-color: $color3;
   border-radius: 20px;
   padding: 0px 10px;
   display: flex;
+  color: $color4;
 
   align-items: center;
   overflow: hidden;
@@ -98,10 +99,15 @@
     height: 1.25rem;
   }
   input {
+    background: transparent;
+    color: $color4;
     flex: 1;
     height: 30px;
     border: none;
     outline: none;
+  }
+  input::placeholder {
+    color: $color4;
   }
 }
 .search-btns {

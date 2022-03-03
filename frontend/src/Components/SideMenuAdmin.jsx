@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const SideMenu = () => {
+const SideMenuAdmin = () => {
   return (
     <div className="sidebar">
       <div className="logo-content">
@@ -12,40 +12,40 @@ const SideMenu = () => {
       </div>
       <ul className="nav_list">
         <li>
-          <Link to="/user-dashboard">
-            <i class="bx bx-grid-alt">
-              <span className="links_name">Dashbaord</span>
+          <Link to="/admin-dashboard">
+            <i class="bx bxs-home-circle">
+              <span className="links_name">Home</span>
             </i>
           </Link>
         </li>
         <li>
-          <Link to="/search-gym">
-            <i class="bx bx-search">
-              <span className="links_name">Gym</span>
+          <a href="#gym-reqs">
+            <i class="bx bx-dumbbell">
+              <span className="links_name">Gym Profiles</span>
             </i>
-          </Link>
+          </a>
         </li>
         <li>
-          <Link to="/search-trainer">
-            <i class="bx bx-search-alt">
-              <span className="links_name">Trainer</span>
+          <a href="#trainer-reqs">
+            <i class="bx bxs-user">
+              <span className="links_name">Trainer Profiles</span>
             </i>
-          </Link>
+          </a>
         </li>
         <li>
-          <Link to="">
-            <i class="bx bx-history">
-              <span className="links_name">History</span>
+          <a href="#queries">
+            <i class="bx bxs-message-rounded-dots">
+              <span className="links_name">Queries</span>
             </i>
-          </Link>
+          </a>
         </li>
-        {/* <li>
-          <Link to="/activity-plans">
-            <i class="bx bx-run">
-              <span className="links_name">Activity Plans</span>
+        <li>
+          <a href="#payment">
+            <i class="bx bxs-bank">
+              <span className="links_name">Payment Reqs</span>
             </i>
-          </Link>
-        </li> */}
+          </a>
+        </li>
       </ul>
 
       <div className="profile_content">
@@ -62,4 +62,4 @@ const SideMenu = () => {
   );
 };
 
-export default SideMenu;
+export default SideMenuAdmin;
