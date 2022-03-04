@@ -11,13 +11,13 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TopBar from "../../Components/TopBar";
-import SideMenu from "../../Components/SideMenu";
+import SideMenuAdmin from "../../Components/SideMenuAdmin";
 
 const QueryDetails = () => {
   return (
     <div className="page-container-admin">
       <TopBar />
-      <SideMenu />
+      <SideMenuAdmin />
       <h2>Query Details</h2>
       <div className="admin-box d-flex flex-column">
         <h4 className="mt-2">Query Id: </h4>

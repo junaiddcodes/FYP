@@ -41,13 +41,6 @@
   border-radius: 1rem;
 }
 // REGISTER
-.outer-box {
-  @include outerBox(25%, 50%);
-}
-.inner-box {
-  @include innerBox(80%, 60%);
-  @include button1();
-}
 // REGISTER USER
 // step1
 .outer-box-step1 {
@@ -250,5 +243,39 @@
   font-family: "Montserrat", sans-serif;
   Button {
     width: 20%;
+  }
+}
+// LOGIN
+
+.outer-box-login {
+  @include outerBox(40%, 70%);
+}
+.inner-box-login {
+  @include innerBox(80%, 70%);
+  @include button1();
+  label {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0.5rem;
+    color: $color4;
+  }
+  .input-text input {
+    margin-left: 0.5rem;
+    width: 400px;
+    height: 40px;
+    border-radius: 5px;
+    background-color: $color2;
+    color: $color4;
+    border: none;
+    outline: none;
+    padding: 10px;
+  }
+  .gender-radio {
+    h4 {
+      font-size: 1rem;
+    }
+    input {
+      width: 4rem;
+    }
   }
 }
