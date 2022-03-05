@@ -13,7 +13,7 @@ const {
   registerCustomer,
 } = require('../../controllers/customerControl')
 
-router.route('/register').post(Verify, Hash, createData)
+router.route('/register').post(Verify, registerCustomer)
 router.route('/').get(getAllData)
 router
   .route('/:userId')
