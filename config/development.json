@@ -1,3 +1,4 @@
 {
-  "db": "mongodb://localhost/fitness_app"
+  "db": "mongodb://localhost/fitness_app",
+  "jwtPrivateKey": "FitnessAppKey"
 }

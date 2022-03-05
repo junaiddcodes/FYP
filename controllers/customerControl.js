@@ -1,6 +1,11 @@
 const { customerDetails } = require('../models/customerDetails')
 var { Validate } = require('../models/customerDetails')
-var bcrypt = require('bcryptjs')
+var bcryptjs = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const config = require('config')
+
+const _ = require('lodash')
+const router = require('../routes/api/customer')
 
 //Customer Register to the system
 
@@ -17,12 +22,54 @@ const createData = async (req, res) => {
 
     // let email1 = crud.user_id.email
 
-    res.status(201).json({ crud })
+    //res.status(201).json({ crud })
+    //console.log(crud)
+    res.send(_.pick(crud, ['user_id.email', 'user_id.first_name']))
   } catch (error) {
     res.status(500).json({ message: error })
   }
 }
+const checkUser = async (req, res) => {
+  console.log(req.user)
+  res.send('Working')
+}
+const loginUser = async (req, res) => {
+  let user = await customerDetails.findOne({
+    'user_id.email': req.body.email,
+  })
+  if (!user) return res.status(400).send('user is not Registered')
 
+  // console.log(req.body.password)
+  // console.log(user.user_id.password)
+  let bodyPassword = req.body.password
+  let userPassword = user.user_id.password
+  let isvalid = await bcryptjs.compare(bodyPassword, userPassword)
+
+  let token = jwt.sign(
+    {
+      _id: user._id,
+      email: user.user_id.email,
+    },
+    config.get('jwtPrivateKey')
+  )
+  // console.log(isvalid)
+  if (!isvalid) return res.status(401).send('password is Invalid')
+  res.send(token)
+
+  // console.log(user.user_id.password)
+
+  // bcrypt.compare('req.body.password', 'user.user_id.password', (err, data) => {
+  //   //if error than throw error
+  //   if (err) throw err
+
+  //   //if both match than you can do anything
+  //   if (data) {
+  //     return res.status(200).json({ msg: 'Login success' })
+  //   } else {
+  //     return res.status(401).json({ msg: 'Invalid credencial' })
+  //   }
+  // })
+}
 //use to get all data from db
 const getAllData = async (req, res) => {
   try {
@@ -93,5 +140,7 @@ module.exports = {
   updateData,
   deleteData,
   createData,
+  loginUser,
+  checkUser,
   // registerCustomer,
 }
