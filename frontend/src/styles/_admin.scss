@@ -1,0 +1,73 @@
+.page-container-admin {
+  padding: 1rem;
+  table {
+    color: $color4;
+  }
+  p {
+    color: $color4;
+    font-weight: 300;
+  }
+  h2 {
+    color: $color4;
+    font-weight: 600;
+  }
+  h4 {
+    font-size: 1.25rem;
+    color: $color4;
+    font-weight: 500;
+  }
+  h3 {
+    font-size: 1.5rem;
+    color: $color4;
+    font-weight: 600;
+  }
+  .admin-box {
+    background-color: $color2;
+    padding: 2rem;
+    border-radius: 10px;
+  }
+}
+.gym-desc-admin {
+  width: 100%;
+
+  background-color: $color2;
+  border-radius: 5px;
+  img {
+    padding: 5px;
+    height: 300px;
+    width: 500px;
+  }
+  h4 {
+    margin: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  p {
+    margin: 0.5rem;
+    color: $color4;
+    font-size: 0.75rem;
+    font-weight: 300;
+  }
+}
+.trainer-desc-admin {
+  width: 100%;
+
+  background-color: $color2;
+  border-radius: 5px;
+  img {
+    height: 150px;
+    width: 150px;
+    border-radius: 100%;
+    margin: 2rem;
+  }
+  h4 {
+    margin: 0.5rem;
+    font-weight: 600;
+  }
+  p {
+    margin: 0.5rem;
+    color: $color4;
+    font-size: 0.75rem;
+    font-weight: 300;
+  }
+}

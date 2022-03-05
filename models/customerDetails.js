@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
 const { userSchema } = require('./userModel')
+var bycrpt = require('bcryptjs')
 
 const Joi = require('joi')
+const bcryptjs = require('bcryptjs')
 
 var customerDetailsSchema = mongoose.Schema({
   user_id: userSchema,
@@ -14,7 +16,10 @@ var customerDetailsSchema = mongoose.Schema({
   dob: Date,
   calorie_goal: Number,
 })
-
+customerDetailsSchema.methods.generateHashPassword = async function () {
+  let salt = await bcrypt.genSalt(10)
+  user_id.password = await bcrypt.hash(user_id.password, salt)
+}
 var customerDetails = mongoose.model('Customer_Details', customerDetailsSchema)
 
 function validateCoustomers(data) {
@@ -38,5 +43,6 @@ function validateCoustomers(data) {
   })
   return schema.validate(data)
 }
+
 module.exports = { customerDetails }
 module.exports.Validate = validateCoustomers

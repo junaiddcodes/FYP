@@ -2,13 +2,14 @@ var express = require('express')
 var router = express.Router()
 // const { registerCustomer } = require('../../controllers/customerControl')
 var { Verify } = require('../../middleware/coustomerDetails')
+var { Hash } = require('../../middleware/coustomerDetails')
 
 const {
   getAllData,
   getOneData,
   updateData,
   deleteData,
-  //   createData,
+  createData,
   registerCustomer,
 } = require('../../controllers/customerControl')
 
