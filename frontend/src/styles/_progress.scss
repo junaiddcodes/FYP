@@ -1,0 +1,31 @@
+// * {
+//   box-sizing: border-box;
+// }
+
+.progress-container {
+  font-family: "Montserrat", sans-serif;
+  margin: 0;
+}
+
+.progress {
+  background-color: $color1;
+  border-radius: 10px;
+  position: relative;
+  margin: 15px 0;
+  height: 20px;
+  width: 100%;
+}
+
+.progress-done {
+  background: $color3;
+  // box-shadow: 0 3px 3px -5px $color3, 0 2px 5px $color3;
+  border-radius: 10px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 0;
+  opacity: 0;
+  transition: 1s ease 0.3s;
+}

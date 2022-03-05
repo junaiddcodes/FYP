@@ -1,33 +1,26 @@
 const { customerDetails } = require('../models/customerDetails')
 var { Validate } = require('../models/customerDetails')
+var bcrypt = require('bcryptjs')
 
 //Customer Register to the system
 
-const registerCustomer = async (req, res) => {
-  // let { error } = Validate(req.body)
-  // if (error) return res.status(400).send(error.details[0].message)
+const createData = async (req, res) => {
+  try {
+    let user = await customerDetails.findOne({
+      // user_id: { email: req.body.user_id.email },
+      'user_id.email': req.body.user_id.email,
+    })
 
-  var customerData = new customerDetails({
-    user_id: {
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      email: req.body.password,
-      password: req.body.password,
-      user_type: req.body.user_type,
-    },
-    gender: req.body.gender,
-    weight: req.body.weight,
-    height: req.body.height,
-    activity_level: req.body.activity_level,
-    weight_goal: req.body.weight_goal,
-    weekly_goal: req.body.weekly_goal,
-    dob: req.body.dob,
-    calorie_goal: req.body.calorie_goal,
-  })
+    if (user) return res.status(400).send('user with given email already exist')
 
-  await customerData.save()
+    const crud = await customerDetails.create(req.body)
 
-  return res.status(200).send(customerData)
+    // let email1 = crud.user_id.email
+
+    res.status(201).json({ crud })
+  } catch (error) {
+    res.status(500).json({ message: error })
+  }
 }
 
 //use to get all data from db
@@ -39,16 +32,6 @@ const getAllData = async (req, res) => {
     res.status(500).json({ message: error })
   }
 }
-
-// //use to create data in db
-// const createData = async (req, res) => {
-//   try {
-//     const crud = await customerDetails.create(req.body)
-//     res.status(201).json({ crud })
-//   } catch (error) {
-//     res.status(500).json({ message: error })
-//   }
-// }
 
 //use to get only one data from db
 const getOneData = async (req, res) => {
@@ -109,6 +92,6 @@ module.exports = {
   getOneData,
   updateData,
   deleteData,
-  //   createData,
-  registerCustomer,
+  createData,
+  // registerCustomer,
 }

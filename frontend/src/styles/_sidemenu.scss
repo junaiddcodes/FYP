@@ -1,0 +1,91 @@
+// SIDE_MENU
+.sidebar {
+  box-sizing: border-box;
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  height: 100%;
+  width: 240px;
+  background: $color2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 6px 14px;
+  li {
+    list-style-type: none;
+  }
+  .logo-content .logo {
+    color: $color4;
+    display: flex;
+    height: 50px;
+    width: 100%;
+    align-items: center;
+    i {
+      font-size: 28px;
+      margin-right: 5x;
+    }
+    .logo-name {
+      margin-left: 10px;
+      font-size: 20px;
+      font-weight: 400;
+    }
+  }
+  #btn {
+    color: $color4;
+    position: absolute;
+    left: 90%;
+    top: 6px;
+    font-size: 20px;
+    height: 50px;
+    width: 50px;
+    text-align: center;
+    line-height: 50px;
+    transform: translateX(-50%);
+  }
+  ul {
+    margin-top: 5rem;
+    li {
+      position: relative;
+      margin-left: -10px;
+      margin-top: 10px;
+      height: 50px;
+      width: 100%;
+      line-height: 50px;
+
+      a {
+        color: $color4;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        transition: all 0.4s ease;
+        border-radius: 12px;
+
+        i {
+          height: 50px;
+          min-width: 50px;
+          border-radius: 12px;
+          line-height: 50px;
+          text-align: center;
+          margin-left: 10px;
+        }
+      }
+      a:hover {
+        background-color: $color4;
+        color: $color3;
+      }
+    }
+  }
+  .links_name {
+    margin-left: 1rem;
+  }
+  .nav_list {
+  }
+}
+.profile #log_out {
+  position: absolute;
+  left: 88%;
+  bottom: 5px;
+  transform: translateX(-50%);
+  min-width: 50px;
+  color: $color4;
+}

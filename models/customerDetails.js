@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
 const { userSchema } = require('./userModel')
+var bycrpt = require('bcryptjs')
 
 const Joi = require('joi')
+const bcryptjs = require('bcryptjs')
 
 var customerDetailsSchema = mongoose.Schema({
   user_id: userSchema,
@@ -14,16 +16,21 @@ var customerDetailsSchema = mongoose.Schema({
   dob: Date,
   calorie_goal: Number,
 })
-
+customerDetailsSchema.methods.generateHashPassword = async function () {
+  let salt = await bcrypt.genSalt(10)
+  user_id.password = await bcrypt.hash(user_id.password, salt)
+}
 var customerDetails = mongoose.model('Customer_Details', customerDetailsSchema)
 
 function validateCoustomers(data) {
   const schema = Joi.object({
-    first_name: Joi.string().min(3).max(24).required(),
-    last_name: Joi.string().min(3).max(24).required(),
-    email: Joi.string().min(3).required().email(),
-    password: Joi.string().min(8).required(),
-    user_type: Joi.string().min(3).max(30).required(),
+    user_id: {
+      first_name: Joi.string().min(3).max(24).required(),
+      last_name: Joi.string().min(3).max(24).required(),
+      email: Joi.string().min(3).required().email(),
+      password: Joi.string().min(8).required(),
+      user_type: Joi.string().min(3).max(30).required(),
+    },
 
     gender: Joi.string().min(3).max(10).required(),
     weight: Joi.number().positive().required(),
@@ -36,5 +43,6 @@ function validateCoustomers(data) {
   })
   return schema.validate(data)
 }
+
 module.exports = { customerDetails }
 module.exports.Validate = validateCoustomers
