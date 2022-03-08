@@ -9,11 +9,11 @@ const {
   getOneData,
   updateData,
   deleteData,
-  createData,
-  registerCustomer,
+  createData
+
 } = require('../../controllers/customerControl')
 
-router.route('/register').post(Verify, registerCustomer)
+router.route('/register').post(createData)
 router.route('/').get(getAllData)
 router
   .route('/:userId')

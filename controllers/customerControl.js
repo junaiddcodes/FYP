@@ -93,5 +93,5 @@ module.exports = {
   updateData,
   deleteData,
   createData,
-  // registerCustomer,
+ 
 }
