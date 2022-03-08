@@ -26,7 +26,7 @@ const getOneData = async (req, res) => {
     const crud = await gymDetails.findOne({ _id: crudId })
 
     if (!crud) {
-      return res.status(404).jason({ message: 'item does not exist' })
+      return res.status(404).json({ message: 'item does not exist' })
     }
 
     res.status(200).json({ crud })
