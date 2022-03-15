@@ -5,16 +5,17 @@ var router = express.Router()
 
 const {
   //   getAllData,
-  //   //   getOneData,
-  //   updateData,
-  //   deleteData,
+  getOneData,
+  updateData,
+  deleteData,
   //   //   createData,
   createData,
-} = require('../../controllers/mealControl')
+} = require('../../controllers/waterIntakeControl')
 
 router.route('/addWaterIntake').post(createData)
 // router.route('/getmeal').get(getAllData)
-// router.route('/:mealId').patch(updateData).delete(deleteData)
+router.route('/:waterId').get(getOneData).patch(updateData).delete(deleteData)
 module.exports = router
 
-// .get(getOneData)
+//
+//

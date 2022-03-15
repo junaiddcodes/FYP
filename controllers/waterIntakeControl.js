@@ -20,59 +20,63 @@ const createData = async (req, res) => {
 }
 
 //use to get only one data from db
-// const getOneData = async (req, res) => {
-//   try {
-//     const { gymId: crudId } = req.params
-//     const crud = await gymDetails.findOne({ _id: crudId })
+const getOneData = async (req, res) => {
+  try {
+    const { waterId: crudId } = req.params
+    const crud = await waterIntakeDetails.find({ user_id: crudId })
 
-//     if (!crud) {
-//       return res.status(404).json({ message: 'item does not exist' })
-//     }
+    if (!crud) {
+      return res.status(404).json({ message: 'item does not exist' })
+    }
 
-//     res.status(200).json({ crud })
-//   } catch (error) {
-//     res.status(500).json({ message: error })
-//   }
-// }
+    res.status(200).json({ crud })
+  } catch (error) {
+    res.status(500).json({ message: error })
+  }
+}
 
 //this is use to update user in list
-// const updateData = async (req, res) => {
-//   try {
-//     const { gymId: crudId } = req.params
-//     const crud = await gymDetails.findByIdAndUpdate({ _id: crudId }, req.body, {
-//       new: true,
-//       runValidators: true,
-//     })
+const updateData = async (req, res) => {
+  try {
+    const { waterId: crudId } = req.params
+    const crud = await waterIntakeDetails.findByIdAndUpdate(
+      { _id: crudId },
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
 
-//     if (!crud) {
-//       return res, status(404).jason({ message: 'item does not exist' })
-//     }
+    if (!crud) {
+      return res, status(404).jason({ message: 'item does not exist' })
+    }
 
-//     res.status(200).json({ crud })
-//   } catch (error) {
-//     res.status(500).json({ message: error })
-//   }
-// }
+    res.status(200).json({ crud })
+  } catch (error) {
+    res.status(500).json({ message: error })
+  }
+}
 
 // delete data from id
-// const deleteData = async (req, res) => {
-//   try {
-//     const { gymId: crudId } = req.params
-//     const crud = await gymDetails.findByIdAndDelete({ _id: crudId })
+const deleteData = async (req, res) => {
+  try {
+    const { waterId: crudId } = req.params
+    const crud = await waterIntakeDetails.findByIdAndDelete({ _id: crudId })
 
-//     if (!crud) {
-//       return res, status(404).jason({ message: 'item does not exist' })
-//     }
-//     res.status(200).json({ crud })
-//   } catch (error) {
-//     res.status(500).json({ message: error })
-//   }
-// }
+    if (!crud) {
+      return res, status(404).jason({ message: 'item does not exist' })
+    }
+    res.status(200).json({ crud })
+  } catch (error) {
+    res.status(500).json({ message: error })
+  }
+}
 
 module.exports = {
   //   getAllData,
-  //   getOneData,
-  //   updateData,
-  //   deleteData,
+  getOneData,
+  updateData,
+  deleteData,
   createData,
 }
