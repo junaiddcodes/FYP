@@ -1,13 +1,16 @@
 const mongoose = require('mongoose')
 
 const selectedExcerciseSchema = mongoose.Schema({
-    excercise_name: String,
-    excercise_duration: String,
-    burnt_calories:String,
-    time_performed: Number,
-    time_date: Date
+  excercise_name: String,
+  excercise_duration: String,
+  burnt_calories: String,
+  time_performed: Number,
+  time_date: Date,
 })
 
-const selectedExcerciseModel = mongoose.Model("Selected_Excercise",selectedExcerciseSchema);
+const selectedExcerciseModel = mongoose.model(
+  'Selected_Excercise',
+  selectedExcerciseSchema
+)
 
-module.exports = selectedExcerciseModel;
+module.exports.selectedExcerciseModel = selectedExcerciseModel
