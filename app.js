@@ -13,6 +13,9 @@ var trainerRouter = require('./routes/api/trainerDetails')
 var mealRouter = require('./routes/api/meal_api')
 var foodRouter = require('./routes/api/food_api')
 var WaterIntakeRouter = require('./routes/api/waterIntake')
+var exerciseRouter = require('./routes/api/excercise_api')
+var SelectexerciseRouter = require('./routes/api/selectExercise_api')
+
 var app = express()
 
 // view engine setup
@@ -33,6 +36,8 @@ app.use('/api/trainer', trainerRouter)
 app.use('/api/meal', mealRouter)
 app.use('/api/food', foodRouter)
 app.use('/api/waterIntake', WaterIntakeRouter)
+app.use('/api/excercise', exerciseRouter)
+app.use('/api/SelectExcercise', SelectexerciseRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
