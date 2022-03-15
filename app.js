@@ -15,6 +15,7 @@ var foodRouter = require('./routes/api/food_api')
 var WaterIntakeRouter = require('./routes/api/waterIntake')
 var exerciseRouter = require('./routes/api/excercise_api')
 var SelectexerciseRouter = require('./routes/api/selectExercise_api')
+var CreatePlanRouter = require('./routes/api/createPlan')
 
 var app = express()
 
@@ -38,6 +39,7 @@ app.use('/api/food', foodRouter)
 app.use('/api/waterIntake', WaterIntakeRouter)
 app.use('/api/excercise', exerciseRouter)
 app.use('/api/SelectExcercise', SelectexerciseRouter)
+app.use('/api/createPlan', CreatePlanRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
