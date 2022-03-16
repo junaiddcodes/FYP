@@ -37,10 +37,8 @@ const loginUser = async (req, res) => {
   let user = await customerDetails.findOne({
     'user_id.email': req.body.email,
   })
-  if (!user) return res.status(400).send('user is not Registered')
+  if (!user) return res.status(400).send('User is not Registered')
 
-  // console.log(req.body.password)
-  // console.log(user.user_id.password)
   let bodyPassword = req.body.password
   let userPassword = user.user_id.password
   let isvalid = await bcryptjs.compare(bodyPassword, userPassword)
@@ -56,19 +54,6 @@ const loginUser = async (req, res) => {
   if (!isvalid) return res.status(401).send('password is Invalid')
   res.send(token)
 
-  // console.log(user.user_id.password)
-
-  // bcrypt.compare('req.body.password', 'user.user_id.password', (err, data) => {
-  //   //if error than throw error
-  //   if (err) throw err
-
-  //   //if both match than you can do anything
-  //   if (data) {
-  //     return res.status(200).json({ msg: 'Login success' })
-  //   } else {
-  //     return res.status(401).json({ msg: 'Invalid credencial' })
-  //   }
-  // })
 }
 //use to get all data from db
 const getAllData = async (req, res) => {
