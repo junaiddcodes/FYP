@@ -1,3 +1,4 @@
 {
-  "db": "mongodb+srv://fitness_first:chulbulpandey@cluster0.zx6fv.mongodb.net/Fitness_Application?retryWrites=true&w=majority"
+  "db": "mongodb+srv://fitness_first:chulbulpandey@cluster0.zx6fv.mongodb.net/Fitness_Application?retryWrites=true&w=majority",
+  "jwtPrivateKey": "FitnessAppKey"
 }
