@@ -322,8 +322,40 @@
   width: 20%;
 }
 
+.outer-box-register {
+  height: 50%;
+  width: 30%;
+  background-color: #001e3c;
+  border: 1px solid #007fff;
+  margin: auto;
+  border-radius: 1rem;
+}
+
+.outer-box-register h2 {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.inner-box-register {
+  background-color: #007fff;
+  height: 60%;
+  width: 70%;
+  border-radius: 1rem;
+}
+
+.inner-box-register Button {
+  width: 50%;
+  margin: auto;
+  background: #001e3c;
+  border-radius: 0.5rem;
+  font-family: "Montserrat", sans-serif;
+  color: white;
+}
+
 .outer-box-login {
-  height: 70%;
+  height: 80%;
   width: 40%;
   background-color: #001e3c;
   border: 1px solid #007fff;
@@ -340,7 +372,7 @@
 
 .inner-box-login {
   background-color: #007fff;
-  height: 70%;
+  height: 80%;
   width: 80%;
   border-radius: 1rem;
 }
@@ -359,6 +391,11 @@
   font-weight: 700;
   margin: 0.5rem;
   color: white;
+}
+
+.inner-box-login p {
+  margin: 5px;
+  color: yellow;
 }
 
 .inner-box-login .input-text input {

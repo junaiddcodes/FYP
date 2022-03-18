@@ -245,19 +245,30 @@
     width: 20%;
   }
 }
+.outer-box-register {
+  @include outerBox(30%, 50%);
+}
+.inner-box-register {
+  @include innerBox(70%, 60%);
+  @include button1();
+}
 // LOGIN
 
 .outer-box-login {
-  @include outerBox(40%, 70%);
+  @include outerBox(40%, 80%);
 }
 .inner-box-login {
-  @include innerBox(80%, 70%);
+  @include innerBox(80%, 80%);
   @include button1();
   label {
     font-size: 1.25rem;
     font-weight: 700;
     margin: 0.5rem;
     color: $color4;
+  }
+  p {
+    margin: 5px;
+    color: yellow;
   }
   .input-text input {
     margin-left: 0.5rem;
