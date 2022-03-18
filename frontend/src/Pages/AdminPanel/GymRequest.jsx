@@ -11,9 +11,18 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
+
+import TopBar from "../../Components/TopBar";
+import SideMenuAdmin from "../../Components/SideMenuAdmin";
+
+
 const GymRequest = () => {
   return (
     <div className="page-container-admin">
+
+      <TopBar />
+      <SideMenuAdmin />
+
       <div className="d-flex  w-100">
         <div className="w-50 "></div>
         <div className="d-flex justify-content-center w-50">

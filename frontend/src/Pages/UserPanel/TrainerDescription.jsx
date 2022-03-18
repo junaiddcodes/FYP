@@ -11,11 +11,20 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
+import TopBar from "../../Components/TopBar";
+import SideMenu from "../../Components/SideMenu";
+import { Link } from "react-router-dom";
+
+
 const TrainerDescription = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   return (
     <div className="page-container-user">
+
+      <TopBar />
+      <SideMenu />
+
       <h2>Trainer Description</h2>
       <div className="trainer-desc mt-3 d-flex flex-column">
         <div className="d-flex ">
@@ -30,7 +39,13 @@ const TrainerDescription = () => {
             </div>
             <div className="trainer-btn d-flex flex-column">
               <Button className="mt-5">Message</Button>
+
               <Button className="mt-5">View Plan</Button>
+
+              <Link to="/activity-plans">
+                <Button className="mt-5">View Plan</Button>
+              </Link>
+
             </div>
           </div>
         </div>

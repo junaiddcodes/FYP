@@ -1,10 +1,25 @@
 import React from "react";
+
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Progress from "../../Components/ProgressBar";
 const UserDashboard = () => {
   return (
     <div className="page-container-user">
+
+
+import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import Progress from "../../Components/ProgressBar";
+import TopBar from "../../Components/TopBar";
+import SideMenu from "../../Components/SideMenu";
+const UserDashboard = () => {
+  return (
+    <div className="page-container-user">
+      <TopBar />
+      <SideMenu />
+
+
       <h2>Today's Progress</h2>
       <div className="user-box d-flex flex-column p-3">
         <div className="d-flex flex-column">
