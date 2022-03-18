@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-
 const SideMenu = () => {
   return (
     <div className="sidebar">
@@ -13,47 +12,6 @@ const SideMenu = () => {
       </div>
       <ul className="nav_list">
         <li>
-
-          <a href="">
-            <i class="bx bx-grid-alt">
-              <span className="links_name">Dashbaord</span>
-            </i>
-          </a>
-          <span className="tooltip">Dashbaord</span>
-        </li>
-        <li>
-          <a href="">
-            <i class="bx bx-search">
-              <span className="links_name">Search Gym</span>
-            </i>
-          </a>
-          <span className="tooltip">Search Gym</span>
-        </li>
-        <li>
-          <a href="">
-            <i class="bx bx-search-alt">
-              <span className="links_name">Search Trainer</span>
-            </i>
-          </a>
-          <span className="tooltip">Search Trainer</span>
-        </li>
-        <li>
-          <a href="">
-            <i class="bx bx-history">
-              <span className="links_name">History</span>
-            </i>
-          </a>
-          <span className="tooltip">History</span>
-        </li>
-        <li>
-          <a href="">
-            <i class="bx bx-run">
-              <span className="links_name">Activity Plans</span>
-            </i>
-          </a>
-          <span className="tooltip">Activity Plans</span>
-        </li>
-
           <Link to="/user-dashboard">
             <i class="bx bx-grid-alt">
               <span className="links_name">Dashbaord</span>
@@ -88,7 +46,6 @@ const SideMenu = () => {
             </i>
           </Link>
         </li> */}
-
       </ul>
 
       <div className="profile_content">

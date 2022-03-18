@@ -10,10 +10,8 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
 import TopBar from "../../Components/TopBar";
 import SideMenuGym from "../../Components/SideMenuGym";
-
 
 const GymProfile = () => {
   const [isProfile, setIsProfile] = useState(false);
@@ -22,10 +20,8 @@ const GymProfile = () => {
 
   return (
     <div className="page-container-gym">
-
       <TopBar />
       <SideMenuGym />
-
 
       <h2>Gym Profile</h2>
       {!isProfile ? (

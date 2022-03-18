@@ -22,25 +22,18 @@ import AdminDashboard from "./Pages/AdminPanel/AdminDashboard";
 import GymRequest from "./Pages/AdminPanel/GymRequest";
 import TrainerRequest from "./Pages/AdminPanel/TrainerRequest";
 import QueryDetails from "./Pages/AdminPanel/QueryDetails";
-
 import PaymentRequest from "./Pages/AdminPanel/PaymentRequest";
 import TrainerDashboard from "./Pages/TrainerPanel/TrainerDashboard";
 import TrainerProfile from "./Pages/TrainerPanel/TrainerProfile";
 import TrainerActivityPlans from "./Pages/TrainerPanel/TrainerActivityPlans";
 import CreatePlan from "./Pages/TrainerPanel/CreatePlan";
 import Login from "./Pages/Register/Login";
-
 function App() {
   return (
     <BrowserRouter>
       <div>
-
-        <TopBar />
-        <SideMenu />
-
         {/* <TopBar /> */}
         {/* <SideMenu /> */}
-
         <Routes>
           <Route path="/user-add-food" element={<AddFood />} />
           <Route path="/user-add-exercise" element={<AddExercise />} />
@@ -48,18 +41,6 @@ function App() {
           <Route path="/search-gym" element={<SearchGym />} />
           <Route path="/search-trainer" element={<SearchTrainer />} />
           <Route path="/gym-description" element={<GymDescription />} />
-
-          <Route path="/gym-profile" element={<GymProfile />} />
-          <Route path="/trainer-description" element={<TrainerDescription />} />
-          <Route path="/activity-plans" element={<ActivityPlans />} />
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
-          <Route path="/admin-gym-request" element={<GymRequest />} />
-          <Route path="/admin-trainer-request" element={<TrainerRequest />} />
-          <Route path="/admin-query-details" element={<QueryDetails />} />
-
-          <Route path="/register" element={<Register />} />
-          <Route path="/dashboard-user" element={<UserDashboard />} />
-
           <Route path="/gym-dashboard" element={<GymProfile />} />
           <Route path="/trainer-profile" element={<TrainerProfile />} />
           <Route path="/trainer-description" element={<TrainerDescription />} />
@@ -76,7 +57,6 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/user-dashboard" element={<UserDashboard />} />
-
           <Route path="/register-user" element={<UserRegister />} />
           <Route path="/register-trainer" element={<TrainerRegister />} />
           <Route path="/register-gym" element={<GymRegister />} />
