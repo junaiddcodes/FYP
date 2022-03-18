@@ -7,12 +7,20 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
+import TopBar from "../../Components/TopBar";
+import SideMenu from "../../Components/SideMenu";
+
+
 const AddFood = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   return (
     <div className="page-container-user">
+
+      <TopBar />
+      <SideMenu />
+
       <h2>Add Food</h2>
       <div className="user-box d-flex flex-column p-3">
         <div className="d-flex flex-column">

@@ -11,11 +11,19 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
+import TopBar from "../../Components/TopBar";
+import SideMenu from "../../Components/SideMenu";
+
+
 const GymDescription = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   return (
     <div className="page-container-user">
+
+      <TopBar />
+      <SideMenu />
+
       <h2>Gym Description</h2>
       <div className="d-flex">
         <div className="gym-desc d-flex flex-column ">

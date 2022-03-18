@@ -1,0 +1,31 @@
+.dropdown-trainer {
+  // margin-top=
+  border-radius: 5px;
+
+  background-color: $color3;
+  #demo-simple-select-label {
+    color: $color4;
+    // background-color: $color3;
+  }
+  #demo-simple-select {
+    color: $color4;
+    background-color: $color3;
+  }
+}
+.text-field-trainer {
+  height: 100px;
+  width: 500px;
+  border: none;
+  border-radius: 5px;
+  background-color: $color3;
+  color: $color4;
+  padding: 10px;
+}
+.text-field-trainer::placeholder {
+  color: $color1;
+}
+.add-icon {
+  width: 2rem;
+  height: 2rem;
+  color: $color4;
+}
