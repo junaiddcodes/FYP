@@ -12,7 +12,7 @@ const SideMenuGym = () => {
       </div>
       <ul className="nav_list">
         <li>
-          <Link to="/gym-profile">
+          <Link to="/gym-dashboard">
             <i class="bx bxs-home-circle">
               <span className="links_name">Home</span>
             </i>

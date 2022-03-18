@@ -1,35 +1,3 @@
-.outer-box {
-  height: 50%;
-  width: 25%;
-  background-color: #001e3c;
-  border: 1px solid #007fff;
-  margin: auto;
-  border-radius: 1rem;
-}
-
-.outer-box h2 {
-  font-family: "Montserrat", sans-serif;
-  color: white;
-  font-weight: 700;
-  font-size: 2rem;
-}
-
-.inner-box {
-  background-color: #007fff;
-  height: 60%;
-  width: 80%;
-  border-radius: 1rem;
-}
-
-.inner-box Button {
-  width: 50%;
-  margin: auto;
-  background: #001e3c;
-  border-radius: 0.5rem;
-  font-family: "Montserrat", sans-serif;
-  color: white;
-}
-
 .outer-box-step1 {
   height: 80%;
   width: 60%;
@@ -352,6 +320,102 @@
 
 .buttons-gym Button {
   width: 20%;
+}
+
+.outer-box-register {
+  height: 50%;
+  width: 30%;
+  background-color: #001e3c;
+  border: 1px solid #007fff;
+  margin: auto;
+  border-radius: 1rem;
+}
+
+.outer-box-register h2 {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.inner-box-register {
+  background-color: #007fff;
+  height: 60%;
+  width: 70%;
+  border-radius: 1rem;
+}
+
+.inner-box-register Button {
+  width: 50%;
+  margin: auto;
+  background: #001e3c;
+  border-radius: 0.5rem;
+  font-family: "Montserrat", sans-serif;
+  color: white;
+}
+
+.outer-box-login {
+  height: 80%;
+  width: 40%;
+  background-color: #001e3c;
+  border: 1px solid #007fff;
+  margin: auto;
+  border-radius: 1rem;
+}
+
+.outer-box-login h2 {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.inner-box-login {
+  background-color: #007fff;
+  height: 80%;
+  width: 80%;
+  border-radius: 1rem;
+}
+
+.inner-box-login Button {
+  width: 50%;
+  margin: auto;
+  background: #001e3c;
+  border-radius: 0.5rem;
+  font-family: "Montserrat", sans-serif;
+  color: white;
+}
+
+.inner-box-login label {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0.5rem;
+  color: white;
+}
+
+.inner-box-login p {
+  margin: 5px;
+  color: yellow;
+}
+
+.inner-box-login .input-text input {
+  margin-left: 0.5rem;
+  width: 400px;
+  height: 40px;
+  border-radius: 5px;
+  background-color: #001e3c;
+  color: white;
+  border: none;
+  outline: none;
+  padding: 10px;
+}
+
+.inner-box-login .gender-radio h4 {
+  font-size: 1rem;
+}
+
+.inner-box-login .gender-radio input {
+  width: 4rem;
 }
 
 .sidebar {
@@ -696,6 +760,8 @@
   background-color: #001e3c;
   border-radius: 5px;
 }
+
+/* I love you Junaid */
 
 .gym-desc img {
   padding: 5px;

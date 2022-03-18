@@ -250,9 +250,9 @@ const AdminDashboard = () => {
                     <td>Hamza Kasim</td>
                     <td>
                       <div className="d-flex align-items-center">
-                        <Link to="/admin-query-details">
-                          <Button>View Details</Button>
-                        </Link>
+                        {/* <Link to="/admin-query-details"> */}
+                        <Button>View Details</Button>
+                        {/* </Link> */}
                       </div>
                     </td>
                   </tr>
