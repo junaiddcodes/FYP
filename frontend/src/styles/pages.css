@@ -1,6 +1,6 @@
 .outer-box-step1 {
-  height: 80%;
-  width: 60%;
+  height: 85%;
+  width: 70%;
   background-color: #001e3c;
   border: 1px solid #007fff;
   margin: auto;
@@ -14,9 +14,15 @@
   font-size: 2rem;
 }
 
+.outer-box-step1 .form-step1 {
+  height: 100%;
+  width: 100%;
+  padding: 20px;
+}
+
 .inner-box-step1 {
   background-color: #007fff;
-  height: 70%;
+  height: 75%;
   width: 90%;
   border-radius: 1rem;
 }
@@ -40,14 +46,24 @@
   padding-left: 10px;
 }
 
-.inner-box-step1 .radio input {
-  height: 1rem;
-  width: 1rem;
+.inner-box-step1 h4 {
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .inner-box-step1 p {
-  font-family: "Montserrat", sans-serif;
-  font-weight: 600;
+  margin: 5px;
+  margin-left: 10px;
+  color: yellow;
+}
+
+.inner-box-step1 .radio-container {
+  width: 120%;
+}
+
+.inner-box-step1 .radio input {
+  height: 1rem;
+  width: 1rem;
 }
 
 .step1-btn,
@@ -83,7 +99,7 @@
 
 .inner-box-step2 {
   background-color: #007fff;
-  height: 70%;
+  height: 90%;
   width: 90%;
   border-radius: 1rem;
 }
@@ -105,6 +121,12 @@
   color: white;
   font-family: "Montserrat", sans-serif;
   padding-left: 10px;
+}
+
+.inner-box-step2 p {
+  margin: 5px;
+  margin-left: 10px;
+  color: yellow;
 }
 
 .inner-box-step2 .radio input {
@@ -141,6 +163,15 @@
   border: none;
 }
 
+.btn-group .activity-btn p {
+  color: white;
+  margin: 5px;
+  margin-top: 0;
+  font-size: 0.75rem;
+  font-weight: 400;
+  text-align: left;
+}
+
 .btn-group input {
   margin-left: 10px;
   width: 1rem;
@@ -153,14 +184,6 @@
   margin-bottom: 0;
   font-size: 1rem;
   font-weight: 700;
-  text-align: left;
-}
-
-.btn-group p {
-  margin: 5px;
-  margin-top: 0;
-  font-size: 0.75rem;
-  font-weight: 400;
   text-align: left;
 }
 
@@ -203,6 +226,12 @@
   color: white;
   border: none;
   height: 20%;
+}
+
+.btn-group2 p {
+  margin: 5px;
+  margin-left: 10px;
+  color: yellow;
 }
 
 .btn-group2 input {
@@ -260,6 +289,12 @@
   color: white;
   font-weight: 600;
   font-size: 1.25rem;
+}
+
+.inner-box-step4 p {
+  margin: 5px;
+  margin-left: 10px;
+  color: yellow;
 }
 
 .buttons-trainer {
@@ -760,8 +795,6 @@
   background-color: #001e3c;
   border-radius: 5px;
 }
-
-/* I love you Junaid */
 
 .gym-desc img {
   padding: 5px;
