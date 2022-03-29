@@ -27,12 +27,12 @@ function validateGym(data) {
       password: Joi.string().min(8).required(),
       user_type: Joi.string().min(3).max(30).required(),
     },
-    listed: Joi.boolean().required(),
-    location: Joi.string().required(),
-    gym_desc: Joi.string().required(),
-    gym_contact_no: Joi.string().min(5).required(),
-    gym_membership_price: Joi.number().positive().required(),
-    gender_facilitation: Joi.string().required(),
+    listed: Joi.boolean(),
+    location: Joi.string(),
+    gym_desc: Joi.string(),
+    gym_contact_no: Joi.string().min(5),
+    gym_membership_price: Joi.number().positive(),
+    gender_facilitation: Joi.string(),
     gym_photo: Joi.string(),
   });
   return schema.validate(data);

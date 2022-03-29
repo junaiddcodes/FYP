@@ -180,7 +180,7 @@
 .inner-box-step3 {
   @include heading3(1.25rem, 600);
 
-  @include innerBox(90%, 70%);
+  @include innerBox(90%, 90%);
 }
 .btn-group2 {
   .activity-btn {
@@ -190,8 +190,10 @@
     border-radius: 0.5rem;
     font-family: "Montserrat", sans-serif;
     color: $color4;
+    padding: 20px;
     border: none;
-    height: 20%;
+    margin-bottom: 10px;
+    height: 30%;
   }
   p {
     margin: 5px;
@@ -226,12 +228,24 @@
 }
 // STEP4
 .outer-box-step4 {
-  @include outerBox(40%, 60%);
+  @include outerBox(40%, 70%);
 }
 .inner-box-step4 {
   @include heading3(1.25rem, 600);
 
-  @include innerBox(90%, 60%);
+  @include innerBox(90%, 80%);
+  .activity-btn2 {
+    width: 90%;
+    margin: auto;
+    background: $color2;
+    border-radius: 0.5rem;
+    font-family: "Montserrat", sans-serif;
+    color: $color4;
+    padding: 20px;
+    margin-bottom: 10px;
+    border: none;
+    height: 4rem;
+  }
   p {
     margin: 5px;
     margin-left: 10px;

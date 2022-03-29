@@ -12,6 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import userService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const step1Schema = yup.object().shape({
   full_name: yup.string().min(3).max(32).required(),
@@ -32,18 +33,24 @@ const step2Schema = yup.object().shape({
     .positive()
     .required()
     .nullable(),
-  activity_level: yup.string().required("A radio option is required").nullable(),
-  // weight_goal: yup.number().positive().required(),
-  // weekly_goal: yup.number().positive().required(),
+  activity_level: yup.string().required("An option is required").nullable(),
+});
 
-  // calorie_goal: yup.number().positive().required(),
+const step3Schema = yup.object().shape({
+  weight_goal: yup.string().required("An option is required").nullable(),
+});
+
+const step4Schema = yup.object().shape({
+  weekly_goal: yup.string().required("An option is required").nullable(),
 });
 
 const UserRegister = () => {
-  const [step1, setStep1] = useState(false);
-  const [step2, setStep2] = useState(true);
+  const [step1, setStep1] = useState(true);
+  const [step2, setStep2] = useState(false);
   const [step3, setStep3] = useState(false);
   const [step4, setStep4] = useState(false);
+  const navigate = useNavigate();
+  const [goalText, setGoalText] = useState("");
   const [selectedClass, setSelectedClass] = useState("selected");
   const [customerDetails, setCustomerDetails] = useState({
     user_id: {
@@ -59,7 +66,7 @@ const UserRegister = () => {
     weight_goal: "",
     weekly_goal: "",
     dob: "",
-    calorie_goal: "",
+    calorie_goal: "2000",
   });
 
   // const {
@@ -84,20 +91,84 @@ const UserRegister = () => {
   } = useForm({
     resolver: yupResolver(step2Schema),
   });
+  const {
+    register: controlStep3,
+    handleSubmit: handleSubmitStep3,
+    formState: { errors: errorsStep3 },
+  } = useForm({
+    resolver: yupResolver(step3Schema),
+  });
+  const {
+    register: controlStep4,
+    handleSubmit: handleSubmitStep4,
+    formState: { errors: errorsStep4 },
+  } = useForm({
+    resolver: yupResolver(step4Schema),
+  });
 
   const submitStep1Form = (data) => {
-    console.log("aaaaaaa");
+    console.log(data.gender);
+
+    setCustomerDetails({ ...customerDetails, gender: data.gender });
+
     setStep1(false);
     setStep2(true);
-    console.log(data.dob);
+
     console.log("aaaaaaa");
   };
   const submitStep2Form = (data) => {
     console.log("aaaaaaa");
+
+    const height = data.feet + "." + data.inches;
+    console.log(height);
+    setCustomerDetails({ ...customerDetails, height: height, activity_level: data.activity_level });
+    console.log(customerDetails.height);
+
     setStep2(false);
     setStep3(true);
     console.log(data.dob);
     console.log("aaaaaaa");
+  };
+
+  const submitStep3Form = (data) => {
+    console.log("aaaaaaa");
+
+    setCustomerDetails({ ...customerDetails, weight_goal: data.weight_goal });
+    console.log(data.weight_goal);
+    if (data.weight_goal == "gain_weight") {
+      setGoalText("Gain");
+    }
+
+    if (data.weight_goal == "lose_weight") {
+      setGoalText("Lose");
+    }
+    setStep3(false);
+    setStep4(true);
+    console.log("aaaaaaa");
+  };
+
+  const submitStep4Form = (data) => {
+    // console.log("aaaaaaa");
+    // setStep3(false);
+    // setStep4(true);
+    setCustomerDetails({ ...customerDetails, weekly_goal: data.weekly_goal });
+    console.log(customerDetails);
+    // console.log("aaaaaaa");
+    console.log("before request");
+    userService
+      .register_user(customerDetails)
+      .then((data) => {
+        console.log(data);
+        // props.history.push("/login");
+        navigate("/login");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data, {
+          position: toast.POSITION.TOP_LEFT,
+        });
+      });
+    console.log("after request");
   };
 
   return (
@@ -343,82 +414,97 @@ const UserRegister = () => {
         </div>
       ) : step3 ? (
         <div className="outer-box-step3 d-flex flex-column justify-content-center align-items-center">
-          <h2 className="text-center mb-3">User Signup</h2>
-          <div className="btn-group2 inner-box-step3 d-flex flex-column">
-            <h3 className="text-center p-4 pb-0 w-100">What is your weight goal?</h3>
+          <form
+            onSubmit={handleSubmitStep3(submitStep3Form)}
+            className="d-flex flex-column justify-content-center align-items-center w-100"
+          >
+            <h2 className="text-center mb-3">User Signup</h2>
+            <div className="btn-group2 inner-box-step3 d-flex flex-column">
+              <h3 className="text-center p-4 pb-0 w-100">What is your weight goal?</h3>
 
-            <div className="activity-btn d-flex justify-content-between">
-              <input type="radio" name="gender" value="not very active" />
-              <div className="d-flex flex-column w-75 ">
-                <h4>Lose Weight</h4>
+              <div className="activity-btn d-flex justify-content-between">
+                <input
+                  type="radio"
+                  name="weight_goal"
+                  value="lose_weight"
+                  {...controlStep3("weight_goal")}
+                />
+                <div className="d-flex flex-column w-75">
+                  <h4>Lose Weight</h4>
+                </div>
               </div>
-            </div>
-            <div className="activity-btn d-flex justify-content-between">
-              <input type="radio" name="gender" value="not very active" />
-              <div className="d-flex flex-column w-75">
-                <h4>Maintain Weight</h4>
-              </div>
-            </div>
-            <div className="activity-btn d-flex justify-content-between">
-              <input type="radio" name="gender" value="not very active" />
-              <div className="d-flex flex-column w-75">
-                <h4>Gain Weight</h4>
-              </div>
-            </div>
-          </div>
 
-          <div className="buttons-step3 d-flex justify-content-between mt-3">
-            <Button
-              onClick={() => {
-                setStep3(false);
-                setStep2(true);
-              }}
-            >
-              back
-            </Button>
+              <div className="activity-btn d-flex justify-content-between">
+                <input
+                  type="radio"
+                  name="weight_goal"
+                  value="gain_weight"
+                  {...controlStep3("weight_goal")}
+                />
+                <div className="d-flex flex-column w-75">
+                  <h4>Gain Weight</h4>
+                </div>
+              </div>
+              <p>{errorsStep3.weight_goal?.message}</p>
+            </div>
 
-            <Button
-              onClick={() => {
-                setStep3(false);
-                setStep4(true);
-              }}
-            >
-              next
-            </Button>
-          </div>
+            <div className="buttons-step3 d-flex justify-content-between mt-3">
+              <Button
+                onClick={() => {
+                  setStep3(false);
+                  setStep2(true);
+                }}
+              >
+                back
+              </Button>
+
+              <Button type="submit">next</Button>
+            </div>
+          </form>
         </div>
       ) : step4 ? (
         <div className="outer-box-step4 d-flex flex-column justify-content-center align-items-center">
-          <h2 className="text-center mb-3">User Signup</h2>
-          <div className="btn-group2 inner-box-step4 d-flex flex-column">
-            <h3 className="text-center p-4 pb-0 w-100">What is your weekly goal?</h3>
+          <form
+            onSubmit={handleSubmitStep4(submitStep4Form)}
+            className="d-flex flex-column justify-content-center align-items-center w-100"
+          >
+            <h2 className="text-center mb-3">User Signup</h2>
+            <div className="btn-group2 inner-box-step4 d-flex flex-column">
+              <h3 className="text-center p-4 pb-0 w-100">What is your weekly goal?</h3>
 
-            <div className="activity-btn d-flex justify-content-between">
-              <input type="radio" name="gender" value="not very active" />
-              <div className="d-flex flex-column w-75 ">
-                <h4>Lose 0.5 pounds per week (Recommended)</h4>
+              <div className="activity-btn2 d-flex justify-content-between">
+                <input
+                  type="radio"
+                  name="weekly_goal"
+                  value="0.5"
+                  {...controlStep4("weekly_goal")}
+                />
+                <div className="d-flex flex-column w-75 ">
+                  <h4>{goalText} 0.5 pounds per week (Recommended)</h4>
+                </div>
               </div>
-            </div>
-            <div className="activity-btn d-flex justify-content-between">
-              <input type="radio" name="gender" value="not very active" />
-              <div className="d-flex flex-column w-75">
-                <h4>Lose 1 pound per week</h4>
+              <div className="activity-btn2 d-flex justify-content-between">
+                <input type="radio" name="weekly_goal" value="1" {...controlStep4("weekly_goal")} />
+                <div className="d-flex flex-column w-75">
+                  <h4>{goalText} 1 pound per week</h4>
+                </div>
               </div>
+              <p>{errorsStep4.weekly_goal?.message}</p>
             </div>
-          </div>
 
-          <div className="buttons-step3 d-flex justify-content-between mt-3">
-            <Button
-              onClick={() => {
-                setStep4(false);
-                setStep3(true);
-              }}
-            >
-              back
-            </Button>
+            <div className="buttons-step3 d-flex justify-content-between mt-3">
+              <Button
+                onClick={() => {
+                  setStep4(false);
+                  setStep3(true);
+                }}
+              >
+                back
+              </Button>
 
-            <Button>Signup</Button>
-          </div>
+              <Button type="submit">Signup</Button>
+            </div>
+          </form>
         </div>
       ) : null}
     </div>
