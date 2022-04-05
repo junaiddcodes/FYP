@@ -76,6 +76,10 @@
     margin-left: 10px;
     color: yellow;
   }
+  .radio p {
+    margin: 0;
+    color: black;
+  }
   .radio-container {
     width: 120%;
   }
@@ -264,12 +268,17 @@
 // GYM
 
 .outer-box-gym {
-  @include outerBox(40%, 70%);
+  @include outerBox(40%, 85%);
 }
 .inner-box-gym {
   @include heading3(1.25rem, 600);
 
   @include innerBox(90%, 70%);
+  p {
+    margin: 5px;
+    margin-left: 10px;
+    color: yellow;
+  }
   input {
     background-color: $color2;
     width: 90%;

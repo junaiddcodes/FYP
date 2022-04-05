@@ -44,19 +44,19 @@ class GenericService {
           resolve(res.data)
         })
         .catch((err) => {
-          reject(err)
-        })
-    })
+          reject(err);
+        });
+    });
   patch = (url, data) =>
     new Promise((resolve, reject) => {
       axios
-        .put(url, data)
+        .patch(url, data)
         .then((res) => {
-          resolve(res.data)
+          resolve(res.data);
         })
         .catch((err) => {
-          reject(err)
-        })
-    })
+          reject(err);
+        });
+    });
 }
 export default GenericService

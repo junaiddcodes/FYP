@@ -18,7 +18,7 @@ const step1Schema = yup.object().shape({
   full_name: yup.string().min(3).max(32).required(),
   email: yup.string().min(3).required().email(),
   password: yup.string().min(8).required(),
-  gender: yup.string().required("A radio option is required").nullable(),
+  gender: yup.string().required("An option is required").nullable(),
   dob: yup.string().required(),
 });
 

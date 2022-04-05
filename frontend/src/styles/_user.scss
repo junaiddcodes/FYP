@@ -50,19 +50,20 @@
 }
 
 .input-modal {
-  background-color: $color3;
-  width: 50%;
+  background-color: $color4;
+  width: 28rem;
   margin: auto;
   height: 2.5rem;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   border: none;
-  color: $color4;
+  color: $color1;
   font-family: "Montserrat", sans-serif;
   padding-left: 10px;
+  outline: none;
 }
-.input-modal::placeholder {
-  color: $color4;
-}
+// .input-modal::placeholder {
+//   color: $color1;
+// }
 .modal-inner {
   i {
     font-size: 2rem;
@@ -74,6 +75,12 @@
   i:hover {
     color: $color3;
     transform: scale(1.3);
+  }
+  .select-drop {
+    width: 95%;
+    margin: 1rem;
+    background: $color3;
+    color: $color1;
   }
 }
 
@@ -231,4 +238,37 @@
     font-size: 0.75rem;
     font-weight: 300;
   }
+}
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.upload-photo-sec {
+  display: flex;
+  height: 95vh;
+  background: #9ba78c;
+  justify-content: space-evenly;
+  align-items: center;
+}
+// .upload-photo-card {
+//   border-radius: 1rem;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   text-align: center;
+//   align-items: center;
+//   width: 25rem;
+//   margin-left: 20rem;
+//   margin-bottom: 20rem;
+// }
+.preview {
+  height: 10rem;
+  width: 10rem;
+  border-radius: 20rem;
+}
+.preview-gym {
+  height: 20rem;
+  width: 40rem;
+  border-radius: 1rem;
 }

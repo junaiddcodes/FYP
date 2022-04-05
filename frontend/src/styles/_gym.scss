@@ -25,11 +25,18 @@
       color: $color4;
       padding: 10px;
     }
+    p {
+      margin: 5px;
+      margin-left: 10px;
+      color: yellow;
+    }
+    .general-p {
+      color: $color4;
+    }
     .input-text input::placeholder {
       color: $color4;
     }
     p {
-      color: $color4;
       font-weight: 300;
     }
     label {
