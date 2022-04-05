@@ -57,6 +57,11 @@
   color: yellow;
 }
 
+.inner-box-step1 .radio p {
+  margin: 0;
+  color: black;
+}
+
 .inner-box-step1 .radio-container {
   width: 120%;
 }
@@ -322,7 +327,7 @@
 }
 
 .outer-box-gym {
-  height: 70%;
+  height: 85%;
   width: 40%;
   background-color: #001e3c;
   border: 1px solid #007fff;
@@ -349,6 +354,12 @@
   color: white;
   font-weight: 600;
   font-size: 1.25rem;
+}
+
+.inner-box-gym p {
+  margin: 5px;
+  margin-left: 10px;
+  color: yellow;
 }
 
 .inner-box-gym input {
@@ -634,31 +645,16 @@
 }
 
 .input-modal {
-  background-color: #007fff;
-  width: 50%;
+  background-color: white;
+  width: 28rem;
   margin: auto;
   height: 2.5rem;
-  border-radius: 0.5rem;
+  border-radius: 0.25rem;
   border: none;
-  color: white;
+  color: #0a1929;
   font-family: "Montserrat", sans-serif;
   padding-left: 10px;
-}
-
-.input-modal::-webkit-input-placeholder {
-  color: white;
-}
-
-.input-modal:-ms-input-placeholder {
-  color: white;
-}
-
-.input-modal::-ms-input-placeholder {
-  color: white;
-}
-
-.input-modal::placeholder {
-  color: white;
+  outline: none;
 }
 
 .modal-inner i {
@@ -673,6 +669,13 @@
   color: #007fff;
   -webkit-transform: scale(1.3);
           transform: scale(1.3);
+}
+
+.modal-inner .select-drop {
+  width: 95%;
+  margin: 1rem;
+  background: #007fff;
+  color: #0a1929;
 }
 
 .delete-icon {
@@ -878,6 +881,45 @@
   font-weight: 300;
 }
 
+.upload-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.upload-photo-sec {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 95vh;
+  background: #9ba78c;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.preview {
+  height: 10rem;
+  width: 10rem;
+  border-radius: 20rem;
+}
+
+.preview-gym {
+  height: 20rem;
+  width: 40rem;
+  border-radius: 1rem;
+}
+
 .page-container-admin {
   padding: 1rem;
 }
@@ -996,6 +1038,16 @@
   padding: 10px;
 }
 
+.page-container-gym .gym-box p {
+  margin: 5px;
+  margin-left: 10px;
+  color: yellow;
+}
+
+.page-container-gym .gym-box .general-p {
+  color: white;
+}
+
 .page-container-gym .gym-box .input-text input::-webkit-input-placeholder {
   color: white;
 }
@@ -1013,7 +1065,6 @@
 }
 
 .page-container-gym .gym-box p {
-  color: white;
   font-weight: 300;
 }
 

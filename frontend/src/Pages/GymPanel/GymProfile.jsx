@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Button } from "react-bootstrap";
 import Modal from "react-modal";
 import { FaSearch } from "react-icons/fa";
@@ -12,11 +13,156 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TopBar from "../../Components/TopBar";
 import SideMenuGym from "../../Components/SideMenuGym";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import userService from "../../services/UserService";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import jwtDecode from "jwt-decode";
+import gymService from "../../services/GymService";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { Link } from "react-router-dom";
+
+const gymProfileSchema = yup.object().shape({
+  location: yup.string().required(),
+  gym_desc: yup
+    .string()
+    .min(200, "Description must be at least 200 characters!")
+    .required("Gym description can't be empty"),
+  gym_contact_no: yup.string().min(11, "Contact number must be at least 11 digits!").required(),
+  gym_membership_price: yup
+    .number()
+    .typeError("Membership price is required!")
+    .positive("Membership price should be a positive number")
+    .required("Gym membership price is required!"),
+
+  gender_facilitation: yup.string().required("An option is required").nullable(),
+  gym_photo: yup.string(),
+});
 
 const GymProfile = () => {
+  const navigate = useNavigate();
+  const [fileName, setFileName] = React.useState("");
+  const [previewImage, setPreviewImage] = React.useState("");
   const [isProfile, setIsProfile] = useState(false);
   const [isGymForm, setIsGymForm] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [loggedInId, setLoggedInId] = useState("");
+  const [gymProfileDetails, setGymProfileDetails] = useState({
+    user_id: {
+      full_name: "",
+      email: "",
+      password: "",
+      user_type: "gym",
+    },
+    location: "",
+    gym_desc: "",
+    gym_contact_no: "",
+    gym_membership_price: "",
+    gender_facilitation: "",
+    gym_photo: "",
+  });
+
+  var temp = {
+    locationTemp: "",
+    gym_descTemp: "",
+    gym_contact_noTemp: "",
+    gym_membership_priceTemp: "",
+    gender_facilitationTemp: "",
+    gym_photoTemp: "",
+  };
+
+  // const get_gym_info = () => {
+  //   gymService
+  //     .get_gym(userService.getLoggedInUser()._id)
+  //     .then((data) => {
+  //       console.log(data.crud.user_id.full_name);
+  //       // setGymProfileDetails({
+  //       //   ...gymProfileDetails,
+  //       //   user_id: {
+  //       //     ...gymProfileDetails.user_id,
+  //       //     full_name: data.crud.user_id.full_name,
+  //       //     email: data.crud.user_id.email,
+  //       //     password: data.crud.user_id.password,
+  //       //   },
+  //       // });
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       toast.error(err.response.data, {
+  //         position: toast.POSITION.TOP_LEFT,
+  //       });
+  //     });
+  // };
+
+  useEffect(() => {
+    // userService.getLoggedInUser();
+    setLoggedInId(userService.getLoggedInUser()._id);
+    if (userService.isLoggedIn() == false) {
+      navigate("/login");
+      // console.log("log in first");
+    }
+  }, []);
+
+  const onChangeFile = (e) => {
+    setFileName(e.target.files[0]);
+    setPreviewImage(URL.createObjectURL(e.target.files[0]));
+  };
+
+  const changeOnClick = (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    formData.append("frontImage", fileName);
+
+    axios
+      .post("/cards/add", formData)
+      .then((res) => console.log(res.data))
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const {
+    register: controlGymProfile,
+    handleSubmit: handleSubmitGymProfile,
+    formState: { errors: errorsGymProfile },
+  } = useForm({
+    resolver: yupResolver(gymProfileSchema),
+  });
+
+  const submitGymProfileForm = (data) => {
+    // console.log("aaaaaaa");
+    // setStep3(false);
+    // setStep4(true);
+    // setTrainerDetails({ ...trainerDetails, weekly_goal: data.weekly_goal });
+    // console.log(trainerDetails);
+    // console.log("aaaaaaa");
+    console.log("before request");
+    setGymProfileDetails({
+      ...gymProfileDetails,
+      location: data.location,
+      gym_desc: data.gym_desc,
+      gym_contact_no: data.gym_contact_no,
+      gym_membership_price: data.gym_membership_price,
+      gender_facilitation: data.gender_facilitation,
+      gym_photo: data.gym_photo,
+    });
+    gymService
+      .update_gym(gymProfileDetails, loggedInId)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response.data, {
+          position: toast.POSITION.TOP_LEFT,
+        });
+      });
+    console.log(gymProfileDetails);
+    console.log("after request");
+  };
 
   return (
     <div className="page-container-gym">
@@ -32,6 +178,7 @@ const GymProfile = () => {
               className="w-25 mt-4"
               onClick={() => {
                 setIsGymForm(true);
+                // get_gym_info();
               }}
             >
               Create Profile
@@ -39,46 +186,96 @@ const GymProfile = () => {
           </div>
         ) : (
           <div className="gym-box mt-3 d-flex flex-column align-items-left">
-            <form className="d-flex flex-column">
+            <form
+              onSubmit={handleSubmitGymProfile(submitGymProfileForm)}
+              className="d-flex flex-column"
+            >
               <div className="input-text d-flex flex-column">
-                <label for="fname">Enter Gym Name</label>
-                <input type="text" id="" name="" value="" />
-                <label for="lname">Gym Location</label>
-                <input type="text" id="" name="" value="" />
-                <label for="lname">Gym Contact Number</label>
-                <input type="text" id="" name="" value="" />
-                <label for="lname">Gym Business Email</label>
-                <input type="text" id="" name="" value="" />
-                <label for="lname">Gym Membership Price</label>
-                <input type="Number" id="" name="" value="" />
-                <label for="lname">Gender Facilitation</label>
+                {/* <p>{gymProfileDetails.user_id.full_name}</p> */}
+                {/* <p>{gymProfileDetails.location}</p> */}
+                {/* <p>{loggedInId}</p> */}
+                <label for="">Gym Location</label>
+                <input type="text" name="location" {...controlGymProfile("location")} />
+                <p>{errorsGymProfile.location?.message}</p>
+                <label for="">Gym Contact Number</label>
+                <input type="text" name="gym_contact_no" {...controlGymProfile("gym_contact_no")} />
+                <p>{errorsGymProfile.gym_contact_no?.message}</p>
+                <label for="">Gym Membership Price</label>
+                <input
+                  type="Number"
+                  name="gym_membership_price"
+                  {...controlGymProfile("gym_membership_price")}
+                />
+                <p>{errorsGymProfile.gym_membership_price?.message}</p>
+                <label for="">Gender Facilitation</label>
               </div>
               <div className="d-flex mt-2 gender-radio justify-content-start">
-                <input type="radio" value="Male" />
+                <input
+                  type="radio"
+                  value="Male"
+                  name="gender_facilitaion"
+                  {...controlGymProfile("gender_facilitation")}
+                />
                 <h4>Male</h4>
-                <input type="radio" value="Female" />
+                <input
+                  type="radio"
+                  value="Female"
+                  name="gender_facilitaion"
+                  {...controlGymProfile("gender_facilitation")}
+                />
                 <h4>Female</h4>
-                <input type="radio" value="Both" />
+                <input
+                  type="radio"
+                  value="Both"
+                  name="gender_facilitaion"
+                  {...controlGymProfile("gender_facilitation")}
+                />
                 <h4>Both</h4>
               </div>
+              <p>{errorsGymProfile.gender_facilitation?.message}</p>
 
-              <label for="lname">Gym Description</label>
+              <label for="">Gym Description</label>
 
-              <textarea className="text-field mt-2" />
+              <textarea
+                className="text-field mt-2"
+                name="gym_desc"
+                {...controlGymProfile("gym_desc")}
+              />
+              <p>{errorsGymProfile.gym_desc?.message}</p>
 
-              <label for="lname">Gym Picture</label>
-              <p>Please upload your gym's picture</p>
-              <input type="file" />
-              <p className="mt-3">
+              <label for="">Gym Picture</label>
+              <p className="general-p">Please upload your gym's picture</p>
+              <div className="upload-photo-card">
+                <TransformWrapper>
+                  <TransformComponent>
+                    <img className="preview-gym" src={previewImage} alt="" />
+                  </TransformComponent>
+                </TransformWrapper>
+              </div>
+              <form onSubmit={changeOnClick} encType="multipart/form-data">
+                <div className="upload-form">
+                  {/* <label htmlFor="file">Choose Image</label> */}
+                  <input
+                    style={{ marginTop: "1rem" }}
+                    // accept="image/*"
+                    type="file"
+                    filename="frontImage"
+                    onChange={onChangeFile}
+                  />
+                  <button
+                    style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                    className="btn btn-primary w-25"
+                    type="submit"
+                  >
+                    submit
+                  </button>
+                </div>
+              </form>
+
+              <p className="mt-3 general-p">
                 Submit Profile to the Admin. Admin will review your profile and Approve it:
               </p>
-              <Button
-                type="submit"
-                className="w-25"
-                onClick={() => {
-                  setIsProfile(true);
-                }}
-              >
+              <Button type="submit" className="w-25">
                 Submit
               </Button>
             </form>

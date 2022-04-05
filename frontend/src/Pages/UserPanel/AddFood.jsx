@@ -5,27 +5,31 @@ import { ImCross } from "react-icons/im";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+// import Select from "@mui/material/Select";
 import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
-import userService from '../../services/UserService'
+import Select from "react-select";
 
 const AddFood = () => {
-const [modalOpen, setModalOpen] = useState(false);
-const [editModalOpen, setEditModalOpen] = useState(false);
-const [confirmDelete, setConfirmDelete] = useState(false);
-
-
-var user_id = userService.getLoggedInUser()._id;
-
-
-
-
-
-
-
-
-
+  const mealOptions = [
+    { value: "breakfast", label: "Breakfast" },
+    { value: "lunch", label: "Lunch" },
+    { value: "dinner", label: "Dinner" },
+    { value: "snacks", label: "Snacks" },
+  ];
+  const foodOptions = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "eggs", label: "Eggs" },
+  ];
+  const quantityOptions = [
+    { value: "100", label: "100 gm" },
+    { value: "250", label: "250 gm" },
+    { value: "500", label: "500 gm" },
+  ];
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   return (
     <div className="page-container-user">
       <TopBar />
@@ -101,29 +105,14 @@ var user_id = userService.getLoggedInUser()._id;
             >
               <i class="bx bx-x"></i>
             </a>
-            <FormControl className="m-3 w-100 dropdown-modal">
-              <InputLabel id="demo-simple-select-label">Select Meal</InputLabel>
-              <Select labelId="demo-simple-select-label" id="demo-simple-select">
-                <MenuItem value="lbs">Breakfast</MenuItem>
-                <MenuItem value="kgs">Lunch</MenuItem>
-                <MenuItem value="kgs">Dinner</MenuItem>
-                <MenuItem value="kgs">Snacks</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl className="m-3 w-100 dropdown-modal">
-              <InputLabel id="demo-simple-select-label">Select Food</InputLabel>
-              <Select labelId="demo-simple-select-label" id="demo-simple-select">
-                <MenuItem value="lbs">egg</MenuItem>
-                <MenuItem value="kgs">bread</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl className="m-3 w-100 dropdown-modal">
-              <InputLabel id="demo-simple-select-label">Select Quantity</InputLabel>
-              <Select labelId="demo-simple-select-label" id="demo-simple-select">
-                <MenuItem value="lbs">100g</MenuItem>
-                <MenuItem value="kgs">200g</MenuItem>
-              </Select>
-            </FormControl>
+
+            <Select className="select-drop" placeholder="Select Meal" options={mealOptions} />
+            <Select className="select-drop" placeholder="Select Food" options={foodOptions} />
+            <Select
+              className="select-drop"
+              placeholder="Select Quantity"
+              options={quantityOptions}
+            />
           </div>
           <div>
             <Button type="submit ">Add Food</Button>
@@ -200,29 +189,22 @@ var user_id = userService.getLoggedInUser()._id;
                             >
                               <i class="bx bx-x"></i>
                             </a>
-                            <FormControl className="m-3 w-100 dropdown-modal">
-                              <InputLabel id="demo-simple-select-label">Select Meal</InputLabel>
-                              <Select labelId="demo-simple-select-label" id="demo-simple-select">
-                                <MenuItem value="lbs">Breakfast</MenuItem>
-                                <MenuItem value="kgs">Lunch</MenuItem>
-                                <MenuItem value="kgs">Dinner</MenuItem>
-                                <MenuItem value="kgs">Snacks</MenuItem>
-                              </Select>
-                            </FormControl>
-                            <FormControl className="m-3 w-100 dropdown-modal">
-                              <InputLabel id="demo-simple-select-label">Select Food</InputLabel>
-                              <Select labelId="demo-simple-select-label" id="demo-simple-select">
-                                <MenuItem value="lbs">egg</MenuItem>
-                                <MenuItem value="kgs">bread</MenuItem>
-                              </Select>
-                            </FormControl>
-                            <FormControl className="m-3 w-100 dropdown-modal">
-                              <InputLabel id="demo-simple-select-label">Select Quantity</InputLabel>
-                              <Select labelId="demo-simple-select-label" id="demo-simple-select">
-                                <MenuItem value="lbs">100g</MenuItem>
-                                <MenuItem value="kgs">200g</MenuItem>
-                              </Select>
-                            </FormControl>
+
+                            <Select
+                              className="select-drop"
+                              placeholder="Select Meal"
+                              options={mealOptions}
+                            />
+                            <Select
+                              className="select-drop"
+                              placeholder="Select Food"
+                              options={foodOptions}
+                            />
+                            <Select
+                              className="select-drop"
+                              placeholder="Select Quantity"
+                              options={quantityOptions}
+                            />
                           </div>
                           <div>
                             <Button type="submit ">Add Food</Button>

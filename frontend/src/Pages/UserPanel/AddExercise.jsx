@@ -5,14 +5,22 @@ import { ImCross } from "react-icons/im";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+// import Select from "@mui/material/Select";
 import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
+import Select from "react-select";
 
 const AddExercise = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const workoutOptions = [
+    { value: "benchpress", label: "Bench Press" },
+    { value: "running", label: "Running" },
+    { value: "swimming", label: "Swimming" },
+    { value: "skipping", label: "Skipping Rope" },
+  ];
+
   return (
     <div className="page-container-user">
       <TopBar />
@@ -84,21 +92,12 @@ const AddExercise = () => {
             >
               <i class="bx bx-x"></i>
             </a>
-            <FormControl className="m-3 w-100 dropdown-modal">
-              <InputLabel id="demo-simple-select-label">Select Exercise Type</InputLabel>
-              <Select labelId="demo-simple-select-label" id="demo-simple-select">
-                <MenuItem value="lbs">Cardio</MenuItem>
-                <MenuItem value="kgs">Gym</MenuItem>
-                <MenuItem value="kgs">Stretching</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl className="m-3 w-100 dropdown-modal">
-              <InputLabel id="demo-simple-select-label">Select Exercise</InputLabel>
-              <Select labelId="demo-simple-select-label" id="demo-simple-select">
-                <MenuItem value="lbs">Bench Press</MenuItem>
-                <MenuItem value="kgs">Cycling</MenuItem>
-              </Select>
-            </FormControl>
+            <Select
+              className="select-drop"
+              placeholder="Select Exercise"
+              options={workoutOptions}
+            />
+
             <input className="input-modal" type="number" placeholder="Enter Time (in minutes)" />
           </div>
           <div>
@@ -176,23 +175,11 @@ const AddExercise = () => {
                             >
                               <i class="bx bx-x"></i>
                             </a>
-                            <FormControl className="m-3 w-100 dropdown-modal">
-                              <InputLabel id="demo-simple-select-label">
-                                Select Exercise Type
-                              </InputLabel>
-                              <Select labelId="demo-simple-select-label" id="demo-simple-select">
-                                <MenuItem value="lbs">Cardio</MenuItem>
-                                <MenuItem value="kgs">Gym</MenuItem>
-                                <MenuItem value="kgs">Stretching</MenuItem>
-                              </Select>
-                            </FormControl>
-                            <FormControl className="m-3 w-100 dropdown-modal">
-                              <InputLabel id="demo-simple-select-label">Select Exercise</InputLabel>
-                              <Select labelId="demo-simple-select-label" id="demo-simple-select">
-                                <MenuItem value="lbs">Bench Press</MenuItem>
-                                <MenuItem value="kgs">Cycling</MenuItem>
-                              </Select>
-                            </FormControl>
+                            <Select
+                              className="select-drop"
+                              placeholder="Select Exercise"
+                              options={workoutOptions}
+                            />{" "}
                             <input
                               className="input-modal"
                               type="number"
