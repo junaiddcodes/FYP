@@ -4,6 +4,7 @@ var router = express.Router()
 var { Verify } = require('../../middleware/trainer')
 var { Hash } = require('../../middleware/coustomerDetails')
 var { Auth } = require('../../middleware/trainer')
+var { Upload } = require('../../middleware/trainer')
 
 const {
   getAllData,
@@ -20,7 +21,7 @@ router.route('/trainer').get(getAllData)
 router
   .route('/:trainerId')
   .get(getOneData)
-  .patch(Verify, Hash, updateData)
+  .patch(Verify, Hash, Upload.single("frontImage"), updateData)
   .delete(deleteData)
 
 router.route('/login').post(loginUser)

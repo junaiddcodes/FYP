@@ -8,11 +8,24 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
+import userService from '../../services/UserService'
 
 const AddFood = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [confirmDelete, setConfirmDelete] = useState(false);
+const [modalOpen, setModalOpen] = useState(false);
+const [editModalOpen, setEditModalOpen] = useState(false);
+const [confirmDelete, setConfirmDelete] = useState(false);
+
+
+var user_id = userService.getLoggedInUser()._id;
+
+
+
+
+
+
+
+
+
   return (
     <div className="page-container-user">
       <TopBar />

@@ -25,9 +25,8 @@ class UserService extends GenericService {
   waterIntake = (water_intake) => {
     this.post('waterIntake/addWaterIntake', water_intake)
   }
-  waterPage = (waterId) => {
-    this.get('waterIntake/:waterId', waterId)
-  }
+  waterPage = (userId) => this.get('waterIntake/'+userId)
+
   isLoggedIn = () => {
     return localStorage.getItem('token') ? true : false
   }

@@ -17,6 +17,10 @@ import { getAccordionDetailsUtilityClass } from '@mui/material'
 const AddWater = () => {
   const [modalOpen, setModalOpen] = useState(false)
   var [errorMessage, setErrorMessage] = useState('')
+  var [waterAmount, setWaterAmount] = useState()
+
+
+  var user_id = userService.getLoggedInUser()._id;
 
   var waterIntake = {
     user_id: '',
@@ -25,6 +29,30 @@ const AddWater = () => {
   }
   const [isInitialRender, setIsInitialRender] = useState(true)
   const date = new Date().getTime()
+ 
+
+  function getWaterData() {
+    userService
+    .waterPage(user_id)
+    .then((data) => {
+      
+      var waterIntake = data.crud.map((e)=>{
+        var data = 0;
+        data = data + e.amount_litres
+        return data  
+      })
+    
+      // Getting sum of numbers
+      var sumWater = waterIntake.reduce(function(a, b){
+          return a + b;
+      }, 0);
+      
+      setWaterAmount(sumWater);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
 
   function waterValidationForm() {
     if (water.current.value < 0.1) {
@@ -34,21 +62,24 @@ const AddWater = () => {
       setErrorMessage('')
     }
 
-    console.log(waterIntake)
+   
     waterIntake = {
       ...waterIntake,
       amount_litres: water.current.value,
-      user_id: userService.getLoggedInUser()._id,
+      user_id: user_id,
       time_date: date,
     }
-    console.log(waterIntake)
-    // console.log("aaaaaaa");
+   
+    
+    
     console.log('before request')
-    userService.waterIntake(waterIntake)
-    console.log('after request')
+    //userService.waterIntake(waterIntake)
+    getWaterData();   
   }
-  function getWaterData() {}
+
   const water = useRef(null)
+
+  useEffect(getWaterData,[])
 
   return (
     <div className="page-container-user">
@@ -59,8 +90,8 @@ const AddWater = () => {
         <div className="d-flex flex-column">
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
-              <h4 className="mt-2 mb-2">Water Taken (ltrs):</h4>
-              <h4 className="mt-2">Water Goal (ltrs): </h4>
+              <h4 className="mt-2 mb-2">Water Taken (ltrs): {waterAmount}</h4>
+              <h4 className="mt-2">Water Goal (ltrs): 6 </h4>
             </div>
           </div>
           <div className="d-flex flex-column mt-3"></div>
