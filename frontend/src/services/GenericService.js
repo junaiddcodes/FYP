@@ -1,6 +1,6 @@
-import axios from "axios";
-axios.defaults.baseURL = "http://localhost:4000/api/";
-axios.defaults.headers.common["x-auth-token"] = localStorage.getItem("token");
+import axios from 'axios'
+axios.defaults.baseURL = 'http://localhost:4000/api/'
+axios.defaults.headers.common['x-auth-token'] = localStorage.getItem('token')
 class GenericService {
   constructor() {}
   get = (url) =>
@@ -8,40 +8,40 @@ class GenericService {
       axios
         .get(url)
         .then((res) => {
-          resolve(res.data);
+          resolve(res.data)
         })
         .catch((err) => {
-          reject(err);
-        });
-    });
+          reject(err)
+        })
+    })
   post = (url, data) =>
     new Promise((resolve, reject) => {
       axios
         .post(url, data)
         .then((res) => {
-          resolve(res.data);
+          resolve(res.data)
         })
         .catch((err) => {
-          reject(err);
-        });
-    });
+          reject(err)
+        })
+    })
   delete = (url) =>
     new Promise((resolve, reject) => {
       axios
         .delete(url)
         .then((res) => {
-          resolve(res.data);
+          resolve(res.data)
         })
         .catch((err) => {
-          reject(err);
-        });
-    });
+          reject(err)
+        })
+    })
   put = (url, data) =>
     new Promise((resolve, reject) => {
       axios
         .put(url, data)
         .then((res) => {
-          resolve(res.data);
+          resolve(res.data)
         })
         .catch((err) => {
           reject(err);
@@ -59,4 +59,4 @@ class GenericService {
         });
     });
 }
-export default GenericService;
+export default GenericService

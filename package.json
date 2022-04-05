@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "nodemon ./bin/www"
   },
   "dependencies": {
     "@hapi/hapi": "^20.2.1",
@@ -20,6 +20,7 @@
     "lodash": "^4.17.21",
     "mongoose": "^6.1.8",
     "morgan": "~1.9.1",
+    "multer": "^1.4.4",
     "nodemon": "^2.0.15",
     "react-toastify": "^8.2.0"
   }
