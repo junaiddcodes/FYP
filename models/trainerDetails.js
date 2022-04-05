@@ -6,11 +6,12 @@ const Joi = require("joi");
 var trainerDetailsSchema = mongoose.Schema({
   user_id: userSchema,
   gender: String,
+  exercise_type: String,
   listed: Boolean, //Trainer approved by admin or not
   company_name: String,
   designation: String,
   time_worked: Number, //In Years
-  qualification: String,
+
   trainer_desc: String, //Trainer Description
   certificate_file: String,
   trainer_photo: String,
@@ -27,16 +28,17 @@ function validateTrainer(data) {
       password: Joi.string().min(8).required(),
       user_type: Joi.string().min(3).max(30).required(),
     },
-
+    dob: Joi.date(),
     gender: Joi.string().min(3).max(10).required(),
-    listed: Joi.boolean().required(),
-    company_name: Joi.string().required(),
-    designation: Joi.string().required(),
-    time_worked: Joi.number().positive().max(24).required(),
-    qualification: Joi.string().required(),
-    trainer_desc: Joi.string().required(),
-    certificate_file: Joi.string().required(),
-    trainer_photo: Joi.string().required(),
+    exercise_type: Joi.string(),
+    listed: Joi.boolean(),
+    company_name: Joi.string(),
+    designation: Joi.string(),
+    time_worked: Joi.number().positive().max(24),
+
+    trainer_desc: Joi.string(),
+    certificate_file: Joi.string(),
+    trainer_photo: Joi.string(),
   });
   return schema.validate(data);
 }
