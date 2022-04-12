@@ -1,33 +1,34 @@
-import React from "react";
-import { Route, Routes, Redirect, BrowserRouter } from "react-router-dom";
+import React from 'react'
+import { Route, Routes, Redirect, BrowserRouter } from 'react-router-dom'
 
-import "./styles/pages.css";
-import Register from "./Pages/Register/Register";
-import UserRegister from "./Pages/Register/UserRegister";
-import TrainerRegister from "./Pages/Register/TrainerRegister";
-import GymRegister from "./Pages/Register/GymRegister";
-import SideMenu from "./Components/SideMenu";
-import UserDashboard from "./Pages/UserPanel/UserDashboard";
-import TopBar from "./Components/TopBar";
-import AddFood from "./Pages/UserPanel/AddFood";
-import AddExercise from "./Pages/UserPanel/AddExercise";
-import AddWater from "./Pages/UserPanel/AddWater";
-import SearchGym from "./Pages/UserPanel/SearchGym";
-import GymDescription from "./Pages/UserPanel/GymDescription";
-import SearchTrainer from "./Pages/UserPanel/SearchTrainer";
-import TrainerDescription from "./Pages/UserPanel/TrainerDescription";
-import ActivityPlans from "./Pages/UserPanel/ActivityPlans";
-import GymProfile from "./Pages/GymPanel/GymProfile";
-import AdminDashboard from "./Pages/AdminPanel/AdminDashboard";
-import GymRequest from "./Pages/AdminPanel/GymRequest";
-import TrainerRequest from "./Pages/AdminPanel/TrainerRequest";
-import QueryDetails from "./Pages/AdminPanel/QueryDetails";
-import PaymentRequest from "./Pages/AdminPanel/PaymentRequest";
-import TrainerDashboard from "./Pages/TrainerPanel/TrainerDashboard";
-import TrainerProfile from "./Pages/TrainerPanel/TrainerProfile";
-import TrainerActivityPlans from "./Pages/TrainerPanel/TrainerActivityPlans";
-import CreatePlan from "./Pages/TrainerPanel/CreatePlan";
-import Login from "./Pages/Register/Login";
+import './styles/pages.css'
+import Register from './Pages/Register/Register'
+import UserRegister from './Pages/Register/UserRegister'
+import TrainerRegister from './Pages/Register/TrainerRegister'
+import GymRegister from './Pages/Register/GymRegister'
+import SideMenu from './Components/SideMenu'
+import UserDashboard from './Pages/UserPanel/UserDashboard'
+import TopBar from './Components/TopBar'
+import AddFood from './Pages/UserPanel/AddFood'
+import AddExercise from './Pages/UserPanel/AddExercise'
+import AddWater from './Pages/UserPanel/AddWater'
+import SearchGym from './Pages/UserPanel/SearchGym'
+import GymDescription from './Pages/UserPanel/GymDescription'
+import SearchTrainer from './Pages/UserPanel/SearchTrainer'
+import TrainerDescription from './Pages/UserPanel/TrainerDescription'
+import ActivityPlans from './Pages/UserPanel/ActivityPlans'
+import GymProfile from './Pages/GymPanel/GymProfile'
+import AdminDashboard from './Pages/AdminPanel/AdminDashboard'
+import GymRequest from './Pages/AdminPanel/GymRequest'
+import TrainerRequest from './Pages/AdminPanel/TrainerRequest'
+import QueryDetails from './Pages/AdminPanel/QueryDetails'
+import PaymentRequest from './Pages/AdminPanel/PaymentRequest'
+import TrainerDashboard from './Pages/TrainerPanel/TrainerDashboard'
+import TrainerProfile from './Pages/TrainerPanel/TrainerProfile'
+import TrainerActivityPlans from './Pages/TrainerPanel/TrainerActivityPlans'
+import CreatePlan from './Pages/TrainerPanel/CreatePlan'
+import Login from './Pages/Register/Login'
+import Messenger from './Messenger/Messenger'
 function App() {
   return (
     <BrowserRouter>
@@ -45,7 +46,10 @@ function App() {
           <Route path="/trainer-profile" element={<TrainerProfile />} />
           <Route path="/trainer-description" element={<TrainerDescription />} />
           <Route path="/activity-plans" element={<ActivityPlans />} />
-          <Route path="/trainer-activity-plans" element={<TrainerActivityPlans />} />
+          <Route
+            path="/trainer-activity-plans"
+            element={<TrainerActivityPlans />}
+          />
           <Route path="/trainer-create-plan" element={<CreatePlan />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/trainer-dashboard" element={<TrainerDashboard />} />
@@ -53,6 +57,7 @@ function App() {
           <Route path="/admin-trainer-request" element={<TrainerRequest />} />
           <Route path="/admin-query-details" element={<QueryDetails />} />
           <Route path="/payment-request" element={<PaymentRequest />} />
+          <Route path="/Messenger" element={<Messenger />} />
 
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
@@ -63,7 +68,7 @@ function App() {
         </Routes>
       </div>
     </BrowserRouter>
-  );
+  )
 }
 
-export default App;
+export default App
