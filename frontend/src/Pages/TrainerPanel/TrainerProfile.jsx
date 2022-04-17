@@ -25,11 +25,22 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Link } from "react-router-dom";
 
 const trainerProfileSchema = yup.object().shape({
-  gender: yup.string().required("An option is required").nullable(),
+  gender: yup.string().nullable(),
   //   listed: yup.boolean(),
   exercise_type: yup.string().required("Exercise type can't be empty"),
-  company_name: yup.string().nullable(),
-  designation: yup.string().nullable(),
+  company_name: yup
+    .string()
+    .min(2, "Company name must be of at least 2 characters")
+    .max(30, "Company name must be of at most 30 characters")
+    .required("Company name can't be empty")
+    .nullable(),
+  designation: yup
+    .string()
+    .min(2, "Designation must be of at least 2 characters")
+    .max(30, "Designation must be of at most 30 characters")
+    .required("Designation can't be empty")
+    .nullable(),
+
   time_worked: yup
     .number()
     .typeError("Time is required!")
@@ -45,7 +56,7 @@ const trainerProfileSchema = yup.object().shape({
     .min(200, "Trainer description must be at least 200 characters!")
     .max(500, "Trainer description must be at most 500 characters!")
     .required("Trainer description can't be empty!"),
-  certificate_file: yup.string(),
+  // certificate_file: yup.string(),
   trainer_photo: yup.string(),
 });
 
@@ -56,15 +67,17 @@ const TrainerProfile = () => {
   const [isProfile, setIsProfile] = useState(false);
   const [loggedInId, setLoggedInId] = useState("");
   const [isTrainerForm, setIsTrainerForm] = useState(false);
+  const [isProfilePicForm, setIsProfilePicForm] = useState(false);
+  const [isAsk, setIsAsk] = useState(true);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [trainerProfileDetails, setTrainerProfileDetails] = useState({
+  const [getCustomer, setGetCustomer] = useState("");
+  var trainerProfileDetails = {
     // user_id: {
     //   full_name: "",
     //   email: "",
     //   password: "",
     //   user_type: "trainer",
     // },
-    gender: "",
     exercise_type: "",
     listed: false,
     company_name: "",
@@ -72,9 +85,25 @@ const TrainerProfile = () => {
     time_worked: "",
 
     trainer_desc: "",
-    certificate_file: "",
-    trainer_photo: "",
-  });
+    certificate_file: "asdasd",
+    trainer_photo: "adsadasd",
+  };
+
+  const get_customer = () => {
+    trainerService
+      .get_one_trainer(loggedInId)
+      .then((res) => {
+        console.log(res);
+        setIsProfile(true);
+        setIsProfilePicForm(false);
+        setIsAsk(false);
+        setIsTrainerForm(false);
+        setGetCustomer(res.crud);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     // userService.getLoggedInUser();
@@ -83,7 +112,8 @@ const TrainerProfile = () => {
       navigate("/login");
       // console.log("log in first");
     }
-  }, []);
+    get_customer();
+  }, [loggedInId]);
 
   const onChangeFile = (e) => {
     setFileName(e.target.files[0]);
@@ -97,12 +127,16 @@ const TrainerProfile = () => {
 
     formData.append("frontImage", fileName);
 
-    axios
-      .post("/cards/add", formData)
-      .then((res) => console.log(res.data))
+    trainerService
+      .update_trainer_photo(formData, loggedInId)
+      .then((data) => {
+        console.log(data);
+      })
       .catch((err) => {
         console.log(err);
       });
+    setIsProfilePicForm(false);
+    setIsProfile(true);
   };
 
   const {
@@ -121,9 +155,8 @@ const TrainerProfile = () => {
     // console.log(trainerDetails);
     // console.log("aaaaaaa");
     console.log("before request");
-    setTrainerProfileDetails({
+    trainerProfileDetails = {
       ...trainerProfileDetails,
-      gender: data.gender,
       exercise_type: data.exercise_type,
       // listed: "",
       company_name: data.company_name,
@@ -133,7 +166,7 @@ const TrainerProfile = () => {
       trainer_desc: data.trainer_desc,
       // certificate_file: "",
       // trainer_photo: "",
-    });
+    };
     trainerService
       .update_trainer(trainerProfileDetails, loggedInId)
       .then((data) => {
@@ -147,87 +180,91 @@ const TrainerProfile = () => {
       });
     console.log(trainerProfileDetails);
     console.log("after request");
+    setIsProfilePicForm(true);
+    setIsTrainerForm(false);
   };
   return (
     <div className="page-container-gym">
       <TopBar />
       <SideMenuTrainer />
       <h2>Trainer Profile</h2>
-      {!isProfile ? (
-        !isTrainerForm ? (
-          <div className="gym-box mt-3 d-flex flex-column justify-content-start">
-            <h4>There is no profile present. Click below to create a trainer profile:</h4>
-            <Button
-              className="w-25 mt-4"
-              onClick={() => {
-                setIsTrainerForm(true);
-              }}
-            >
-              Create Profile
-            </Button>
-          </div>
-        ) : (
-          <div className="gym-box mt-3 d-flex flex-column align-items-left">
-            <form
-              onSubmit={handleSubmitTrainerProfile(submitTrainerProfileForm)}
-              className="d-flex flex-column"
-            >
-              <div className="input-text d-flex flex-column">
-                <div className="w-50 m-0">
-                  <label for="fname">Select your exercise type</label>
-                  <FormControl className="m-3 w-100 dropdown-trainer">
-                    <InputLabel id="demo-simple-select-label">Select Exercise Type</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      name="exercise_type"
-                      {...controlTrainerProfile("exercise_type")}
-                    >
-                      <MenuItem value="lbs">Cardio</MenuItem>
-                      <MenuItem value="kgs">Gym</MenuItem>
-                      <MenuItem value="kgs">Stretching</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <p>{errorsTrainerProfile.exercise_type?.message}</p>
-                </div>
-
-                <label for="lname">Enter your qualification</label>
-                <input
-                  type="text"
-                  id=""
-                  name="qualification"
-                  {...controlTrainerProfile("qualification")}
-                />
-                <p>{errorsTrainerProfile.qualification?.message}</p>
-                <label for="lname">Enter your company name ( optional )</label>
-                <input
-                  type="text"
-                  id=""
-                  name="company_name"
-                  {...controlTrainerProfile("company_name")}
-                />
-                <p>{errorsTrainerProfile.company_name?.message}</p>
-                <label for="lname">Enter your designation ( optional )</label>
-                <input
-                  type="text"
-                  id=""
-                  name="designation"
-                  {...controlTrainerProfile("designation")}
-                />
-                <p>{errorsTrainerProfile.designation?.message}</p>
-                <label for="lname">
-                  Enter the time you are available at daily basis ( 0-12 hrs )
-                </label>
-                <input
-                  type="number"
-                  id=""
-                  name="time_worked"
-                  {...controlTrainerProfile("time_worked")}
-                />
-                <p>{errorsTrainerProfile.time_worked?.message}</p>
-                <label for="lname">Your gender</label>
+      {isAsk ? (
+        <div className="gym-box mt-3 d-flex flex-column justify-content-start">
+          <h4>There is no profile present. Click below to create a trainer profile:</h4>
+          <Button
+            className="w-25 mt-4"
+            onClick={() => {
+              setIsTrainerForm(true);
+              setIsProfilePicForm(false);
+              setIsAsk(false);
+            }}
+          >
+            Create Profile
+          </Button>
+        </div>
+      ) : isTrainerForm ? (
+        <div className="gym-box mt-3 d-flex flex-column align-items-left">
+          <form
+            onSubmit={handleSubmitTrainerProfile(submitTrainerProfileForm)}
+            className="d-flex flex-column"
+          >
+            <div className="input-text d-flex flex-column">
+              <div className="w-50 m-0">
+                <label for="fname">Select your exercise type</label>
+                <FormControl className="m-3 w-100 dropdown-trainer">
+                  <InputLabel id="demo-simple-select-label">Select Exercise Type</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="exercise_type"
+                    {...controlTrainerProfile("exercise_type")}
+                  >
+                    <MenuItem value="cardio">Cardio</MenuItem>
+                    <MenuItem value="gym">Gym</MenuItem>
+                    <MenuItem value="stretching">Stretching</MenuItem>
+                  </Select>
+                </FormControl>
+                <p>{errorsTrainerProfile.exercise_type?.message}</p>
               </div>
-              <div className="d-flex mt-2 gender-radio justify-content-start">
+
+              <label for="lname">Enter your qualification</label>
+              <input
+                type="text"
+                id=""
+                name="qualification"
+                {...controlTrainerProfile("qualification")}
+              />
+              <p>{errorsTrainerProfile.qualification?.message}</p>
+              <label>Enter your company name</label>
+              <input
+                type="text"
+                id=""
+                name="company_name"
+                {...controlTrainerProfile("company_name")}
+              />
+
+              <p>{errorsTrainerProfile.company_name?.message}</p>
+              <label for="lname">Enter your designation </label>
+              <input
+                type="text"
+                id=""
+                name="designation"
+                {...controlTrainerProfile("designation")}
+              />
+              <p>{errorsTrainerProfile.designation?.message}</p>
+              <label for="lname">
+                Enter the time you are available at daily basis ( 0-12 hrs )
+              </label>
+              <input
+                type="number"
+                id=""
+                name="time_worked"
+                {...controlTrainerProfile("time_worked")}
+              />
+              <p>{errorsTrainerProfile.time_worked?.message}</p>
+              {/* <label for="lname">Your gender</label> */}
+            </div>
+            {/* <div className="d-flex mt-2 gender-radio justify-content-start">
                 <input
                   type="radio"
                   value="Male"
@@ -250,72 +287,72 @@ const TrainerProfile = () => {
                 />
                 <h4>Both</h4>
               </div>
-              <p>{errorsTrainerProfile.gender?.message}</p>
+              <p>{errorsTrainerProfile.gender?.message}</p> */}
 
-              <label for="lname">Your details</label>
+            <label for="lname">Your details</label>
 
-              <textarea
-                className="text-field mt-2"
-                name="trainer_desc"
-                {...controlTrainerProfile("trainer_desc")}
-              />
-              <p>{errorsTrainerProfile.trainer_desc?.message}</p>
+            <textarea
+              className="text-field mt-2"
+              name="trainer_desc"
+              {...controlTrainerProfile("trainer_desc")}
+            />
+            <p>{errorsTrainerProfile.trainer_desc?.message}</p>
 
-              <label for="lname">Upload profile picture</label>
-              <p className="general-p">Please upload your profile picture</p>
-              <div className="upload-photo-card">
-                <TransformWrapper>
-                  <TransformComponent>
-                    <img className="preview" src={previewImage} alt="" />
-                  </TransformComponent>
-                </TransformWrapper>
-              </div>
-              <form onSubmit={changeOnClick} encType="multipart/form-data">
-                <div className="upload-form">
-                  {/* <label htmlFor="file">Choose Image</label> */}
-                  <input
-                    style={{ marginTop: "1rem" }}
-                    // accept="image/*"
-                    type="file"
-                    filename="frontImage"
-                    onChange={onChangeFile}
-                  />
-                  <button
-                    style={{ marginTop: "1rem", marginBottom: "1rem" }}
-                    className="btn btn-primary w-25"
-                    type="submit"
-                  >
-                    submit
-                  </button>
-                </div>
-              </form>
-
-              <label for="lname">Upload certificate file</label>
-              <p className="general-p">Please upload your profile picture</p>
-              <input type="file" />
-              <p className="general-p mt-5">
-                Submit Profile to the Admin. Admin will review your profile and Approve it:
-              </p>
-              <Button
-                type="submit"
-                className="w-25 mt-3"
-                // onClick={() => {
-                //   setIsProfile(true);
-                // }}
-              >
-                Submit
-              </Button>
-            </form>
+            <label for="lname">Upload certificate file</label>
+            <p className="general-p">Please upload your profile picture</p>
+            <input type="file" />
+            <p className="general-p mt-5">
+              Submit Profile to the Admin. Admin will review your profile and Approve it:
+            </p>
+            <Button
+              type="submit"
+              className="w-25 mt-3"
+              // onClick={() => {
+              //   setIsProfile(true);
+              // }}
+            >
+              Submit
+            </Button>
+          </form>
+          <p>{trainerProfileDetails.exercise_type}</p>
+        </div>
+      ) : isProfilePicForm ? (
+        <div>
+          <p className="general-p">Please upload your profile picture</p>
+          <div className="upload-photo-card">
+            <TransformWrapper>
+              <TransformComponent>
+                <img className="preview" src={previewImage} alt="" />
+              </TransformComponent>
+            </TransformWrapper>
           </div>
-        )
-      ) : (
+          <form onSubmit={changeOnClick} encType="multipart/form-data">
+            <div className="upload-form">
+              <input
+                style={{ marginTop: "1rem" }}
+                accept="image/*"
+                type="file"
+                filename="frontImage"
+                onChange={onChangeFile}
+              />
+              <button
+                style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                className="btn btn-primary w-25"
+                type="submit"
+              >
+                submit
+              </button>
+            </div>
+          </form>
+        </div>
+      ) : isProfile ? (
         <div className="trainer-desc mt-3 d-flex flex-column">
           <div className="d-flex ">
             <div className="d-flex w-75 justify-content-between">
               <div className="trainer-img d-flex">
                 <img src="../../../images/trainer.png" alt="" />
                 <div className="d-flex mt-5 flex-column">
-                  <h4>Hamza Kasim</h4>
+                  <h4>{getCustomer.user_id.full_name}</h4>
                   <h4>Age:</h4>
                   <h4>Gender:</h4>
                   <h4>Status:</h4>
@@ -343,7 +380,7 @@ const TrainerProfile = () => {
             </p>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

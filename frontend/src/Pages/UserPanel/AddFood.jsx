@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Modal from "react-modal";
 import { ImCross } from "react-icons/im";
@@ -9,8 +9,20 @@ import FormControl from "@mui/material/FormControl";
 import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
 import Select from "react-select";
+import { useNavigate } from "react-router-dom";
 
 const AddFood = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // userService.getLoggedInUser();
+    // setLoggedInId(userService.getLoggedInUser()._id);
+    // console.log(localStorage.getItem("token"));
+    if (localStorage.getItem("token") == null) {
+      navigate("/login");
+      // console.log("log in first");
+    }
+  }, []);
   const mealOptions = [
     { value: "breakfast", label: "Breakfast" },
     { value: "lunch", label: "Lunch" },

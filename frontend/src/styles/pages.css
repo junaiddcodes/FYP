@@ -1021,6 +1021,10 @@
   font-weight: 200;
 }
 
+.page-container-gym .general-p {
+  color: white;
+}
+
 .page-container-gym .gym-box {
   background-color: #001e3c;
   padding: 2rem;

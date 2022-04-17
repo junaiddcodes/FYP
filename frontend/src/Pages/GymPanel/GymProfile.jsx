@@ -98,8 +98,9 @@ const GymProfile = () => {
 
   useEffect(() => {
     // userService.getLoggedInUser();
-    setLoggedInId(userService.getLoggedInUser()._id);
-    if (userService.isLoggedIn() == false) {
+    // setLoggedInId(userService.getLoggedInUser()._id);
+    // console.log(localStorage.getItem("token"));
+    if (localStorage.getItem("token") == null) {
       navigate("/login");
       // console.log("log in first");
     }
@@ -245,19 +246,17 @@ const GymProfile = () => {
 
               <label for="">Gym Picture</label>
               <p className="general-p">Please upload your gym's picture</p>
-              <div className="upload-photo-card">
+              {/* <div className="upload-photo-card">
                 <TransformWrapper>
                   <TransformComponent>
                     <img className="preview-gym" src={previewImage} alt="" />
                   </TransformComponent>
                 </TransformWrapper>
-              </div>
-              <form onSubmit={changeOnClick} encType="multipart/form-data">
+              </div> */}
+              {/* <form onSubmit={changeOnClick} encType="multipart/form-data">
                 <div className="upload-form">
-                  {/* <label htmlFor="file">Choose Image</label> */}
                   <input
                     style={{ marginTop: "1rem" }}
-                    // accept="image/*"
                     type="file"
                     filename="frontImage"
                     onChange={onChangeFile}
@@ -270,7 +269,7 @@ const GymProfile = () => {
                     submit
                   </button>
                 </div>
-              </form>
+              </form> */}
 
               <p className="mt-3 general-p">
                 Submit Profile to the Admin. Admin will review your profile and Approve it:

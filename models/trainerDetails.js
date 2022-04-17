@@ -29,7 +29,7 @@ function validateTrainer(data) {
       user_type: Joi.string().min(3).max(30).required(),
     },
     dob: Joi.date(),
-    gender: Joi.string().min(3).max(10).required(),
+    gender: Joi.string().min(3).max(10),
     exercise_type: Joi.string(),
     listed: Joi.boolean(),
     company_name: Joi.string(),

@@ -1,10 +1,10 @@
-var express = require('express')
-var router = express.Router()
+var express = require("express");
+var router = express.Router();
 // // const { registerCustomer } = require('../../controllers/customerControl')
-var { Verify } = require('../../middleware/trainer')
-var { Hash } = require('../../middleware/coustomerDetails')
-var { Auth } = require('../../middleware/trainer')
-var { Upload } = require('../../middleware/trainer')
+var { Verify } = require("../../middleware/trainer");
+var { Hash } = require("../../middleware/coustomerDetails");
+var { Auth } = require("../../middleware/trainer");
+var { Upload } = require("../../middleware/trainer");
 
 const {
   getAllData,
@@ -14,18 +14,18 @@ const {
   loginUser,
   createData,
   checkUser,
-} = require('../../controllers/trainer_Controller')
+} = require("../../controllers/trainer_Controller");
 
-router.route('/trainerregister').post(Verify, Hash, createData)
-router.route('/trainer').get(getAllData)
+router.route("/trainerregister").post(Verify, Hash, createData);
+router.route("/trainer").get(getAllData);
 router
-  .route('/:trainerId')
+  .route("/:trainerId")
   .get(getOneData)
   .patch(Verify, Hash, Upload.single("frontImage"), updateData)
-  .delete(deleteData)
+  .delete(deleteData);
 
-router.route('/login').post(loginUser)
-router.route('/log').post(Auth, checkUser)
-module.exports = router
+router.route("/login").post(loginUser);
+router.route("/log").post(Auth, checkUser);
+module.exports = router;
 //
 //
