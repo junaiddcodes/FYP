@@ -22,8 +22,19 @@ const createData = async (req, res) => {
 //use to get only one data from db
 const getOneData = async (req, res) => {
   try {
+    var getDate = new Date().getDate()
+    var getMonth = new Date().getMonth()
+    var getYear = new Date().getFullYear()
+
+    var startDate = getDate - 1 + '-' + getMonth + '-' + getYear
+    var endDate = getDate + '-' + getMonth + '-' + getYear
+    console.log(startDate + 'and' + endDate)
+
     const { waterId: crudId } = req.params
-    const crud = await waterIntakeDetails.find({ user_id: crudId })
+    const crud = await waterIntakeDetails.find({
+      user_id: crudId,
+      time_date: { $gte: new Date(endDate) },
+    })
 
     if (!crud) {
       return res.status(404).json({ message: 'item does not exist' })

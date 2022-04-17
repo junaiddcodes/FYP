@@ -13,11 +13,12 @@ class UserService extends GenericService {
           resolve(token)
         })
         .catch((err) => {
-          reject(err)
-        })
-    })
-  register_user = (customerDetails) =>
-    this.post('customer/register', customerDetails)
+          reject(err);
+        });
+    });
+  register_user = (customerDetails) => this.post("customer/register", customerDetails);
+  register_gym = (gymDetails) => this.post("gym/gymregister", gymDetails);
+  register_trainer = (trainerDetails) => this.post("trainer/trainerregister", trainerDetails);
   logout = () => {
     localStorage.removeItem('token')
   }
@@ -25,9 +26,8 @@ class UserService extends GenericService {
   waterIntake = (water_intake) => {
     this.post('waterIntake/addWaterIntake', water_intake)
   }
-  waterPage = (waterId) => {
-    this.get('waterIntake/:waterId', waterId)
-  }
+  waterPage = (userId) => this.get('waterIntake/'+userId)
+
   isLoggedIn = () => {
     return localStorage.getItem('token') ? true : false
   }

@@ -21,6 +21,7 @@
     "lodash": "^4.17.21",
     "mongoose": "^6.1.8",
     "morgan": "~1.9.1",
+    "multer": "^1.4.4",
     "nodemon": "^2.0.15",
     "react-toastify": "^8.2.0",
     "timeago.js": "^4.0.2"

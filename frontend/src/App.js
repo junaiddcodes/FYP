@@ -36,6 +36,7 @@ function App() {
         {/* <TopBar /> */}
         {/* <SideMenu /> */}
         <Routes>
+          <Route path="/" element={<h1>Well cum</h1>} />
           <Route path="/user-add-food" element={<AddFood />} />
           <Route path="/user-add-exercise" element={<AddExercise />} />
           <Route path="/user-add-water" element={<AddWater />} />
