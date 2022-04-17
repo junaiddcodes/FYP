@@ -28,7 +28,7 @@ const AddWater = () => {
     time_date: '',
   }
   const [isInitialRender, setIsInitialRender] = useState(true)
-  const date = new Date().getTime()
+  const dateX = new Date().getTime()
  
 
   function getWaterData() {
@@ -67,19 +67,19 @@ const AddWater = () => {
       ...waterIntake,
       amount_litres: water.current.value,
       user_id: user_id,
-      time_date: date,
+      time_date: new Date().getTime(),
     }
    
     
     
     console.log('before request')
-    //userService.waterIntake(waterIntake)
+    userService.waterIntake(waterIntake)
     getWaterData();   
   }
 
   const water = useRef(null)
 
-  useEffect(getWaterData,[])
+  useEffect(getWaterData,[getWaterData])
 
   return (
     <div className="page-container-user">
