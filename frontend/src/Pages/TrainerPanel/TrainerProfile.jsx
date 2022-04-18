@@ -71,6 +71,7 @@ const TrainerProfile = () => {
   const [isAsk, setIsAsk] = useState(true);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [getCustomer, setGetCustomer] = useState("");
+  var loginId = "";
   var trainerProfileDetails = {
     // user_id: {
     //   full_name: "",
@@ -91,14 +92,14 @@ const TrainerProfile = () => {
 
   const get_customer = () => {
     trainerService
-      .get_one_trainer(loggedInId)
+      .get_one_trainer(loginId)
       .then((res) => {
         console.log(res);
+        setGetCustomer(res.crud);
         setIsProfile(true);
         setIsProfilePicForm(false);
         setIsAsk(false);
         setIsTrainerForm(false);
-        setGetCustomer(res.crud);
       })
       .catch((err) => {
         console.log(err);
@@ -108,12 +109,13 @@ const TrainerProfile = () => {
   useEffect(() => {
     // userService.getLoggedInUser();
     setLoggedInId(userService.getLoggedInUser()._id);
+    loginId = userService.getLoggedInUser()._id;
     if (userService.isLoggedIn() == false) {
       navigate("/login");
       // console.log("log in first");
     }
     get_customer();
-  }, [loggedInId]);
+  }, [loginId]);
 
   const onChangeFile = (e) => {
     setFileName(e.target.files[0]);
@@ -170,7 +172,7 @@ const TrainerProfile = () => {
     trainerService
       .update_trainer(trainerProfileDetails, loggedInId)
       .then((data) => {
-        console.log(data);
+        // console.log(data);
       })
       .catch((err) => {
         console.log(err);
@@ -352,10 +354,10 @@ const TrainerProfile = () => {
               <div className="trainer-img d-flex">
                 <img src="../../../images/trainer.png" alt="" />
                 <div className="d-flex mt-5 flex-column">
-                  <h4>{getCustomer.user_id.full_name}</h4>
-                  <h4>Age:</h4>
-                  <h4>Gender:</h4>
-                  <h4>Status:</h4>
+                  <h4>Name: {getCustomer.user_id.full_name}</h4>
+                  <h4>Age: </h4>
+                  <h4>Gender: {getCustomer.gender}</h4>
+                  <h4>Status: {getCustomer.listed}</h4>
                 </div>
               </div>
               <div className="trainer-btn d-flex flex-column">
@@ -365,19 +367,11 @@ const TrainerProfile = () => {
             </div>
           </div>
           <div className="m-4 d-flex flex-column">
-            <h4>Exercise Type:</h4>
-            <h4>Qaulification and Certification:</h4>
-            <h4>About:</h4>
-            <p>
-              {" "}
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-              has been the industry's standard dummy text ever since the 1500s, when an unknown
-              printer took a galley of type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into electronic typesetting,
-              remaining essentially unchanged. It was popularised in the 1960s with the release of
-              Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </p>
+            <h4>Exercise Type: {getCustomer.exercise_type}</h4>
+            <h4>Company Name: {getCustomer.company_name}</h4>
+            <h4>Designation: {getCustomer.designation}</h4>
+            <h4>About: </h4>
+            <p> {getCustomer.trainer_desc}</p>
           </div>
         </div>
       ) : null}
