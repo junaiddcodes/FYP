@@ -10,7 +10,7 @@ import { MdMyLocation } from "react-icons/md";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import Select from "react-select";
 import TopBar from "../../Components/TopBar";
 import SideMenuTrainer from "../../Components/SideMenuTrainer";
 import { useForm } from "react-hook-form";
@@ -71,7 +71,17 @@ const TrainerProfile = () => {
   const [isAsk, setIsAsk] = useState(true);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [getCustomer, setGetCustomer] = useState("");
+  const [isListed, setIsListed] = useState("");
+  const [trainerAge, setTrainerAge] = useState(10);
+  var trainersAge = "";
   var loginId = "";
+  const workoutOptions = [
+    { value: "weight-lifting", label: "Weight Lifting" },
+    { value: "cardio", label: "Cardio" },
+    { value: "stretching", label: "Stretching" },
+    { value: "yoga", label: "Yoga" },
+    { value: "aerobics", label: "Aerobics" },
+  ];
   var trainerProfileDetails = {
     // user_id: {
     //   full_name: "",
@@ -89,17 +99,39 @@ const TrainerProfile = () => {
     certificate_file: "asdasd",
     trainer_photo: "adsadasd",
   };
-
+  function getAge(dateString) {
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  }
   const get_customer = () => {
     trainerService
       .get_one_trainer(loginId)
       .then((res) => {
         console.log(res);
         setGetCustomer(res.crud);
-        setIsProfile(true);
-        setIsProfilePicForm(false);
-        setIsAsk(false);
-        setIsTrainerForm(false);
+        if (res.crud.designation) {
+          setIsProfile(true);
+          setIsProfilePicForm(false);
+          setIsAsk(false);
+          setIsTrainerForm(false);
+          console.log(getCustomer.dob);
+          setTrainerAge(getAge(res.crud.dob));
+          console.log(trainerAge);
+          if (getCustomer.listed == true) {
+            setIsListed("listed");
+          } else setIsListed("not listed");
+        } else {
+          setIsAsk(true);
+          setIsTrainerForm(false);
+          setIsProfilePicForm(false);
+          setIsProfile(false);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -137,8 +169,9 @@ const TrainerProfile = () => {
       .catch((err) => {
         console.log(err);
       });
-    setIsProfilePicForm(false);
-    setIsProfile(true);
+    // setIsProfilePicForm(false);
+    // setIsProfile(true);
+    navigate("/trainer-dashboard");
   };
 
   const {
@@ -213,7 +246,7 @@ const TrainerProfile = () => {
             <div className="input-text d-flex flex-column">
               <div className="w-50 m-0">
                 <label for="fname">Select your exercise type</label>
-                <FormControl className="m-3 w-100 dropdown-trainer">
+                {/* <FormControl className="m-3 w-100 dropdown-trainer">
                   <InputLabel id="demo-simple-select-label">Select Exercise Type</InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
@@ -225,7 +258,15 @@ const TrainerProfile = () => {
                     <MenuItem value="gym">Gym</MenuItem>
                     <MenuItem value="stretching">Stretching</MenuItem>
                   </Select>
-                </FormControl>
+                </FormControl> */}
+                <Select
+                  className="select-drop"
+                  placeholder="Select Exercise Type"
+                  options={workoutOptions}
+                  // value={e.options.value}
+                  name="exercise_type"
+                  {...controlTrainerProfile("exercise_type")}
+                />
                 <p>{errorsTrainerProfile.exercise_type?.message}</p>
               </div>
 
@@ -355,13 +396,21 @@ const TrainerProfile = () => {
                 <img src="../../../images/trainer.png" alt="" />
                 <div className="d-flex mt-5 flex-column">
                   <h4>Name: {getCustomer.user_id.full_name}</h4>
-                  <h4>Age: </h4>
+                  <h4>Age: {trainerAge}</h4>
                   <h4>Gender: {getCustomer.gender}</h4>
-                  <h4>Status: {getCustomer.listed}</h4>
+                  <h4>Status: {isListed}</h4>
                 </div>
               </div>
               <div className="trainer-btn d-flex flex-column">
-                <Button className="mt-5">Edit</Button>
+                <Button
+                  className="mt-5"
+                  onClick={() => {
+                    setIsTrainerForm(true);
+                    setIsProfile(false);
+                  }}
+                >
+                  Edit
+                </Button>
                 <Button className="mt-5">Delete</Button>
               </div>
             </div>

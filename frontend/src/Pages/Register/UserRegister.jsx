@@ -406,7 +406,14 @@ const UserRegister = () => {
             </div>
 
             <div className="buttons-step2 d-flex justify-content-between mt-3">
-              <Button type="submit">back</Button>
+              <Button
+                onClick={() => {
+                  setStep2(false);
+                  setStep1(true);
+                }}
+              >
+                back
+              </Button>
 
               <Button type="submit">next</Button>
             </div>

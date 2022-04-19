@@ -5,6 +5,7 @@ const Joi = require("joi");
 
 var trainerDetailsSchema = mongoose.Schema({
   user_id: userSchema,
+  dob: Date,
   gender: String,
   exercise_type: String,
   listed: Boolean, //Trainer approved by admin or not
