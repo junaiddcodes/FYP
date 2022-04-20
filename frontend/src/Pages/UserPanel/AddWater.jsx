@@ -58,6 +58,7 @@ const AddWater = () => {
     if (water.current.value < 0.1) {
       // console.log('value is invalid')
       setErrorMessage('value is invalid')
+      return false;
     } else {
       setErrorMessage('')
     }
@@ -73,13 +74,14 @@ const AddWater = () => {
     
     
     console.log('before request')
+    getWaterData(); 
     userService.waterIntake(waterIntake)
-    getWaterData();   
+      
   }
 
   const water = useRef(null)
 
-  useEffect(getWaterData,[getWaterData])
+  useEffect(getWaterData,[])
 
   return (
     <div className="page-container-user">

@@ -23,10 +23,10 @@ var trainerDetails = mongoose.model("Trainer_Details", trainerDetailsSchema);
 function validateTrainer(data) {
   const schema = Joi.object({
     user_id: {
-      full_name: Joi.string().min(3).max(24).required(),
-      email: Joi.string().min(3).required().email(),
+      full_name: Joi.string().min(3).max(24),
+      email: Joi.string().min(3).email(),
       password: Joi.string().min(8).required(),
-      user_type: Joi.string().min(3).max(30).required(),
+      user_type: Joi.string().min(3).max(30),
     },
     dob: Joi.date(),
     gender: Joi.string().min(3).max(10).required(),
