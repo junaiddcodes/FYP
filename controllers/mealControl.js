@@ -49,7 +49,7 @@ const updateData = async (req, res) => {
     )
 
     if (!crud) {
-      return res, status(404).jason({ message: 'item does not exist' })
+      return res.status(404).json({ message: 'item does not exist' })
     }
 
     res.status(200).json({ crud })
@@ -65,7 +65,7 @@ const deleteData = async (req, res) => {
     const crud = await mealDataDetails.findByIdAndDelete({ _id: crudId })
 
     if (!crud) {
-      return res, status(404).jason({ message: 'item does not exist' })
+      return res.status(404).json({ message: 'item does not exist' })
     }
     res.status(200).json({ crud })
   } catch (error) {

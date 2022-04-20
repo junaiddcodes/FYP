@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from 'react'
 
-import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import Progress from "../../Components/ProgressBar";
-import TopBar from "../../Components/TopBar";
-import SideMenu from "../../Components/SideMenu";
+import { Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import Progress from '../../Components/ProgressBar'
+import TopBar from '../../Components/TopBar'
+import SideMenu from '../../Components/SideMenu'
+import userService from '../../services/UserService'
+
+// console.log(userId)
+
 const UserDashboard = () => {
+  var calorieobject = { calorie_goal: '' }
+  var [userData, setUserData] = useState({})
+  var userId = userService.getLoggedInUser()._id
+  function getUserCalorie() {
+    userService
+      .getoneUser(userId)
+
+      .then((data) => {
+        setUserData(data.crud)
+        console.log(data.crud)
+      })
+  }
+  useEffect(getUserCalorie, [])
   return (
     <div className="page-container-user">
       <TopBar />
@@ -18,7 +35,7 @@ const UserDashboard = () => {
             <div className="d-flex w-50 flex-column">
               <h4>Calories Gained:</h4>
               <h4>Calories Burnt:</h4>
-              <h4>Calorie Goal:</h4>
+              <h4>Calorie Goal: {userData.calorie_goal}</h4>
             </div>
             <div className="d-flex justify-content-around align-items-end w-50">
               <Link to="/user-add-food">
@@ -57,7 +74,7 @@ const UserDashboard = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default UserDashboard;
+export default UserDashboard

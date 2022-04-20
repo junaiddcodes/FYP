@@ -39,6 +39,8 @@ class UserService extends GenericService {
       return null
     }
   }
+  getoneUser = (user_id) => this.get('customer/' + user_id)
+
   isAdmin = () => {
     if (this.isLoggedIn()) {
       if (this.getLoggedInUser().role == 'admin') return true
