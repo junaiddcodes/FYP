@@ -19,8 +19,7 @@ const AddWater = () => {
   var [errorMessage, setErrorMessage] = useState('')
   var [waterAmount, setWaterAmount] = useState()
 
-
-  var user_id = userService.getLoggedInUser()._id;
+  var user_id = userService.getLoggedInUser()._id
 
   var waterIntake = {
     user_id: '',
@@ -29,29 +28,27 @@ const AddWater = () => {
   }
   const [isInitialRender, setIsInitialRender] = useState(true)
   const date = new Date().getTime()
- 
 
   function getWaterData() {
     userService
-    .waterPage(user_id)
-    .then((data) => {
-      
-      var waterIntake = data.crud.map((e)=>{
-        var data = 0;
-        data = data + e.amount_litres
-        return data  
+      .waterPage(user_id)
+      .then((data) => {
+        var waterIntake = data.crud.map((e) => {
+          var data = 0
+          data = data + e.amount_litres
+          return data
+        })
+
+        // Getting sum of numbers
+        var sumWater = waterIntake.reduce(function (a, b) {
+          return a + b
+        }, 0)
+
+        setWaterAmount(sumWater)
       })
-    
-      // Getting sum of numbers
-      var sumWater = waterIntake.reduce(function(a, b){
-          return a + b;
-      }, 0);
-      
-      setWaterAmount(sumWater);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   function waterValidationForm() {
@@ -62,24 +59,21 @@ const AddWater = () => {
       setErrorMessage('')
     }
 
-   
     waterIntake = {
       ...waterIntake,
       amount_litres: water.current.value,
       user_id: user_id,
       time_date: date,
     }
-   
-    
-    
+
     console.log('before request')
     //userService.waterIntake(waterIntake)
-    getWaterData();   
+    getWaterData()
   }
 
   const water = useRef(null)
 
-  useEffect(getWaterData,[])
+  useEffect(getWaterData, [getWaterData])
 
   return (
     <div className="page-container-user">
