@@ -26,14 +26,22 @@ const getOneData = async (req, res) => {
     var getMonth = new Date().getMonth()
     var getYear = new Date().getFullYear()
 
-    var startDate = getDate - 1 + '-' + getMonth + '-' + getYear
-    var endDate = getDate + '-' + getMonth + '-' + getYear
-    console.log(startDate + 'and' + endDate)
+    getMonth += 1
+    if (getMonth < 10) {
+      getMonth = '0' + getMonth
+    }
+    if (getDate < 10) {
+      getDate = '0' + getDate
+    }
+
+    var startDate = getYear + '-' + getMonth + '-' + (getDate - 1)
+    var endDate = getYear + '-' + getMonth + '-' + getDate
+    console.log(startDate + ' and ' + endDate)
 
     const { waterId: crudId } = req.params
     const crud = await waterIntakeDetails.find({
       user_id: crudId,
-      time_date: { $gte: new Date(endDate) },
+      time_date: { $gte: new Date(startDate), $lte: new Date(endDate) },
     })
 
     if (!crud) {

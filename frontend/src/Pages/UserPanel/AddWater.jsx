@@ -27,7 +27,7 @@ const AddWater = () => {
     time_date: '',
   }
   const [isInitialRender, setIsInitialRender] = useState(true)
-  const date = new Date().getTime()
+  const dateX = new Date().getTime()
 
   function getWaterData() {
     userService
@@ -55,6 +55,7 @@ const AddWater = () => {
     if (water.current.value < 0.1) {
       // console.log('value is invalid')
       setErrorMessage('value is invalid')
+      return false
     } else {
       setErrorMessage('')
     }
@@ -63,12 +64,12 @@ const AddWater = () => {
       ...waterIntake,
       amount_litres: water.current.value,
       user_id: user_id,
-      time_date: date,
+      time_date: new Date().getTime(),
     }
 
     console.log('before request')
-    //userService.waterIntake(waterIntake)
     getWaterData()
+    userService.waterIntake(waterIntake)
   }
 
   const water = useRef(null)

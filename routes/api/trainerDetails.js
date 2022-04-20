@@ -21,7 +21,7 @@ router.route('/trainer').get(getAllData)
 router
   .route('/:trainerId')
   .get(getOneData)
-  .patch(Verify, Hash, Upload.single("frontImage"), updateData)
+  .patch(Verify, Upload.single("frontImage"), updateData)
   .delete(deleteData)
 
 router.route('/login').post(loginUser)
