@@ -209,9 +209,6 @@ const TrainerProfile = () => {
       })
       .catch((err) => {
         console.log(err);
-        toast.error(err.response.data, {
-          position: toast.POSITION.TOP_LEFT,
-        });
       });
     console.log(trainerProfileDetails);
     console.log("after request");
@@ -392,7 +389,7 @@ const TrainerProfile = () => {
         <div className="trainer-desc mt-3 d-flex flex-column">
           <div className="d-flex ">
             <div className="d-flex w-75 justify-content-between">
-              <div className="trainer-img d-flex">
+              <div className="trainer-photo d-flex">
                 <img src="../../../images/trainer.png" alt="" />
                 <div className="d-flex mt-5 flex-column">
                   <h4>Name: {getCustomer.user_id.full_name}</h4>

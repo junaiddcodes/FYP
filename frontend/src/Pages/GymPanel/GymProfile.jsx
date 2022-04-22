@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import Modal from "react-modal";
@@ -45,32 +48,18 @@ const GymProfile = () => {
   const navigate = useNavigate();
   const [fileName, setFileName] = React.useState("");
   const [previewImage, setPreviewImage] = React.useState("");
-  const [isProfile, setIsProfile] = useState(false);
+  const [isProfile, setIsProfile] = useState(true);
   const [isGymForm, setIsGymForm] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [loggedInId, setLoggedInId] = useState("");
-  const [gymProfileDetails, setGymProfileDetails] = useState({
-    user_id: {
-      full_name: "",
-      email: "",
-      password: "",
-      user_type: "gym",
-    },
+  var loginId = "";
+  var gymProfileDetails = {
     location: "",
     gym_desc: "",
     gym_contact_no: "",
     gym_membership_price: "",
     gender_facilitation: "",
-    gym_photo: "",
-  });
-
-  var temp = {
-    locationTemp: "",
-    gym_descTemp: "",
-    gym_contact_noTemp: "",
-    gym_membership_priceTemp: "",
-    gender_facilitationTemp: "",
-    gym_photoTemp: "",
+    gym_photo: "photo",
   };
 
   // const get_gym_info = () => {
@@ -97,14 +86,13 @@ const GymProfile = () => {
   // };
 
   useEffect(() => {
-    // userService.getLoggedInUser();
-    // setLoggedInId(userService.getLoggedInUser()._id);
-    // console.log(localStorage.getItem("token"));
-    if (localStorage.getItem("token") == null) {
+    setLoggedInId(userService.getLoggedInUser()._id);
+    loginId = userService.getLoggedInUser()._id;
+    if (userService.isLoggedIn() == false) {
       navigate("/login");
       // console.log("log in first");
     }
-  }, []);
+  }, [loginId]);
 
   const onChangeFile = (e) => {
     setFileName(e.target.files[0]);
@@ -141,7 +129,7 @@ const GymProfile = () => {
     // console.log(trainerDetails);
     // console.log("aaaaaaa");
     console.log("before request");
-    setGymProfileDetails({
+    gymProfileDetails = {
       ...gymProfileDetails,
       location: data.location,
       gym_desc: data.gym_desc,
@@ -149,7 +137,7 @@ const GymProfile = () => {
       gym_membership_price: data.gym_membership_price,
       gender_facilitation: data.gender_facilitation,
       gym_photo: data.gym_photo,
-    });
+    };
     gymService
       .update_gym(gymProfileDetails, loggedInId)
       .then((data) => {
@@ -157,9 +145,6 @@ const GymProfile = () => {
       })
       .catch((err) => {
         console.log(err);
-        toast.error(err.response.data, {
-          position: toast.POSITION.TOP_LEFT,
-        });
       });
     console.log(gymProfileDetails);
     console.log("after request");
@@ -281,94 +266,48 @@ const GymProfile = () => {
           </div>
         )
       ) : (
-        <div className="user-box d-flex flex-column p-3">
-          <div className="d-flex flex-column">
-            <div class="table-wrapper-scroll-y my-custom-scrollbar">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Gym Name</th>
-                    <th>Status</th>
-
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Mister Fit Gym</td>
-                    <td>Approved</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button className="btn btn-warning edit-btn">Edit </Button>
-
-                        <a
-                          className="delete-icon"
-                          onClick={() => {
-                            setConfirmDelete(true);
-                          }}
-                        >
-                          <ImCross />
-                        </a>
-                        <div className="modal-container">
-                          <Modal
-                            style={{
-                              overlay: {
-                                position: "fixed",
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                bottom: 0,
-
-                                backgroundColor: "rgba(0, 0, 0, 0.75)",
-                              },
-                              content: {
-                                color: "white",
-                                position: "absolute",
-                                top: "40px",
-                                left: "40px",
-                                right: "40px",
-                                bottom: "40px",
-                                background: "rgba(0,30,60,1)",
-                                overflow: "auto",
-                                WebkitOverflowScrolling: "touch",
-                                borderRadius: "1rem",
-                                outline: "none",
-                                padding: "20px",
-                              },
-                            }}
-                            className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
-                            isOpen={confirmDelete}
-                            onRequestClose={() => {
-                              setConfirmDelete(false);
-                            }}
-                          >
-                            <div className="modal-inner w-75 d-flex flex-column">
-                              <a
-                                onClick={() => {
-                                  setConfirmDelete(false);
-                                }}
-                              >
-                                <i class="bx bx-x"></i>
-                              </a>
-                              <h3>Are you sure you want to delete the profile?</h3>
-                              <p>Select yes to delete the item</p>
-                            </div>
-                            <div className="d-flex">
-                              <Button className="btn-dark m-3" type="submit ">
-                                Yes
-                              </Button>
-                              <Button className="m-3" type="submit ">
-                                No
-                              </Button>
-                            </div>
-                          </Modal>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+        <div className="trainer-desc mt-3 d-flex flex-column">
+          <div className="d-flex ">
+            <div className="d-flex w-75 justify-content-between">
+              <div className="trainer-img d-flex">
+                <div className="m-4 d-flex mt-5 flex-column">
+                  <h4>Gym Name: </h4>
+                  <h4>Location: </h4>
+                  <h4>Gender: </h4>
+                </div>
+              </div>
+              <div className="trainer-btn d-flex flex-column">
+                <Button
+                  className="mt-5"
+                  onClick={() => {
+                    // setIsTrainerForm(true);
+                    // setIsProfile(false);
+                  }}
+                >
+                  Edit
+                </Button>
+                <Button className="mt-5">Delete</Button>
+              </div>
             </div>
+          </div>
+          <div className="slider-div d-flex justify-content-center p-5">
+            <Carousel width="60%">
+              <div>
+                <img src="../../../images/trainer.png" />
+              </div>
+              <div>
+                <img src="../../../images/trainer.png" />
+              </div>
+              <div>
+                <img src="../../../images/trainer.png" />
+              </div>
+            </Carousel>
+          </div>
+          <div className="m-4 d-flex flex-column">
+            <h4>Gym Contact Number: </h4>
+            <h4>Gym Membership Price: </h4>
+            <h4>About Gym:</h4>
+            {/* <p> {getCustomer.trainer_desc}</p> */}
           </div>
         </div>
       )}
