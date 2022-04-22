@@ -68,7 +68,7 @@ const TrainerProfile = () => {
   const [loggedInId, setLoggedInId] = useState("");
   const [isTrainerForm, setIsTrainerForm] = useState(false);
   const [isProfilePicForm, setIsProfilePicForm] = useState(false);
-  const [isAsk, setIsAsk] = useState(true);
+  const [isAsk, setIsAsk] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [getCustomer, setGetCustomer] = useState("");
   const [isListed, setIsListed] = useState("");
@@ -390,7 +390,7 @@ const TrainerProfile = () => {
           <div className="d-flex ">
             <div className="d-flex w-75 justify-content-between">
               <div className="trainer-photo d-flex">
-                <img src="../../../images/trainer.png" alt="" />
+                <img clasName="trainer-photo" src="../../../images/trainer.png" alt="" />
                 <div className="d-flex mt-5 flex-column">
                   <h4>Name: {getCustomer.user_id.full_name}</h4>
                   <h4>Age: {trainerAge}</h4>

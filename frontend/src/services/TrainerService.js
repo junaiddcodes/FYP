@@ -12,6 +12,9 @@ class TrainerService extends GenericService {
   isLoggedIn = () => {
     return localStorage.getItem("token") ? true : false;
   };
+  logout = () => {
+    localStorage.removeItem("token");
+  };
   getLoggedInUser = () => {
     try {
       const jwt = localStorage.getItem("token");
