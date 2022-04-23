@@ -10,7 +10,10 @@ import userService from '../../services/UserService'
 // console.log(userId)
 
 const UserDashboard = () => {
-  var calorieobject = { calorie_goal: '' }
+  var [currentCalorie, setCurrentCalorie] =useState(0);
+  var [currentProtein, setCurrentProtein] =useState(0);
+  var [currentFats, setCurrentFats] =useState(0);
+  var [currentCarbs, setCurrentCarbs] =useState(0);
   var [userData, setUserData] = useState({})
   var userId = userService.getLoggedInUser()._id
   function getUserCalorie() {
@@ -33,9 +36,9 @@ const UserDashboard = () => {
         <div className="d-flex flex-column">
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
-              <h4>Calories Gained:</h4>
+              <h4>Calories Gained:{currentCalorie}</h4>
               <h4>Calories Burnt:</h4>
-              <h4>Calorie Goal: {userData.calorie_goal}</h4>
+              <h4>Calorie Goal: {parseInt(userData.calorie_goal)}</h4>
             </div>
             <div className="d-flex justify-content-around align-items-end w-50">
               <Link to="/user-add-food">
@@ -52,19 +55,19 @@ const UserDashboard = () => {
           <div className="d-flex flex-column mt-3">
             <div>
               <h4>Calorie Goal</h4>
-              <Progress done="45" heading="Calorie Goal" />
+              <Progress done={(currentCalorie*100)/userData.calorie_goal} heading="Calorie Goal" />
             </div>
             <div>
               <h4>Carbohydrates</h4>
-              <Progress done="60" heading="Calorie Goal" />
+              <Progress done={(currentCarbs*100)/userData.carbs} heading="Calorie Goal" />
             </div>
             <div>
               <h4>Proteins</h4>
-              <Progress done="70" heading="Calorie Goal" />
+              <Progress done={(currentProtein*100)/userData.protein} heading="Calorie Goal" />
             </div>
             <div>
               <h4>Fats</h4>
-              <Progress done="90" heading="Calorie Goal" />
+              <Progress done={(currentFats*100)/userData.fats} heading="Calorie Goal" />
             </div>
             <div>
               <h4>Water Intake</h4>

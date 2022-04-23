@@ -20,5 +20,5 @@ router
   .patch(Verify, updateData)
   .delete(deleteData)
   .get(getOneData)
-router.route('/name/:food_name').get(getbyName)
+router.route('/name').post(getbyName)
 module.exports = router

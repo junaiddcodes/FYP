@@ -68,8 +68,9 @@ const AddWater = () => {
     }
 
     console.log('before request')
-    getWaterData()
+    
     userService.waterIntake(waterIntake)
+    getWaterData()
   }
 
   const water = useRef(null)
