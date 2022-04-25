@@ -15,6 +15,7 @@ var trainerDetailsSchema = mongoose.Schema({
   trainer_desc: String, //Trainer Description
   certificate_file: String,
   trainer_photo: String,
+  cloudinary_id: String
 })
 
 // Create Model of Schema in Trainer_Details
@@ -39,6 +40,7 @@ function validateTrainer(data) {
     trainer_desc: Joi.string(),
     certificate_file: Joi.string(),
     trainer_photo: Joi.string(),
+    cloudinary_id: Joi.string(),
   })
   return schema.validate(data)
 }

@@ -165,7 +165,6 @@ const AddFood = () => {
         <div className="d-flex flex-column">
           <div class="table-wrapper-scroll-y my-custom-scrollbar">
             <table className="table">
-              
               <thead>
                 <tr>
                   <th>Meal</th>
@@ -177,11 +176,13 @@ const AddFood = () => {
               </thead>
               <tbody>
                 {mealData.length == 0 ? (
-                  <p>There are no Meal for Today</p>
+                  <tr>
+                    <td>There are no Meal for Today</td>
+                  </tr>
                 ) : (
-                  mealData.map((e) => {
+                  mealData.map((e, index) => {
                     return (
-                      <tr>
+                      <tr key={index}>
                         <td>{e.meal_name}</td>
                         <td>{e.food_name}</td>
                         <td>{e.food_quantity}</td>
@@ -317,16 +318,25 @@ const AddFood = () => {
                                   <Button
                                     className="btn-dark m-3"
                                     type="submit "
-                                    onClick = {()=>{
-                                      userService.deleteMealData(e._id).then(()=>{
-                                        console.log("Meal is Deleted")
-                                      })
+                                    onClick={() => {
+                                      userService
+                                        .deleteMealData(e._id)
+                                        .then(() => {
+                                          console.log("Meal is Deleted");
+                                        });
                                       getMealData();
+                                      setConfirmDelete(false);
                                     }}
                                   >
                                     Yes
                                   </Button>
-                                  <Button className="m-3" type="submit ">
+                                  <Button
+                                    className="m-3"
+                                    type="submit"
+                                    onClick={() => {
+                                      setConfirmDelete(false);
+                                    }}
+                                  >
                                     No
                                   </Button>
                                 </div>
