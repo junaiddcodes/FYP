@@ -28,6 +28,7 @@ import TrainerProfile from "./Pages/TrainerPanel/TrainerProfile";
 import TrainerActivityPlans from "./Pages/TrainerPanel/TrainerActivityPlans";
 import CreatePlan from "./Pages/TrainerPanel/CreatePlan";
 import Login from "./Pages/Register/Login";
+import LoginAdmin from "./Pages/Register/LoginAdmin";
 function App() {
   return (
     <BrowserRouter>
@@ -57,6 +58,7 @@ function App() {
 
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/login/admin" element={<LoginAdmin />} />
           <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/register-user" element={<UserRegister />} />
           <Route path="/register-trainer" element={<TrainerRegister />} />

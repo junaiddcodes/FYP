@@ -18,11 +18,7 @@ const {
 
 router.route("/trainerregister").post(Verify, Hash, createData);
 router.route("/trainer").get(getAllData);
-router
-  .route("/:trainerId")
-  .get(getOneData)
-  .patch(Verify, Upload.single("frontImage"), updateData)
-  .delete(deleteData);
+router.route("/:trainerId").get(getOneData).patch(Verify, updateData).delete(deleteData);
 
 router.route("/login").post(loginUser);
 router.route("/log").post(Auth, checkUser);

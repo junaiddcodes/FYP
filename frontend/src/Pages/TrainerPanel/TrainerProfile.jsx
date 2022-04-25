@@ -10,7 +10,8 @@ import { MdMyLocation } from "react-icons/md";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select from "react-select";
+import Select from "@mui/material/Select";
+
 import TopBar from "../../Components/TopBar";
 import SideMenuTrainer from "../../Components/SideMenuTrainer";
 import { useForm } from "react-hook-form";
@@ -73,6 +74,7 @@ const TrainerProfile = () => {
   const [getCustomer, setGetCustomer] = useState("");
   const [isListed, setIsListed] = useState("");
   const [trainerAge, setTrainerAge] = useState(10);
+  const [selectedValue, setSelectedValue] = useState(10);
   var trainersAge = "";
   var loginId = "";
   const workoutOptions = [
@@ -153,7 +155,9 @@ const TrainerProfile = () => {
     setFileName(e.target.files[0]);
     setPreviewImage(URL.createObjectURL(e.target.files[0]));
   };
-
+  const page_refresh = () => {
+    window.location.reload(true);
+  };
   const changeOnClick = (e) => {
     e.preventDefault();
 
@@ -169,9 +173,9 @@ const TrainerProfile = () => {
       .catch((err) => {
         console.log(err);
       });
-    // setIsProfilePicForm(false);
-    // setIsProfile(true);
-    navigate("/trainer-dashboard");
+    setIsProfilePicForm(false);
+    setIsProfile(true);
+    page_refresh();
   };
 
   const {
@@ -215,6 +219,9 @@ const TrainerProfile = () => {
     setIsProfilePicForm(true);
     setIsTrainerForm(false);
   };
+  const handleChange = (e) => {
+    setSelectedValue(e.value);
+  };
   return (
     <div className="page-container-gym">
       <TopBar />
@@ -243,8 +250,7 @@ const TrainerProfile = () => {
             <div className="input-text d-flex flex-column">
               <div className="w-50 m-0">
                 <label for="fname">Select your exercise type</label>
-                {/* <FormControl className="m-3 w-100 dropdown-trainer">
-                  <InputLabel id="demo-simple-select-label">Select Exercise Type</InputLabel>
+                <FormControl className="m-3 w-100 dropdown-trainer">
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -255,15 +261,18 @@ const TrainerProfile = () => {
                     <MenuItem value="gym">Gym</MenuItem>
                     <MenuItem value="stretching">Stretching</MenuItem>
                   </Select>
-                </FormControl> */}
-                <Select
+                </FormControl>
+
+                {/* <Select
                   className="select-drop"
                   placeholder="Select Exercise Type"
                   options={workoutOptions}
+                  value={workoutOptions.find((obj) => obj.value === selectedValue)}
                   // value={e.options.value}
+                  onChange={handleChange}
                   name="exercise_type"
                   {...controlTrainerProfile("exercise_type")}
-                />
+                /> */}
                 <p>{errorsTrainerProfile.exercise_type?.message}</p>
               </div>
 
@@ -408,7 +417,36 @@ const TrainerProfile = () => {
                 >
                   Edit
                 </Button>
-                <Button className="mt-5">Delete</Button>
+                <Button
+                  className="mt-5"
+                  onClick={() => {
+                    trainerProfileDetails = {
+                      ...trainerProfileDetails,
+                      exercise_type: "",
+                      listed: false,
+                      company_name: "",
+                      designation: "",
+                      time_worked: "",
+
+                      trainer_desc: "",
+                      certificate_file: "",
+                      trainer_photo: "",
+                    };
+                    trainerService
+                      .update_trainer(trainerProfileDetails, loggedInId)
+                      .then((data) => {
+                        console.log(data);
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                      });
+                    console.log(trainerProfileDetails + "deleted");
+                    setIsAsk(true);
+                    setIsProfile(false);
+                  }}
+                >
+                  Delete
+                </Button>
               </div>
             </div>
           </div>

@@ -111,11 +111,13 @@ const GymProfile = () => {
     formData.append("frontImage", fileName);
 
     axios
-      .post("/cards/add", formData)
+      .post("/frontend/public/uploads", formData)
       .then((res) => console.log(res.data))
       .catch((err) => {
         console.log(err);
       });
+    setIsProfile(true);
+    page_refresh();
   };
   const {
     register: controlGymProfile,
@@ -124,6 +126,10 @@ const GymProfile = () => {
   } = useForm({
     resolver: yupResolver(gymProfileSchema),
   });
+
+  const page_refresh = () => {
+    window.location.reload(true);
+  };
 
   const submitGymProfileForm = (data) => {
     // console.log("aaaaaaa");
@@ -152,6 +158,9 @@ const GymProfile = () => {
       });
     console.log(gymProfileDetails);
     console.log("after request");
+    setIsAsk(false);
+    setIsGymForm(false);
+    setIsGymPicForm(true);
   };
 
   return (
@@ -266,6 +275,35 @@ const GymProfile = () => {
             </Button>
           </form>
         </div>
+      ) : isGymPicForm ? (
+        <div>
+          <p className="general-p">Please upload your gym's pictures</p>
+          <div className="upload-photo-card">
+            <TransformWrapper>
+              <TransformComponent>
+                <img className="preview" src={previewImage} alt="" />
+              </TransformComponent>
+            </TransformWrapper>
+          </div>
+          <form onSubmit={changeOnClick} encType="multipart/form-data">
+            <div className="upload-form">
+              <input
+                style={{ marginTop: "1rem" }}
+                accept="image/*"
+                type="file"
+                filename="frontImage"
+                onChange={onChangeFile}
+              />
+              <button
+                style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                className="btn btn-primary w-25"
+                type="submit"
+              >
+                submit
+              </button>
+            </div>
+          </form>
+        </div>
       ) : isProfile ? (
         <div className="trainer-desc mt-3 d-flex flex-column">
           <div className="d-flex ">
@@ -283,6 +321,7 @@ const GymProfile = () => {
                   onClick={() => {
                     setIsGymForm(true);
                     setIsProfile(false);
+                    setIsAsk(false);
                   }}
                 >
                   Edit
