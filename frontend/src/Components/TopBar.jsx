@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-
+import trainerService from "../services/TrainerService";
+import { useNavigate } from "react-router-dom";
 const TopBar = () => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   return (
     <header className="top-header">
       <nav className="navbar-top">
@@ -25,7 +27,14 @@ const TopBar = () => {
                 Help and support
               </a>
               <hr />
-              <a href="" className="menu-item">
+              <a
+                href=""
+                className="menu-item"
+                onClick={() => {
+                  trainerService.logout();
+                  navigate("/login");
+                }}
+              >
                 Log out
               </a>
             </div>

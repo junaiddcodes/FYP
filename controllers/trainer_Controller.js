@@ -3,6 +3,7 @@ const _ = require('lodash')
 var bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const config = require('config')
+const cloudinary = require('../utils/cloudinary')
 
 //use to get all data from db
 const getAllData = async (req, res) => {
@@ -30,7 +31,14 @@ const createData = async (req, res) => {
   }
 }
 const checkUser = async (req, res) => {
-  console.log(req.user)
+  try {
+    const result = await cloudinary.uploader.upload(req.file.path,{folder:"trainer"});
+    res.json(result)
+    
+  } catch (err) {
+    console.log(err)
+    
+  }
   res.send('Working')
 }
 
@@ -95,6 +103,71 @@ const updateData = async (req, res) => {
   }
 }
 
+// Create Trainer Profile
+const completeTrainer = async (req, res) => {
+  try {
+    const { trainerId: crudId } = req.params
+    console.log(req.body.exercise_type)
+
+    var data = {
+      exercise_type: req.body.exercise_type,
+      company_name: req.body.company_name,
+      designation: req.body.designation,
+      time_worked: req.body.time_worked,
+      trainer_desc: req.body.trainer_desc
+    }
+    const crud = await trainerDetails.findByIdAndUpdate(
+      { _id: crudId },
+      data,
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
+
+    if (!crud) {
+      return res.status(404).json({ message: 'item does not exist' })
+    }
+
+    res.status(200).json({ crud })
+    
+  } catch (error) {
+    res.status(500).json({ message: error })
+  }
+}
+
+// Add profile Image
+const trainerImage = async (req, res) => {
+  try {
+    const { trainerId: crudId } = req.params
+    const result = await cloudinary.uploader.upload(req.file.path,{folder:"trainer"});
+
+    var data = {
+      trainer_photo: result.secure_url,
+      cloudinary_id: result.public_id,
+    }
+    const crud = await trainerDetails.findByIdAndUpdate(
+      { _id: crudId },
+      data,
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
+
+    if (!crud) {
+      return res.status(404).json({ message: 'item does not exist' })
+    }
+
+    res.status(200).json({ crud })
+    
+  } catch (error) {
+    res.status(500).json({ message: error })
+  }
+}
+
+
+
 // // delete data from id
 const deleteData = async (req, res) => {
   try {
@@ -118,4 +191,6 @@ module.exports = {
   createData,
   loginUser,
   checkUser,
+  completeTrainer,
+  trainerImage
 }
