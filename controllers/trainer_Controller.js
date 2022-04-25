@@ -114,7 +114,7 @@ const completeTrainer = async (req, res) => {
       company_name: req.body.company_name,
       designation: req.body.designation,
       time_worked: req.body.time_worked,
-      trainer_desc: req.body.trainer_desc
+      trainer_desc: req.body.trainer_desc,
     }
     const crud = await trainerDetails.findByIdAndUpdate(
       { _id: crudId },
