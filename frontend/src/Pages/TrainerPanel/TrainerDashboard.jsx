@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Modal from "react-modal";
 import { FaSearch } from "react-icons/fa";
@@ -13,9 +13,20 @@ import Select from "@mui/material/Select";
 import { Link } from "react-router-dom";
 import TopBar from "../../Components/TopBar";
 import SideMenuTrainer from "../../Components/SideMenuTrainer";
+import { useNavigate } from "react-router-dom";
 
 const TrainerDashboard = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    // userService.getLoggedInUser();
+    // setLoggedInId(userService.getLoggedInUser()._id);
+    // console.log(localStorage.getItem("token"));
+    if (localStorage.getItem("token") == null) {
+      navigate("/login");
+      // console.log("log in first");
+    }
+  }, []);
   return (
     <div className="page-container-admin">
       <TopBar />

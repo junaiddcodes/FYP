@@ -1,5 +1,5 @@
-var express = require('express')
-var router = express.Router()
+var express = require("express");
+var router = express.Router();
 // // const { registerCustomer } = require('../../controllers/customerControl')
 var { Verify } = require('../../middleware/trainer')
 var { Hash } = require('../../middleware/coustomerDetails')

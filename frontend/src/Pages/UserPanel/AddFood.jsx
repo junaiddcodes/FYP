@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from "react";
+=======
+import React, { useEffect, useState } from "react";
+>>>>>>> ea8bed4a2dc65d90ad6164ed346f9a5da94c252d
 import { Button } from "react-bootstrap";
 import Modal from "react-modal";
 import { ImCross } from "react-icons/im";
@@ -9,6 +13,7 @@ import FormControl from "@mui/material/FormControl";
 import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
 import Select from "react-select";
+<<<<<<< HEAD
 import userService from "../../services/UserService";
 
 const AddFood = () => {
@@ -22,6 +27,22 @@ const AddFood = () => {
     });
   }
 
+=======
+import { useNavigate } from "react-router-dom";
+
+const AddFood = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // userService.getLoggedInUser();
+    // setLoggedInId(userService.getLoggedInUser()._id);
+    // console.log(localStorage.getItem("token"));
+    if (localStorage.getItem("token") == null) {
+      navigate("/login");
+      // console.log("log in first");
+    }
+  }, []);
+>>>>>>> ea8bed4a2dc65d90ad6164ed346f9a5da94c252d
   const mealOptions = [
     { value: "breakfast", label: "Breakfast" },
     { value: "lunch", label: "Lunch" },

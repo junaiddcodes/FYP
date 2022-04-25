@@ -1,6 +1,7 @@
 import React from 'react'
 import { Route, Routes, Redirect, BrowserRouter } from 'react-router-dom'
 
+<<<<<<< HEAD
 import './styles/pages.css'
 import Register from './Pages/Register/Register'
 import UserRegister from './Pages/Register/UserRegister'
@@ -29,6 +30,36 @@ import TrainerActivityPlans from './Pages/TrainerPanel/TrainerActivityPlans'
 import CreatePlan from './Pages/TrainerPanel/CreatePlan'
 import Login from './Pages/Register/Login'
 import Messenger from './Messenger/Messenger'
+=======
+import "./styles/pages.css";
+import Register from "./Pages/Register/Register";
+import UserRegister from "./Pages/Register/UserRegister";
+import TrainerRegister from "./Pages/Register/TrainerRegister";
+import GymRegister from "./Pages/Register/GymRegister";
+import SideMenu from "./Components/SideMenu";
+import UserDashboard from "./Pages/UserPanel/UserDashboard";
+import TopBar from "./Components/TopBar";
+import AddFood from "./Pages/UserPanel/AddFood";
+import AddExercise from "./Pages/UserPanel/AddExercise";
+import AddWater from "./Pages/UserPanel/AddWater";
+import SearchGym from "./Pages/UserPanel/SearchGym";
+import GymDescription from "./Pages/UserPanel/GymDescription";
+import SearchTrainer from "./Pages/UserPanel/SearchTrainer";
+import TrainerDescription from "./Pages/UserPanel/TrainerDescription";
+import ActivityPlans from "./Pages/UserPanel/ActivityPlans";
+import GymProfile from "./Pages/GymPanel/GymProfile";
+import AdminDashboard from "./Pages/AdminPanel/AdminDashboard";
+import GymRequest from "./Pages/AdminPanel/GymRequest";
+import TrainerRequest from "./Pages/AdminPanel/TrainerRequest";
+import QueryDetails from "./Pages/AdminPanel/QueryDetails";
+import PaymentRequest from "./Pages/AdminPanel/PaymentRequest";
+import TrainerDashboard from "./Pages/TrainerPanel/TrainerDashboard";
+import TrainerProfile from "./Pages/TrainerPanel/TrainerProfile";
+import TrainerActivityPlans from "./Pages/TrainerPanel/TrainerActivityPlans";
+import CreatePlan from "./Pages/TrainerPanel/CreatePlan";
+import Login from "./Pages/Register/Login";
+import LoginAdmin from "./Pages/Register/LoginAdmin";
+>>>>>>> ea8bed4a2dc65d90ad6164ed346f9a5da94c252d
 function App() {
   return (
     <BrowserRouter>
@@ -62,6 +93,7 @@ function App() {
 
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/login/admin" element={<LoginAdmin />} />
           <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/register-user" element={<UserRegister />} />
           <Route path="/register-trainer" element={<TrainerRegister />} />

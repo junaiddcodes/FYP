@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react'
 
 import { Button } from 'react-bootstrap'
@@ -26,6 +27,30 @@ const UserDashboard = () => {
       })
   }
   useEffect(getUserCalorie, [])
+=======
+import React, { useEffect } from "react";
+
+import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import Progress from "../../Components/ProgressBar";
+import TopBar from "../../Components/TopBar";
+import SideMenu from "../../Components/SideMenu";
+import { useNavigate } from "react-router-dom";
+
+const UserDashboard = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // userService.getLoggedInUser();
+    // setLoggedInId(userService.getLoggedInUser()._id);
+    // console.log(localStorage.getItem("token"));
+    if (localStorage.getItem("token") == null) {
+      navigate("/login");
+      // console.log("log in first");
+    }
+  }, []);
+
+>>>>>>> ea8bed4a2dc65d90ad6164ed346f9a5da94c252d
   return (
     <div className="page-container-user">
       <TopBar />
