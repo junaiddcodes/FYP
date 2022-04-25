@@ -169,13 +169,13 @@ const TrainerProfile = () => {
       .update_trainer_photo(formData, loggedInId)
       .then((data) => {
         console.log(data);
+        setIsProfilePicForm(false);
+        setIsProfile(true);
+        page_refresh();
       })
       .catch((err) => {
         console.log(err);
       });
-    setIsProfilePicForm(false);
-    setIsProfile(true);
-    page_refresh();
   };
 
   const {
