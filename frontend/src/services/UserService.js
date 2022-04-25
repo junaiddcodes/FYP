@@ -39,6 +39,16 @@ class UserService extends GenericService {
       return null
     }
   }
+  getoneUser = (user_id) => this.get('customer/' + user_id)
+
+
+  getFood = (foodName) => this.post('food/name', foodName)
+
+  getMealData= (customerId)=>this.get('meal/mealdata/' + customerId)
+  deleteMealData= (mealId)=>this.delete('meal/' + mealId)
+
+
+
   isAdmin = () => {
     if (this.isLoggedIn()) {
       if (this.getLoggedInUser().role == 'admin') return true

@@ -1,4 +1,4 @@
-const { waterIntakeDetails } = require("../models/waterIntake");
+const { waterIntakeDetails } = require('../models/waterIntake')
 
 //use to get all data from db
 // const getAllData = async (req, res) => {
@@ -12,44 +12,52 @@ const { waterIntakeDetails } = require("../models/waterIntake");
 //use to create data in db
 const createData = async (req, res) => {
   try {
-    const crud = await waterIntakeDetails.create(req.body);
-    res.status(201).json({ crud });
+    const crud = await waterIntakeDetails.create(req.body)
+    res.status(201).json({ crud })
   } catch (error) {
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: error })
   }
-};
+}
 
 //use to get only one data from db
 const getOneData = async (req, res) => {
   try {
-    var getDate = new Date().getDate();
-    var getMonth = new Date().getMonth();
-    var getYear = new Date().getFullYear();
+    var getDate = new Date().getDate()
+    var getMonth = new Date().getMonth()
+    var getYear = new Date().getFullYear()
 
-    var startDate = getDate - 1 + "-" + getMonth + "-" + getYear;
-    var endDate = getDate + "-" + getMonth + "-" + getYear;
-    console.log(startDate +"and"+ endDate)
-
-    const { waterId: crudId } = req.params;
-    const crud = await waterIntakeDetails.find({
-      user_id: crudId,
-      "time_date": { $gte: new Date(endDate) },
-    });
-
-    if (!crud) {
-      return res.status(404).json({ message: "item does not exist" });
+    getMonth += 1
+    if (getMonth < 10) {
+      getMonth = '0' + getMonth
+    }
+    if (getDate < 10) {
+      getDate = '0' + getDate
     }
 
-    res.status(200).json({ crud });
+    var startDate = getYear + '-' + getMonth + '-' + (getDate - 1)
+    var endDate = getYear + '-' + getMonth + '-' + (getDate+1)
+    console.log(startDate + ' and ' + endDate)
+
+    const { waterId: crudId } = req.params
+    const crud = await waterIntakeDetails.find({
+      user_id: crudId,
+      time_date: { $gte: new Date(startDate), $lt: new Date(endDate) },
+    })
+
+    if (!crud) {
+      return res.status(404).json({ message: 'item does not exist' })
+    }
+
+    res.status(200).json({ crud })
   } catch (error) {
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: error })
   }
-};
+}
 
 //this is use to update user in list
 const updateData = async (req, res) => {
   try {
-    const { waterId: crudId } = req.params;
+    const { waterId: crudId } = req.params
     const crud = await waterIntakeDetails.findByIdAndUpdate(
       { _id: crudId },
       req.body,
@@ -57,32 +65,32 @@ const updateData = async (req, res) => {
         new: true,
         runValidators: true,
       }
-    );
+    )
 
     if (!crud) {
-      return res, status(404).jason({ message: "item does not exist" });
+      return res.status(404).json({ message: 'item does not exist' })
     }
 
-    res.status(200).json({ crud });
+    res.status(200).json({ crud })
   } catch (error) {
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: error })
   }
-};
+}
 
 // delete data from id
 const deleteData = async (req, res) => {
   try {
-    const { waterId: crudId } = req.params;
-    const crud = await waterIntakeDetails.findByIdAndDelete({ _id: crudId });
+    const { waterId: crudId } = req.params
+    const crud = await waterIntakeDetails.findByIdAndDelete({ _id: crudId })
 
     if (!crud) {
-      return res, status(404).jason({ message: "item does not exist" });
+      return res.status(404).json({ message: 'item does not exist' })
     }
-    res.status(200).json({ crud });
+    res.status(200).json({ crud })
   } catch (error) {
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: error })
   }
-};
+}
 
 module.exports = {
   //   getAllData,
@@ -90,4 +98,4 @@ module.exports = {
   updateData,
   deleteData,
   createData,
-};
+}

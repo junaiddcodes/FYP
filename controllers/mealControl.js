@@ -19,21 +19,40 @@ const createData = async (req, res) => {
   }
 }
 
-// //use to get only one data from db
-// const getOneData = async (req, res) => {
-//   try {
-//     const { gymId: crudId } = req.params
-//     const crud = await gymDetails.findOne({ _id: crudId })
+//use to get only one data from db
+const getOneData = async (req, res) => {
+  try {
+    var getDate = new Date().getDate()
+    var getMonth = new Date().getMonth()
+    var getYear = new Date().getFullYear()
 
-//     if (!crud) {
-//       return res.status(404).jason({ message: 'item does not exist' })
-//     }
+    getMonth += 1
+    if (getMonth < 10) {
+      getMonth = '0' + getMonth
+    }
+    if (getDate < 10) {
+      getDate = '0' + getDate
+    }
 
-//     res.status(200).json({ crud })
-//   } catch (error) {
-//     res.status(500).json({ message: error })
-//   }
-// }
+    var startDate = getYear + '-' + getMonth + '-' + (getDate - 1)
+    var endDate = getYear + '-' + getMonth + '-' + (getDate+1)
+    console.log(startDate + ' and ' + endDate)
+
+    const {customerId: crudId } = req.params
+    const crud = await mealDataDetails.find({
+      customer_Id: crudId,
+      time_date: { $gte: new Date(startDate), $lt: new Date(endDate) },
+    })
+
+    if (!crud) {
+      return res.status(404).json({ message: 'item does not exist' })
+    }
+
+    res.status(200).json({ crud })
+  } catch (error) {
+    res.status(500).json({ message: error })
+  }
+}
 
 // //this is use to update user in list
 const updateData = async (req, res) => {
@@ -49,7 +68,7 @@ const updateData = async (req, res) => {
     )
 
     if (!crud) {
-      return res, status(404).jason({ message: 'item does not exist' })
+      return res.status(404).json({ message: 'item does not exist' })
     }
 
     res.status(200).json({ crud })
@@ -65,7 +84,7 @@ const deleteData = async (req, res) => {
     const crud = await mealDataDetails.findByIdAndDelete({ _id: crudId })
 
     if (!crud) {
-      return res, status(404).jason({ message: 'item does not exist' })
+      return res.status(404).json({ message: 'item does not exist' })
     }
     res.status(200).json({ crud })
   } catch (error) {
@@ -75,7 +94,7 @@ const deleteData = async (req, res) => {
 
 module.exports = {
   getAllData,
-  //   getOneData,
+  getOneData,
   updateData,
   deleteData,
   createData,

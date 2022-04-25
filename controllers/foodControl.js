@@ -29,7 +29,7 @@ const getOneData = async (req, res) => {
     const crud = await foodApiDetails.findOne({ _id: crudId })
 
     if (!crud) {
-      return res.status(404).jason({ message: 'item does not exist' })
+      return res.status(404).json({ message: 'item does not exist' })
     }
 
     res.status(200).json({ crud })
@@ -40,15 +40,27 @@ const getOneData = async (req, res) => {
 
 const getbyName = async (req, res) => {
   try {
-    const { food: crudId } = req.params
-    console.log(req.params)
+    // const { food: crudId } = req.params
+    // console.log(req.params)
     // console.log(foodId)
     // console.log(crudId)
-    const crud = await foodApiDetails.findOne({ food_name: crudId })
+    if(req.body.food_name.length >= 3){
 
-    if (!crud) {
+      var crud = await foodApiDetails.find({ food_name: new RegExp(req.body.food_name, "i")})
+
+    }
+    else{
+      return res.status(404).json({ message: 'String should be great than 3' })
+
+    }
+   
+
+    if (crud.length == 0) {
       return res.status(404).json({ message: 'item does not exist' })
     }
+
+    console.log(crud)
+    
 
     res.status(200).json({ crud })
   } catch (error) {
@@ -70,7 +82,7 @@ const updateData = async (req, res) => {
     )
 
     if (!crud) {
-      return res, status(404).jason({ message: 'item does not exist' })
+      return res.status(404).json({ message: 'item does not exist' })
     }
 
     res.status(200).json({ crud })
@@ -86,7 +98,7 @@ const deleteData = async (req, res) => {
     const crud = await foodApiDetails.findByIdAndDelete({ _id: crudId })
 
     if (!crud) {
-      return res, status(404).jason({ message: 'item does not exist' })
+      return res.status(404).json({ message: 'item does not exist' })
     }
     res.status(200).json({ crud })
   } catch (error) {
