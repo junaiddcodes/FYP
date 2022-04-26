@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Modal from "react-modal";
 import { FaSearch } from "react-icons/fa";
@@ -19,6 +19,16 @@ const SearchGym = () => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
+
+  useEffect(() => {
+    // userService.getLoggedInUser();
+    // setLoggedInId(userService.getLoggedInUser()._id);
+    // console.log(localStorage.getItem("token"));
+    if (localStorage.getItem("token") == null) {
+      navigate("/login");
+      // console.log("log in first");
+    }
+  }, []);
   return (
     <div className="page-container-user">
       <TopBar />

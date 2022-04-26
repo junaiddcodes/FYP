@@ -1,3 +1,6 @@
 {
-  "jwtPrivateKey": "FitnessAppKey"
+  "jwtPrivateKey": "FitnessAppKey",
+  "cloudinary-cloud-name":"fitness-applications",
+  "cloudinary-api-key":"316668557648285",
+  "cloudinary-api-secret":"ptT1OgZ-9x-_3p41EPsGiQ7AAnc"
 }

@@ -1,13 +1,9 @@
 import GenericService from "./GenericService";
 import jwtDecode from "jwt-decode";
-class GymService extends GenericService {
+class AdminService extends GenericService {
   constructor() {
     super();
   }
-
-  register_gym = (gymDetails) => this.post("gym/gymregister", gymDetails);
-  update_gym = (gymDetails, id) => this.patch("gym/" + id, gymDetails);
-  get_one_gym = (id) => this.get("gym/" + id);
 
   isLoggedIn = () => {
     return localStorage.getItem("token") ? true : false;
@@ -28,5 +24,5 @@ class GymService extends GenericService {
   };
 }
 
-let gymService = new GymService();
-export default gymService;
+let adminService = new AdminService();
+export default adminService;

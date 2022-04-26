@@ -217,17 +217,21 @@
   }
 }
 
+.trainer-photo img {
+  height: 150px;
+  width: 150px;
+  border-radius: 100%;
+  margin: 2rem;
+}
+.slider-div {
+  margin-left: auto;
+  margin-right: auto;
+}
 .trainer-desc {
   width: 100%;
 
   background-color: $color2;
   border-radius: 5px;
-  img {
-    height: 150px;
-    width: 150px;
-    border-radius: 100%;
-    margin: 2rem;
-  }
   h4 {
     margin: 0.5rem;
     font-weight: 600;
@@ -237,6 +241,7 @@
     color: $color4;
     font-size: 0.75rem;
     font-weight: 300;
+    //
   }
 }
 .upload-form {
