@@ -19,6 +19,8 @@ var SelectexerciseRouter = require('./routes/api/selectExercise_api')
 var CreatePlanRouter = require('./routes/api/createPlan')
 var ConversationRouter = require('./routes/conversation')
 var MessageRouter = require('./routes/message')
+var QueryRouter = require('./routes/api/query')
+var AdminQuery = require('./routes/api/admin_api')
 
 var app = express()
 
@@ -46,6 +48,8 @@ app.use('/api/SelectExcercise', SelectexerciseRouter)
 app.use('/api/createPlan', CreatePlanRouter)
 app.use('/api/conversation', ConversationRouter)
 app.use('/api/message', MessageRouter)
+app.use('/api/query', QueryRouter)
+app.use('/api/admin', AdminQuery)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
