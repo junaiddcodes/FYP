@@ -6,7 +6,7 @@ const Joi = require("joi");
 
 var gymDetailsSchema = mongoose.Schema({
   user_id: userSchema,
-  listed: Boolean, //Check the Gym is listed or not
+  listed: String, //Check the Gym is listed or not
   location: String,
   gym_desc: String, //Store Gym Description
   gym_contact_no: String,
@@ -27,7 +27,7 @@ function validateGym(data) {
       password: Joi.string().min(8).required(),
       user_type: Joi.string().min(3).max(30).required(),
     },
-    listed: Joi.boolean(),
+    listed: Joi.string(),
     location: Joi.string(),
     gym_desc: Joi.string(),
     gym_contact_no: Joi.string().min(5),
