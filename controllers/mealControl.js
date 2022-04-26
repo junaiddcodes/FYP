@@ -41,7 +41,7 @@ const getOneData = async (req, res) => {
     const {customerId: crudId } = req.params
     const crud = await mealDataDetails.find({
       customer_Id: crudId,
-      // time_date: { $gte: new Date(startDate), $lt: new Date(endDate) },
+      time_date: { $gte: new Date(startDate), $lt: new Date(endDate) },
     })
 
     if (!crud) {

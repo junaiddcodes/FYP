@@ -5,6 +5,7 @@ const Joi = require('joi')
 
 var trainerDetailsSchema = mongoose.Schema({
   user_id: userSchema,
+  dob: Date,
   gender: String,
   exercise_type: String,
   listed: Boolean, //Trainer approved by admin or not
@@ -15,6 +16,7 @@ var trainerDetailsSchema = mongoose.Schema({
   trainer_desc: String, //Trainer Description
   certificate_file: String,
   trainer_photo: String,
+  cloudinary_id: String
 })
 
 // Create Model of Schema in Trainer_Details
@@ -28,8 +30,8 @@ function validateTrainer(data) {
       password: Joi.string().min(8).required(),
       user_type: Joi.string().min(3).max(30),
     },
-
-    gender: Joi.string().min(3).max(10).required(),
+    dob: Joi.date(),
+    gender: Joi.string().min(3).max(10),
     exercise_type: Joi.string(),
     listed: Joi.boolean(),
     company_name: Joi.string(),
@@ -39,6 +41,7 @@ function validateTrainer(data) {
     trainer_desc: Joi.string(),
     certificate_file: Joi.string(),
     trainer_photo: Joi.string(),
+    cloudinary_id: Joi.string(),
   })
   return schema.validate(data)
 }

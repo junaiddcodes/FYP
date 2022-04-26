@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Modal from "react-modal";
 import { FaSearch } from "react-icons/fa";
@@ -12,8 +12,20 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TopBar from "../../Components/TopBar";
 import SideMenuAdmin from "../../Components/SideMenuAdmin";
+import { useNavigate } from "react-router-dom";
 
 const TrainerRequest = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // userService.getLoggedInUser();
+    // setLoggedInId(userService.getLoggedInUser()._id);
+    // console.log(localStorage.getItem("token"));
+    if (localStorage.getItem("token") == null) {
+      navigate("/login");
+      // console.log("log in first");
+    }
+  }, []);
   return (
     <div className="page-container-admin">
       <TopBar />
