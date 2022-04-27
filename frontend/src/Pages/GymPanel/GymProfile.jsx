@@ -53,9 +53,11 @@ const GymProfile = () => {
   const [getGym, setGetGym] = useState("");
   const [isGymForm, setIsGymForm] = useState(false);
   const [isGymPicForm, setIsGymPicForm] = useState(false);
+  const [isListed, setIsListed] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [loggedInId, setLoggedInId] = useState("");
   var loginId = "";
+
   var gymProfileDetails = {
     location: "",
     gym_desc: "",
@@ -76,6 +78,9 @@ const GymProfile = () => {
           setIsGymPicForm(false);
           setIsAsk(false);
           setIsGymForm(false);
+          if (getGym.listed == true) {
+            setIsListed("listed");
+          } else setIsListed("not-listed");
         } else {
           setIsAsk(true);
           setIsGymForm(false);
