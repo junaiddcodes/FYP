@@ -163,7 +163,7 @@ const TrainerProfile = () => {
 
     const formData = new FormData();
 
-    formData.append("frontImage", fileName);
+    formData.append("trainer", fileName);
 
     trainerService
       .update_trainer_photo(formData, loggedInId)
@@ -381,7 +381,7 @@ const TrainerProfile = () => {
                 style={{ marginTop: "1rem" }}
                 accept="image/*"
                 type="file"
-                filename="frontImage"
+                filename="trainer"
                 onChange={onChangeFile}
               />
               <button
@@ -399,7 +399,7 @@ const TrainerProfile = () => {
           <div className="d-flex ">
             <div className="d-flex w-75 justify-content-between">
               <div className="trainer-photo d-flex">
-                <img clasName="trainer-photo" src="../../../images/trainer.png" alt="" />
+                <img clasName="trainer-photo" src={getCustomer.trainer_photo} alt="" />
                 <div className="d-flex mt-5 flex-column">
                   <h4>Name: {getCustomer.user_id.full_name}</h4>
                   <h4>Age: {trainerAge}</h4>

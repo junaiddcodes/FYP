@@ -1,60 +1,60 @@
-import React, { useState, useEffect } from 'react'
-import { Button } from 'react-bootstrap'
-import Modal from 'react-modal'
-import { ImCross } from 'react-icons/im'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
+import React, { useState, useEffect } from "react";
+import { Button } from "react-bootstrap";
+import Modal from "react-modal";
+import { ImCross } from "react-icons/im";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
 // import Select from "@mui/material/Select";
-import TopBar from '../../Components/TopBar'
-import SideMenu from '../../Components/SideMenu'
-import Select from 'react-select'
-import userService from '../../services/UserService'
-import { useNavigate } from 'react-router-dom'
+import TopBar from "../../Components/TopBar";
+import SideMenu from "../../Components/SideMenu";
+import Select from "react-select";
+import userService from "../../services/UserService";
+import { useNavigate } from "react-router-dom";
 
 const AddFood = () => {
-  const navigate = useNavigate()
-  var user_id = userService.getLoggedInUser()._id
-  var [mealData, setMealData] = useState([])
+  const navigate = useNavigate();
+  var user_id = userService.getLoggedInUser()._id;
+  var [mealData, setMealData] = useState([]);
   function getMealData() {
     userService.getMealData(user_id).then((data) => {
-      setMealData(data.crud)
+      setMealData(data.crud);
       // console.log(mealData);
-      console.log(data.crud.food_calories)
-    })
+      console.log(data.crud.food_calories);
+    });
   }
 
   useEffect(() => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
-    if (localStorage.getItem('token') == null) {
-      navigate('/login')
+    if (localStorage.getItem("token") == null) {
+      navigate("/login");
       // console.log("log in first")
     }
-    getMealData()
-  }, [])
+    getMealData();
+  }, []);
   const mealOptions = [
-    { value: 'breakfast', label: 'Breakfast' },
-    { value: 'lunch', label: 'Lunch' },
-    { value: 'dinner', label: 'Dinner' },
-    { value: 'snacks', label: 'Snacks' },
-  ]
+    { value: "breakfast", label: "Breakfast" },
+    { value: "lunch", label: "Lunch" },
+    { value: "dinner", label: "Dinner" },
+    { value: "snacks", label: "Snacks" },
+  ];
   const fodOptions = [
-    { value: 'breakfast', label: 'Breakfast' },
-    { value: 'lunch', label: 'Lunch' },
-    { value: 'dinner', label: 'Dinner' },
-    { value: 'snacks', label: 'Snacks' },
-  ]
-  var [foodOptions, setFoodOptions] = useState([])
+    { value: "breakfast", label: "Breakfast" },
+    { value: "lunch", label: "Lunch" },
+    { value: "dinner", label: "Dinner" },
+    { value: "snacks", label: "Snacks" },
+  ];
+  var [foodOptions, setFoodOptions] = useState([]);
   const quantityOptions = [
-    { value: '100', label: '100 gm' },
-    { value: '250', label: '250 gm' },
-    { value: '500', label: '500 gm' },
-  ]
-  const [modalOpen, setModalOpen] = useState(false)
-  const [editModalOpen, setEditModalOpen] = useState(false)
-  const [confirmDelete, setConfirmDelete] = useState(false)
+    { value: "100", label: "100 gm" },
+    { value: "250", label: "250 gm" },
+    { value: "500", label: "500 gm" },
+  ];
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   return (
     <div className="page-container-user">
@@ -84,7 +84,7 @@ const AddFood = () => {
         <h2 className="mt-3">Today's Meals</h2>
         <Button
           onClick={() => {
-            setModalOpen(true)
+            setModalOpen(true);
           }}
           className="m-3"
         >
@@ -95,72 +95,64 @@ const AddFood = () => {
         <Modal
           style={{
             overlay: {
-              position: 'fixed',
+              position: "fixed",
               top: 0,
               left: 0,
               right: 0,
               bottom: 0,
 
-              backgroundColor: 'rgba(0, 0, 0, 0.75)',
+              backgroundColor: "rgba(0, 0, 0, 0.75)",
             },
             content: {
-              color: 'white',
-              position: 'absolute',
-              top: '40px',
-              left: '40px',
-              right: '40px',
-              bottom: '40px',
-              background: 'rgba(0,30,60,1)',
-              overflow: 'auto',
-              WebkitOverflowScrolling: 'touch',
-              borderRadius: '1rem',
-              outline: 'none',
-              padding: '20px',
+              color: "white",
+              position: "absolute",
+              top: "40px",
+              left: "40px",
+              right: "40px",
+              bottom: "40px",
+              background: "rgba(0,30,60,1)",
+              overflow: "auto",
+              WebkitOverflowScrolling: "touch",
+              borderRadius: "1rem",
+              outline: "none",
+              padding: "20px",
             },
           }}
           className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
           isOpen={modalOpen}
           onRequestClose={() => {
-            setModalOpen(false)
+            setModalOpen(false);
           }}
         >
           <div className="modal-inner w-75 d-flex flex-column">
             <a
               onClick={() => {
-                setModalOpen(false)
+                setModalOpen(false);
               }}
             >
               <i class="bx bx-x"></i>
             </a>
 
-            <Select
-              className="select-drop"
-              placeholder="Select Meal"
-              options={mealOptions}
-            />
+            <Select className="select-drop" placeholder="Select Meal" options={mealOptions} />
             <input
               type="text"
               name="foodapi"
               onChange={(e) => {
-                var x = e.target.value
+                var x = e.target.value;
                 if (x.length >= 3) {
-                  console.log(x)
+                  console.log(x);
                   var foodSet = {
                     food_name: x,
-                  }
+                  };
                   userService.getFood(foodSet).then((data) => {
-                    setFoodOptions(data.crud)
-                    console.log(foodOptions)
-                  })
+                    setFoodOptions(data.crud);
+                    console.log(foodOptions);
+                  });
                 }
               }}
             />
 
-            <Select
-              className="select-drop"
-              placeholder="Select Food"
-              options={fodOptions}
-            />
+            <Select className="select-drop" placeholder="Select Food" options={fodOptions} />
             <Select
               className="select-drop"
               placeholder="Select Quantity"
@@ -203,48 +195,48 @@ const AddFood = () => {
                             <Button
                               className="btn btn-warning edit-btn"
                               onClick={() => {
-                                setEditModalOpen(true)
+                                setEditModalOpen(true);
                               }}
                             >
-                              Edit{' '}
+                              Edit{" "}
                             </Button>
                             <div className="modal-container">
                               <Modal
                                 style={{
                                   overlay: {
-                                    position: 'fixed',
+                                    position: "fixed",
                                     top: 0,
                                     left: 0,
                                     right: 0,
                                     bottom: 0,
 
-                                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                                    backgroundColor: "rgba(0, 0, 0, 0.75)",
                                   },
                                   content: {
-                                    color: 'white',
-                                    position: 'absolute',
-                                    top: '40px',
-                                    left: '40px',
-                                    right: '40px',
-                                    bottom: '40px',
-                                    background: 'rgba(0,30,60,1)',
-                                    overflow: 'auto',
-                                    WebkitOverflowScrolling: 'touch',
-                                    borderRadius: '1rem',
-                                    outline: 'none',
-                                    padding: '20px',
+                                    color: "white",
+                                    position: "absolute",
+                                    top: "40px",
+                                    left: "40px",
+                                    right: "40px",
+                                    bottom: "40px",
+                                    background: "rgba(0,30,60,1)",
+                                    overflow: "auto",
+                                    WebkitOverflowScrolling: "touch",
+                                    borderRadius: "1rem",
+                                    outline: "none",
+                                    padding: "20px",
                                   },
                                 }}
                                 className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
                                 isOpen={editModalOpen}
                                 onRequestClose={() => {
-                                  setEditModalOpen(false)
+                                  setEditModalOpen(false);
                                 }}
                               >
                                 <div className="modal-inner w-75 d-flex flex-column">
                                   <a
                                     onClick={() => {
-                                      setEditModalOpen(false)
+                                      setEditModalOpen(false);
                                     }}
                                   >
                                     <i class="bx bx-x"></i>
@@ -274,7 +266,7 @@ const AddFood = () => {
                             <a
                               className="delete-icon"
                               onClick={() => {
-                                setConfirmDelete(true)
+                                setConfirmDelete(true);
                               }}
                             >
                               <ImCross />
@@ -283,46 +275,44 @@ const AddFood = () => {
                               <Modal
                                 style={{
                                   overlay: {
-                                    position: 'fixed',
+                                    position: "fixed",
                                     top: 0,
                                     left: 0,
                                     right: 0,
                                     bottom: 0,
 
-                                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                                    backgroundColor: "rgba(0, 0, 0, 0.75)",
                                   },
                                   content: {
-                                    color: 'white',
-                                    position: 'absolute',
-                                    top: '40px',
-                                    left: '40px',
-                                    right: '40px',
-                                    bottom: '40px',
-                                    background: 'rgba(0,30,60,1)',
-                                    overflow: 'auto',
-                                    WebkitOverflowScrolling: 'touch',
-                                    borderRadius: '1rem',
-                                    outline: 'none',
-                                    padding: '20px',
+                                    color: "white",
+                                    position: "absolute",
+                                    top: "40px",
+                                    left: "40px",
+                                    right: "40px",
+                                    bottom: "40px",
+                                    background: "rgba(0,30,60,1)",
+                                    overflow: "auto",
+                                    WebkitOverflowScrolling: "touch",
+                                    borderRadius: "1rem",
+                                    outline: "none",
+                                    padding: "20px",
                                   },
                                 }}
                                 className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
                                 isOpen={confirmDelete}
                                 onRequestClose={() => {
-                                  setConfirmDelete(false)
+                                  setConfirmDelete(false);
                                 }}
                               >
                                 <div className="modal-inner w-75 d-flex flex-column">
                                   <a
                                     onClick={() => {
-                                      setConfirmDelete(false)
+                                      setConfirmDelete(false);
                                     }}
                                   >
                                     <i class="bx bx-x"></i>
                                   </a>
-                                  <h3>
-                                    Are you sure you want to delete the food?
-                                  </h3>
+                                  <h3>Are you sure you want to delete the food?</h3>
                                   <p>Select yes to delete the item</p>
                                 </div>
                                 <div className="d-flex">
@@ -330,13 +320,11 @@ const AddFood = () => {
                                     className="btn-dark m-3"
                                     type="submit "
                                     onClick={() => {
-                                      userService
-                                        .deleteMealData(e._id)
-                                        .then(() => {
-                                          console.log('Meal is Deleted')
-                                        })
-                                      getMealData()
-                                      setConfirmDelete(false)
+                                      userService.deleteMealData(e._id).then(() => {
+                                        console.log("Meal is Deleted");
+                                      });
+                                      getMealData();
+                                      setConfirmDelete(false);
                                     }}
                                   >
                                     Yes
@@ -345,7 +333,7 @@ const AddFood = () => {
                                     className="m-3"
                                     type="submit"
                                     onClick={() => {
-                                      setConfirmDelete(false)
+                                      setConfirmDelete(false);
                                     }}
                                   >
                                     No
@@ -356,7 +344,7 @@ const AddFood = () => {
                           </div>
                         </td>
                       </tr>
-                    )
+                    );
                   })
                 )}
               </tbody>
@@ -365,7 +353,7 @@ const AddFood = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default AddFood
+export default AddFood;

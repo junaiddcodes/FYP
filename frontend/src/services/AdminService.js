@@ -4,6 +4,17 @@ class AdminService extends GenericService {
   constructor() {
     super();
   }
+  login = (email, password, role) =>
+    new Promise((resolve, reject) => {
+      this.post("admin/adminlogin", { email, password })
+        .then((token) => {
+          localStorage.setItem("token", token);
+          resolve(token);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
 
   isLoggedIn = () => {
     return localStorage.getItem("token") ? true : false;
