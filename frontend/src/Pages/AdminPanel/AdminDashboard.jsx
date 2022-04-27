@@ -14,9 +14,11 @@ import { Link } from "react-router-dom";
 import TopBar from "../../Components/TopBar";
 import SideMenuAdmin from "../../Components/SideMenuAdmin";
 import { useNavigate } from "react-router-dom";
+import gymService from "../../services/GymService";
 
 const AdminDashboard = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [allGyms, setAllGyms] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,6 +29,17 @@ const AdminDashboard = () => {
       navigate("/login");
       // console.log("log in first");
     }
+    console.log("abdullah taxi");
+    gymService
+      .get_all_gyms()
+      .then((data) => {
+        console.log(data);
+        setAllGyms(data.crud);
+        console.log(data.crud[1].user_id.full_name);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
   return (
     <div className="page-container-admin">
@@ -60,7 +73,7 @@ const AdminDashboard = () => {
                   </tr>
                   <tr>
                     <td>001</td>
-                    <td>Mister Fit Gym</td>
+                    {/* <td>{allGyms[1].user_id.full_name}</td> */}
                     <td>
                       <div className="d-flex align-items-center">
                         <Button>Check Profile</Button>

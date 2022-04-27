@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/pages.css";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,6 +7,8 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import userService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
+import adminService from "../../services/AdminService";
+import gymService from "../../services/GymService";
 const schema = yup.object().shape({
   Email: yup.string().email().required(),
   password: yup.string().min(8).max(20).required(),
@@ -27,7 +29,7 @@ const LoginAdmin = () => {
   });
 
   const submitForm = (data) => {
-    userService
+    adminService
       .login(email, password, role)
       .then((token) => {
         navigate("/admin-dashboard");
@@ -37,6 +39,17 @@ const LoginAdmin = () => {
         setAuthError(`No admin account exists for this email!`);
       });
   };
+  useEffect(() => {
+    console.log("abdullah taxi");
+    gymService
+      .get_all_gyms()
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <div className="page-container d-flex justify-content-center">
       <div className="outer-box-login d-flex flex-column justify-content-center align-items-center">
