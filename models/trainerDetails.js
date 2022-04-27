@@ -8,7 +8,7 @@ var trainerDetailsSchema = mongoose.Schema({
   dob: Date,
   gender: String,
   exercise_type: String,
-  listed: Boolean, //Trainer approved by admin or not
+  listed: String, //Trainer approved by admin or not
   company_name: String,
   designation: String,
   time_worked: Number, //In Years
@@ -33,7 +33,7 @@ function validateTrainer(data) {
     dob: Joi.date(),
     gender: Joi.string().min(3).max(10),
     exercise_type: Joi.string(),
-    listed: Joi.boolean(),
+    listed: Joi.string(),
     company_name: Joi.string(),
     designation: Joi.string(),
     time_worked: Joi.number().positive().max(24),

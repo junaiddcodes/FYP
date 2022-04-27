@@ -14,6 +14,16 @@ const getAllData = async (req, res) => {
     res.status(500).json({ message: error })
   }
 }
+
+//use to get all data from db
+const trainerNotListed = async (req, res) => {
+  try {
+    const crud = await trainerDetails.find({listed:"not-listed"})
+    res.status(200).json({ crud })
+  } catch (error) {
+    res.status(500).json({ message: error })
+  }
+}
 //use to create data in db
 const createData = async (req, res) => {
   try {
@@ -192,5 +202,6 @@ module.exports = {
   loginUser,
   checkUser,
   completeTrainer,
-  trainerImage
+  trainerImage,
+  trainerNotListed
 }

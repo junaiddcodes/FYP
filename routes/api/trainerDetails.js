@@ -15,11 +15,13 @@ const {
   createData,
   checkUser,
   completeTrainer,
-  trainerImage
+  trainerImage,
+  trainerNotListed
 } = require('../../controllers/trainer_Controller')
 
 router.route('/trainerregister').post(Verify, Hash, createData)
 router.route('/trainer').get(getAllData)
+router.route('/not-listed').get(trainerNotListed)
 router
   .route('/:trainerId')
   .get(getOneData)
