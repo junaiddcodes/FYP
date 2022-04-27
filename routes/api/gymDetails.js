@@ -4,6 +4,8 @@ var router = express.Router()
 var { Verify } = require('../../middleware/gymDetails');
 var { Auth } = require('../../middleware/gymDetails');
 var { Hash } = require('../../middleware/coustomerDetails')
+const upload = require("../../utils/multer");
+
 
 const {
   getAllData,
@@ -12,12 +14,17 @@ const {
   deleteData,
   loginGym,
   createData,
-  checkUser
+  checkUser,
+  completeGym,
+  gymImage,
+  gymNotListed
 } = require('../../controllers/gym_Controller')
 
 router.route('/gymregister').post(Verify,Hash,createData)
 router.route('/').get(getAllData)
-router.route('/:gymId').delete(deleteData).get(getOneData).patch(updateData)
+router.route('/not-listed').get(gymNotListed)
+router.route('/:gymId').delete(deleteData).get(getOneData).patch(completeGym)
+router.route('/image/:gymId').patch(upload.single('gym'),gymImage)
 router.route('/login').post(loginGym)
 router.route('/log').post(Auth, checkUser)
 
