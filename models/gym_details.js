@@ -13,6 +13,7 @@ var gymDetailsSchema = mongoose.Schema({
   gym_membership_price: Number,
   gender_facilitation: String,
   gym_photo: String,
+  cloudinary_id:String
 });
 
 // Create Model For Gym in Gym_Details Table
@@ -34,6 +35,7 @@ function validateGym(data) {
     gym_membership_price: Joi.number().positive(),
     gender_facilitation: Joi.string(),
     gym_photo: Joi.string(),
+    cloudinary_id: Joi.string()
   });
   return schema.validate(data);
 }

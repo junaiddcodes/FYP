@@ -4,11 +4,22 @@ var _ = require('lodash')
 var bcryptjs = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const config = require('config')
+const cloudinary = require('../utils/cloudinary')
 
 //use to get all data from db
 const getAllData = async (req, res) => {
   try {
     const crud = await gymDetails.find({})
+    res.status(200).json({ crud })
+  } catch (error) {
+    res.status(500).json({ message: error })
+  }
+}
+
+//use to get all data from db
+const gymNotListed = async (req, res) => {
+  try {
+    const crud = await gymDetails.find({listed:"not-listed"})
     res.status(200).json({ crud })
   } catch (error) {
     res.status(500).json({ message: error })
@@ -115,6 +126,72 @@ const deleteData = async (req, res) => {
   }
 }
 
+
+// Create Trainer Profile
+const completeGym = async (req, res) => {
+  try {
+    const { gymId: crudId } = req.params
+    console.log(req.body.exercise_type)
+
+    var data = {
+      listed: req.body.listed,
+      location: req.body.location,
+      gym_desc: req.body.gym_desc,
+      gym_contact_no: req.body.gym_contact_no,
+      gym_membership_price: req.body.gym_membership_price,
+      gender_facilitation: req.body.gender_facilitation
+    }
+    const crud = await gymDetails.findByIdAndUpdate(
+      { _id: crudId },
+      data,
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
+
+    if (!crud) {
+      return res.status(404).json({ message: 'item does not exist' })
+    }
+
+    res.status(200).json({ crud })
+    
+  } catch (error) {
+    res.status(500).json({ message: error })
+  }
+}
+
+// Add profile Image
+const gymImage = async (req, res) => {
+  try {
+    const { gymId: crudId } = req.params
+    const result = await cloudinary.uploader.upload(req.file.path,{folder:"gym"});
+
+    var data = {
+      gym_photo: result.secure_url,
+      cloudinary_id: result.public_id,
+    }
+    const crud = await gymDetails.findByIdAndUpdate(
+      { _id: crudId },
+      data,
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
+
+    if (!crud) {
+      return res.status(404).json({ message: 'item does not exist' })
+    }
+
+    res.status(200).json({ crud })
+    
+  } catch (error) {
+    res.status(500).json({ message: error })
+  }
+}
+
+
 module.exports = {
   getAllData,
   getOneData,
@@ -123,4 +200,7 @@ module.exports = {
   createData,
   loginGym,
   checkUser,
+  completeGym,
+  gymImage,
+  gymNotListed
 }
