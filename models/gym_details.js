@@ -12,8 +12,7 @@ var gymDetailsSchema = mongoose.Schema({
   gym_contact_no: String,
   gym_membership_price: Number,
   gender_facilitation: String,
-  gym_photo: String,
-  cloudinary_id: String,
+  gym_photos: [{photo_url:String,cloudinary_id: String}], 
 });
 
 // Create Model For Gym in Gym_Details Table
@@ -38,8 +37,10 @@ function validateGym(data) {
     gym_contact_no: Joi.string().min(5),
     gym_membership_price: Joi.number().positive(),
     gender_facilitation: Joi.string(),
-    gym_photo: Joi.string(),
-    cloudinary_id: Joi.string(),
+    gym_photos:Joi.array().items(Joi.object({
+      photo_url:Joi.string(),
+      cloudinary_id: Joi.string()
+  }))
   });
   return schema.validate(data);
 }
