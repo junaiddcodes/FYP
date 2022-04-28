@@ -66,9 +66,7 @@ const createData = async (req, res) => {
       'user_id.email': req.body.user_id.email,
     })
     if (user) return res.status(400).send('Gym with given email already exist')
-    console.log('1')
     const crud = await gymDetails.create(req.body)
-    console.log('2')
     //Send Confirmation
     res.send(_.pick(crud, ['user_id.email', 'user_id.full_name']))
   } catch (error) {
@@ -131,7 +129,7 @@ const deleteData = async (req, res) => {
 const completeGym = async (req, res) => {
   try {
     const { gymId: crudId } = req.params
-    console.log(req.body.exercise_type)
+
 
     var data = {
       listed: req.body.listed,
