@@ -28,7 +28,9 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Link } from "react-router-dom";
 
 const gymProfileSchema = yup.object().shape({
-  location: yup.string().required(),
+  state: yup.string().required(),
+  city: yup.string().required(),
+  adress: yup.string().required(),
   gym_desc: yup
     .string()
     .min(200, "Description must be at least 200 characters!")
@@ -59,7 +61,7 @@ const GymProfile = () => {
   var loginId = "";
 
   var gymProfileDetails = {
-    location: "",
+    location: { state: "", city: "", adress: "" },
     gym_desc: "",
     gym_contact_no: "",
     gym_membership_price: "",
@@ -146,7 +148,7 @@ const GymProfile = () => {
     console.log("before request");
     gymProfileDetails = {
       ...gymProfileDetails,
-      location: data.location,
+      location: { ...gymProfileDetails, state: data.state, city: data.city, adress: data.adress },
       gym_desc: data.gym_desc,
       gym_contact_no: data.gym_contact_no,
       gym_membership_price: data.gym_membership_price,
@@ -199,7 +201,12 @@ const GymProfile = () => {
               {/* <p>{gymProfileDetails.location}</p> */}
               {/* <p>{loggedInId}</p> */}
               <label for="">Gym Location</label>
-              <input type="text" name="location" {...controlGymProfile("location")} />
+              <label for="">State</label>
+              <input type="text" name="state" {...controlGymProfile("state")} />
+              <label for="">City</label>
+              <input type="text" name="city" {...controlGymProfile("city")} />
+              <label for="">Adress</label>
+              <input type="text" name="adress" {...controlGymProfile("adress")} />
               <p>{errorsGymProfile.location?.message}</p>
               <label for="">Gym Contact Number</label>
               <input type="text" name="gym_contact_no" {...controlGymProfile("gym_contact_no")} />

@@ -15,15 +15,21 @@ import TopBar from "../../Components/TopBar";
 import SideMenuAdmin from "../../Components/SideMenuAdmin";
 import { useNavigate } from "react-router-dom";
 import gymService from "../../services/GymService";
+import trainerService from "../../services/TrainerService";
 
 const AdminDashboard = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [allGyms, setAllGyms] = useState([]);
+  const [allTrainers, setAllTrainers] = useState([]);
   const navigate = useNavigate();
 
-  const handleRoute = (e) => {
+  const handleRouteGym = (e) => {
     console.log(e);
     navigate("/admin-gym-request", { state: { e } });
+  };
+  const handleRouteTrainer = (e) => {
+    console.log(e);
+    navigate("/admin-trainer-request", { state: { e } });
   };
   useEffect(() => {
     // userService.getLoggedInUser();
@@ -39,7 +45,16 @@ const AdminDashboard = () => {
       .then((data) => {
         console.log(data);
         setAllGyms(data.crud);
-        console.log(data.crud[1].user_id.full_name);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    trainerService
+      .get_all_not_listed_trainers()
+      .then((data) => {
+        console.log(data);
+        setAllTrainers(data.crud);
       })
       .catch((err) => {
         console.log(err);
@@ -78,7 +93,7 @@ const AdminDashboard = () => {
                             <div className="d-flex align-items-center">
                               <Button
                                 onClick={(event) => {
-                                  handleRoute(e);
+                                  handleRouteGym(e);
                                 }}
                               >
                                 Check Profile
@@ -112,53 +127,31 @@ const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>001</td>
-                    <td>Hamza Kasim</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Link to="/admin-trainer-request">
-                          <Button>Check Profile</Button>
-                        </Link>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Mister Fit Gym</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>Check Profile</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Mister Fit Gym</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>Check Profile</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Mister Fit Gym</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>Check Profile</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Mister Fit Gym</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>Check Profile</Button>
-                      </div>
-                    </td>
-                  </tr>
+                  {allTrainers.length == 0 ? (
+                    <tr>
+                      <td>No trainer requests</td>
+                    </tr>
+                  ) : (
+                    allTrainers.map((e, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{index}</td>
+                          <td>{e.user_id.full_name}</td>
+                          <td>
+                            <div className="d-flex align-items-center">
+                              <Button
+                                onClick={(event) => {
+                                  handleRouteTrainer(e);
+                                }}
+                              >
+                                Check Profile
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
                 </tbody>
               </table>
             </div>
