@@ -30,7 +30,7 @@ import { Link } from "react-router-dom";
 const gymProfileSchema = yup.object().shape({
   state: yup.string().required(),
   city: yup.string().required(),
-  adress: yup.string().required(),
+  address: yup.string().required(),
   gym_desc: yup
     .string()
     .min(200, "Description must be at least 200 characters!")
@@ -50,18 +50,20 @@ const GymProfile = () => {
   const navigate = useNavigate();
   const [fileName, setFileName] = React.useState("");
   const [previewImage, setPreviewImage] = React.useState("");
+  const [previewImage2, setPreviewImage2] = React.useState("");
+  const [previewImage3, setPreviewImage3] = React.useState("");
   const [isProfile, setIsProfile] = useState(false);
   const [isAsk, setIsAsk] = useState(false);
   const [getGym, setGetGym] = useState("");
   const [isGymForm, setIsGymForm] = useState(false);
-  const [isGymPicForm, setIsGymPicForm] = useState(false);
+  const [isGymPicForm, setIsGymPicForm] = useState(true);
   const [isListed, setIsListed] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [loggedInId, setLoggedInId] = useState("");
   var loginId = "";
 
   var gymProfileDetails = {
-    location: { state: "", city: "", adress: "" },
+    location: { state: "", city: "", address: "" },
     gym_desc: "",
     gym_contact_no: "",
     gym_membership_price: "",
@@ -102,12 +104,14 @@ const GymProfile = () => {
       navigate("/login");
       // console.log("log in first");
     }
-    get_gym();
+    // get_gym();
   }, [loginId]);
 
   const onChangeFile = (e) => {
     setFileName(e.target.files[0]);
     setPreviewImage(URL.createObjectURL(e.target.files[0]));
+    setPreviewImage2(URL.createObjectURL(e.target.files[1]));
+    setPreviewImage3(URL.createObjectURL(e.target.files[2]));
   };
 
   const changeOnClick = (e) => {
@@ -148,7 +152,7 @@ const GymProfile = () => {
     console.log("before request");
     gymProfileDetails = {
       ...gymProfileDetails,
-      location: { ...gymProfileDetails, state: data.state, city: data.city, adress: data.adress },
+      location: { ...gymProfileDetails, state: data.state, city: data.city, address: data.address },
       gym_desc: data.gym_desc,
       gym_contact_no: data.gym_contact_no,
       gym_membership_price: data.gym_membership_price,
@@ -203,11 +207,14 @@ const GymProfile = () => {
               <label for="">Gym Location</label>
               <label for="">State</label>
               <input type="text" name="state" {...controlGymProfile("state")} />
+              <p>{errorsGymProfile.state?.message}</p>
               <label for="">City</label>
               <input type="text" name="city" {...controlGymProfile("city")} />
-              <label for="">Adress</label>
-              <input type="text" name="adress" {...controlGymProfile("adress")} />
-              <p>{errorsGymProfile.location?.message}</p>
+              <p>{errorsGymProfile.city?.message}</p>
+              <label for="">Address</label>
+              <input type="text" name="address" {...controlGymProfile("address")} />
+              <p>{errorsGymProfile.address?.message}</p>
+
               <label for="">Gym Contact Number</label>
               <input type="text" name="gym_contact_no" {...controlGymProfile("gym_contact_no")} />
               <p>{errorsGymProfile.gym_contact_no?.message}</p>
@@ -289,21 +296,29 @@ const GymProfile = () => {
         </div>
       ) : isGymPicForm ? (
         <div>
-          <p className="general-p">Please upload your gym's pictures</p>
-          <div className="upload-photo-card">
-            <TransformWrapper>
-              <TransformComponent>
-                <img className="preview" src={previewImage} alt="" />
-              </TransformComponent>
-            </TransformWrapper>
-          </div>
+          <p className="general-p">Please upload at least 3 gym pictures</p>
+
           <form onSubmit={changeOnClick} encType="multipart/form-data">
             <div className="upload-form">
               <input
                 style={{ marginTop: "1rem" }}
                 accept="image/*"
                 type="file"
-                filename="frontImage"
+                filename="gym"
+                onChange={onChangeFile}
+              />
+              <input
+                style={{ marginTop: "1rem" }}
+                accept="image/*"
+                type="file"
+                filename="gym"
+                onChange={onChangeFile}
+              />
+              <input
+                style={{ marginTop: "1rem" }}
+                accept="image/*"
+                type="file"
+                filename="gym"
                 onChange={onChangeFile}
               />
               <button
@@ -323,7 +338,10 @@ const GymProfile = () => {
               <div className="trainer-img d-flex">
                 <div className="m-4 d-flex mt-5 flex-column">
                   <h4>Gym Name: {getGym.user_id.full_name}</h4>
-                  <h4>Location: {getGym.location}</h4>
+                  <h4>
+                    Location: {getGym.location.address}, {getGym.location.city},{" "}
+                    {getGym.location.state}{" "}
+                  </h4>
                   <h4>Gender: {getGym.gender_facilitation}</h4>
                 </div>
               </div>
