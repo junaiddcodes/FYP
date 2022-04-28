@@ -13,14 +13,21 @@ import Select from "@mui/material/Select";
 import TopBar from "../../Components/TopBar";
 import SideMenuAdmin from "../../Components/SideMenuAdmin";
 import { useNavigate } from "react-router-dom";
-
+import { useLocation } from "react-router-dom";
+import gymService from "../../services/GymService";
 const GymRequest = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const data = location.state.e;
+  var gymProfileDetails = {
+    listed: "",
+  };
 
   useEffect(() => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
+
     if (localStorage.getItem("token") == null) {
       navigate("/login");
       // console.log("log in first");
@@ -33,31 +40,64 @@ const GymRequest = () => {
       <div className="d-flex  w-100">
         <div className="w-50 "></div>
         <div className="d-flex justify-content-center w-50">
-          <Button className="m-3">Approve Gym</Button>
-          <Button className="m-3">Reject Gym</Button>
+          <Button
+            className="m-3"
+            onClick={() => {
+              gymProfileDetails = {
+                ...gymProfileDetails,
+                listed: "listed",
+              };
+              gymService
+                .update_gym(gymProfileDetails, data._id)
+                .then((data) => {
+                  console.log(data);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+              console.log(gymProfileDetails);
+              navigate("/admin-dashboard");
+            }}
+          >
+            Approve Gym
+          </Button>
+          <Button
+            className="m-3"
+            onClick={() => {
+              gymProfileDetails = {
+                ...gymProfileDetails,
+                listed: "rejected",
+              };
+              gymService
+                .update_gym(gymProfileDetails, data._id)
+                .then((data) => {
+                  console.log(data);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+              console.log(gymProfileDetails);
+              navigate("/admin-dashboard");
+            }}
+          >
+            Reject Gym
+          </Button>
         </div>
       </div>
       <div className="gym-desc-admin d-flex flex-column ">
         <img src="../../../images/dumbells.png" alt="" />
-        <h4>Mister Hit Gym</h4>
-        <h4>Membership Price:</h4>
-        <h4>Gender:</h4>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-          been the industry's standard dummy text ever since the 1500s, when an unknown printer took
-          a galley of type and scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting, remaining essentially
-          unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-          Lorem Ipsum passages, and more recently with desktop publishing software like Aldus
-          PageMaker including versions of Lorem Ipsum.
-        </p>
+        <h4>Name: {data.user_id.full_name}</h4>
+        <h4>Membership price: {data.gym_membership_price} pkr</h4>
+        <h4>Gender: {data.gender_facilitation}</h4>
+        <h4>Gym Description: </h4>
+        <p>{data.gym_desc}</p>
         <div className="d-flex flex-column ">
           <h4>Contact No.</h4>
-          <p>0310-4541569</p>
+          <p>{data.gym_contact_no}</p>
           <h4>Email</h4>
-          <p>a@b.com</p>
+          <p>{data.user_id.email}</p>
           <h4>Location</h4>
-          <p>Johar Town, Lahore</p>
+          <p>{data.location}</p>
         </div>
       </div>
     </div>

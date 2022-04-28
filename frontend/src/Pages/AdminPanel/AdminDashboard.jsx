@@ -21,6 +21,10 @@ const AdminDashboard = () => {
   const [allGyms, setAllGyms] = useState([]);
   const navigate = useNavigate();
 
+  const handleRoute = (e) => {
+    console.log(e);
+    navigate("/admin-gym-request", { state: { e } });
+  };
   useEffect(() => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
@@ -31,7 +35,7 @@ const AdminDashboard = () => {
     }
     console.log("abdullah taxi");
     gymService
-      .get_all_gyms()
+      .get_all_not_listed_gyms()
       .then((data) => {
         console.log(data);
         setAllGyms(data.crud);
@@ -60,53 +64,31 @@ const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>001</td>
-                    <td>Mister Fit Gym</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Link to="/admin-gym-request">
-                          <Button>Check Profile</Button>
-                        </Link>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    {/* <td>{allGyms[1].user_id.full_name}</td> */}
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>Check Profile</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Mister Fit Gym</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>Check Profile</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Mister Fit Gym</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>Check Profile</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Mister Fit Gym</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>Check Profile</Button>
-                      </div>
-                    </td>
-                  </tr>
+                  {allGyms.length == 0 ? (
+                    <tr>
+                      <td>No gym requests</td>
+                    </tr>
+                  ) : (
+                    allGyms.map((e, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{index}</td>
+                          <td>{e.user_id.full_name}</td>
+                          <td>
+                            <div className="d-flex align-items-center">
+                              <Button
+                                onClick={(event) => {
+                                  handleRoute(e);
+                                }}
+                              >
+                                Check Profile
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
                 </tbody>
               </table>
             </div>

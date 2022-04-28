@@ -127,7 +127,7 @@ const TrainerProfile = () => {
           console.log(trainerAge);
           if (getCustomer.listed == true) {
             setIsListed("listed");
-          } else setIsListed("not listed");
+          } else setIsListed("not-listed");
         } else {
           setIsAsk(true);
           setIsTrainerForm(false);
