@@ -1012,6 +1012,129 @@
   font-weight: 300;
 }
 
+.query-box {
+  background-color: #001e3c;
+  padding: 4rem;
+  border-radius: 10px;
+}
+
+.query-box .text-field {
+  height: 150px;
+  width: 400px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007fff;
+  color: white;
+  padding: 10px;
+}
+
+.query-box .input-text input {
+  width: 400px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  height: 2.5rem;
+  border-radius: 5px;
+  border: none;
+  background: #007fff;
+  color: white;
+  padding: 10px;
+}
+
+.query-box p {
+  margin: 5px;
+  margin-left: 10px;
+  color: yellow;
+}
+
+.query-box .general-p {
+  color: white;
+}
+
+.query-box .input-text input::-webkit-input-placeholder {
+  color: white;
+}
+
+.query-box .input-text input:-ms-input-placeholder {
+  color: white;
+}
+
+.query-box .input-text input::-ms-input-placeholder {
+  color: white;
+}
+
+.query-box .input-text input::placeholder {
+  color: white;
+}
+
+.query-box p {
+  font-weight: 300;
+}
+
+.query-box label {
+  color: white;
+  margin-top: 20px;
+}
+
+.query-box .gender-radio input {
+  width: 4rem;
+}
+
+.gym-box {
+  background-color: #001e3c;
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+.gym-box .input-text input {
+  width: 500px;
+  margin-top: 10px;
+  height: 2.5rem;
+  border-radius: 5px;
+  border: none;
+  background: #007fff;
+  color: white;
+  padding: 10px;
+}
+
+.gym-box p {
+  margin: 5px;
+  margin-left: 10px;
+  color: yellow;
+}
+
+.gym-box .general-p {
+  color: white;
+}
+
+.gym-box .input-text input::-webkit-input-placeholder {
+  color: white;
+}
+
+.gym-box .input-text input:-ms-input-placeholder {
+  color: white;
+}
+
+.gym-box .input-text input::-ms-input-placeholder {
+  color: white;
+}
+
+.gym-box .input-text input::placeholder {
+  color: white;
+}
+
+.gym-box p {
+  font-weight: 300;
+}
+
+.gym-box label {
+  color: white;
+  margin-top: 20px;
+}
+
+.gym-box .gender-radio input {
+  width: 4rem;
+}
+
 .page-container-gym table {
   color: white;
 }
@@ -1029,62 +1152,6 @@
 
 .page-container-gym .general-p {
   color: white;
-}
-
-.page-container-gym .gym-box {
-  background-color: #001e3c;
-  padding: 2rem;
-  border-radius: 10px;
-}
-
-.page-container-gym .gym-box .input-text input {
-  width: 500px;
-  margin-top: 10px;
-  height: 2.5rem;
-  border-radius: 5px;
-  border: none;
-  background: #007fff;
-  color: white;
-  padding: 10px;
-}
-
-.page-container-gym .gym-box p {
-  margin: 5px;
-  margin-left: 10px;
-  color: yellow;
-}
-
-.page-container-gym .gym-box .general-p {
-  color: white;
-}
-
-.page-container-gym .gym-box .input-text input::-webkit-input-placeholder {
-  color: white;
-}
-
-.page-container-gym .gym-box .input-text input:-ms-input-placeholder {
-  color: white;
-}
-
-.page-container-gym .gym-box .input-text input::-ms-input-placeholder {
-  color: white;
-}
-
-.page-container-gym .gym-box .input-text input::placeholder {
-  color: white;
-}
-
-.page-container-gym .gym-box p {
-  font-weight: 300;
-}
-
-.page-container-gym .gym-box label {
-  color: white;
-  margin-top: 20px;
-}
-
-.page-container-gym .gym-box .gender-radio input {
-  width: 4rem;
 }
 
 .text-field {

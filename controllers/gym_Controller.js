@@ -49,6 +49,8 @@ const loginGym = async (req, res) => {
     {
       _id: user._id,
       email: user.user_id.email,
+      full_name: user.user_id.full_name,
+      user_type: user.user_id.user_type,
     },
     config.get("jwtPrivateKey")
   );
@@ -159,8 +161,6 @@ const gymImage = async (req, res) => {
     const gym_images = [];
     const files = req.files;
 
-  
-
     for (const file of files) {
       const { path } = file;
 
@@ -172,11 +172,11 @@ const gymImage = async (req, res) => {
       gym_images.push(data);
     }
 
-    var final_data={
-      gym_photos:gym_images
-    }
+    var final_data = {
+      gym_photos: gym_images,
+    };
 
-    const crud = await gymDetails.findByIdAndUpdate({ _id: crudId },final_data, {
+    const crud = await gymDetails.findByIdAndUpdate({ _id: crudId }, final_data, {
       new: true,
       runValidators: true,
     });

@@ -48,7 +48,9 @@ const gymProfileSchema = yup.object().shape({
 
 const GymProfile = () => {
   const navigate = useNavigate();
-  const [fileName, setFileName] = React.useState("");
+  const [fileName1, setFileName1] = React.useState("");
+  const [fileName2, setFileName2] = React.useState("");
+  const [fileName3, setFileName3] = React.useState("");
   const [previewImage, setPreviewImage] = React.useState("");
   const [previewImage2, setPreviewImage2] = React.useState("");
   const [previewImage3, setPreviewImage3] = React.useState("");
@@ -56,10 +58,13 @@ const GymProfile = () => {
   const [isAsk, setIsAsk] = useState(false);
   const [getGym, setGetGym] = useState("");
   const [isGymForm, setIsGymForm] = useState(false);
-  const [isGymPicForm, setIsGymPicForm] = useState(true);
+  const [gymPhotos, setGymPhotos] = useState([]);
+  const [isGymPicForm, setIsGymPicForm] = useState(false);
   const [isListed, setIsListed] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [loggedInId, setLoggedInId] = useState("");
+  const [file, setFile] = useState(null);
+
   var loginId = "";
 
   var gymProfileDetails = {
@@ -77,6 +82,9 @@ const GymProfile = () => {
       .then((res) => {
         console.log(res);
         setGetGym(res.crud);
+        console.log(res.crud.gym_photos);
+        setGymPhotos(res.crud.gym_photos);
+
         if (res.crud.gym_membership_price) {
           setIsProfile(true);
           setIsGymPicForm(false);
@@ -104,31 +112,46 @@ const GymProfile = () => {
       navigate("/login");
       // console.log("log in first");
     }
-    // get_gym();
+    get_gym();
   }, [loginId]);
 
   const onChangeFile = (e) => {
-    setFileName(e.target.files[0]);
-    setPreviewImage(URL.createObjectURL(e.target.files[0]));
-    setPreviewImage2(URL.createObjectURL(e.target.files[1]));
-    setPreviewImage3(URL.createObjectURL(e.target.files[2]));
+    setFileName1(e.target.files[0]);
+    setFileName2(e.target.files[1]);
+    setFileName3(e.target.files[2]);
   };
 
   const changeOnClick = (e) => {
     e.preventDefault();
-
+    console.log("aaaaa");
+    console.log(file);
     const formData = new FormData();
+    let newArr = [];
+    for (let i = 0; i < file.length; i++) {
+      formData.append("gym", file[i]);
+    }
+    // formData.append("gym", newArr);
+    console.log(formData.get("gym"));
 
-    formData.append("frontImage", fileName);
-
-    axios
-      .post("/frontend/public/uploads", formData)
-      .then((res) => console.log(res.data))
+    // formData.append("gym", fileName1);
+    // formData.append("gym", fileName2);
+    // formData.append("gym", fileName3);
+    // console.log("bbbbb");
+    // console.log(formData);
+    gymService
+      .update_gym_photo(formData, loggedInId)
+      .then((data) => {
+        console.log(data);
+        setIsGymPicForm(false);
+        setIsProfile(true);
+        page_refresh();
+      })
       .catch((err) => {
         console.log(err);
       });
-    setIsProfile(true);
-    page_refresh();
+    // setIsProfile(true);
+    // page_refresh();
+    console.log("ccccc");
   };
   const {
     register: controlGymProfile,
@@ -301,6 +324,15 @@ const GymProfile = () => {
           <form onSubmit={changeOnClick} encType="multipart/form-data">
             <div className="upload-form">
               <input
+                multiple
+                style={{ marginTop: "1rem" }}
+                accept="image/*"
+                type="file"
+                filename="gym"
+                // onChange={onChangeFile}
+                onChange={(e) => setFile(e.target.files)}
+              />
+              {/* <input
                 style={{ marginTop: "1rem" }}
                 accept="image/*"
                 type="file"
@@ -313,14 +345,7 @@ const GymProfile = () => {
                 type="file"
                 filename="gym"
                 onChange={onChangeFile}
-              />
-              <input
-                style={{ marginTop: "1rem" }}
-                accept="image/*"
-                type="file"
-                filename="gym"
-                onChange={onChangeFile}
-              />
+              /> */}
               <button
                 style={{ marginTop: "1rem", marginBottom: "1rem" }}
                 className="btn btn-primary w-25"
@@ -388,15 +413,17 @@ const GymProfile = () => {
           </div>
           <div className="slider-div d-flex justify-content-center p-5">
             <Carousel width="70%">
-              <div>
-                <img src="../../../images/trainer.png" />
-              </div>
-              <div>
-                <img src="../../../images/trainer.png" />
-              </div>
-              <div>
-                <img src="../../../images/trainer.png" />
-              </div>
+              {gymPhotos.length == 0 ? (
+                <h2>No photos</h2>
+              ) : (
+                gymPhotos.map((e, index) => {
+                  return (
+                    <div key={index}>
+                      <img src={e.photo_url} />
+                    </div>
+                  );
+                })
+              )}
             </Carousel>
           </div>
           <div className="m-4 d-flex flex-column">

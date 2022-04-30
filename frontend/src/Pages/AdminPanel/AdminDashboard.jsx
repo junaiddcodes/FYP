@@ -16,11 +16,13 @@ import SideMenuAdmin from "../../Components/SideMenuAdmin";
 import { useNavigate } from "react-router-dom";
 import gymService from "../../services/GymService";
 import trainerService from "../../services/TrainerService";
+import adminService from "../../services/AdminService";
 
 const AdminDashboard = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [allGyms, setAllGyms] = useState([]);
   const [allTrainers, setAllTrainers] = useState([]);
+  const [allQueries, setAllQueries] = useState([]);
   const navigate = useNavigate();
 
   const handleRouteGym = (e) => {
@@ -30,6 +32,10 @@ const AdminDashboard = () => {
   const handleRouteTrainer = (e) => {
     console.log(e);
     navigate("/admin-trainer-request", { state: { e } });
+  };
+  const handleRouteQuery = (e) => {
+    console.log(e);
+    navigate("/admin-query-details", { state: { e } });
   };
   useEffect(() => {
     // userService.getLoggedInUser();
@@ -59,6 +65,17 @@ const AdminDashboard = () => {
       .catch((err) => {
         console.log(err);
       });
+    adminService
+      .get_all_queries()
+      .then((data) => {
+        console.log(data);
+        setAllQueries(data.crud);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    console.log("after request");
   }, []);
   return (
     <div className="page-container-admin">
@@ -175,53 +192,31 @@ const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>001</td>
-                    <td>Payment Issue</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Link to="/admin-query-details">
-                          <Button>View Details</Button>
-                        </Link>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Payment Issue</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>View Details</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Payment Issue</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>View Details</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Payment Issue</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>View Details</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Payment Issue</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>View Details</Button>
-                      </div>
-                    </td>
-                  </tr>
+                  {allQueries.length == 0 ? (
+                    <tr>
+                      <td>No Queries</td>
+                    </tr>
+                  ) : (
+                    allQueries.map((e, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{index}</td>
+                          <td>{e.query_subject}</td>
+                          <td>
+                            <div className="d-flex align-items-center">
+                              <Button
+                                onClick={(event) => {
+                                  handleRouteQuery(e);
+                                }}
+                              >
+                                Details
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
                 </tbody>
               </table>
             </div>

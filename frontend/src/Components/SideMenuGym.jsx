@@ -18,6 +18,13 @@ const SideMenuGym = () => {
             </i>
           </Link>
         </li>
+        <li>
+          <Link to="/create-query">
+            <i class="bx bx-question-mark">
+              <span className="links_name">Query</span>
+            </i>
+          </Link>
+        </li>
       </ul>
 
       <div className="profile_content">

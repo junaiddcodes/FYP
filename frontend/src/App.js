@@ -22,6 +22,7 @@ import AdminDashboard from "./Pages/AdminPanel/AdminDashboard";
 import GymRequest from "./Pages/AdminPanel/GymRequest";
 import TrainerRequest from "./Pages/AdminPanel/TrainerRequest";
 import QueryDetails from "./Pages/AdminPanel/QueryDetails";
+import QueryDetailsUser from "./Pages/QueryDetailsUser";
 import PaymentRequest from "./Pages/AdminPanel/PaymentRequest";
 import TrainerDashboard from "./Pages/TrainerPanel/TrainerDashboard";
 import TrainerProfile from "./Pages/TrainerPanel/TrainerProfile";
@@ -29,6 +30,7 @@ import TrainerActivityPlans from "./Pages/TrainerPanel/TrainerActivityPlans";
 import CreatePlan from "./Pages/TrainerPanel/CreatePlan";
 import Login from "./Pages/Register/Login";
 import LoginAdmin from "./Pages/Register/LoginAdmin";
+import CreateQuery from "./Pages/CreateQuery";
 import Messenger from "./Messenger/Messenger";
 function App() {
   return (
@@ -55,8 +57,10 @@ function App() {
           <Route path="/admin-gym-request" element={<GymRequest />} />
           <Route path="/admin-trainer-request" element={<TrainerRequest />} />
           <Route path="/admin-query-details" element={<QueryDetails />} />
+          <Route path="/user-query-details" element={<QueryDetailsUser />} />
           <Route path="/payment-request" element={<PaymentRequest />} />
           <Route path="/Messenger" element={<Messenger />} />
+          <Route path="/query" element={<CreateQuery />} />
 
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
