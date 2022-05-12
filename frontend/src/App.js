@@ -30,6 +30,7 @@ import CreatePlan from './Pages/TrainerPanel/CreatePlan'
 import Login from './Pages/Register/Login'
 import LoginAdmin from './Pages/Register/LoginAdmin'
 import Messenger from './Messenger/Messenger'
+import Home from './Pages/HomePanel/home'
 function App() {
   return (
     <BrowserRouter>
@@ -37,7 +38,7 @@ function App() {
         {/* <TopBar /> */}
         {/* <SideMenu /> */}
         <Routes>
-          <Route path="/" element={<h1>Well cum</h1>} />
+          <Route path="/" element={<Home />} />
           <Route path="/user-add-food" element={<AddFood />} />
           <Route path="/user-add-exercise" element={<AddExercise />} />
           <Route path="/user-add-water" element={<AddWater />} />
