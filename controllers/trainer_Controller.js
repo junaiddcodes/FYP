@@ -32,12 +32,12 @@ const createData = async (req, res) => {
 }
 const checkUser = async (req, res) => {
   try {
-    const result = await cloudinary.uploader.upload(req.file.path,{folder:"trainer"});
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'trainer',
+    })
     res.json(result)
-    
   } catch (err) {
     console.log(err)
-    
   }
   res.send('Working')
 }
@@ -56,6 +56,7 @@ const loginUser = async (req, res) => {
     {
       _id: user._id,
       email: user.user_id.email,
+      user_type: user.user_id.user_type,
     },
     config.get('jwtPrivateKey')
   )
@@ -116,21 +117,16 @@ const completeTrainer = async (req, res) => {
       time_worked: req.body.time_worked,
       trainer_desc: req.body.trainer_desc,
     }
-    const crud = await trainerDetails.findByIdAndUpdate(
-      { _id: crudId },
-      data,
-      {
-        new: true,
-        runValidators: true,
-      }
-    )
+    const crud = await trainerDetails.findByIdAndUpdate({ _id: crudId }, data, {
+      new: true,
+      runValidators: true,
+    })
 
     if (!crud) {
       return res.status(404).json({ message: 'item does not exist' })
     }
 
     res.status(200).json({ crud })
-    
   } catch (error) {
     res.status(500).json({ message: error })
   }
@@ -140,33 +136,28 @@ const completeTrainer = async (req, res) => {
 const trainerImage = async (req, res) => {
   try {
     const { trainerId: crudId } = req.params
-    const result = await cloudinary.uploader.upload(req.file.path,{folder:"trainer"});
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'trainer',
+    })
 
     var data = {
       trainer_photo: result.secure_url,
       cloudinary_id: result.public_id,
     }
-    const crud = await trainerDetails.findByIdAndUpdate(
-      { _id: crudId },
-      data,
-      {
-        new: true,
-        runValidators: true,
-      }
-    )
+    const crud = await trainerDetails.findByIdAndUpdate({ _id: crudId }, data, {
+      new: true,
+      runValidators: true,
+    })
 
     if (!crud) {
       return res.status(404).json({ message: 'item does not exist' })
     }
 
     res.status(200).json({ crud })
-    
   } catch (error) {
     res.status(500).json({ message: error })
   }
 }
-
-
 
 // // delete data from id
 const deleteData = async (req, res) => {
@@ -192,5 +183,5 @@ module.exports = {
   loginUser,
   checkUser,
   completeTrainer,
-  trainerImage
+  trainerImage,
 }

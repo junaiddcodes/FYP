@@ -47,6 +47,7 @@ const loginUser = async (req, res) => {
     {
       _id: user._id,
       email: user.user_id.email,
+      user_type: user.user_id.user_type,
     },
     config.get('jwtPrivateKey')
   )

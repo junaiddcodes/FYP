@@ -3,17 +3,31 @@ import React, { useEffect, useRef, useState } from 'react'
 import TopBar from '../../src/Components/TopBar'
 import Conversation from '../Components/conversaion/Conversation'
 import Message from '../Components/Messages/Message'
-import ChatOnline from '../Components/chatOnline/ChatOnline'
+// import ChatOnline from '../Components/chatOnline/ChatOnline'
 import userService from '../services/UserService'
 import axios from 'axios'
+// import { io } from 'socket.io-client'
 
 const Messenger = () => {
   const [conversations, setConsversation] = useState([])
   const [currentChat, setCurrentChat] = useState(null)
   const [messages, setMessages] = useState([])
   const [newMessage, setNewMessage] = useState('')
+  // const [socket, setSocket] = useState(null)
   const user_id = userService.getLoggedInUser()._id
   const scrollref = useRef()
+  const user_type = userService.getLoggedInUser().user_type
+  console.log(user_type)
+  // useEffect(() => {
+  //   setSocket(io('ws://localhost:8900'))
+  // }, [])
+
+  // useEffect(() => {
+  //   socket?.on('welcome', (message) => {
+  //     console.log(message)
+  //   })
+  // }, [socket])
+
   const getConversations = async () => {
     try {
       const res = await axios.get('conversation/' + user_id)
@@ -72,7 +86,11 @@ const Messenger = () => {
             />
             {conversations.map((c) => (
               <div onClick={() => setCurrentChat(c)}>
-                <Conversation conversation={c} currentUser={user_id} />
+                <Conversation
+                  conversation={c}
+                  currentUser={user_id}
+                  currentUserType={user_type}
+                />
               </div>
             ))}
           </div>
@@ -97,7 +115,7 @@ const Messenger = () => {
                     value={newMessage}
                   ></textarea>
                   <button className="chatSubmitButton " onClick={handleSubmit}>
-                    Submit
+                    Send
                   </button>
                 </div>
               </>
@@ -109,12 +127,7 @@ const Messenger = () => {
           </div>
         </div>
         <div className="chatOnline ">
-          <div className="chatOnlineWrapper">
-            <ChatOnline />
-            <ChatOnline />
-            <ChatOnline />
-            <ChatOnline />
-          </div>
+          <div className="chatOnlineWrapper"></div>
         </div>
       </div>
     </>
