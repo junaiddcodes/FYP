@@ -1,3 +1,89 @@
+.query-box {
+  background-color: $color2;
+  padding: 4rem;
+  border-radius: 10px;
+  .text-field {
+    height: 150px;
+    width: 400px;
+    border: none;
+    border-radius: 5px;
+    background-color: $color3;
+    color: $color4;
+    padding: 10px;
+  }
+  .input-text input {
+    width: 400px;
+    margin-top: 10px;
+    margin-bottom: 0px;
+    height: 2.5rem;
+    border-radius: 5px;
+    border: none;
+    background: $color3;
+    color: $color4;
+    padding: 10px;
+  }
+  p {
+    margin: 5px;
+    margin-left: 10px;
+    color: yellow;
+  }
+  .general-p {
+    color: $color4;
+  }
+  .input-text input::placeholder {
+    color: $color4;
+  }
+  p {
+    font-weight: 300;
+  }
+  label {
+    color: $color4;
+    margin-top: 20px;
+  }
+  .gender-radio {
+    input {
+      width: 4rem;
+    }
+  }
+}
+.gym-box {
+  background-color: $color2;
+  padding: 2rem;
+  border-radius: 10px;
+  .input-text input {
+    width: 500px;
+    margin-top: 10px;
+    height: 2.5rem;
+    border-radius: 5px;
+    border: none;
+    background: $color3;
+    color: $color4;
+    padding: 10px;
+  }
+  p {
+    margin: 5px;
+    margin-left: 10px;
+    color: yellow;
+  }
+  .general-p {
+    color: $color4;
+  }
+  .input-text input::placeholder {
+    color: $color4;
+  }
+  p {
+    font-weight: 300;
+  }
+  label {
+    color: $color4;
+    margin-top: 20px;
+  }
+  .gender-radio {
+    input {
+      width: 4rem;
+    }
+  }
+}
 .page-container-gym {
   table {
     color: $color4;
@@ -13,44 +99,6 @@
   }
   .general-p {
     color: $color4;
-  }
-  .gym-box {
-    background-color: $color2;
-    padding: 2rem;
-    border-radius: 10px;
-    .input-text input {
-      width: 500px;
-      margin-top: 10px;
-      height: 2.5rem;
-      border-radius: 5px;
-      border: none;
-      background: $color3;
-      color: $color4;
-      padding: 10px;
-    }
-    p {
-      margin: 5px;
-      margin-left: 10px;
-      color: yellow;
-    }
-    .general-p {
-      color: $color4;
-    }
-    .input-text input::placeholder {
-      color: $color4;
-    }
-    p {
-      font-weight: 300;
-    }
-    label {
-      color: $color4;
-      margin-top: 20px;
-    }
-    .gender-radio {
-      input {
-        width: 4rem;
-      }
-    }
   }
 }
 

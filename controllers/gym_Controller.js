@@ -49,6 +49,8 @@ const loginGym = async (req, res) => {
     {
       _id: user._id,
       email: user.user_id.email,
+      full_name: user.user_id.full_name,
+      user_type: user.user_id.user_type,
     },
     config.get("jwtPrivateKey")
   );

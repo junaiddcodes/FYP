@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const Joi = require('joi')
+const mongoose = require("mongoose");
+const Joi = require("joi");
 
 const queryDetailsSchema = mongoose.Schema({
   user_id: String,
@@ -7,9 +7,9 @@ const queryDetailsSchema = mongoose.Schema({
   query_subject: String,
   query_desc: String,
   query_response: String,
-})
+});
 
-const queryDetailsModel = mongoose.model('Queries', queryDetailsSchema)
+const queryDetailsModel = mongoose.model("Queries", queryDetailsSchema);
 
 function validateQuery(data) {
   const schema = Joi.object({
@@ -17,10 +17,10 @@ function validateQuery(data) {
     user_type: Joi.string().required(),
     query_subject: Joi.string().required(),
     query_desc: Joi.string().required(),
-    query_response: Joi.string().required(),
-  })
-  return schema.validate(data)
+    query_response: Joi.string(),
+  });
+  return schema.validate(data);
 }
 
-module.exports.queryDetailsModel = queryDetailsModel
-module.exports.Validate = validateQuery
+module.exports.queryDetailsModel = queryDetailsModel;
+module.exports.Validate = validateQuery;

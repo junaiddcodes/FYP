@@ -13,10 +13,12 @@ import Select from "@mui/material/Select";
 import TopBar from "../../Components/TopBar";
 import SideMenuAdmin from "../../Components/SideMenuAdmin";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const QueryDetails = () => {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const data = location.state.e;
   useEffect(() => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
@@ -32,8 +34,7 @@ const QueryDetails = () => {
       <SideMenuAdmin />
       <h2>Query Details</h2>
       <div className="admin-box d-flex flex-column">
-        <h4 className="mt-2">Query Id: </h4>
-        <h4 className="mt-2">User Id: </h4>
+        <h4 className="mt-2">User Id: {data._id}</h4>
         <h4 className="mt-2">User Name: </h4>
         <h4 className="mt-2">User Type: </h4>
         <h4 className="mt-2">Query Subject: </h4>
