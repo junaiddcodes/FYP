@@ -140,7 +140,9 @@ const AddFood = () => {
               <i class="bx bx-x"></i>
             </a>
 
-            <Select className="select-drop" placeholder="Select Meal" options={mealOptions} />
+
+
+            <Select className="select-drop" placeholder="Select Meal" options={mealOptions}/>
             <input
               type="text"
               name="foodapi"
@@ -159,7 +161,11 @@ const AddFood = () => {
               }}
             />
 
-            <Select className="select-drop" placeholder="Select Food" options={fodOptions} />
+            <Select
+              className="select-drop"
+              placeholder="Select Food"
+              options={fodOptions}
+            />
             <Select
               className="select-drop"
               placeholder="Select Quantity"
@@ -319,7 +325,9 @@ const AddFood = () => {
                                   >
                                     <i class="bx bx-x"></i>
                                   </a>
-                                  <h3>Are you sure you want to delete the food?</h3>
+                                  <h3>
+                                    Are you sure you want to delete the food?
+                                  </h3>
                                   <p>Select yes to delete the item</p>
                                 </div>
                                 <div className="d-flex">
@@ -327,9 +335,11 @@ const AddFood = () => {
                                     className="btn-dark m-3"
                                     type="submit "
                                     onClick={() => {
-                                      userService.deleteMealData(e._id).then(() => {
-                                        console.log("Meal is Deleted");
-                                      });
+                                      userService
+                                        .deleteMealData(e._id)
+                                        .then(() => {
+                                          console.log("Meal is Deleted");
+                                        });
                                       getMealData();
                                       setConfirmDelete(false);
                                     }}

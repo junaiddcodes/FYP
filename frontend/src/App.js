@@ -45,10 +45,10 @@ function App() {
           <Route path="/user-add-water" element={<AddWater />} />
           <Route path="/search-gym" element={<SearchGym />} />
           <Route path="/search-trainer" element={<SearchTrainer />} />
-          <Route path="/gym-description" element={<GymDescription />} />
+          <Route path="/gym-description/:id" element={<GymDescription />} />
           <Route path="/gym-dashboard" element={<GymProfile />} />
           <Route path="/trainer-profile" element={<TrainerProfile />} />
-          <Route path="/trainer-description" element={<TrainerDescription />} />
+          <Route path="/trainer-description/:id" element={<TrainerDescription />} />
           <Route path="/activity-plans" element={<ActivityPlans />} />
           <Route path="/trainer-activity-plans" element={<TrainerActivityPlans />} />
           <Route path="/trainer-create-plan" element={<CreatePlan />} />
