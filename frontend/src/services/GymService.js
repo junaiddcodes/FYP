@@ -10,6 +10,8 @@ class GymService extends GenericService {
   get_one_gym = (id) => this.get("gym/" + id);
   get_all_gyms = () => this.get("gym");
   get_all_not_listed_gyms = () => this.get("gym/not-listed");
+  get_search_gyms = (filter) => this.post("gym/search",filter);
+  
 
   isLoggedIn = () => {
     return localStorage.getItem("token") ? true : false;
