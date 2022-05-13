@@ -17,12 +17,14 @@ const {
   checkUser,
   completeGym,
   gymImage,
-  gymNotListed
+  gymNotListed,
+  gymSearchFilter
 } = require('../../controllers/gym_Controller')
 
 router.route('/gymregister').post(Verify,Hash,createData)
 router.route('/').get(getAllData)
 router.route('/not-listed').get(gymNotListed)
+router.route('/search').post(gymSearchFilter)
 router.route('/:gymId').delete(deleteData).get(getOneData).patch(completeGym)
 router.route('/image/:gymId').patch(upload.array('gym'),gymImage)
 router.route('/login').post(loginGym)

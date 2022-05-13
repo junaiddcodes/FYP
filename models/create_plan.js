@@ -6,11 +6,13 @@ const createPlanSchema = mongoose.Schema({
     plan_title: String,
     plan_desc: String,
     plan_duration_weeks: Number,
-    activities: [String],
-    activity_day:String,
+    total_activities: [{
+        week_no:Number,
+        activities:[{activity_day:String,
+        activity:String}]
+    }],
+
     plan_price: String
-
-
 })
 
 
