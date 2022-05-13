@@ -14,6 +14,7 @@ import TopBar from "../../Components/TopBar";
 import SideMenuTrainer from "../../Components/SideMenuTrainer";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import userService from "../../services/UserService";
 
 const TrainerActivityPlans = () => {
   const navigate = useNavigate();
@@ -24,6 +25,13 @@ const TrainerActivityPlans = () => {
     if (localStorage.getItem("token") == null) {
       navigate("/login");
       // console.log("log in first");
+    }
+    if (
+      userService.getLoggedInUser().user_type == "customer" ||
+      userService.getLoggedInUser().user_type == "gym" ||
+      userService.getLoggedInUser().user_type == "admin"
+    ) {
+      navigate("/login");
     }
   }, []);
   return (

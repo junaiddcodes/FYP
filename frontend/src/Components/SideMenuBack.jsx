@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const SideMenuGym = () => {
+const SideMenuBack = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="sidebar">
       <div className="logo-content">
@@ -11,17 +14,14 @@ const SideMenuGym = () => {
         </div>{" "}
       </div>
       <ul className="nav_list">
-        <li>
-          <Link to="/gym-dashboard">
-            <i class="bx bxs-home-circle">
-              <span className="links_name">Home</span>
-            </i>
-          </Link>
-        </li>
-        <li>
-          <Link to="/query">
-            <i class="bx bx-question-mark">
-              <span className="links_name">Query</span>
+        <li
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          <Link to="">
+            <i class="bx bx-left-arrow-alt">
+              <span className="links_name">Back</span>
             </i>
           </Link>
         </li>
@@ -41,4 +41,4 @@ const SideMenuGym = () => {
   );
 };
 
-export default SideMenuGym;
+export default SideMenuBack;

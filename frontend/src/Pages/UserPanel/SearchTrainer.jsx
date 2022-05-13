@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Modal from "react-modal";
 import { FaSearch } from "react-icons/fa";
@@ -13,11 +13,28 @@ import Select from "@mui/material/Select";
 import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
 import { useNavigate } from "react-router-dom";
+import userService from "../../services/UserService";
 
 const SearchTrainer = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const navigate = useNavigate();
+  useEffect(() => {
+    // userService.getLoggedInUser();
+    // setLoggedInId(userService.getLoggedInUser()._id);
+    // console.log(localStorage.getItem("token"));
+    if (localStorage.getItem("token") == null) {
+      navigate("/login");
+      // console.log("log in first");
+    }
+    if (
+      userService.getLoggedInUser().user_type == "trainer" ||
+      userService.getLoggedInUser().user_type == "gym" ||
+      userService.getLoggedInUser().user_type == "admin"
+    ) {
+      navigate("/login");
+    }
+  }, []);
   return (
     <div className="page-container-user">
       <TopBar />

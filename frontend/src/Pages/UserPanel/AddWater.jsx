@@ -74,14 +74,20 @@ const AddWater = () => {
     userService.waterIntake(waterIntake);
     getWaterData();
   }
-
   const water = useRef(null);
 
   useEffect(() => {
     if (localStorage.getItem("token") == null) {
       navigate("/login");
-      getWaterData();
     }
+    if (
+      userService.getLoggedInUser().user_type == "trainer" ||
+      userService.getLoggedInUser().user_type == "gym" ||
+      userService.getLoggedInUser().user_type == "admin"
+    ) {
+      navigate("/login");
+    }
+    getWaterData();
   }, [getWaterData]);
 
   return (

@@ -15,6 +15,7 @@ import SideMenuAdmin from "../../Components/SideMenuAdmin";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import trainerService from "../../services/TrainerService";
+import userService from "../../services/UserService";
 
 const TrainerRequest = () => {
   const [trainerAge, setTrainerAge] = useState(10);
@@ -29,10 +30,17 @@ const TrainerRequest = () => {
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
     if (localStorage.getItem("token") == null) {
-      navigate("/login");
+      navigate("/login/admin");
       // console.log("log in first");
-      setTrainerAge(getAge(data.dob));
     }
+    if (
+      userService.getLoggedInUser().user_type == "customer" ||
+      userService.getLoggedInUser().user_type == "gym" ||
+      userService.getLoggedInUser().user_type == "trainer"
+    ) {
+      navigate("/login/admin");
+    }
+    setTrainerAge(getAge(data.dob));
   }, []);
   function getAge(dateString) {
     var today = new Date();

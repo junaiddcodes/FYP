@@ -47,7 +47,7 @@ const SideMenu = () => {
           </Link>
         </li>
         <li>
-          <Link to="/create-query">
+          <Link to="/query">
             <i class="bx bx-question-mark">
               <span className="links_name">Query</span>
             </i>

@@ -32,6 +32,13 @@ const AddFood = () => {
       navigate("/login");
       // console.log("log in first")
     }
+    if (
+      userService.getLoggedInUser().user_type == "trainer" ||
+      userService.getLoggedInUser().user_type == "gym" ||
+      userService.getLoggedInUser().user_type == "admin"
+    ) {
+      navigate("/login");
+    }
     getMealData();
   }, []);
   const mealOptions = [

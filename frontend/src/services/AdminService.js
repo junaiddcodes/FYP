@@ -16,7 +16,9 @@ class AdminService extends GenericService {
         });
     });
   get_all_queries = () => this.get("query/getquery");
+  get_user_queries = (id) => this.get("query/user/" + id);
   add_query = (queryDetails) => this.post("query/addquery", queryDetails);
+  update_query = (queryDetails, id) => this.patch("query/" + id, queryDetails);
   isLoggedIn = () => {
     return localStorage.getItem("token") ? true : false;
   };

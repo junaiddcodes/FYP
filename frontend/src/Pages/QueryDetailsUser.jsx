@@ -14,6 +14,7 @@ import TopBar from "../Components/TopBar";
 import SideMenuAdmin from "../Components/SideMenuAdmin";
 import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import userService from "../services/UserService";
 
 const QueryDetailsUser = () => {
   const navigate = useNavigate();
@@ -25,7 +26,15 @@ const QueryDetailsUser = () => {
     // console.log(localStorage.getItem("token"));
     if (localStorage.getItem("token") == null) {
       navigate("/login");
+
       // console.log("log in first");
+    }
+    if (
+      userService.getLoggedInUser().user_type == "trainer" ||
+      userService.getLoggedInUser().user_type == "gym" ||
+      userService.getLoggedInUser().user_type == "admin"
+    ) {
+      navigate("/login");
     }
   }, []);
   return (

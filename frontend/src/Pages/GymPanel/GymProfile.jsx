@@ -112,6 +112,13 @@ const GymProfile = () => {
       navigate("/login");
       // console.log("log in first");
     }
+    if (
+      userService.getLoggedInUser().user_type == "customer" ||
+      userService.getLoggedInUser().user_type == "trainer" ||
+      userService.getLoggedInUser().user_type == "admin"
+    ) {
+      navigate("/login");
+    }
     get_gym();
   }, [loginId]);
 

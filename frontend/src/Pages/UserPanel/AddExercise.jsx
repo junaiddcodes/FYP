@@ -10,6 +10,7 @@ import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
+import userService from "../../services/UserService";
 
 const AddExercise = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -24,6 +25,13 @@ const AddExercise = () => {
     if (localStorage.getItem("token") == null) {
       navigate("/login");
       // console.log("log in first");
+    }
+    if (
+      userService.getLoggedInUser().user_type == "trainer" ||
+      userService.getLoggedInUser().user_type == "gym" ||
+      userService.getLoggedInUser().user_type == "admin"
+    ) {
+      navigate("/login");
     }
   }, []);
   const workoutOptions = [

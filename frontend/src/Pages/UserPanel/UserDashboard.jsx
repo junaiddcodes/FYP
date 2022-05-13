@@ -17,6 +17,7 @@ const UserDashboard = () => {
   var [currentCarbs, setCurrentCarbs] = useState(0);
   var [userData, setUserData] = useState({});
   var userId = userService.getLoggedInUser()._id;
+  var errorUser = "Login as a customer first!";
   function getUserCalorie() {
     userService
       .getoneUser(userId)
@@ -33,6 +34,14 @@ const UserDashboard = () => {
       navigate("/login");
       // console.log("log in first");
     }
+    if (
+      userService.getLoggedInUser().user_type == "trainer" ||
+      userService.getLoggedInUser().user_type == "gym" ||
+      userService.getLoggedInUser().user_type == "admin"
+    ) {
+      navigate("/login");
+    }
+
     getUserCalorie();
   }, []);
 

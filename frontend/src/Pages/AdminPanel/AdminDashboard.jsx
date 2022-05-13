@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import gymService from "../../services/GymService";
 import trainerService from "../../services/TrainerService";
 import adminService from "../../services/AdminService";
+import userService from "../../services/UserService";
 
 const AdminDashboard = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -44,6 +45,13 @@ const AdminDashboard = () => {
     if (localStorage.getItem("token") == null) {
       navigate("/login");
       // console.log("log in first");
+    }
+    if (
+      userService.getLoggedInUser().user_type == "customer" ||
+      userService.getLoggedInUser().user_type == "gym" ||
+      userService.getLoggedInUser().user_type == "trainer"
+    ) {
+      navigate("/login/admin");
     }
     console.log("abdullah taxi");
     gymService

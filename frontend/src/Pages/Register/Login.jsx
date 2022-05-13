@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../../styles/pages.css";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -7,17 +9,22 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import userService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 const schema = yup.object().shape({
   Email: yup.string().email().required(),
   password: yup.string().min(8).max(20).required(),
   role: yup.string().required("A radio option is required").nullable(),
 });
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [authError, setAuthError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
+  // const data = location.state.errorUser;
   // const [isSubmit, setIsSubmit] = useState(false);
   const {
     register,
@@ -26,6 +33,12 @@ const Login = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  // useEffect(() => {
+  //   if (data) {
+  //     toast(data);
+  //   }
+  // }, []);
 
   const submitForm = (data) => {
     console.log(data.role);

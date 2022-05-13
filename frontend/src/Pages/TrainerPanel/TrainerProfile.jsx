@@ -148,6 +148,13 @@ const TrainerProfile = () => {
       navigate("/login");
       // console.log("log in first");
     }
+    if (
+      userService.getLoggedInUser().user_type == "customer" ||
+      userService.getLoggedInUser().user_type == "gym" ||
+      userService.getLoggedInUser().user_type == "admin"
+    ) {
+      navigate("/login");
+    }
     get_customer();
   }, [loginId]);
 

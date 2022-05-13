@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import TopBar from "../Components/TopBar";
-import SideMenuGym from "../Components/SideMenuGym";
+import SideMenuBack from "../Components/SideMenuBack";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -31,8 +31,9 @@ const CreateQuery = () => {
   const navigate = useNavigate();
   const [loggedInId, setLoggedInId] = useState("");
   const [user, setUser] = useState("");
+  const [users, setUsers] = useState("");
   const [allQueries, setAllQueries] = useState([]);
-  var users = "";
+  // var users = "";
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -42,6 +43,7 @@ const CreateQuery = () => {
     user_type: "",
     query_subject: "",
     query_desc: "",
+    query_response: "?",
   };
   const handleRouteQuery = (e) => {
     console.log(e);
@@ -49,7 +51,7 @@ const CreateQuery = () => {
   };
   useEffect(() => {
     setLoggedInId(userService.getLoggedInUser()._id);
-    users = adminService.getLoggedInUser();
+    setUsers(adminService.getLoggedInUser());
     console.log(users);
 
     if (userService.isLoggedIn() == false) {
@@ -57,7 +59,7 @@ const CreateQuery = () => {
       // console.log("log in first");
     }
     adminService
-      .get_all_queries()
+      .get_user_queries(userService.getLoggedInUser()._id)
       .then((data) => {
         console.log(data);
         setAllQueries(data.crud);
@@ -99,12 +101,13 @@ const CreateQuery = () => {
       });
     console.log(queryDetails);
     console.log("after request");
+    page_refresh();
   };
 
   return (
     <div className="page-container-admin">
       <TopBar />
-      <SideMenuGym />
+      <SideMenuBack />
 
       <h3 id="gym-reqs">Your Queries</h3>
       <div className="admin-box mt-3">
