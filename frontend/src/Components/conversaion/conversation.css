@@ -16,7 +16,8 @@
 
 .conversationName {
   font-weight: 500;
+  color: white;
 }
 .conversation:hover {
-  background-color: rgb(245, 243, 243);
+  background-color: rgba(28, 87, 146, 0.58);
 }

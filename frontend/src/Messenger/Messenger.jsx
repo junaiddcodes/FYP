@@ -1,10 +1,11 @@
 import './messenger.css'
 import React, { useEffect, useRef, useState } from 'react'
-import TopBar from '../../src/Components/TopBar'
+import TopBar from '../Components/TopBar'
 import Conversation from '../Components/conversaion/Conversation'
 import Message from '../Components/Messages/Message'
 // import ChatOnline from '../Components/chatOnline/ChatOnline'
 import userService from '../services/UserService'
+import SideMenu from '../Components/SideMenu'
 import axios from 'axios'
 // import { io } from 'socket.io-client'
 
@@ -75,31 +76,18 @@ const Messenger = () => {
   }, [messages])
 
   return (
-    <>
+    <div className="page-container-user">
       <TopBar />
+      <SideMenu />
       <div className="messenger">
-        <div className="chatMenu">
-          <div className="chatMenuWrapper">
-            <input
-              placeholder="search of friends"
-              className="chatMessageInput"
-            />
-            {conversations.map((c) => (
-              <div onClick={() => setCurrentChat(c)}>
-                <Conversation
-                  conversation={c}
-                  currentUser={user_id}
-                  currentUserType={user_type}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-
         <div className="chatBox">
           <div className="chatBoxWrapper">
             {currentChat ? (
               <>
+                <div className="chatNameDiv">
+                  {/* //enter the name here */}
+                  <h2 className="chatName"></h2>
+                </div>
                 <div className="chatBoxTop">
                   {messages.map((m) => (
                     <div ref={scrollref}>
@@ -126,11 +114,25 @@ const Messenger = () => {
             )}
           </div>
         </div>
-        <div className="chatOnline ">
-          <div className="chatOnlineWrapper"></div>
+        <div className="chatMenu">
+          <div className="chatMenuWrapper">
+            <input
+              placeholder="search of friends"
+              className="chatMessageInput"
+            />
+            {conversations.map((c, key) => (
+              <div onClick={() => setCurrentChat(c)} key={key}>
+                <Conversation
+                  conversation={c}
+                  currentUser={user_id}
+                  currentUserType={user_type}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
