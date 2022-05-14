@@ -29,7 +29,7 @@ const AddWater = () => {
     time_date: '',
   }
   const [isInitialRender, setIsInitialRender] = useState(true)
-  const date = new Date().getTime()
+  const dateX = new Date().getTime()
 
   function getWaterData() {
     userService
@@ -57,6 +57,7 @@ const AddWater = () => {
     if (water.current.value < 0.1) {
       // console.log('value is invalid')
       setErrorMessage('value is invalid')
+      return false
     } else {
       setErrorMessage('')
     }
@@ -73,15 +74,21 @@ const AddWater = () => {
     userService.waterIntake(waterIntake)
     getWaterData()
   }
-
   const water = useRef(null)
 
   useEffect(() => {
     if (localStorage.getItem('token') == null) {
       navigate('/login')
-      getWaterData()
     }
-  }, [])
+    if (
+      userService.getLoggedInUser().user_type == 'trainer' ||
+      userService.getLoggedInUser().user_type == 'gym' ||
+      userService.getLoggedInUser().user_type == 'admin'
+    ) {
+      navigate('/login')
+    }
+    getWaterData()
+  }, [getWaterData])
 
   return (
     <div className="page-container-user">

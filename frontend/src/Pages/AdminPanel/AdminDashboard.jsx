@@ -14,11 +14,30 @@ import { Link } from "react-router-dom";
 import TopBar from "../../Components/TopBar";
 import SideMenuAdmin from "../../Components/SideMenuAdmin";
 import { useNavigate } from "react-router-dom";
+import gymService from "../../services/GymService";
+import trainerService from "../../services/TrainerService";
+import adminService from "../../services/AdminService";
+import userService from "../../services/UserService";
 
 const AdminDashboard = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [allGyms, setAllGyms] = useState([]);
+  const [allTrainers, setAllTrainers] = useState([]);
+  const [allQueries, setAllQueries] = useState([]);
   const navigate = useNavigate();
 
+  const handleRouteGym = (e) => {
+    console.log(e);
+    navigate("/admin-gym-request", { state: { e } });
+  };
+  const handleRouteTrainer = (e) => {
+    console.log(e);
+    navigate("/admin-trainer-request", { state: { e } });
+  };
+  const handleRouteQuery = (e) => {
+    console.log(e);
+    navigate("/admin-query-details", { state: { e } });
+  };
   useEffect(() => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
@@ -27,6 +46,44 @@ const AdminDashboard = () => {
       navigate("/login");
       // console.log("log in first");
     }
+    if (
+      userService.getLoggedInUser().user_type == "customer" ||
+      userService.getLoggedInUser().user_type == "gym" ||
+      userService.getLoggedInUser().user_type == "trainer"
+    ) {
+      navigate("/login/admin");
+    }
+    console.log("abdullah taxi");
+    gymService
+      .get_all_not_listed_gyms()
+      .then((data) => {
+        console.log(data);
+        setAllGyms(data.crud);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    trainerService
+      .get_all_not_listed_trainers()
+      .then((data) => {
+        console.log(data);
+        setAllTrainers(data.crud);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    adminService
+      .get_all_queries()
+      .then((data) => {
+        console.log(data);
+        setAllQueries(data.crud);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    console.log("after request");
   }, []);
   return (
     <div className="page-container-admin">
@@ -47,53 +104,31 @@ const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>001</td>
-                    <td>Mister Fit Gym</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Link to="/admin-gym-request">
-                          <Button>Check Profile</Button>
-                        </Link>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Mister Fit Gym</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>Check Profile</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Mister Fit Gym</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>Check Profile</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Mister Fit Gym</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>Check Profile</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Mister Fit Gym</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>Check Profile</Button>
-                      </div>
-                    </td>
-                  </tr>
+                  {allGyms.length == 0 ? (
+                    <tr>
+                      <td>No gym requests</td>
+                    </tr>
+                  ) : (
+                    allGyms.map((e, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{index}</td>
+                          <td>{e.user_id.full_name}</td>
+                          <td>
+                            <div className="d-flex align-items-center">
+                              <Button
+                                onClick={(event) => {
+                                  handleRouteGym(e);
+                                }}
+                              >
+                                Check Profile
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
                 </tbody>
               </table>
             </div>
@@ -117,53 +152,31 @@ const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>001</td>
-                    <td>Hamza Kasim</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Link to="/admin-trainer-request">
-                          <Button>Check Profile</Button>
-                        </Link>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Mister Fit Gym</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>Check Profile</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Mister Fit Gym</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>Check Profile</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Mister Fit Gym</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>Check Profile</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Mister Fit Gym</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>Check Profile</Button>
-                      </div>
-                    </td>
-                  </tr>
+                  {allTrainers.length == 0 ? (
+                    <tr>
+                      <td>No trainer requests</td>
+                    </tr>
+                  ) : (
+                    allTrainers.map((e, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{index}</td>
+                          <td>{e.user_id.full_name}</td>
+                          <td>
+                            <div className="d-flex align-items-center">
+                              <Button
+                                onClick={(event) => {
+                                  handleRouteTrainer(e);
+                                }}
+                              >
+                                Check Profile
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
                 </tbody>
               </table>
             </div>
@@ -187,53 +200,31 @@ const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>001</td>
-                    <td>Payment Issue</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Link to="/admin-query-details">
-                          <Button>View Details</Button>
-                        </Link>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Payment Issue</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>View Details</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Payment Issue</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>View Details</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Payment Issue</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>View Details</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Payment Issue</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>View Details</Button>
-                      </div>
-                    </td>
-                  </tr>
+                  {allQueries.length == 0 ? (
+                    <tr>
+                      <td>No Queries</td>
+                    </tr>
+                  ) : (
+                    allQueries.map((e, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{index}</td>
+                          <td>{e.query_subject}</td>
+                          <td>
+                            <div className="d-flex align-items-center">
+                              <Button
+                                onClick={(event) => {
+                                  handleRouteQuery(e);
+                                }}
+                              >
+                                Details
+                              </Button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
                 </tbody>
               </table>
             </div>

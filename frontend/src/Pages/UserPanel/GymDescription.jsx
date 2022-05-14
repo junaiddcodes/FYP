@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import Modal from "react-modal";
 import { FaSearch } from "react-icons/fa";
@@ -12,10 +12,53 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
+import { useNavigate } from "react-router-dom";
+import userService from "../../services/UserService";
+import { useParams } from "react-router-dom";
+import gymService from "../../services/GymService";
 
 const GymDescription = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // userService.getLoggedInUser();
+    // setLoggedInId(userService.getLoggedInUser()._id);
+    // console.log(localStorage.getItem("token"));
+    if (localStorage.getItem("token") == null) {
+      navigate("/login");
+      // console.log("log in first");
+    }
+    if (
+      userService.getLoggedInUser().user_type == "trainer" ||
+      userService.getLoggedInUser().user_type == "gym" ||
+      userService.getLoggedInUser().user_type == "admin"
+    ) {
+      navigate("/login");
+    }
+  }, []);
+  const [gymDetails, setGymDetails] = useState({
+    user_id: { full_name: "", email: "" },
+    gym_membership_price: 0,
+    gender_facilitation: "",
+    gym_desc: "",
+    gym_contact_no: "",
+    location: {
+      address: "",
+      city: "",
+      state: "",
+    },
+    gym_photos: [{ photo_url: "" }],
+  });
+  const gymId = useParams();
+  function getGym() {
+    gymService.get_one_gym(gymId.id).then((data) => {
+      setGymDetails(data.crud);
+      console.log(data);
+    });
+  }
+  useEffect(getGym, []);
   return (
     <div className="page-container-user">
       <TopBar />
@@ -23,27 +66,19 @@ const GymDescription = () => {
       <h2>Gym Description</h2>
       <div className="d-flex">
         <div className="gym-desc d-flex flex-column ">
-          <img src="../../../images/dumbells.png" alt="" />
-          <h4>Mister Hit Gym</h4>
-          <h4>Membership Price:</h4>
-          <h4>Gender:</h4>
-          <p>
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-            has been the industry's standard dummy text ever since the 1500s, when an unknown
-            printer took a galley of type and scrambled it to make a type specimen book. It has
-            survived not only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s with the release of
-            Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-            publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-          </p>
+          <img src={gymDetails.gym_photos[0].photo_url} alt="" />
+          <h4>{gymDetails.user_id.full_name}</h4>
+          <h4>Membership Price:{gymDetails.gym_membership_price}</h4>
+          <h4>Gender:{gymDetails.gender_facilitation}</h4>
+          <p>{gymDetails.gym_desc}</p>
         </div>
         <div className="gym-contact d-flex flex-column ">
           <h4>Contact No.</h4>
-          <p>0310-4541569</p>
+          <p>{gymDetails.gym_contact_no}</p>
           <h4>Email</h4>
-          <p>a@b.com</p>
+          <p>{gymDetails.user_id.email}</p>
           <h4>Location</h4>
-          <p>Johar Town, Lahore</p>
+          <p>{gymDetails.location.address + ", " + gymDetails.location.city}</p>
         </div>
       </div>
     </div>

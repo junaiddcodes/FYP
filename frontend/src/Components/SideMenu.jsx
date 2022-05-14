@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 
 const SideMenu = () => {
   return (
@@ -8,7 +8,7 @@ const SideMenu = () => {
         <div className="logo">
           <i class="bx bx-dumbbell"></i>
           <div className="logo-name">Fit</div>
-        </div>{' '}
+        </div>{" "}
       </div>
       <ul className="nav_list">
         <li>
@@ -46,6 +46,13 @@ const SideMenu = () => {
             </i>
           </Link>
         </li>
+        <li>
+          <Link to="/query">
+            <i class="bx bx-question-mark">
+              <span className="links_name">Query</span>
+            </i>
+          </Link>
+        </li>
         {/* <li>
           <Link to="/activity-plans">
             <i class="bx bx-run">
@@ -66,7 +73,7 @@ const SideMenu = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SideMenu
+export default SideMenu;

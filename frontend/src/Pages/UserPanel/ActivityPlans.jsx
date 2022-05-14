@@ -13,6 +13,7 @@ import Select from "@mui/material/Select";
 import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
 import { useNavigate } from "react-router-dom";
+import userService from "../../services/UserService";
 
 const ActivityPlans = () => {
   const navigate = useNavigate();
@@ -23,6 +24,13 @@ const ActivityPlans = () => {
     // console.log(localStorage.getItem("token"));
     if (localStorage.getItem("token") == null) {
       navigate("/login");
+      if (
+        userService.getLoggedInUser().user_type == "trainer" ||
+        userService.getLoggedInUser().user_type == "gym" ||
+        userService.getLoggedInUser().user_type == "admin"
+      ) {
+        navigate("/login");
+      }
       // console.log("log in first");
     }
   }, []);

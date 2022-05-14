@@ -13,12 +13,27 @@ import Select from "@mui/material/Select";
 import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
 import { useNavigate } from "react-router-dom";
+import gymService from "../../services/GymService";
 
 const SearchGym = () => {
   const navigate = useNavigate();
 
   const [modalOpen, setModalOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [searchedGyms, setSearchedGyms] = useState([]);
+  const [searchGym, setSearchGym] = useState({
+    full_name: "",
+    city: "",
+    gender_facilitation: "",
+  });
+
+  function getSeacrhedGyms() {
+    console.log(searchGym);
+    gymService.get_search_gyms(searchGym).then((res) => {
+      setSearchedGyms(res.crud);
+      console.log(res);
+    });
+  }
 
   useEffect(() => {
     // userService.getLoggedInUser();
@@ -36,12 +51,25 @@ const SearchGym = () => {
       <h2>Search Gym</h2>
       <div className="d-flex flex-row mt-4">
         <div className="search">
-          <input type="text" placeholder="Search gym by name..." />
+          <input
+            type="text"
+            placeholder="Search gym by name..."
+            onChange={(e) => {
+              setSearchGym({ ...searchGym, full_name: e.target.value });
+            }}
+          />
 
           <FaSearch className="search-icon" />
         </div>
         <div className="w-25 d-flex justify-content-around">
-          <Button className="search-btns">Search</Button>
+          <Button
+            className="search-btns"
+            onClick={() => {
+              getSeacrhedGyms();
+            }}
+          >
+            Search
+          </Button>
           <Button
             onClick={() => {
               setFilterOpen(true);
@@ -55,18 +83,33 @@ const SearchGym = () => {
         <div className="d-flex align-items-center">
           <FormControl className="m-4 w-25 dropdown-modal">
             <InputLabel id="demo-simple-select-label">Select City</InputLabel>
-            <Select labelId="demo-simple-select-label" id="demo-simple-select">
-              <MenuItem value="lbs">Islamabad</MenuItem>
-              <MenuItem value="kgs">Lahore</MenuItem>
-              <MenuItem value="kgs">Karachi</MenuItem>
-              <MenuItem value="kgs">Faisalabad</MenuItem>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              onChange={(e) => {
+                setSearchGym({ ...searchGym, city: e.target.value });
+              }}
+            >
+              <MenuItem value="Islamabad">Islamabad</MenuItem>
+              <MenuItem value="Lahore">Lahore</MenuItem>
+              <MenuItem value="Karachi">Karachi</MenuItem>
+              <MenuItem value="Chichawatni">Chichawatni</MenuItem>
             </Select>
           </FormControl>
           <FormControl className="m-4 w-25 dropdown-modal">
-            <InputLabel id="demo-simple-select-label">Gender Preference</InputLabel>
-            <Select labelId="demo-simple-select-label" id="demo-simple-select">
-              <MenuItem value="lbs">Male</MenuItem>
-              <MenuItem value="kgs">Female</MenuItem>
+            <InputLabel id="demo-simple-select-label">
+              Gender Preference
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              onChange={(e) => {
+                setSearchGym({ ...searchGym, gender_facilitation: e.target.value });
+              }}
+            >
+              <MenuItem value="Male">Male</MenuItem>
+              <MenuItem value="Female">Female</MenuItem>
+              <MenuItem value="Both">Both</MenuItem>
             </Select>
           </FormControl>
           <Tooltip title="Use your current location">
@@ -85,38 +128,22 @@ const SearchGym = () => {
       )}
       <div className=" mt-5">
         <div className="gym-grid-container">
-          <div onClick={() => navigate("/gym-description")} className="gym-card grid-item">
-            <img src="../../../images/dumbells.png" alt="" />
-            <h4 className="m-2">Mister Hit Gym</h4>
-            <div className="d-flex m-2 mb-0">
-              <MdLocationPin className="" />
-              <p>Johar Town, Lahore</p>
-            </div>
-          </div>
-          <div onClick={() => navigate("/gym-description")} className="gym-card grid-item">
-            <img src="../../../images/dumbells.png" alt="" />
-            <h4 className="m-2">Mister Hit Gym</h4>
-            <div className="d-flex m-2 mb-0">
-              <MdLocationPin className="" />
-              <p>Johar Town, Lahore</p>
-            </div>
-          </div>
-          <div onClick={() => navigate("/gym-description")} className="gym-card grid-item">
-            <img src="../../../images/dumbells.png" alt="" />
-            <h4 className="m-2">Mister Hit Gym</h4>
-            <div className="d-flex m-2 mb-0">
-              <MdLocationPin className="" />
-              <p>Johar Town, Lahore</p>
-            </div>
-          </div>
-          <div className="gym-card grid-item" onClick={() => navigate("/gym-description")}>
-            <img src="../../../images/dumbells.png" alt="" />
-            <h4 className="m-2">Mister Hit Gym</h4>
-            <div className="d-flex m-2 mb-0">
-              <MdLocationPin className="" />
-              <p>Johar Town, Lahore</p>
-            </div>
-          </div>
+          {searchedGyms.map((e, key) => {
+            return (
+              <div
+                key={key}
+                onClick={() => navigate("/gym-description/" + e._id)}
+                className="gym-card grid-item"
+              >
+                <img src={e.gym_photos[0].photo_url} alt="" height="250" />
+                <h4 className="m-2">{e.user_id.full_name}</h4>
+                <div className="d-flex m-2 mb-0">
+                  <MdLocationPin className="" />
+                  <p>{e.location.city}</p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

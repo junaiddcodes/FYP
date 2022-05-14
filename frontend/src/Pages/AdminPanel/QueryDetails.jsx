@@ -13,45 +13,135 @@ import Select from "@mui/material/Select";
 import TopBar from "../../Components/TopBar";
 import SideMenuAdmin from "../../Components/SideMenuAdmin";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import userService from "../../services/UserService";
+import gymService from "../../services/GymService";
+import trainerService from "../../services/TrainerService";
+import adminService from "../../services/AdminService";
 
 const QueryDetails = () => {
+  const [response, setResponse] = useState("");
+  const [name, setName] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const [userInfo, setUserInfo] = useState({});
+  const data = location.state.e;
+  var queryDetails = {
+    query_response: " ",
+  };
+
+  const get_user = () => {
+    userService
+      .get_user(data.user_id)
+      .then((data) => {
+        console.log(data);
+        setUserInfo(data.crud);
+        setName(data.crud.user_id.full_name);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const get_gym = () => {
+    gymService
+      .get_one_gym(data.user_id)
+      .then((data) => {
+        console.log(data);
+
+        setUserInfo(data.crud);
+        setName(data.crud.user_id.full_name);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const get_trainer = () => {
+    trainerService
+      .get_one_trainer(data.user_id)
+      .then((data) => {
+        console.log(data);
+
+        setUserInfo(data.crud);
+        setName(data.crud.user_id.full_name);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
     if (localStorage.getItem("token") == null) {
-      navigate("/login");
+      navigate("/login/admin");
       // console.log("log in first");
     }
+    if (
+      userService.getLoggedInUser().user_type == "customer" ||
+      userService.getLoggedInUser().user_type == "gym" ||
+      userService.getLoggedInUser().user_type == "trainer"
+    ) {
+      navigate("/login/admin");
+    }
+    console.log(data.user_type);
+    if (data.user_type == "trainer") {
+      get_trainer();
+    } else if (data.user_type == "gym") {
+      get_gym();
+    } else {
+      get_user();
+    }
+    console.log(userInfo);
+
+    // console.log(userInfo.user_id.full_name);
   }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    queryDetails = {
+      ...queryDetails,
+      query_response: response,
+    };
+    console.log("hm = ", queryDetails);
+    adminService
+      .update_query(queryDetails, data._id)
+      .then((data) => {
+        console.log(data);
+        navigate("/admin-dashboard");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <div className="page-container-admin">
       <TopBar />
       <SideMenuAdmin />
       <h2>Query Details</h2>
       <div className="admin-box d-flex flex-column">
-        <h4 className="mt-2">Query Id: </h4>
-        <h4 className="mt-2">User Id: </h4>
-        <h4 className="mt-2">User Name: </h4>
-        <h4 className="mt-2">User Type: </h4>
-        <h4 className="mt-2">Query Subject: </h4>
+        <h4 className="mt-2">User Id: {data.user_id}</h4>
+        <h4 className="mt-2">Query Id: {data._id}</h4>
+        <h4 className="mt-2">User Name: {name}</h4>
+        <h4 className="mt-2">User Type: {data.user_type}</h4>
+        <h4 className="mt-2">Query Subject: {data.query_subject}</h4>
         <h4 className="mt-2">Query Details: </h4>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has
-          been the industry's standard dummy text ever since the 1500s, when an unknown printer took
-          a galley of type and scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting, remaining essentially
-          unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-          Lorem Ipsum passages, and more recently with desktop publishing software like Aldus
-          PageMaker including versions of Lorem Ipsum.
-        </p>
+        <p>{data.query_desc}</p>
         <h4 className="mt-2">Admin Response: </h4>
-        <textarea className="text-field mt-2" placeholder="Enter your response" />
-        <Button type="submit" className="w-25 mt-3">
-          Submit
-        </Button>
+        <form onSubmit={handleSubmit}>
+          <textarea
+            className="text-field mt-2"
+            value={response}
+            onChange={(event) => {
+              setResponse(event.target.value);
+              console.log(event.target.value);
+            }}
+            placeholder="Enter your response"
+          />
+          <Button type="submit" className="w-25 mt-3">
+            Submit
+          </Button>
+        </form>
       </div>
     </div>
   );

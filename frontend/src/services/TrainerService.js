@@ -5,9 +5,10 @@ class TrainerService extends GenericService {
     super();
   }
   register_trainer = (trainerDetails) => this.post("trainer/trainerregister", trainerDetails);
-
+  get_all_not_listed_trainers = () => this.get("trainer/not-listed");
   update_trainer = (trainerDetails, id) => this.patch("trainer/" + id, trainerDetails);
-  update_trainer_photo = (formData, id) => this.patch("trainer/" + id, formData);
+  update_trainer_photo = (formData, id) => this.patch("trainer/image/" + id, formData);
+  get_search_trainers = (filter) => this.post("trainer/search",filter);
   get_one_trainer = (id) => this.get("trainer/" + id);
   isLoggedIn = () => {
     return localStorage.getItem("token") ? true : false;
