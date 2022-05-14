@@ -1,49 +1,49 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 
-import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import Progress from "../../Components/ProgressBar";
-import TopBar from "../../Components/TopBar";
-import SideMenu from "../../Components/SideMenu";
-import userService from "../../services/UserService";
-import { useNavigate } from "react-router-dom";
+import { Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import Progress from '../../Components/ProgressBar'
+import TopBar from '../../Components/TopBar'
+import SideMenu from '../../Components/SideMenu'
+import userService from '../../services/UserService'
+import { useNavigate } from 'react-router-dom'
 // console.log(userId)
 
 const UserDashboard = () => {
-  const navigate = useNavigate();
-  var [currentCalorie, setCurrentCalorie] = useState(0);
-  var [currentProtein, setCurrentProtein] = useState(0);
-  var [currentFats, setCurrentFats] = useState(0);
-  var [currentCarbs, setCurrentCarbs] = useState(0);
-  var [userData, setUserData] = useState({});
-  var userId = userService.getLoggedInUser()._id;
-  var errorUser = "Login as a customer first!";
+  const navigate = useNavigate()
+  var [currentCalorie, setCurrentCalorie] = useState(0)
+  var [currentProtein, setCurrentProtein] = useState(0)
+  var [currentFats, setCurrentFats] = useState(0)
+  var [currentCarbs, setCurrentCarbs] = useState(0)
+  var [userData, setUserData] = useState({})
+  var userId = userService.getLoggedInUser()._id
+  var errorUser = 'Login as a customer first!'
   function getUserCalorie() {
     userService
       .getoneUser(userId)
 
       .then((data) => {
-        setUserData(data.crud);
-        console.log(data.crud);
-      });
+        setUserData(data.crud)
+        console.log(data.crud)
+      })
   }
   useEffect(() => {
     // userService.getLoggedInUser();
 
     if (userService.isLoggedIn() == false) {
-      navigate("/login");
+      navigate('/login')
       // console.log("log in first");
     }
     if (
-      userService.getLoggedInUser().user_type == "trainer" ||
-      userService.getLoggedInUser().user_type == "gym" ||
-      userService.getLoggedInUser().user_type == "admin"
+      userService.getLoggedInUser().user_type == 'trainer' ||
+      userService.getLoggedInUser().user_type == 'gym' ||
+      userService.getLoggedInUser().user_type == 'admin'
     ) {
-      navigate("/login");
+      navigate('/login')
     }
 
-    getUserCalorie();
-  }, []);
+    getUserCalorie()
+  }, [])
 
   return (
     <div className="page-container-user">
@@ -81,15 +81,24 @@ const UserDashboard = () => {
             </div>
             <div>
               <h4>Carbohydrates</h4>
-              <Progress done={(currentCarbs * 100) / userData.carbs} heading="Calorie Goal" />
+              <Progress
+                done={(currentCarbs * 100) / userData.carbs}
+                heading="Calorie Goal"
+              />
             </div>
             <div>
               <h4>Proteins</h4>
-              <Progress done={(currentProtein * 100) / userData.protein} heading="Calorie Goal" />
+              <Progress
+                done={(currentProtein * 100) / userData.protein}
+                heading="Calorie Goal"
+              />
             </div>
             <div>
               <h4>Fats</h4>
-              <Progress done={(currentFats * 100) / userData.fats} heading="Calorie Goal" />
+              <Progress
+                done={(currentFats * 100) / userData.fats}
+                heading="Calorie Goal"
+              />
             </div>
             <div>
               <h4>Water Intake</h4>
@@ -99,7 +108,7 @@ const UserDashboard = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default UserDashboard;
+export default UserDashboard
