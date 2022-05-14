@@ -186,6 +186,37 @@ const deleteData = async (req, res) => {
   }
 }
 
+// const trainerSearchFilter = async (req, res) => {
+//   try {
+//     var query = {};
+
+//     Object.keys(req.body).forEach(function (key) {
+//       if (req.body[key]) {
+//         if (key == "full_name") {
+//           query["user_id.full_name"] = req.body[key];
+//         } else {
+//           query[key] = req.body[key];
+//         }
+//       }
+//     });
+
+//     if (req.body.full_name || req.body.gender|| req.body.exercise_type) {
+//       query.listed = "listed";
+
+//       var crud = await trainerDetails.find(query);
+//       if (crud.length == 0) {
+//         return res.status(404).json({ message: "item does not exist" });
+//       }
+//     } else {
+//       return res.status(500).json({ message: "Request is Empty" });
+//     }
+
+//     res.status(200).json({ crud });
+//   } catch (error) {
+//     res.status(500).json({ message: error });
+//   }
+// };
+
 const trainerSearchFilter = async (req, res) => {
   try {
     var query = {}
