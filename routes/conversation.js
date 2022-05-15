@@ -4,6 +4,11 @@ const Conversation = require('../models/Conversation')
 //new conv
 
 router.post('/', async (req, res) => {
+  // const member=await Conversation.find({
+  //   members: { $in: [req.params.senderId,req.params.receiverId] },
+
+  // })
+
   const newConversation = new Conversation({
     members: [req.body.senderId, req.body.receiverId],
   })
