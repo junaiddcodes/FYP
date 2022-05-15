@@ -15,6 +15,7 @@ import SideMenuAdmin from "../../Components/SideMenuAdmin";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import gymService from "../../services/GymService";
+import userService from "../../services/UserService";
 const GymRequest = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,9 +29,16 @@ const GymRequest = () => {
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
 
-    if (localStorage.getItem("token") == null) {
+    if (userService.isLoggedIn() == false) {
       navigate("/login");
-      // console.log("log in first");
+    } else {
+      if (
+        userService.getLoggedInUser().user_type == "customer" ||
+        userService.getLoggedInUser().user_type == "gym" ||
+        userService.getLoggedInUser().user_type == "trainer"
+      ) {
+        navigate("/login");
+      }
     }
   }, []);
   return (

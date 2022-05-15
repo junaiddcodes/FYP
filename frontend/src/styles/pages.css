@@ -1085,6 +1085,10 @@
   border-radius: 10px;
 }
 
+.gym-box h3 {
+  color: white;
+}
+
 .gym-box .input-text input {
   width: 500px;
   margin-top: 10px;
@@ -1164,20 +1168,34 @@
   padding: 10px;
 }
 
-.text-field::-webkit-input-placeholder {
+.text-field::-webkit-input-placeholder,
+.text-field2::-webkit-input-placeholder {
   color: #0a1929;
 }
 
-.text-field:-ms-input-placeholder {
+.text-field:-ms-input-placeholder,
+.text-field2:-ms-input-placeholder {
   color: #0a1929;
 }
 
-.text-field::-ms-input-placeholder {
+.text-field::-ms-input-placeholder,
+.text-field2::-ms-input-placeholder {
   color: #0a1929;
 }
 
-.text-field::placeholder {
+.text-field::placeholder,
+.text-field2::placeholder {
   color: #0a1929;
+}
+
+.text-field2 {
+  height: 150px;
+  width: 500px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007fff;
+  color: white;
+  padding: 10px;
 }
 
 .dropdown-trainer {

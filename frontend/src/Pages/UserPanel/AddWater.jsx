@@ -77,15 +77,16 @@ const AddWater = () => {
   const water = useRef(null);
 
   useEffect(() => {
-    if (localStorage.getItem("token") == null) {
+    if (userService.isLoggedIn() == false) {
       navigate("/login");
-    }
-    if (
-      userService.getLoggedInUser().user_type == "trainer" ||
-      userService.getLoggedInUser().user_type == "gym" ||
-      userService.getLoggedInUser().user_type == "admin"
-    ) {
-      navigate("/login");
+    } else {
+      if (
+        userService.getLoggedInUser().user_type == "trainer" ||
+        userService.getLoggedInUser().user_type == "gym" ||
+        userService.getLoggedInUser().user_type == "admin"
+      ) {
+        navigate("/login");
+      }
     }
     getWaterData();
   }, [getWaterData]);

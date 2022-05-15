@@ -22,16 +22,16 @@ const PaymentRequest = () => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
-    if (localStorage.getItem("token") == null) {
-      navigate("/login/admin");
-      // console.log("log in first");
-    }
-    if (
-      userService.getLoggedInUser().user_type == "customer" ||
-      userService.getLoggedInUser().user_type == "gym" ||
-      userService.getLoggedInUser().user_type == "trainer"
-    ) {
-      navigate("/login/admin");
+    if (userService.isLoggedIn() == false) {
+      navigate("/login");
+    } else {
+      if (
+        userService.getLoggedInUser().user_type == "customer" ||
+        userService.getLoggedInUser().user_type == "gym" ||
+        userService.getLoggedInUser().user_type == "trainer"
+      ) {
+        navigate("/login");
+      }
     }
   }, []);
   return (

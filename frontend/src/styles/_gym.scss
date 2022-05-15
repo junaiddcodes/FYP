@@ -47,6 +47,9 @@
   }
 }
 .gym-box {
+  h3 {
+    color: $color4;
+  }
   background-color: $color2;
   padding: 2rem;
   border-radius: 10px;
@@ -111,6 +114,16 @@
   color: $color4;
   padding: 10px;
 }
-.text-field::placeholder {
+.text-field::placeholder,
+.text-field2::placeholder {
   color: $color1;
+}
+.text-field2 {
+  height: 150px;
+  width: 500px;
+  border: none;
+  border-radius: 5px;
+  background-color: $color3;
+  color: $color4;
+  padding: 10px;
 }

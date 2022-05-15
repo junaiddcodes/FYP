@@ -16,8 +16,9 @@ const UserDashboard = () => {
   var [currentFats, setCurrentFats] = useState(0);
   var [currentCarbs, setCurrentCarbs] = useState(0);
   var [userData, setUserData] = useState({});
-  var userId = userService.getLoggedInUser()._id;
+  var userId = "";
   var errorUser = "Login as a customer first!";
+
   function getUserCalorie() {
     userService
       .getoneUser(userId)
@@ -28,18 +29,17 @@ const UserDashboard = () => {
       });
   }
   useEffect(() => {
-    // userService.getLoggedInUser();
-
     if (userService.isLoggedIn() == false) {
       navigate("/login");
-      // console.log("log in first");
-    }
-    if (
-      userService.getLoggedInUser().user_type == "trainer" ||
-      userService.getLoggedInUser().user_type == "gym" ||
-      userService.getLoggedInUser().user_type == "admin"
-    ) {
-      navigate("/login");
+    } else {
+      userId = userService.getLoggedInUser()._id;
+      if (
+        userService.getLoggedInUser().user_type == "trainer" ||
+        userService.getLoggedInUser().user_type == "gym" ||
+        userService.getLoggedInUser().user_type == "admin"
+      ) {
+        navigate("/login");
+      }
     }
 
     getUserCalorie();
