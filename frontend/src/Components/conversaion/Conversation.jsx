@@ -48,14 +48,8 @@ const Conversation = ({
 
   return (
     <>
-      <div className='conversation'>
-        <span
-          className={
-            isCurrent ? 'conversationNameSelected' : 'conversationName'
-          }
-        >
-          {name}
-        </span>
+      <div className={isCurrent ? 'conversationNameSelected' : 'conversation'}>
+        <span className="conversationName">{name}</span>
       </div>
     </>
   )

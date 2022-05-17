@@ -78,50 +78,45 @@ const Messenger = () => {
   }, [messages])
 
   return (
-    <div className='page-container-user'>
+    <div className="page-container-user">
       <TopBar />
       <SideMenu />
-      <div className='messenger'>
-        <div className='chatBox'>
-          <div className='chatBoxWrapper'>
+      <div className="messenger">
+        <div className="chatBox">
+          <div className="chatBoxWrapper">
             {currentChat ? (
               <>
-                <div className='chatNameDiv'>
-                  {/* //enter the name here */}
-                  <h2 className='chatName'></h2>
-                </div>
-                <div className='chatBoxTop'>
+                <div className="chatBoxTop">
                   {messages.map((m) => (
                     <div ref={scrollref}>
                       <Message message={m} own={m.sender === user_id} />
                     </div>
                   ))}
                 </div>
-                <div className='chatBoxBottom'>
+                <div className="chatBoxBottom">
                   <textarea
-                    className='chatMessageInput'
-                    placeholder='Please enter your message here'
+                    className="chatMessageInput"
+                    placeholder="Please enter your message here"
                     onChange={(e) => setNewMessage(e.target.value)}
                     value={newMessage}
                   ></textarea>
-                  <button className='chatSubmitButton ' onClick={handleSubmit}>
+                  <button className="chatSubmitButton " onClick={handleSubmit}>
                     Send
                   </button>
                 </div>
               </>
             ) : (
-              <span className='noConversationText'>
+              <span className="noConversationText">
                 chat is empty start new conversation
               </span>
             )}
           </div>
         </div>
-        <div className='chatMenu'>
-          <div className='chatMenuWrapper'>
-            <input
-              placeholder='search of friends'
-              className='chatMessageInput'
-            />
+        <div className="chatMenu">
+          <div className="chatMenuWrapper">
+            <div>
+              <h1 className="chats">Chats</h1>
+            </div>
             {conversations.map((c, key) => (
               <div onClick={() => setCurrentChat(c)} key={key}>
                 <Conversation

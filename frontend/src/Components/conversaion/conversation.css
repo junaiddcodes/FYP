@@ -27,8 +27,13 @@
   color: white;
 }
 .conversationNameSelected {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  margin-top: 20px;
   background-color: rgba(28, 87, 146, 0.58);
 }
 .conversation:hover {
-  background-color: rgba(28, 87, 146, 0.58);
+  background-color: rgba(28, 87, 146, 0.3);
 }
