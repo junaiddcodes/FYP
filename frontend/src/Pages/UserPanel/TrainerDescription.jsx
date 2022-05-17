@@ -48,6 +48,9 @@ const TrainerDescription = () => {
     trainer_photo: "",
   });
 
+  const handlePlan = (e) => {
+    navigate("/activity-plans", { state: { e } });
+  };
   function getTrainer() {
     trainerService.get_one_trainer(trainerId.id).then((res) => {
       setTrainerDetails(res.crud);
@@ -74,7 +77,14 @@ const TrainerDescription = () => {
             <div className="trainer-btn d-flex flex-column">
               <Button className="mt-5">Message</Button>
               <Link to="/activity-plans">
-                <Button className="mt-5">View Plan</Button>
+                <Button
+                  className="mt-5"
+                  onClick={(event) => {
+                    handlePlan(trainerDetails);
+                  }}
+                >
+                  View Plan
+                </Button>
               </Link>
             </div>
           </div>

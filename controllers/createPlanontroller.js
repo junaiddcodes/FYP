@@ -13,7 +13,7 @@ const { createPlanModel } = require("../models/create_plan");
 const createData = async (req, res) => {
   try {
     const crud = await createPlanModel.create(req.body);
-    res.status(201).json({ crud });
+    res.status(200).json({ crud });
   } catch (error) {
     res.status(500).json({ message: error });
   }
@@ -59,7 +59,9 @@ const getOneData = async (req, res) => {
 // // //this is use to update user in list
 const updateData = async (req, res) => {
   try {
-    const { planId: crudId } = req.params;
+    const crudId = req.params.planId;
+    const trainerId = req.params.trainerId;
+    req.body.trainer_id = trainerId;
     const crud = await createPlanModel.findByIdAndUpdate({ _id: crudId }, req.body, {
       new: true,
       runValidators: true,

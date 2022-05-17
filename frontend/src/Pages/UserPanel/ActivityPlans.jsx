@@ -14,16 +14,21 @@ import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
 import { useNavigate } from "react-router-dom";
 import userService from "../../services/UserService";
+import { useLocation } from "react-router-dom";
 
 const ActivityPlans = () => {
   const navigate = useNavigate();
-
+  const location = useLocation();
+  // const data = location.state.e;
+  const userId = "";
   useEffect(() => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
-    if (localStorage.getItem("token") == null) {
+    if (userService.isLoggedIn() == false) {
       navigate("/login");
+    } else {
+      userId = userService.getLoggedInUser()._id;
       if (
         userService.getLoggedInUser().user_type == "trainer" ||
         userService.getLoggedInUser().user_type == "gym" ||
@@ -31,7 +36,6 @@ const ActivityPlans = () => {
       ) {
         navigate("/login");
       }
-      // console.log("log in first");
     }
   }, []);
   return (

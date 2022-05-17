@@ -148,6 +148,8 @@ const CreatePlan = () => {
       setFriday(location.state.e.friday_activities);
       setSaturday(location.state.e.saturday_activities);
       setSunday(location.state.e.sunday_activities);
+      // console.log("plan id = ", location.state.e._id);
+      // console.log("trainer id = ", userId);
     }
   }, []);
 
@@ -180,7 +182,8 @@ const CreatePlan = () => {
     };
 
     console.log(activityDescDetails);
-    if (location.state.edit == false) {
+    if (!location.state) {
+      console.log(activityDescDetails.trainer_id);
       trainerService
         .create_plan(activityDescDetails)
         .then((data) => {
@@ -192,8 +195,16 @@ const CreatePlan = () => {
           console.log(err);
         });
     } else {
+      userId = userService.getLoggedInUser()._id;
+      console.log("inside edit = ", activityDescDetails.trainer_id);
+      activityDescDetails = {
+        ...activityDescDetails,
+
+        trainer_id: userId,
+      };
+      console.log("after saving userId = ", activityDescDetails.trainer_id);
       trainerService
-        .update_plan(activityDescDetails, location.state.e._id)
+        .update_plan(activityDescDetails, location.state.e._id, userId)
         .then((data) => {
           console.log(data);
           // props.history.push("/login");
@@ -219,7 +230,7 @@ const CreatePlan = () => {
                 id=""
                 name=""
                 {...controlPlanDesc("plan_title")}
-                // value={title}
+                defaultValue={title}
                 // onChange={(e) => {
                 //   setTitle(e.target.value);
                 // }}
@@ -233,7 +244,7 @@ const CreatePlan = () => {
                 name=""
                 placeholder="E.g. 4"
                 {...controlPlanDesc("plan_duration")}
-                // value={duration}
+                defaultValue={duration}
                 // onChange={(e) => {
                 //   setDuration(e.target.value);
                 // }}
@@ -246,7 +257,7 @@ const CreatePlan = () => {
                 name=""
                 placeholder="E.g. 3000"
                 {...controlPlanDesc("plan_price")}
-                // value={price}
+                defaultValue={price}
                 // onChange={(e) => {
                 //   setPrice(e.target.value);
                 // }}
@@ -260,7 +271,7 @@ const CreatePlan = () => {
               className="text-field mt-2"
               placeholder="Plan description"
               {...controlPlanDesc("plan_desc")}
-              // value={desc}
+              defaultValue={desc}
               // onChange={(e) => {
               //   setDesc(e.target.value);
               // }}
@@ -283,7 +294,7 @@ const CreatePlan = () => {
                 className="text-field2 mt-2"
                 placeholder="e.g.&#10;- activity 1&#10;- activity 2 "
                 {...controlPlan("monday_activity")}
-                // value={monday}
+                defaultValue={monday}
                 // onChange={(e) => {
                 //   setMonday(e.target.value);
                 // }}
@@ -294,7 +305,7 @@ const CreatePlan = () => {
                 className="text-field2 mt-2"
                 placeholder="e.g.&#10;- activity 1&#10;- activity 2 "
                 {...controlPlan("tuesday_activity")}
-                // value={tuesday}
+                defaultValue={tuesday}
                 // onChange={(e) => {
                 //   setTuesday(e.target.value);
                 // }}
@@ -305,7 +316,7 @@ const CreatePlan = () => {
                 className="text-field2 mt-2"
                 placeholder="e.g.&#10;- activity 1&#10;- activity 2 "
                 {...controlPlan("wednesday_activity")}
-                // value={wednesday}
+                defaultValue={wednesday}
                 // onChange={(e) => {
                 //   setWednesday(e.target.value);
                 // }}
@@ -316,7 +327,7 @@ const CreatePlan = () => {
                 className="text-field2 mt-2"
                 placeholder="e.g.&#10;- activity 1&#10;- activity 2 "
                 {...controlPlan("thursday_activity")}
-                // value={thursday}
+                defaultValue={thursday}
                 // onChange={(e) => {
                 //   setThursday(e.target.value);
                 // }}
@@ -327,7 +338,7 @@ const CreatePlan = () => {
                 className="text-field2 mt-2"
                 placeholder="e.g.&#10;- activity 1&#10;- activity 2 "
                 {...controlPlan("friday_activity")}
-                // value={friday}
+                defaultValue={friday}
                 // onChange={(e) => {
                 //   setFriday(e.target.value);
                 // }}
@@ -338,7 +349,7 @@ const CreatePlan = () => {
                 className="text-field2 mt-2"
                 placeholder="e.g.&#10;- activity 1&#10;- activity 2 "
                 {...controlPlan("saturday_activity")}
-                // value={saturday}
+                defaultValue={saturday}
                 // onChange={(e) => {
                 //   setSaturday(e.target.value);
                 // }}
@@ -349,7 +360,7 @@ const CreatePlan = () => {
                 className="text-field2 mt-2"
                 placeholder="e.g.&#10;- activity 1&#10;- activity 2 "
                 {...controlPlan("sunday_activity")}
-                // value={sunday}
+                defaultValue={sunday}
                 // onChange={(e) => {
                 //   setSunday(e.target.value);
                 // }}
