@@ -42,16 +42,16 @@ const AdminDashboard = () => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
-    if (localStorage.getItem("token") == null) {
+    if (userService.isLoggedIn() == false) {
       navigate("/login");
-      // console.log("log in first");
-    }
-    if (
-      userService.getLoggedInUser().user_type == "customer" ||
-      userService.getLoggedInUser().user_type == "gym" ||
-      userService.getLoggedInUser().user_type == "trainer"
-    ) {
-      navigate("/login/admin");
+    } else {
+      if (
+        userService.getLoggedInUser().user_type == "customer" ||
+        userService.getLoggedInUser().user_type == "gym" ||
+        userService.getLoggedInUser().user_type == "trainer"
+      ) {
+        navigate("/login");
+      }
     }
     console.log("abdullah taxi");
     gymService

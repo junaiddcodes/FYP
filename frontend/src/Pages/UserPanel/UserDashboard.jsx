@@ -10,14 +10,15 @@ import { useNavigate } from 'react-router-dom'
 // console.log(userId)
 
 const UserDashboard = () => {
-  const navigate = useNavigate()
-  var [currentCalorie, setCurrentCalorie] = useState(0)
-  var [currentProtein, setCurrentProtein] = useState(0)
-  var [currentFats, setCurrentFats] = useState(0)
-  var [currentCarbs, setCurrentCarbs] = useState(0)
-  var [userData, setUserData] = useState({})
-  var userId = userService.getLoggedInUser()._id
-  var errorUser = 'Login as a customer first!'
+  const navigate = useNavigate();
+  var [currentCalorie, setCurrentCalorie] = useState(0);
+  var [currentProtein, setCurrentProtein] = useState(0);
+  var [currentFats, setCurrentFats] = useState(0);
+  var [currentCarbs, setCurrentCarbs] = useState(0);
+  var [userData, setUserData] = useState({});
+  var userId = "";
+  var errorUser = "Login as a customer first!";
+
   function getUserCalorie() {
     userService
       .getoneUser(userId)
@@ -28,18 +29,17 @@ const UserDashboard = () => {
       })
   }
   useEffect(() => {
-    // userService.getLoggedInUser();
-
     if (userService.isLoggedIn() == false) {
-      navigate('/login')
-      // console.log("log in first");
-    }
-    if (
-      userService.getLoggedInUser().user_type == 'trainer' ||
-      userService.getLoggedInUser().user_type == 'gym' ||
-      userService.getLoggedInUser().user_type == 'admin'
-    ) {
-      navigate('/login')
+      navigate("/login");
+    } else {
+      userId = userService.getLoggedInUser()._id;
+      if (
+        userService.getLoggedInUser().user_type == "trainer" ||
+        userService.getLoggedInUser().user_type == "gym" ||
+        userService.getLoggedInUser().user_type == "admin"
+      ) {
+        navigate("/login");
+      }
     }
 
     getUserCalorie()

@@ -24,16 +24,16 @@ const SearchTrainer = () => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
-    if (localStorage.getItem("token") == null) {
+    if (userService.isLoggedIn() == false) {
       navigate("/login");
-      // console.log("log in first");
-    }
-    if (
-      userService.getLoggedInUser().user_type == "trainer" ||
-      userService.getLoggedInUser().user_type == "gym" ||
-      userService.getLoggedInUser().user_type == "admin"
-    ) {
-      navigate("/login");
+    } else {
+      if (
+        userService.getLoggedInUser().user_type == "trainer" ||
+        userService.getLoggedInUser().user_type == "gym" ||
+        userService.getLoggedInUser().user_type == "admin"
+      ) {
+        navigate("/login");
+      }
     }
   }, []);
   const [searchedTrainer, setSearchedTrainer] = useState([]);

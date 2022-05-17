@@ -106,18 +106,18 @@ const GymProfile = () => {
   };
 
   useEffect(() => {
-    setLoggedInId(userService.getLoggedInUser()._id);
-    loginId = userService.getLoggedInUser()._id;
     if (userService.isLoggedIn() == false) {
       navigate("/login");
-      // console.log("log in first");
-    }
-    if (
-      userService.getLoggedInUser().user_type == "customer" ||
-      userService.getLoggedInUser().user_type == "trainer" ||
-      userService.getLoggedInUser().user_type == "admin"
-    ) {
-      navigate("/login");
+    } else {
+      setLoggedInId(userService.getLoggedInUser()._id);
+      loginId = userService.getLoggedInUser()._id;
+      if (
+        userService.getLoggedInUser().user_type == "customer" ||
+        userService.getLoggedInUser().user_type == "trainer" ||
+        userService.getLoggedInUser().user_type == "admin"
+      ) {
+        navigate("/login");
+      }
     }
     get_gym();
   }, [loginId]);

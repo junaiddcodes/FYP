@@ -26,16 +26,16 @@ const TrainerDescription = () => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
-    if (localStorage.getItem('token') == null) {
-      navigate('/login')
-      // console.log("log in first");
-    }
-    if (
-      userService.getLoggedInUser().user_type == 'trainer' ||
-      userService.getLoggedInUser().user_type == 'gym' ||
-      userService.getLoggedInUser().user_type == 'admin'
-    ) {
-      navigate('/login')
+    if (userService.isLoggedIn() == false) {
+      navigate("/login");
+    } else {
+      if (
+        userService.getLoggedInUser().user_type == "trainer" ||
+        userService.getLoggedInUser().user_type == "gym" ||
+        userService.getLoggedInUser().user_type == "admin"
+      ) {
+        navigate("/login");
+      }
     }
   }, [])
   const trainerId = useParams()
@@ -48,6 +48,9 @@ const TrainerDescription = () => {
     trainer_photo: '',
   })
 
+  const handlePlan = (e) => {
+    navigate("/activity-plans", { state: { e } });
+  };
   function getTrainer() {
     trainerService.get_one_trainer(trainerId.id).then((res) => {
       setTrainerDetails(res.crud)
@@ -95,7 +98,14 @@ const TrainerDescription = () => {
               </Button>
 
               <Link to="/activity-plans">
-                <Button className="mt-5">View Plan</Button>
+                <Button
+                  className="mt-5"
+                  onClick={(event) => {
+                    handlePlan(trainerDetails);
+                  }}
+                >
+                  View Plan
+                </Button>
               </Link>
             </div>
           </div>

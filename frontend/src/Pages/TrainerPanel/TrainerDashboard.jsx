@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import TopBar from "../../Components/TopBar";
 import SideMenuTrainer from "../../Components/SideMenuTrainer";
 import { useNavigate } from "react-router-dom";
+import userService from "../../services/UserService";
 
 const TrainerDashboard = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -22,9 +23,16 @@ const TrainerDashboard = () => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
-    if (localStorage.getItem("token") == null) {
+    if (userService.isLoggedIn() == false) {
       navigate("/login");
-      // console.log("log in first");
+    } else {
+      if (
+        userService.getLoggedInUser().user_type == "customer" ||
+        userService.getLoggedInUser().user_type == "gym" ||
+        userService.getLoggedInUser().user_type == "admin"
+      ) {
+        navigate("/login");
+      }
     }
   }, []);
   return (

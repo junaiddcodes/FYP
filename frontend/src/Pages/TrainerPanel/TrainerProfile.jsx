@@ -145,15 +145,15 @@ const TrainerProfile = () => {
     setLoggedInId(userService.getLoggedInUser()._id)
     loginId = userService.getLoggedInUser()._id
     if (userService.isLoggedIn() == false) {
-      navigate('/login')
-      // console.log("log in first");
-    }
-    if (
-      userService.getLoggedInUser().user_type == 'customer' ||
-      userService.getLoggedInUser().user_type == 'gym' ||
-      userService.getLoggedInUser().user_type == 'admin'
-    ) {
-      navigate('/login')
+      navigate("/login");
+    } else {
+      if (
+        userService.getLoggedInUser().user_type == "customer" ||
+        userService.getLoggedInUser().user_type == "gym" ||
+        userService.getLoggedInUser().user_type == "admin"
+      ) {
+        navigate("/login");
+      }
     }
     get_customer()
   }, [loginId])
