@@ -37,8 +37,8 @@ const TrainerDescription = () => {
         navigate("/login");
       }
     }
-  }, [])
-  const trainerId = useParams()
+  }, []);
+  const trainerId = useParams();
   const [trainerDetails, setTrainerDetails] = useState({
     user_id: { full_name: '', email: '' },
     exercise_type: '',
