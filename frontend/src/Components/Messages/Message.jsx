@@ -1,19 +1,20 @@
 import React from 'react'
 import '../Messages/message.css'
 import { format } from 'timeago.js'
+import { useEffect, useState } from 'react'
 
-const Message = ({ message, own }) => {
+const Message = ({ message, own, currentUser }) => {
   return (
     <div className={own ? 'message own' : 'message '}>
-      <div className="messageTop ">
+      <div className='messageTop '>
         {/* <img
           className="converstionImage"
           src="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&h=350"
           alt=""
         /> */}
-        <p className="messageText">{message.text}</p>
+        <p className='messageText'>{message.text}</p>
       </div>
-      <div className="messageBottom ">{format(message.createdAt)}</div>
+      <div className='messageBottom '>{format(message.createdAt)}</div>
     </div>
   )
 }

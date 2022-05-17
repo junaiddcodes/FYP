@@ -11,13 +11,15 @@ import axios from 'axios'
 
 const Messenger = () => {
   const [conversations, setConsversation] = useState([])
-  const [currentChat, setCurrentChat] = useState(null)
+  const [currentChat, setCurrentChat] = useState()
   const [messages, setMessages] = useState([])
   const [newMessage, setNewMessage] = useState('')
   // const [socket, setSocket] = useState(null)
   const user_id = userService.getLoggedInUser()._id
   const scrollref = useRef()
   const user_type = userService.getLoggedInUser().user_type
+
+  const user_name = userService.getLoggedInUser().full_name
   console.log(user_type)
   // useEffect(() => {
   //   setSocket(io('ws://localhost:8900'))
@@ -76,55 +78,56 @@ const Messenger = () => {
   }, [messages])
 
   return (
-    <div className="page-container-user">
+    <div className='page-container-user'>
       <TopBar />
       <SideMenu />
-      <div className="messenger">
-        <div className="chatBox">
-          <div className="chatBoxWrapper">
+      <div className='messenger'>
+        <div className='chatBox'>
+          <div className='chatBoxWrapper'>
             {currentChat ? (
               <>
-                <div className="chatNameDiv">
+                <div className='chatNameDiv'>
                   {/* //enter the name here */}
-                  <h2 className="chatName"></h2>
+                  <h2 className='chatName'></h2>
                 </div>
-                <div className="chatBoxTop">
+                <div className='chatBoxTop'>
                   {messages.map((m) => (
                     <div ref={scrollref}>
                       <Message message={m} own={m.sender === user_id} />
                     </div>
                   ))}
                 </div>
-                <div className="chatBoxBottom">
+                <div className='chatBoxBottom'>
                   <textarea
-                    className="chatMessageInput"
-                    placeholder="Please enter your message here"
+                    className='chatMessageInput'
+                    placeholder='Please enter your message here'
                     onChange={(e) => setNewMessage(e.target.value)}
                     value={newMessage}
                   ></textarea>
-                  <button className="chatSubmitButton " onClick={handleSubmit}>
+                  <button className='chatSubmitButton ' onClick={handleSubmit}>
                     Send
                   </button>
                 </div>
               </>
             ) : (
-              <span className="noConversationText">
+              <span className='noConversationText'>
                 chat is empty start new conversation
               </span>
             )}
           </div>
         </div>
-        <div className="chatMenu">
-          <div className="chatMenuWrapper">
+        <div className='chatMenu'>
+          <div className='chatMenuWrapper'>
             <input
-              placeholder="search of friends"
-              className="chatMessageInput"
+              placeholder='search of friends'
+              className='chatMessageInput'
             />
             {conversations.map((c, key) => (
               <div onClick={() => setCurrentChat(c)} key={key}>
                 <Conversation
                   conversation={c}
                   currentUser={user_id}
+                  isCurrent={currentChat?._id === c?._id ? true : false}
                   currentUserType={user_type}
                 />
               </div>
