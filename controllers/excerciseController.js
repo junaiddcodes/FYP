@@ -40,19 +40,24 @@ const createData = async (req, res) => {
 
 const getbyName = async (req, res) => {
   try {
-    const { excercise_name: crudId } = req.params
-    console.log(req.params)
+    // const { food: crudId } = req.params
+    // console.log(req.params)
     // console.log(foodId)
     // console.log(crudId)
-    const crud = await excerciseApiModel.findOne({ excercise_name: crudId })
 
-    if (!crud) {
-      return res.status(404).json({ message: 'item does not exist' })
+    var crud = await excerciseApiModel.find({
+      excercise_name: new RegExp(req.body.excercise_name, "i"),
+    });
+
+    if (crud.length == 0) {
+      return res.status(404).json({ message: "item does not exist" });
     }
 
-    res.status(200).json({ crud })
+    console.log(crud);
+
+    res.status(200).json({ crud });
   } catch (error) {
-    res.status(500).json({ message: error })
+    res.status(500).json({ message: error });
   }
 }
 

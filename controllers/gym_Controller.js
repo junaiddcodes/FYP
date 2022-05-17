@@ -202,9 +202,9 @@ const gymSearchFilter = async (req, res) => {
     Object.keys(req.body).forEach(function (key) {
       if (req.body[key]) {
         if (key == "full_name") {
-          query["user_id.full_name"] = req.body[key];
+          query["user_id.full_name"] = new RegExp(req.body[key], "i")
         } else if (key == "city") {
-          query["location.city"] = req.body[key];
+          query["location.city"] = new RegExp(req.body[key], "i")
         } else {
           query[key] = req.body[key];
         }

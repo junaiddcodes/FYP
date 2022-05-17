@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 
-import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import Progress from "../../Components/ProgressBar";
-import TopBar from "../../Components/TopBar";
-import SideMenu from "../../Components/SideMenu";
-import userService from "../../services/UserService";
-import { useNavigate } from "react-router-dom";
+import { Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import Progress from '../../Components/ProgressBar'
+import TopBar from '../../Components/TopBar'
+import SideMenu from '../../Components/SideMenu'
+import userService from '../../services/UserService'
+import { useNavigate } from 'react-router-dom'
 // console.log(userId)
 
 const UserDashboard = () => {
@@ -24,9 +24,9 @@ const UserDashboard = () => {
       .getoneUser(userId)
 
       .then((data) => {
-        setUserData(data.crud);
-        console.log(data.crud);
-      });
+        setUserData(data.crud)
+        console.log(data.crud)
+      })
   }
   useEffect(() => {
     if (userService.isLoggedIn() == false) {
@@ -42,8 +42,8 @@ const UserDashboard = () => {
       }
     }
 
-    getUserCalorie();
-  }, []);
+    getUserCalorie()
+  }, [])
 
   return (
     <div className="page-container-user">
@@ -81,15 +81,24 @@ const UserDashboard = () => {
             </div>
             <div>
               <h4>Carbohydrates</h4>
-              <Progress done={(currentCarbs * 100) / userData.carbs} heading="Calorie Goal" />
+              <Progress
+                done={(currentCarbs * 100) / userData.carbs}
+                heading="Calorie Goal"
+              />
             </div>
             <div>
               <h4>Proteins</h4>
-              <Progress done={(currentProtein * 100) / userData.protein} heading="Calorie Goal" />
+              <Progress
+                done={(currentProtein * 100) / userData.protein}
+                heading="Calorie Goal"
+              />
             </div>
             <div>
               <h4>Fats</h4>
-              <Progress done={(currentFats * 100) / userData.fats} heading="Calorie Goal" />
+              <Progress
+                done={(currentFats * 100) / userData.fats}
+                heading="Calorie Goal"
+              />
             </div>
             <div>
               <h4>Water Intake</h4>
@@ -99,7 +108,7 @@ const UserDashboard = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default UserDashboard;
+export default UserDashboard
