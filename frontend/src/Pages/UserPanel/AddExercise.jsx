@@ -11,12 +11,31 @@ import SideMenu from "../../Components/SideMenu";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import userService from "../../services/UserService";
+import Dropdown from "../../Components/dropdown";
 
 const AddExercise = () => {
+  const [value, setValue] = useState(null);
+  var [excersiseOptions, setExcerciseOptions] = useState([]);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  function getExcerciseData(e) {
+    console.log(e);
+    if (e) {
+      var x = e;
+
+      console.log(x);
+      var exSet = {
+        excercise_name: x,
+      };
+      userService.getExcercise(exSet).then((data) => {
+        setExcerciseOptions(data.crud);
+        console.log(excersiseOptions);
+      });
+    }
+  }
 
   useEffect(() => {
     // userService.getLoggedInUser();
@@ -112,13 +131,26 @@ const AddExercise = () => {
             >
               <i class="bx bx-x"></i>
             </a>
-            <Select
+            {/* <Select
               className="select-drop"
               placeholder="Select Exercise"
               options={workoutOptions}
+            /> */}
+
+            <Dropdown
+              prompt="Select Food"
+              value={value}
+              onChange={setValue}
+              options={excersiseOptions}
+              label="excercise_name"
+              getData={getExcerciseData}
             />
 
-            <input className="input-modal" type="number" placeholder="Enter Time (in minutes)" />
+            <input
+              className="input-modal"
+              type="number"
+              placeholder="Enter Time (in minutes)"
+            />
           </div>
           <div>
             <Button type="submit ">Add Exercise</Button>
@@ -260,7 +292,9 @@ const AddExercise = () => {
                             >
                               <i class="bx bx-x"></i>
                             </a>
-                            <h3>Are you sure you want to delete the exercise?</h3>
+                            <h3>
+                              Are you sure you want to delete the exercise?
+                            </h3>
                             <p>Select yes to delete the item</p>
                           </div>
                           <div className="d-flex">
