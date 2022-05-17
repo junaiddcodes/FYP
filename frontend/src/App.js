@@ -32,7 +32,7 @@ import Login from './Pages/Register/Login'
 import LoginAdmin from './Pages/Register/LoginAdmin'
 import CreateQuery from './Pages/CreateQuery'
 import Messenger from './Messenger/Messenger'
-import Home from "./Pages/HomePanel/home"
+import Home from './Pages/HomePanel/home'
 function App() {
   return (
     <BrowserRouter>

@@ -1,22 +1,25 @@
 import './messenger.css'
 import React, { useEffect, useRef, useState } from 'react'
-import TopBar from '../../src/Components/TopBar'
+import TopBar from '../Components/TopBar'
 import Conversation from '../Components/conversaion/Conversation'
 import Message from '../Components/Messages/Message'
 // import ChatOnline from '../Components/chatOnline/ChatOnline'
 import userService from '../services/UserService'
 import axios from 'axios'
+import SideMenuBack from '../Components/SideMenuBack'
 // import { io } from 'socket.io-client'
 
 const Messenger = () => {
   const [conversations, setConsversation] = useState([])
-  const [currentChat, setCurrentChat] = useState(null)
+  const [currentChat, setCurrentChat] = useState()
   const [messages, setMessages] = useState([])
   const [newMessage, setNewMessage] = useState('')
   // const [socket, setSocket] = useState(null)
   const user_id = userService.getLoggedInUser()._id
   const scrollref = useRef()
   const user_type = userService.getLoggedInUser().user_type
+
+  const user_name = userService.getLoggedInUser().full_name
   console.log(user_type)
   // useEffect(() => {
   //   setSocket(io('ws://localhost:8900'))
@@ -75,27 +78,10 @@ const Messenger = () => {
   }, [messages])
 
   return (
-    <>
+    <div className="page-container-user">
       <TopBar />
+      <SideMenuBack />
       <div className="messenger">
-        <div className="chatMenu">
-          <div className="chatMenuWrapper">
-            <input
-              placeholder="search of friends"
-              className="chatMessageInput"
-            />
-            {conversations.map((c) => (
-              <div onClick={() => setCurrentChat(c)}>
-                <Conversation
-                  conversation={c}
-                  currentUser={user_id}
-                  currentUserType={user_type}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-
         <div className="chatBox">
           <div className="chatBoxWrapper">
             {currentChat ? (
@@ -126,11 +112,25 @@ const Messenger = () => {
             )}
           </div>
         </div>
-        <div className="chatOnline ">
-          <div className="chatOnlineWrapper"></div>
+        <div className="chatMenu">
+          <div className="chatMenuWrapper">
+            <div>
+              <h1 className="chats">Chats</h1>
+            </div>
+            {conversations.map((c, key) => (
+              <div onClick={() => setCurrentChat(c)} key={key}>
+                <Conversation
+                  conversation={c}
+                  currentUser={user_id}
+                  isCurrent={currentChat?._id === c?._id ? true : false}
+                  currentUserType={user_type}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
