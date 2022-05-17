@@ -5,9 +5,8 @@ const Conversation = require('../models/Conversation')
 
 router.post('/', async (req, res) => {
   try {
-    // let user = await conversation.findOne({
-    //   'members.0': req.body.senderId,
-    //   'members.1': req.body.receiverId,
+    // let user = await conversation.find({
+    //   members: [{ 0: req.body.senderId }, { 1: req.body.receiverId }],
     // })
 
     // if (user) return res.status(400).send('user with given email already exist')

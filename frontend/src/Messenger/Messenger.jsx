@@ -5,8 +5,8 @@ import Conversation from '../Components/conversaion/Conversation'
 import Message from '../Components/Messages/Message'
 // import ChatOnline from '../Components/chatOnline/ChatOnline'
 import userService from '../services/UserService'
-import SideMenu from '../Components/SideMenu'
 import axios from 'axios'
+import SideMenuBack from '../Components/SideMenuBack'
 // import { io } from 'socket.io-client'
 
 const Messenger = () => {
@@ -80,7 +80,7 @@ const Messenger = () => {
   return (
     <div className="page-container-user">
       <TopBar />
-      <SideMenu />
+      <SideMenuBack />
       <div className="messenger">
         <div className="chatBox">
           <div className="chatBoxWrapper">
