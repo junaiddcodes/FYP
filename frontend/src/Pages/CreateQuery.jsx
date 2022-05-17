@@ -135,7 +135,7 @@ const CreateQuery = () => {
                         <tr key={index}>
                           <td>{index}</td>
                           <td>{e.query_subject}</td>
-                          {!e.query_response ? <td>Pending...</td> : <td>Completed</td>}
+                          {e.query_response === "?" ? <td>Pending...</td> : <td>Completed</td>}
                           <td>
                             <div className="d-flex align-items-center">
                               <Button

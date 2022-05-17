@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Button } from "react-bootstrap";
 import Modal from "react-modal";
 import { ImCross } from "react-icons/im";
@@ -11,8 +11,10 @@ import SideMenu from "../../Components/SideMenu";
 import Select from "react-select";
 import userService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
+import Dropdown from "../../Components/dropdown";
 
 const AddFood = () => {
+  const [value, setValue] = useState(null);
   const navigate = useNavigate();
   var user_id = userService.getLoggedInUser()._id;
   var [mealData, setMealData] = useState([]);
@@ -22,6 +24,22 @@ const AddFood = () => {
       // console.log(mealData);
       console.log(data.crud.food_calories);
     });
+  }
+  function getFoodData(e) {
+    console.log(e);
+    if (e) {
+      var x = e;
+      if (x.length >= 3) {
+        console.log(x);
+        var foodSet = {
+          food_name: x,
+        };
+        userService.getFood(foodSet).then((data) => {
+          setFoodOptions(data.crud);
+          console.log(foodOptions);
+        });
+      }
+    }
   }
 
   useEffect(() => {
@@ -47,12 +65,7 @@ const AddFood = () => {
     { value: "dinner", label: "Dinner" },
     { value: "snacks", label: "Snacks" },
   ];
-  const fodOptions = [
-    { value: "breakfast", label: "Breakfast" },
-    { value: "lunch", label: "Lunch" },
-    { value: "dinner", label: "Dinner" },
-    { value: "snacks", label: "Snacks" },
-  ];
+  const fodOptions = [{ value: "", label: "" }];
   var [foodOptions, setFoodOptions] = useState([]);
   const quantityOptions = [
     { value: "100", label: "100 gm" },
@@ -141,25 +154,16 @@ const AddFood = () => {
             </a>
 
             <Select className="select-drop" placeholder="Select Meal" options={mealOptions} />
-            <input
-              type="text"
-              name="foodapi"
-              onChange={(e) => {
-                var x = e.target.value;
-                if (x.length >= 3) {
-                  console.log(x);
-                  var foodSet = {
-                    food_name: x,
-                  };
-                  userService.getFood(foodSet).then((data) => {
-                    setFoodOptions(data.crud);
-                    console.log(foodOptions);
-                  });
-                }
-              }}
+
+            <Dropdown
+              prompt="Select Food"
+              value={value}
+              onChange={setValue}
+              options={foodOptions}
+              label="food_name"
+              getData={getFoodData}
             />
 
-            <Select className="select-drop" placeholder="Select Food" options={fodOptions} />
             <Select
               className="select-drop"
               placeholder="Select Quantity"
@@ -167,7 +171,7 @@ const AddFood = () => {
             />
           </div>
           <div>
-            <Button type="submit ">Add Food</Button>
+            <Button type="submit">Add Food</Button>
           </div>
         </Modal>
       </div>

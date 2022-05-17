@@ -17,5 +17,5 @@ router.route('/addexercise').post(createData)
 // router.route('/getfood').get(getAllData)
 router.route('/:exerciseId').patch(updateData).delete(deleteData)
 
-router.route('/name/:excercise_name').get(getbyName)
+router.route('/name').post(getbyName)
 module.exports = router
