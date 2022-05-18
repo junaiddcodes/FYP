@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import moment from "moment";
+
 import "../../styles/pages.css";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -25,7 +27,12 @@ const trainerSchema = yup.object().shape({
   email: yup.string().min(3).required().email(),
   password: yup.string().min(8).required(),
   gender: yup.string().required("A radio option is required").nullable(),
-  dob: yup.string().required(),
+  dob: yup
+    .string()
+    .required("DOB is Required")
+    .test("DOB", "You must be 18 years old", (value) => {
+      return moment().diff(moment(value), "years") >= 18;
+    }),
 });
 
 const TrainerRegister = () => {
@@ -101,12 +108,7 @@ const TrainerRegister = () => {
               </div>
               <div className="d-flex flex-column">
                 <h3 className="p-4 pb-0">Your DOB:</h3>
-                <input
-                  type="date"
-                  // placeholder="DD/MM/YYYY"
-                  name="dob"
-                  {...controlTrainer("dob")}
-                />
+                <input type="date" placeholder="DD/MM/YYYY" name="dob" {...controlTrainer("dob")} />
                 <p>{errorsTrainer.dob?.message}</p>
               </div>
               <div className="d-flex flex-column">

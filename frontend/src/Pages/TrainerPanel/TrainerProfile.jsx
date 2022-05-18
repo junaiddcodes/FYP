@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { Button } from 'react-bootstrap'
-import Modal from 'react-modal'
-import { FaSearch } from 'react-icons/fa'
-import Tooltip from '@mui/material/Tooltip'
-import { ImCross } from 'react-icons/im'
-import { MdLocationPin } from 'react-icons/md'
-import { MdMyLocation } from 'react-icons/md'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
-import Select from '@mui/material/Select'
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Button } from "react-bootstrap";
+import Modal from "react-modal";
+import { FaSearch } from "react-icons/fa";
+import Tooltip from "@mui/material/Tooltip";
+import { ImCross } from "react-icons/im";
+import { MdLocationPin } from "react-icons/md";
+import { MdMyLocation } from "react-icons/md";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
-import TopBar from '../../Components/TopBar'
-import SideMenuTrainer from '../../Components/SideMenuTrainer'
-import { useForm } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
-import userService from '../../services/UserService'
-import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import jwtDecode from 'jwt-decode'
-import trainerService from '../../services/TrainerService'
-import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
-import { Link } from 'react-router-dom'
+import TopBar from "../../Components/TopBar";
+import SideMenuTrainer from "../../Components/SideMenuTrainer";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import userService from "../../services/UserService";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import jwtDecode from "jwt-decode";
+import trainerService from "../../services/TrainerService";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { Link } from "react-router-dom";
 
 const trainerProfileSchema = yup.object().shape({
   gender: yup.string().nullable(),
@@ -31,59 +31,59 @@ const trainerProfileSchema = yup.object().shape({
   exercise_type: yup.string().required("Exercise type can't be empty"),
   company_name: yup
     .string()
-    .min(2, 'Company name must be of at least 2 characters')
-    .max(30, 'Company name must be of at most 30 characters')
+    .min(2, "Company name must be of at least 2 characters")
+    .max(30, "Company name must be of at most 30 characters")
     .required("Company name can't be empty")
     .nullable(),
   designation: yup
     .string()
-    .min(2, 'Designation must be of at least 2 characters')
-    .max(30, 'Designation must be of at most 30 characters')
+    .min(2, "Designation must be of at least 2 characters")
+    .max(30, "Designation must be of at most 30 characters")
     .required("Designation can't be empty")
     .nullable(),
 
   time_worked: yup
     .number()
-    .typeError('Time is required!')
-    .positive('Time should be a positive number')
-    .required('Time is required!'),
+    .typeError("Time is required!")
+    .positive("Time should be a positive number")
+    .required("Time is required!"),
   qualification: yup
     .string()
-    .min(2, 'Qualification name must be of at least 2 characters')
-    .max(30, 'Qualification name must be of at most 30 characters')
+    .min(2, "Qualification name must be of at least 2 characters")
+    .max(30, "Qualification name must be of at most 30 characters")
     .required("Qualification name can't be empty"),
   trainer_desc: yup
     .string()
-    .min(200, 'Trainer description must be at least 200 characters!')
-    .max(500, 'Trainer description must be at most 500 characters!')
+    .min(200, "Trainer description must be at least 200 characters!")
+    .max(500, "Trainer description must be at most 500 characters!")
     .required("Trainer description can't be empty!"),
   // certificate_file: yup.string(),
   trainer_photo: yup.string(),
-})
+});
 
 const TrainerProfile = () => {
-  const navigate = useNavigate()
-  const [fileName, setFileName] = React.useState('')
-  const [previewImage, setPreviewImage] = React.useState('')
-  const [isProfile, setIsProfile] = useState(false)
-  const [loggedInId, setLoggedInId] = useState('')
-  const [isTrainerForm, setIsTrainerForm] = useState(false)
-  const [isProfilePicForm, setIsProfilePicForm] = useState(false)
-  const [isAsk, setIsAsk] = useState(false)
-  const [confirmDelete, setConfirmDelete] = useState(false)
-  const [getCustomer, setGetCustomer] = useState('')
-  const [isListed, setIsListed] = useState('')
-  const [trainerAge, setTrainerAge] = useState(10)
-  const [selectedValue, setSelectedValue] = useState(10)
-  var trainersAge = ''
-  var loginId = ''
+  const navigate = useNavigate();
+  const [fileName, setFileName] = React.useState("");
+  const [previewImage, setPreviewImage] = React.useState("");
+  const [isProfile, setIsProfile] = useState(false);
+  const [loggedInId, setLoggedInId] = useState("");
+  const [isTrainerForm, setIsTrainerForm] = useState(false);
+  const [isProfilePicForm, setIsProfilePicForm] = useState(false);
+  const [isAsk, setIsAsk] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [getCustomer, setGetCustomer] = useState("");
+  const [isListed, setIsListed] = useState("");
+  const [trainerAge, setTrainerAge] = useState(10);
+  const [selectedValue, setSelectedValue] = useState(10);
+  var trainersAge = "";
+  var loginId = "";
   const workoutOptions = [
-    { value: 'weight-lifting', label: 'Weight Lifting' },
-    { value: 'cardio', label: 'Cardio' },
-    { value: 'stretching', label: 'Stretching' },
-    { value: 'yoga', label: 'Yoga' },
-    { value: 'aerobics', label: 'Aerobics' },
-  ]
+    { value: "weight-lifting", label: "Weight Lifting" },
+    { value: "cardio", label: "Cardio" },
+    { value: "stretching", label: "Stretching" },
+    { value: "yoga", label: "Yoga" },
+    { value: "aerobics", label: "Aerobics" },
+  ];
   var trainerProfileDetails = {
     // user_id: {
     //   full_name: "",
@@ -91,59 +91,59 @@ const TrainerProfile = () => {
     //   password: "",
     //   user_type: "trainer",
     // },
-    exercise_type: '',
-    listed: 'not-listed',
-    company_name: '',
-    designation: '',
-    time_worked: '',
+    exercise_type: "",
+    listed: "not-listed",
+    company_name: "",
+    designation: "",
+    time_worked: "",
 
-    trainer_desc: '',
-    certificate_file: 'asdasd',
-    trainer_photo: 'adsadasd',
-  }
+    trainer_desc: "",
+    certificate_file: "asdasd",
+    trainer_photo: "adsadasd",
+  };
   function getAge(dateString) {
-    var today = new Date()
-    var birthDate = new Date(dateString)
-    var age = today.getFullYear() - birthDate.getFullYear()
-    var m = today.getMonth() - birthDate.getMonth()
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--
+      age--;
     }
-    return age
+    return age;
   }
   const get_customer = () => {
     trainerService
       .get_one_trainer(loginId)
       .then((res) => {
-        console.log(res)
-        setGetCustomer(res.crud)
+        console.log(res);
+        setGetCustomer(res.crud);
         if (res.crud.designation) {
-          setIsProfile(true)
-          setIsProfilePicForm(false)
-          setIsAsk(false)
-          setIsTrainerForm(false)
-          console.log(getCustomer.dob)
-          setTrainerAge(getAge(res.crud.dob))
-          console.log(trainerAge)
+          setIsProfile(true);
+          setIsProfilePicForm(false);
+          setIsAsk(false);
+          setIsTrainerForm(false);
+          console.log(getCustomer.dob);
+          setTrainerAge(getAge(res.crud.dob));
+          console.log(trainerAge);
           if (getCustomer.listed == true) {
-            setIsListed('listed')
-          } else setIsListed('not-listed')
+            setIsListed("listed");
+          } else setIsListed("not-listed");
         } else {
-          setIsAsk(true)
-          setIsTrainerForm(false)
-          setIsProfilePicForm(false)
-          setIsProfile(false)
+          setIsAsk(true);
+          setIsTrainerForm(false);
+          setIsProfilePicForm(false);
+          setIsProfile(false);
         }
       })
       .catch((err) => {
-        console.log(err)
-      })
-  }
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     // userService.getLoggedInUser();
-    setLoggedInId(userService.getLoggedInUser()._id)
-    loginId = userService.getLoggedInUser()._id
+    setLoggedInId(userService.getLoggedInUser()._id);
+    loginId = userService.getLoggedInUser()._id;
     if (userService.isLoggedIn() == false) {
       navigate("/login");
     } else {
@@ -155,35 +155,35 @@ const TrainerProfile = () => {
         navigate("/login");
       }
     }
-    get_customer()
-  }, [loginId])
+    get_customer();
+  }, [loginId]);
 
   const onChangeFile = (e) => {
-    setFileName(e.target.files[0])
-    setPreviewImage(URL.createObjectURL(e.target.files[0]))
-  }
+    setFileName(e.target.files[0]);
+    setPreviewImage(URL.createObjectURL(e.target.files[0]));
+  };
   const page_refresh = () => {
-    window.location.reload(true)
-  }
+    window.location.reload(true);
+  };
   const changeOnClick = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const formData = new FormData()
+    const formData = new FormData();
 
-    formData.append('trainer', fileName)
+    formData.append("trainer", fileName);
 
     trainerService
       .update_trainer_photo(formData, loggedInId)
       .then((data) => {
-        console.log(data)
-        setIsProfilePicForm(false)
-        setIsProfile(true)
-        page_refresh()
+        console.log(data);
+        setIsProfilePicForm(false);
+        setIsProfile(true);
+        page_refresh();
       })
       .catch((err) => {
-        console.log(err)
-      })
-  }
+        console.log(err);
+      });
+  };
 
   const {
     register: controlTrainerProfile,
@@ -191,7 +191,7 @@ const TrainerProfile = () => {
     formState: { errors: errorsTrainerProfile },
   } = useForm({
     resolver: yupResolver(trainerProfileSchema),
-  })
+  });
 
   const submitTrainerProfileForm = (data) => {
     // console.log("aaaaaaa");
@@ -200,7 +200,7 @@ const TrainerProfile = () => {
     // setTrainerDetails({ ...trainerDetails, weekly_goal: data.weekly_goal });
     // console.log(trainerDetails);
     // console.log("aaaaaaa");
-    console.log('before request')
+    console.log("before request");
     trainerProfileDetails = {
       ...trainerProfileDetails,
       exercise_type: data.exercise_type,
@@ -212,23 +212,23 @@ const TrainerProfile = () => {
       trainer_desc: data.trainer_desc,
       // certificate_file: "",
       // trainer_photo: "",
-    }
+    };
     trainerService
       .update_trainer(trainerProfileDetails, loggedInId)
       .then((data) => {
         // console.log(data);
       })
       .catch((err) => {
-        console.log(err)
-      })
-    console.log(trainerProfileDetails)
-    console.log('after request')
-    setIsProfilePicForm(true)
-    setIsTrainerForm(false)
-  }
+        console.log(err);
+      });
+    console.log(trainerProfileDetails);
+    console.log("after request");
+    setIsProfilePicForm(true);
+    setIsTrainerForm(false);
+  };
   const handleChange = (e) => {
-    setSelectedValue(e.value)
-  }
+    setSelectedValue(e.value);
+  };
   return (
     <div className="page-container-gym">
       <TopBar />
@@ -236,16 +236,13 @@ const TrainerProfile = () => {
       <h2>Trainer Profile</h2>
       {isAsk ? (
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
-          <h4>
-            There is no profile present. Click below to create a trainer
-            profile:
-          </h4>
+          <h4>There is no profile present. Click below to create a trainer profile:</h4>
           <Button
             className="w-25 mt-4"
             onClick={() => {
-              setIsTrainerForm(true)
-              setIsProfilePicForm(false)
-              setIsAsk(false)
+              setIsTrainerForm(true);
+              setIsProfilePicForm(false);
+              setIsAsk(false);
             }}
           >
             Create Profile
@@ -265,7 +262,7 @@ const TrainerProfile = () => {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     name="exercise_type"
-                    {...controlTrainerProfile('exercise_type')}
+                    {...controlTrainerProfile("exercise_type")}
                   >
                     <MenuItem value="cardio">Cardio</MenuItem>
                     <MenuItem value="gym">Gym</MenuItem>
@@ -291,7 +288,7 @@ const TrainerProfile = () => {
                 type="text"
                 id=""
                 name="qualification"
-                {...controlTrainerProfile('qualification')}
+                {...controlTrainerProfile("qualification")}
               />
               <p>{errorsTrainerProfile.qualification?.message}</p>
               <label>Enter your company name</label>
@@ -299,7 +296,7 @@ const TrainerProfile = () => {
                 type="text"
                 id=""
                 name="company_name"
-                {...controlTrainerProfile('company_name')}
+                {...controlTrainerProfile("company_name")}
               />
 
               <p>{errorsTrainerProfile.company_name?.message}</p>
@@ -308,7 +305,7 @@ const TrainerProfile = () => {
                 type="text"
                 id=""
                 name="designation"
-                {...controlTrainerProfile('designation')}
+                {...controlTrainerProfile("designation")}
               />
               <p>{errorsTrainerProfile.designation?.message}</p>
               <label for="lname">
@@ -318,7 +315,7 @@ const TrainerProfile = () => {
                 type="number"
                 id=""
                 name="time_worked"
-                {...controlTrainerProfile('time_worked')}
+                {...controlTrainerProfile("time_worked")}
               />
               <p>{errorsTrainerProfile.time_worked?.message}</p>
               {/* <label for="lname">Your gender</label> */}
@@ -353,16 +350,15 @@ const TrainerProfile = () => {
             <textarea
               className="text-field mt-2"
               name="trainer_desc"
-              {...controlTrainerProfile('trainer_desc')}
+              {...controlTrainerProfile("trainer_desc")}
             />
             <p>{errorsTrainerProfile.trainer_desc?.message}</p>
 
-            <label for="lname">Upload certificate file</label>
+            {/* <label for="lname">Upload certificate file</label>
             <p className="general-p">Please upload your profile picture</p>
-            <input type="file" />
+            <input type="file" /> */}
             <p className="general-p mt-5">
-              Submit Profile to the Admin. Admin will review your profile and
-              Approve it:
+              Submit Profile to the Admin. Admin will review your profile and Approve it:
             </p>
             <Button
               type="submit"
@@ -389,14 +385,14 @@ const TrainerProfile = () => {
           <form onSubmit={changeOnClick} encType="multipart/form-data">
             <div className="upload-form">
               <input
-                style={{ marginTop: '1rem' }}
+                style={{ marginTop: "1rem" }}
                 accept="image/*"
                 type="file"
                 filename="trainer"
                 onChange={onChangeFile}
               />
               <button
-                style={{ marginTop: '1rem', marginBottom: '1rem' }}
+                style={{ marginTop: "1rem", marginBottom: "1rem" }}
                 className="btn btn-primary w-25"
                 type="submit"
               >
@@ -410,11 +406,7 @@ const TrainerProfile = () => {
           <div className="d-flex ">
             <div className="d-flex w-75 justify-content-between">
               <div className="trainer-photo d-flex">
-                <img
-                  clasName="trainer-photo"
-                  src={getCustomer.trainer_photo}
-                  alt=""
-                />
+                <img clasName="trainer-photo" src={getCustomer.trainer_photo} alt="" />
                 <div className="d-flex mt-5 flex-column">
                   <h4>Name: {getCustomer.user_id.full_name}</h4>
                   <h4>Age: {trainerAge}</h4>
@@ -426,8 +418,8 @@ const TrainerProfile = () => {
                 <Button
                   className="mt-5"
                   onClick={() => {
-                    setIsTrainerForm(true)
-                    setIsProfile(false)
+                    setIsTrainerForm(true);
+                    setIsProfile(false);
                   }}
                 >
                   Edit
@@ -437,27 +429,27 @@ const TrainerProfile = () => {
                   onClick={() => {
                     trainerProfileDetails = {
                       ...trainerProfileDetails,
-                      exercise_type: '',
+                      exercise_type: "",
                       listed: false,
-                      company_name: '',
-                      designation: '',
-                      time_worked: '',
+                      company_name: "",
+                      designation: "",
+                      time_worked: "",
 
-                      trainer_desc: '',
-                      certificate_file: '',
-                      trainer_photo: '',
-                    }
+                      trainer_desc: "",
+                      certificate_file: "",
+                      trainer_photo: "",
+                    };
                     trainerService
                       .update_trainer(trainerProfileDetails, loggedInId)
                       .then((data) => {
-                        console.log(data)
+                        console.log(data);
                       })
                       .catch((err) => {
-                        console.log(err)
-                      })
-                    console.log(trainerProfileDetails + 'deleted')
-                    setIsAsk(true)
-                    setIsProfile(false)
+                        console.log(err);
+                      });
+                    console.log(trainerProfileDetails + "deleted");
+                    setIsAsk(true);
+                    setIsProfile(false);
                   }}
                 >
                   Delete
@@ -475,7 +467,7 @@ const TrainerProfile = () => {
         </div>
       ) : null}
     </div>
-  )
-}
+  );
+};
 
-export default TrainerProfile
+export default TrainerProfile;

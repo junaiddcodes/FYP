@@ -88,14 +88,7 @@ const step1Schema = yup.object().shape({
 
 const step2Schema = yup.object().shape({
   weight: yup.number().positive().required().nullable(),
-  feet: yup
-    .number()
-    .typeError("feet is required")
-    .min(3)
-    .max(10)
-    .positive()
-    .required()
-    .nullable(),
+  feet: yup.number().typeError("feet is required").min(3).max(10).positive().required().nullable(),
   inches: yup
     .number()
     .typeError("inches are required")
@@ -227,21 +220,20 @@ const UserRegister = () => {
   };
 
   const submitStep4Form = (data) => {
-
     // calculation of bmr
 
     var calorieData = calculation(customerDetails, data.weekly_goal);
     console.log(calorieData);
 
-    var calorieObject= customerDetails;
-    calorieObject={
+    var calorieObject = customerDetails;
+    calorieObject = {
       ...calorieObject,
       weekly_goal: data.weekly_goal,
       protein: calorieData.protien,
       carbs: calorieData.carbs,
       fats: calorieData.fats,
-      calorie_goal: calorieData.calorie
-    }
+      calorie_goal: calorieData.calorie,
+    };
     // setCustomerDetails({
     //   ...customerDetails,
     //   weekly_goal: data.weekly_goal,
@@ -253,21 +245,20 @@ const UserRegister = () => {
 
     console.log(calorieObject);
 
-
     console.log("before request");
     userService
       .register_user(calorieObject)
       .then((data) => {
-        console.log(data)
+        console.log(data);
         // props.history.push("/login");
-        navigate('/login')
+        navigate("/login");
       })
       .catch((err) => {
-        console.log(err)
+        console.log(err);
         toast.error(err.response.data, {
           position: toast.POSITION.TOP_LEFT,
-        })
-      })
+        });
+      });
     console.log("after request");
   };
 
@@ -323,12 +314,7 @@ const UserRegister = () => {
                   <h3 className="p-4 pb-0">Your Gender:</h3>
                   <div className="d-flex justify-content-around radio-container">
                     <div className="radio w-25 d-flex ">
-                      <input
-                        name="gender"
-                        type="radio"
-                        value="male"
-                        {...controlStep1("gender")}
-                      />
+                      <input name="gender" type="radio" value="male" {...controlStep1("gender")} />
                       <h4 className="m-2">Male</h4>
                     </div>
                     <div className="radio w-25 d-flex  ">
@@ -435,11 +421,7 @@ const UserRegister = () => {
                 <div className="d-flex flex-column w-75">
                   <h3 className="p-4 pb-0">Your Current height:</h3>
                   <div className="d-flex justify-content-center">
-                    <input
-                      type="number"
-                      placeholder="Feet"
-                      {...controlStep2("feet")}
-                    />
+                    <input type="number" placeholder="Feet" {...controlStep2("feet")} />
 
                     <input
                       type="number"
@@ -461,9 +443,7 @@ const UserRegister = () => {
               </div>
               <div className="d-flex flex-column w-50">
                 <div className="btn-group d-flex flex-column h-100 align-items-stretch">
-                  <h3 className="p-4 pb-0">
-                    What is your baseline activity level?:
-                  </h3>
+                  <h3 className="p-4 pb-0">What is your baseline activity level?:</h3>
 
                   <div className="activity-btn d-flex ">
                     <input
@@ -475,10 +455,7 @@ const UserRegister = () => {
 
                     <div className="d-flex flex-column w-75 ">
                       <h4>Not Very Active</h4>
-                      <p>
-                        Spend most of the day sitting ( e.g. bank teller, desk
-                        job){" "}
-                      </p>
+                      <p>Spend most of the day sitting ( e.g. bank teller, desk job) </p>
                     </div>
                   </div>
                   <div className="activity-btn d-flex justify-content-between">
@@ -491,8 +468,7 @@ const UserRegister = () => {
                     <div className="d-flex flex-column w-75">
                       <h4>Lightly Active</h4>
                       <p>
-                        Spend a good part of your day on your feet ( e.g.
-                        teacher, salesperson )
+                        Spend a good part of your day on your feet ( e.g. teacher, salesperson )
                       </p>
                     </div>
                   </div>
@@ -507,8 +483,8 @@ const UserRegister = () => {
                       <h4>Active</h4>
                       <p>
                         {" "}
-                        Spend a good part of your day doing some physical
-                        activity ( e.g. food server, postal carrier )
+                        Spend a good part of your day doing some physical activity ( e.g. food
+                        server, postal carrier )
                       </p>
                     </div>
                   </div>
@@ -522,8 +498,8 @@ const UserRegister = () => {
                     <div className="d-flex flex-column w-75">
                       <h4>Very Active</h4>
                       <p>
-                        Spend a good part of the day doing heavy physical
-                        activity ( e.g. bike messenger, carpenter )
+                        Spend a good part of the day doing heavy physical activity ( e.g. bike
+                        messenger, carpenter )
                       </p>
                     </div>
                   </div>
@@ -554,9 +530,7 @@ const UserRegister = () => {
           >
             <h2 className="text-center mb-3">User Signup</h2>
             <div className="btn-group2 inner-box-step3 d-flex flex-column">
-              <h3 className="text-center p-4 pb-0 w-100">
-                What is your weight goal?
-              </h3>
+              <h3 className="text-center p-4 pb-0 w-100">What is your weight goal?</h3>
 
               <div className="activity-btn d-flex justify-content-between">
                 <input
@@ -606,9 +580,7 @@ const UserRegister = () => {
           >
             <h2 className="text-center mb-3">User Signup</h2>
             <div className="btn-group2 inner-box-step4 d-flex flex-column">
-              <h3 className="text-center p-4 pb-0 w-100">
-                What is your weekly goal?
-              </h3>
+              <h3 className="text-center p-4 pb-0 w-100">What is your weekly goal?</h3>
 
               <div className="activity-btn2 d-flex justify-content-between">
                 <input
@@ -622,12 +594,7 @@ const UserRegister = () => {
                 </div>
               </div>
               <div className="activity-btn2 d-flex justify-content-between">
-                <input
-                  type="radio"
-                  name="weekly_goal"
-                  value="1"
-                  {...controlStep4("weekly_goal")}
-                />
+                <input type="radio" name="weekly_goal" value="1" {...controlStep4("weekly_goal")} />
                 <div className="d-flex flex-column w-75">
                   <h4>{goalText} 1 pound per week</h4>
                 </div>

@@ -40,6 +40,7 @@ const TrainerRequest = () => {
         navigate("/login");
       }
     }
+    console.log(data);
     setTrainerAge(getAge(data.dob));
   }, []);
   function getAge(dateString) {
@@ -107,7 +108,7 @@ const TrainerRequest = () => {
         <div className="d-flex ">
           <div className="d-flex w-75 justify-content-between">
             <div className="trainer-img d-flex">
-              <img src="../../../images/trainer.png" alt="" />
+              <img src={data.trainer_photo} alt="" />
               <div className="d-flex mt-5 flex-column">
                 <h4>Name: {data.user_id.full_name}</h4>
                 <h4>Age: {trainerAge} </h4>

@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import userService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import trainerService from "../../services/TrainerService";
 
 const schema = yup.object().shape({
   Email: yup.string().email().required(),
@@ -34,11 +35,9 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
 
-  // useEffect(() => {
-  //   if (data) {
-  //     toast(data);
-  //   }
-  // }, []);
+  useEffect(() => {
+    trainerService.logout();
+  }, []);
 
   const submitForm = (data) => {
     console.log(data.role);

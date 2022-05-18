@@ -105,7 +105,9 @@ const GymRequest = () => {
           <h4>Email</h4>
           <p>{data.user_id.email}</p>
           <h4>Location</h4>
-          <p>{data.location}</p>
+          <p>
+            {data.location.address} , {data.location.city} , {data.location.state}
+          </p>
         </div>
       </div>
     </div>

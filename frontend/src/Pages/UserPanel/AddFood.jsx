@@ -153,9 +153,10 @@ const AddFood = () => {
               <i class="bx bx-x"></i>
             </a>
 
-            <Select className="select-drop" placeholder="Select Meal" options={mealOptions} />
+            <Select className="modal-dropdown" placeholder="Select Meal" options={mealOptions} />
 
             <Dropdown
+              className="modal-dropdown w-100"
               prompt="Select Food"
               value={value}
               onChange={setValue}
@@ -165,7 +166,7 @@ const AddFood = () => {
             />
 
             <Select
-              className="select-drop"
+              className="modal-dropdown"
               placeholder="Select Quantity"
               options={quantityOptions}
             />

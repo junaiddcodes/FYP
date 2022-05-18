@@ -74,6 +74,7 @@ const GymProfile = () => {
     gym_membership_price: "",
     gender_facilitation: "",
     gym_photo: "photo",
+    listed: "not-listed",
   };
 
   const get_gym = () => {
@@ -371,10 +372,11 @@ const GymProfile = () => {
                 <div className="m-4 d-flex mt-5 flex-column">
                   <h4>Gym Name: {getGym.user_id.full_name}</h4>
                   <h4>
-                    Location: {getGym.location.address}, {getGym.location.city},{" "}
-                    {getGym.location.state}{" "}
+                    Location: {getGym.location?.address}, {getGym.location?.city},{" "}
+                    {getGym.location?.state}{" "}
                   </h4>
                   <h4>Gender: {getGym.gender_facilitation}</h4>
+                  <h4>Status: {getGym.listed}</h4>
                 </div>
               </div>
               <div className="trainer-btn d-flex flex-column">
