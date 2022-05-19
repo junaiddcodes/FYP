@@ -926,6 +926,16 @@
   border-radius: 1rem;
 }
 
+#demo-simple-select-2 {
+  color: #0a1929;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+#demo-simple-select-label-x {
+  color: #777;
+}
+
 .page-container-admin {
   padding: 1rem;
 }
