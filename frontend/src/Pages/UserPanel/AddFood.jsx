@@ -5,19 +5,81 @@ import { ImCross } from "react-icons/im";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-// import Select from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
-import Select from "react-select";
+
 import userService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "../../Components/dropdown";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { TextField } from "@mui/material";
 
 const AddFood = () => {
+  const [foodCheck, setFoodCheck] = useState(true);
+  const schema = yup.object().shape({
+    meal_name: yup.string().required("Meal cannot be Empty"),
+    food_quantity: yup.string().required("Food Weight cannot be Empty"),
+  });
   const [value, setValue] = useState(null);
   const navigate = useNavigate();
   var user_id = userService.getLoggedInUser()._id;
   var [mealData, setMealData] = useState([]);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const submitForm = (data) => {
+    if (!value) {
+      setFoodCheck(false);
+    } else {
+      setFoodCheck(true);
+      console.log(data);
+      console.log(value);
+      var mealPost = {
+        customer_Id: user_id,
+        meal_name: data.meal_name,
+        food_name: value.food_name,
+        food_weight: value.food_weight,
+        food_calories: value.food_calories,
+        food_proteins: value.food_proteins,
+        food_carbs: value.food_carbs,
+        food_fats: value.food_fats,
+        food_quantity: data.food_quantity,
+        time_date: new Date().getTime(),
+      };
+
+      userService
+        .createMeal(mealPost)
+        .then((e) => {
+          getMealData();
+          setValue(null)
+          console.log("Meal Posted Successfully");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+
+    // userService
+    //   .login(email, password, data.role)
+    //   .then((token) => {
+    //     // console.log(token);
+    //     if (data.role == "customer") navigate("/user-dashboard");
+    //     if (data.role == "trainer") navigate("/trainer-dashboard");
+    //     if (data.role == "gym") navigate("/gym-dashboard");
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.toString());
+    //     setAuthError(`No ${data.role} account exists for this email!`);
+    //   });
+  };
   function getMealData() {
     userService.getMealData(user_id).then((data) => {
       setMealData(data.crud);
@@ -25,6 +87,8 @@ const AddFood = () => {
       console.log(data.crud.food_calories);
     });
   }
+
+  
   function getFoodData(e) {
     console.log(e);
     if (e) {
@@ -36,6 +100,7 @@ const AddFood = () => {
         };
         userService.getFood(foodSet).then((data) => {
           setFoodOptions(data.crud);
+          setValue(null)
           console.log(foodOptions);
         });
       }
@@ -59,19 +124,9 @@ const AddFood = () => {
     }
     getMealData();
   }, []);
-  const mealOptions = [
-    { value: "breakfast", label: "Breakfast" },
-    { value: "lunch", label: "Lunch" },
-    { value: "dinner", label: "Dinner" },
-    { value: "snacks", label: "Snacks" },
-  ];
-  const fodOptions = [{ value: "", label: "" }];
+
   var [foodOptions, setFoodOptions] = useState([]);
-  const quantityOptions = [
-    { value: "100", label: "100 gm" },
-    { value: "250", label: "250 gm" },
-    { value: "500", label: "500 gm" },
-  ];
+
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -152,30 +207,66 @@ const AddFood = () => {
             >
               <i class="bx bx-x"></i>
             </a>
+            <form
+              onSubmit={handleSubmit(submitForm)}
+              className="d-flex flex-column"
+            >
+              <FormControl className="w-100 dropdown-trainer">
+                <InputLabel id="demo-simple-select-label-x">
+                  Select Meal
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  placeholder="Select Meal"
+                  id="demo-simple-select-2"
+                  name="meal_name"
+                  label="Select Meal"
+                  {...register("meal_name")}
+                >
+                  <MenuItem value="breakfast">Breakfast</MenuItem>
+                  <MenuItem value="lunch">Lunch</MenuItem>
+                  <MenuItem value="snacks">Snacks</MenuItem>
+                  <MenuItem value="dinner">Dinner</MenuItem>
+                </Select>
+              </FormControl>
+              <p>{errors.meal_name?.message}</p>
 
-            <Select
-              className="select-drop"
-              placeholder="Select Meal"
-              options={mealOptions}
-            />
+              <Dropdown
+                className="w-100"
+                prompt="Select Food"
+                value={value}
+                onChange={setValue}
+                options={foodOptions}
+                label="food_name"
+                getData={getFoodData}
+              />
+              {!foodCheck ? <p>Food cannot be Empty</p> : null}
+              <div className="mt-2 w-100">
+                <TextField
+                  id="demo-simple-select-2"
+                  className="w-100"
+                  label="Quantity"
+                  variant="outlined"
+                  name="food_quantity"
+                  {...register("food_quantity")}
+                  placeholder="Select Quantity"
+                  InputLabelProps={{
+                    style: { color: "#777" },
+                  }}
+                />
+              </div>
 
-            <Dropdown
-              prompt="Select Food"
-              value={value}
-              onChange={setValue}
-              options={foodOptions}
-              label="food_name"
-              getData={getFoodData}
-            />
+              <p>{errors.food_quantity?.message}</p>
 
-            <Select
-              className="select-drop"
-              placeholder="Select Quantity"
-              options={quantityOptions}
-            />
-          </div>
-          <div>
-            <Button type="submit">Add Food</Button>
+              {/* // <Select
+            //   className="select-drop"
+            //   placeholder="Select Quantity"
+            //   options={quantityOptions}
+            // /> */}
+              <div>
+                <Button type="submit">Add Food</Button>
+              </div>
+            </form>
           </div>
         </Modal>
       </div>
@@ -256,22 +347,70 @@ const AddFood = () => {
                                   >
                                     <i class="bx bx-x"></i>
                                   </a>
+                                  <form
+                                    onSubmit={handleSubmit(submitForm)}
+                                    className="d-flex flex-column"
+                                  >
+                                    <FormControl className="w-100 dropdown-trainer">
+                                      <InputLabel id="demo-simple-select-label-x">
+                                        Select Meal
+                                      </InputLabel>
+                                      <Select
+                                        labelId="demo-simple-select-label"
+                                        placeholder="Select Meal"
+                                        id="demo-simple-select-2"
+                                        name="meal_name"
+                                        label="Select Meal"
+                                        {...register("meal_name")}
+                                      >
+                                        <MenuItem value="breakfast">
+                                          Breakfast
+                                        </MenuItem>
+                                        <MenuItem value="lunch">Lunch</MenuItem>
+                                        <MenuItem value="snacks">
+                                          Snacks
+                                        </MenuItem>
+                                        <MenuItem value="dinner">
+                                          Dinner
+                                        </MenuItem>
+                                      </Select>
+                                    </FormControl>
+                                    <p>{errors.meal_name?.message}</p>
 
-                                  <Select
-                                    className="select-drop"
-                                    placeholder="Select Meal"
-                                    options={mealOptions}
-                                  />
-                                  <Select
-                                    className="select-drop"
-                                    placeholder="Select Food"
-                                    options={foodOptions}
-                                  />
-                                  <Select
-                                    className="select-drop"
-                                    placeholder="Select Quantity"
-                                    options={quantityOptions}
-                                  />
+                                    <Dropdown
+                                      className="w-100"
+                                      prompt="Select Food"
+                                      value={value}
+                                      onChange={setValue}
+                                      options={foodOptions}
+                                      label="food_name"
+                                      getData={getFoodData}
+                                    />
+                                    {!foodCheck ? (
+                                      <p>Food cannot be Empty</p>
+                                    ) : null}
+                                    <div className="mt-2 w-100">
+                                      <TextField
+                                        id="demo-simple-select-2"
+                                        className="w-100"
+                                        label="Quantity"
+                                        variant="outlined"
+                                        name="food_quantity"
+                                        {...register("food_quantity")}
+                                        placeholder="Select Quantity"
+                                        InputLabelProps={{
+                                          style: { color: "#777" },
+                                        }}
+                                      />
+                                    </div>
+
+                                    <p>{errors.food_quantity?.message}</p>
+
+                              
+                                    <div>
+                                      <Button type="submit">Add Food</Button>
+                                    </div>
+                                  </form>
                                 </div>
                                 <div>
                                   <Button type="submit ">Add Food</Button>
@@ -327,7 +466,9 @@ const AddFood = () => {
                                   >
                                     <i class="bx bx-x"></i>
                                   </a>
-                                  <h3>Are you sure you want to delete the food?</h3>
+                                  <h3>
+                                    Are you sure you want to delete the food?
+                                  </h3>
                                   <p>Select yes to delete the item</p>
                                 </div>
                                 <div className="d-flex">
@@ -335,9 +476,11 @@ const AddFood = () => {
                                     className="btn-dark m-3"
                                     type="submit "
                                     onClick={() => {
-                                      userService.deleteMealData(e._id).then(() => {
-                                        console.log("Meal is Deleted");
-                                      });
+                                      userService
+                                        .deleteMealData(e._id)
+                                        .then(() => {
+                                          console.log("Meal is Deleted");
+                                        });
                                       getMealData();
                                       setConfirmDelete(false);
                                     }}

@@ -8,7 +8,7 @@ export default function Dropdown({
   onChange,
   options,
   label,
-  getData
+  getData,
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
@@ -21,8 +21,7 @@ export default function Dropdown({
 
   function filter(options) {
     return options.filter(
-      (option) =>
-        option[label].toLowerCase().indexOf(query.toLowerCase()) > -1
+      (option) => option[label].toLowerCase().indexOf(query.toLowerCase()) > -1
     );
   }
 
@@ -48,11 +47,12 @@ export default function Dropdown({
   }
 
   return (
-    <div style={{ width: "200px" }}>
+    <div style={{ width: "auto" }}>
       <div className="dropdown">
         <div className="control">
           <div className="selected-value">
             <input
+              className="input"
               type="text"
               placeholder={value ? value[label] : prompt}
               ref={ddRef}
@@ -60,7 +60,7 @@ export default function Dropdown({
               value={displayValue()}
               onChange={(e) => {
                 onChange(null);
-                getData(e.target.value)
+                getData(e.target.value);
                 setQuery(e.target.value);
               }}
             />
@@ -68,12 +68,10 @@ export default function Dropdown({
           <div className={`arrow ${open ? "open" : ""}`} />
         </div>
         <div className={`options ${open ? "open" : ""}`}>
-          {filter(options).map((option,key) => (
+          {filter(options).map((option, key) => (
             <div
               key={key}
-              className={`option ${
-                value === option ? "selected" : ""
-              }`}
+              className={`option ${value === option ? "selected" : ""}`}
               onClick={() => {
                 setQuery("");
                 onChange(option);
