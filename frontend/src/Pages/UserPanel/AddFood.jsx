@@ -8,6 +8,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
+import { useLocation } from "react-router-dom";
 
 import userService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +20,8 @@ import { TextField } from "@mui/material";
 
 const AddFood = () => {
   const [foodCheck, setFoodCheck] = useState(true);
+  const location = useLocation();
+
   const schema = yup.object().shape({
     meal_name: yup.string().required("Meal cannot be Empty"),
     food_quantity: yup.string().required("Food Weight cannot be Empty"),
@@ -27,7 +30,8 @@ const AddFood = () => {
   const navigate = useNavigate();
   var user_id = userService.getLoggedInUser()._id;
   var [mealData, setMealData] = useState([]);
-
+  const userData = location.state.userData;
+  const [userDetails, setUserDetails] = useState(location.state.userData);
   const {
     register,
     handleSubmit,
@@ -122,6 +126,7 @@ const AddFood = () => {
       }
     }
     getMealData();
+    console.log(userData);
   }, []);
 
   var [foodOptions, setFoodOptions] = useState([]);
@@ -140,7 +145,7 @@ const AddFood = () => {
         <div className="d-flex flex-column">
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
-              <h4>Calories Gained:</h4>
+              <h4>Calories Gained: {userDetails.food_calories}</h4>
               <h4>Calories Burnt:</h4>
               <h4>Net Calories:</h4>
               <h4>Calorie Goal:</h4>
@@ -226,7 +231,7 @@ const AddFood = () => {
               <p>{errors.meal_name?.message}</p>
 
               <Dropdown
-                className="w-100"
+                className="w-100 "
                 prompt="Select Food"
                 value={value}
                 onChange={setValue}
@@ -235,7 +240,7 @@ const AddFood = () => {
                 getData={getFoodData}
               />
               {!foodCheck ? <p>Food cannot be Empty</p> : null}
-              <div className="mt-2 w-100">
+              <div className="mt-3 w-100">
                 <TextField
                   id="demo-simple-select-2"
                   className="w-100"
@@ -251,7 +256,10 @@ const AddFood = () => {
               </div>
 
               <p>{errors.food_quantity?.message}</p>
-
+              <div className="mb-3">
+                <label htmlFor="time">Time you taken Meal </label>
+                <input name="time" className="time-input mb-1 py-3" type="time" />
+              </div>
               {/* // <Select
             //   className="select-drop"
             //   placeholder="Select Quantity"

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import moment from "moment";
+
 import "../../styles/pages.css";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -81,20 +83,32 @@ function calculation(customerDetails, weekly_goal) {
 const step1Schema = yup.object().shape({
   full_name: yup.string().min(3).max(32).required(),
   email: yup.string().min(3).required().email(),
-  password: yup.string().min(8).required(),
+  password: yup
+    .string()
+    .min(8)
+    .required()
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+    ),
   gender: yup.string().required("An option is required").nullable(),
-  dob: yup.string().required(),
+  dob: yup
+    .string()
+    .required("DOB is Required")
+    .test("DOB", "You must be 18 years old", (value) => {
+      return moment().diff(moment(value), "years") >= 18;
+    }),
 });
 
 const step2Schema = yup.object().shape({
   weight: yup.number().positive().required().nullable(),
-  feet: yup.number().typeError("feet is required").min(3).max(10).positive().required().nullable(),
+  feet: yup.number().typeError("feet is required").min(4).max(8).positive().required().nullable(),
   inches: yup
     .number()
     .typeError("inches are required")
     .min(0)
     .max(11)
-    .positive()
+
     .required()
     .nullable(),
   activity_level: yup.string().required("An option is required").nullable(),
@@ -234,6 +248,22 @@ const UserRegister = () => {
       fats: calorieData.fats,
       calorie_goal: calorieData.calorie,
     };
+    const login_func = () => {
+      userService
+        .login(
+          customerDetails.user_id.email,
+          customerDetails.user_id.password,
+          customerDetails.user_id.user_type
+        )
+        .then((token) => {
+          // console.log(token);
+          navigate("/user-dashboard");
+        })
+        .catch((err) => {
+          console.log(err.toString());
+          // setAuthError(`No ${data.role} account exists for this email!`);
+        });
+    };
     // setCustomerDetails({
     //   ...customerDetails,
     //   weekly_goal: data.weekly_goal,
@@ -251,7 +281,8 @@ const UserRegister = () => {
       .then((data) => {
         console.log(data);
         // props.history.push("/login");
-        navigate("/login");
+        // navigate("/login");
+        login_func();
       })
       .catch((err) => {
         console.log(err);
@@ -259,6 +290,7 @@ const UserRegister = () => {
           position: toast.POSITION.TOP_LEFT,
         });
       });
+
     console.log("after request");
   };
 
@@ -296,6 +328,7 @@ const UserRegister = () => {
                 <div className="d-flex flex-column">
                   <h3 className="p-4 pb-0">Your DOB:</h3>
                   <input
+                    className="date-input"
                     type="date"
                     // placeholder="DD/MM/YYYY"
                     name="dob"
@@ -396,6 +429,8 @@ const UserRegister = () => {
                   <h3 className="p-4 pb-0">Your Current Weight:(Kgs)</h3>
                   <div className="d-flex justify-content-start">
                     <input
+                      max="200"
+                      min="30"
                       type="number"
                       placeholder="Weight"
                       value={customerDetails.weight}
@@ -421,11 +456,19 @@ const UserRegister = () => {
                 <div className="d-flex flex-column w-75">
                   <h3 className="p-4 pb-0">Your Current height:</h3>
                   <div className="d-flex justify-content-center">
-                    <input type="number" placeholder="Feet" {...controlStep2("feet")} />
+                    <input
+                      type="number"
+                      placeholder="Feet"
+                      min="4"
+                      max="8"
+                      {...controlStep2("feet")}
+                    />
 
                     <input
                       type="number"
                       placeholder="Inches"
+                      min="0"
+                      max="11"
                       // value="0"
                       {...controlStep2("inches")}
                     />

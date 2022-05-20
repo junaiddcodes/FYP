@@ -66,7 +66,7 @@ const GymDescription = () => {
       <h2>Gym Description</h2>
       <div className="d-flex">
         <div className="gym-desc d-flex flex-column ">
-          <img src={gymDetails.gym_photos[0].photo_url} alt="" />
+          <img src={gymDetails.gym_photos[0]?.photo_url} alt="" />
           <h4>{gymDetails.user_id.full_name}</h4>
           <h4>Membership Price:{gymDetails.gym_membership_price}</h4>
           <h4>Gender:{gymDetails.gender_facilitation}</h4>

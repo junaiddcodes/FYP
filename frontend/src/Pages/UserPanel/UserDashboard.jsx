@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 
-import { Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
-import Progress from '../../Components/ProgressBar'
-import TopBar from '../../Components/TopBar'
-import SideMenu from '../../Components/SideMenu'
-import userService from '../../services/UserService'
-import { useNavigate } from 'react-router-dom'
+import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import Progress from "../../Components/ProgressBar";
+import TopBar from "../../Components/TopBar";
+import SideMenu from "../../Components/SideMenu";
+import userService from "../../services/UserService";
+import { useNavigate } from "react-router-dom";
 // console.log(userId)
 
 const UserDashboard = () => {
   const navigate = useNavigate();
   var [currentCalorie, setCurrentCalorie] = useState({
-    food_calories:0,
-    food_proteins:0,
-    food_carbs:0,
-    food_fats:0
+    food_calories: 0,
+    food_proteins: 0,
+    food_carbs: 0,
+    food_fats: 0,
   });
   var [userData, setUserData] = useState({});
   var userId = userService.getLoggedInUser()._id;
@@ -27,29 +27,28 @@ const UserDashboard = () => {
       .getoneUser(userId)
 
       .then((data) => {
-        setUserData(data.crud)
-        console.log(data.crud)
-      })
+        setUserData(data.crud);
+        console.log(data.crud);
+      });
   }
   function getMealData() {
     userService.getMealData(userId).then((data) => {
-      var calorieData={
-        food_calories:0,
-        food_proteins:0,
-        food_carbs:0,
-        food_fats:0
+      var calorieData = {
+        food_calories: 0,
+        food_proteins: 0,
+        food_carbs: 0,
+        food_fats: 0,
       };
       setMealData(data.crud);
-      data.crud.map((e)=>{
-        calorieData.food_calories = calorieData.food_calories + e.food_calories
-        calorieData.food_fats = calorieData.food_fats + e.food_fats
-        calorieData.food_proteins = calorieData.food_proteins+ e.food_proteins
-        calorieData.food_carbs = calorieData.food_carbs + e.food_carbs
+      data.crud.map((e) => {
+        calorieData.food_calories = calorieData.food_calories + e.food_calories;
+        calorieData.food_fats = calorieData.food_fats + e.food_fats;
+        calorieData.food_proteins = calorieData.food_proteins + e.food_proteins;
+        calorieData.food_carbs = calorieData.food_carbs + e.food_carbs;
         // x=x+e.food_calories;
-      })
-      
+      });
+
       setCurrentCalorie(calorieData);
-      
     });
   }
   useEffect(() => {
@@ -66,9 +65,9 @@ const UserDashboard = () => {
       }
     }
 
-    getUserCalorie()
-    getMealData()
-  }, [])
+    getUserCalorie();
+    getMealData();
+  }, []);
 
   return (
     <div className="page-container-user">
@@ -85,9 +84,14 @@ const UserDashboard = () => {
               <h4>Calorie Goal: {parseInt(userData.calorie_goal)}</h4>
             </div>
             <div className="d-flex justify-content-around align-items-end w-50">
-              <Link to="/user-add-food">
-                <Button>Add Food</Button>
-              </Link>
+              <Button
+                onClick={() => {
+                  navigate("/user-add-food", { state: { userData } });
+                }}
+              >
+                Add Food
+              </Button>
+
               <Link to="/user-add-exercise">
                 <Button>Add Exercise</Button>
               </Link>
@@ -133,7 +137,7 @@ const UserDashboard = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default UserDashboard
+export default UserDashboard;

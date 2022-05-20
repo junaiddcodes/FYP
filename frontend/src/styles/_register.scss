@@ -71,6 +71,7 @@
     font-size: 1rem;
     font-weight: 600;
   }
+
   p {
     margin: 5px;
     margin-left: 10px;
@@ -341,5 +342,10 @@
     input {
       width: 4rem;
     }
+  }
+}
+.signup-option-register {
+  p {
+    color: $color4 !important;
   }
 }

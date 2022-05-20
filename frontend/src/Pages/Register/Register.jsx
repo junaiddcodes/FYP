@@ -22,6 +22,11 @@ const Register = () => {
             <Button variant="primary">Gym Owner</Button>
           </Link>
         </div>
+        <div className="w-100 d-flex justify-content-center align-items-center">
+          <p className="text-light mt-3">
+            Already have an account? <Link to="/login">Login</Link>{" "}
+          </p>
+        </div>
       </div>
     </div>
   );

@@ -100,6 +100,11 @@ const Login = () => {
               Sign in{" "}
             </Button>
           </form>
+          <div className="w-100 d-flex justify-content-center align-items-center">
+            <p className="signup-option">
+              Do not have an account? <Link to="/register">Signup here</Link>{" "}
+            </p>
+          </div>
         </div>
       </div>
     </div>

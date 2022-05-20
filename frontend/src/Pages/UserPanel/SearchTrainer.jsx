@@ -19,6 +19,7 @@ import trainerService from "../../services/TrainerService";
 const SearchTrainer = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [searchResults, setSearchResults] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     // userService.getLoggedInUser();
@@ -44,10 +45,17 @@ const SearchTrainer = () => {
   });
   function getSeacrhedTrainers() {
     console.log(searchTrainer);
-    trainerService.get_search_trainers(searchTrainer).then((res) => {
-      setSearchedTrainer(res.crud);
-      console.log(res);
-    });
+    trainerService
+      .get_search_trainers(searchTrainer)
+      .then((res) => {
+        setSearchedTrainer(res.crud);
+        setSearchResults(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setSearchResults(true);
+        setSearchedTrainer([]);
+      });
   }
 
   return (
@@ -124,12 +132,18 @@ const SearchTrainer = () => {
             className="m-3 close-icon"
             onClick={() => {
               setFilterOpen(false);
+              setSearchTrainer({
+                ...searchTrainer,
+                gender: "",
+                exercise_type: "",
+              });
             }}
           />
         </div>
       )}
       <div className=" mt-5">
         <div className="gym-grid-container">
+          {searchResults ? <p className="text-light w-100">Search Results not Found</p> : null}
           {searchedTrainer.map((e, key) => {
             return (
               <div

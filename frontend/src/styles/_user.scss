@@ -250,6 +250,18 @@
   justify-content: center;
   color: $color4;
 }
+.date-input::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+.signup-option {
+  p {
+    color: $color4;
+  }
+  a {
+    color: $color1;
+  }
+}
+
 .upload-photo-sec {
   display: flex;
   height: 95vh;
@@ -279,12 +291,14 @@
   border-radius: 1rem;
 }
 
-#demo-simple-select-2{
+#demo-simple-select-2 {
   color: $color1;
   background-color: #fff;
   border-radius: 5px;
 }
-#demo-simple-select-label-x{
+#demo-simple-select-label-x {
   color: #777;
 }
-
+#demo-simple-select-label-x:focus {
+  color: $color3s;
+}

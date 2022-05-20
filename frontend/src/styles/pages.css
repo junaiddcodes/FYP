@@ -479,6 +479,10 @@
   width: 4rem;
 }
 
+.signup-option-register p {
+  color: white !important;
+}
+
 .sidebar {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -898,6 +902,19 @@
       -ms-flex-pack: center;
           justify-content: center;
   color: white;
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+  -webkit-filter: invert(1);
+          filter: invert(1);
+}
+
+.signup-option p {
+  color: white;
+}
+
+.signup-option a {
+  color: #0a1929;
 }
 
 .upload-photo-sec {

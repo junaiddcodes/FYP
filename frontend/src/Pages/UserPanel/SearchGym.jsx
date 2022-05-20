@@ -21,6 +21,7 @@ const SearchGym = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const [searchedGyms, setSearchedGyms] = useState([]);
+  const [searchResults, setSearchResults] = useState(false);
   const [searchGym, setSearchGym] = useState({
     full_name: "",
     city: "",
@@ -29,10 +30,18 @@ const SearchGym = () => {
 
   function getSeacrhedGyms() {
     console.log(searchGym);
-    gymService.get_search_gyms(searchGym).then((res) => {
-      setSearchedGyms(res.crud);
-      console.log(res);
-    });
+    gymService
+      .get_search_gyms(searchGym)
+      .then((res) => {
+        setSearchedGyms(res.crud);
+        setSearchResults(false);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+        setSearchResults(true);
+        setSearchedGyms([]);
+      });
   }
 
   useEffect(() => {
@@ -97,9 +106,7 @@ const SearchGym = () => {
             </Select>
           </FormControl>
           <FormControl className="m-4 w-25 dropdown-modal">
-            <InputLabel id="demo-simple-select-label">
-              Gender Preference
-            </InputLabel>
+            <InputLabel id="demo-simple-select-label">Gender Preference</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -122,12 +129,18 @@ const SearchGym = () => {
             className="m-3 close-icon"
             onClick={() => {
               setFilterOpen(false);
+              setSearchGym({
+                ...searchGym,
+                city: "",
+                gender_facilitation: "",
+              });
             }}
           />
         </div>
       )}
       <div className=" mt-5">
         <div className="gym-grid-container">
+          {searchResults ? <p className="text-light w-100">Search Results not Found</p> : null}
           {searchedGyms.map((e, key) => {
             return (
               <div
@@ -135,7 +148,7 @@ const SearchGym = () => {
                 onClick={() => navigate("/gym-description/" + e._id)}
                 className="gym-card grid-item"
               >
-                <img src={e.gym_photos[0].photo_url} alt="" height="250" />
+                <img src={e.gym_photos[0]?.photo_url} alt="" height="250" />
                 <h4 className="m-2">{e.user_id.full_name}</h4>
                 <div className="d-flex m-2 mb-0">
                   <MdLocationPin className="" />
