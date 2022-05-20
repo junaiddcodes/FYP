@@ -27,14 +27,15 @@ function getAge(dateString) {
   return age;
 }
 
-function calculation(customerDetails, weekly_goal) {
+function calculation(customerDetails, genderie, dob) {
+  console.log(genderie);
   var height = customerDetails.height / 0.032808;
   var weight = customerDetails.weight;
   var weight_pounds = weight * 2.205;
-  var age = getAge(customerDetails.dob);
-  var gender = customerDetails.gender;
+  var age = getAge(dob);
+  var gender = genderie;
   var goal = customerDetails.weight_goal;
-  var goal_speed = weekly_goal;
+  var goal_speed = customerDetails.weekly_goal;
   var bmr = 0;
   var calorie = 0;
   var protien = 0;
@@ -123,12 +124,13 @@ const step4Schema = yup.object().shape({
 });
 
 const UserRegister = () => {
-  const [step1, setStep1] = useState(true);
-  const [step2, setStep2] = useState(false);
+  const [step1, setStep1] = useState(false);
+  const [step2, setStep2] = useState(true);
   const [step3, setStep3] = useState(false);
   const [step4, setStep4] = useState(false);
   const navigate = useNavigate();
   const [goalText, setGoalText] = useState("");
+  var calorieObject = "";
   const [selectedClass, setSelectedClass] = useState("selected");
   const [customerDetails, setCustomerDetails] = useState({
     user_id: {
@@ -189,66 +191,7 @@ const UserRegister = () => {
   });
 
   const submitStep1Form = (data) => {
-    console.log(data.gender);
-
-    setCustomerDetails({ ...customerDetails, gender: data.gender });
-
-    setStep1(false);
-    setStep2(true);
-
-    console.log("aaaaaaa");
-  };
-  const submitStep2Form = (data) => {
-    console.log("aaaaaaa");
-
-    const height = data.feet + "." + data.inches;
-    console.log(height);
-    setCustomerDetails({
-      ...customerDetails,
-      height: height,
-      activity_level: data.activity_level,
-    });
-    console.log(customerDetails.height);
-
-    setStep2(false);
-    setStep3(true);
-    console.log(data.dob);
-    console.log("aaaaaaa");
-  };
-
-  const submitStep3Form = (data) => {
-    console.log("aaaaaaa");
-
-    setCustomerDetails({ ...customerDetails, weight_goal: data.weight_goal });
-    console.log(data.weight_goal);
-    if (data.weight_goal == "gain_weight") {
-      setGoalText("Gain");
-    }
-
-    if (data.weight_goal == "lose_weight") {
-      setGoalText("Lose");
-    }
-    setStep3(false);
-    setStep4(true);
-    console.log("aaaaaaa");
-  };
-
-  const submitStep4Form = (data) => {
-    // calculation of bmr
-
-    var calorieData = calculation(customerDetails, data.weekly_goal);
-    console.log(calorieData);
-
-    var calorieObject = customerDetails;
-    calorieObject = {
-      ...calorieObject,
-      weekly_goal: data.weekly_goal,
-      protein: calorieData.protien,
-      carbs: calorieData.carbs,
-      fats: calorieData.fats,
-      calorie_goal: calorieData.calorie,
-    };
-    const login_func = () => {
+    const login_func = (customerDetails) => {
       userService
         .login(
           customerDetails.user_id.email,
@@ -264,6 +207,95 @@ const UserRegister = () => {
           // setAuthError(`No ${data.role} account exists for this email!`);
         });
     };
+    setCustomerDetails({
+      ...customerDetails,
+      user_id: {
+        ...customerDetails.user_id,
+        email: data.email,
+        full_name: data.full_name,
+        password: data.password,
+      },
+      gender: data.gender,
+      dob: data.dob,
+    });
+    console.log("object after step 4 = ", customerDetails);
+    // setCustomerDetails({ ...customerDetails, gender: data.gender });
+
+    // setStep1(false);
+    // setStep2(true);
+    var calorieData = calculation(customerDetails, data.gender, data.dob);
+    console.log(calorieData);
+
+    calorieObject = customerDetails;
+    calorieObject = {
+      ...calorieObject,
+      user_id: {
+        email: data.email,
+        full_name: data.full_name,
+        user_type: "customer",
+        password: data.password,
+      },
+
+      dob: data.dob,
+      gender: data.gender,
+      protein: calorieData.protien,
+      carbs: calorieData.carbs,
+      fats: calorieData.fats,
+      calorie_goal: calorieData.calorie,
+    };
+    userService
+      .register_user(calorieObject)
+      .then((data) => {
+        console.log(data);
+        // props.history.push("/login");
+        // navigate("/login");
+        login_func(calorieObject);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const submitStep2Form = (data) => {
+    const height = data.feet + "." + data.inches;
+    console.log(height);
+    setCustomerDetails({
+      weight: data.weight,
+      height: height,
+      activity_level: data.activity_level,
+    });
+    console.log("object after step 1 = ", customerDetails);
+
+    setStep2(false);
+    setStep3(true);
+  };
+
+  const submitStep3Form = (data) => {
+    setCustomerDetails({ ...customerDetails, weight_goal: data.weight_goal });
+    console.log(data.weight_goal);
+    if (data.weight_goal == "gain_weight") {
+      setGoalText("Gain");
+    }
+
+    if (data.weight_goal == "lose_weight") {
+      setGoalText("Lose");
+    }
+    console.log("object after step 2 = ", customerDetails);
+    setStep3(false);
+    setStep4(true);
+    console.log("aaaaaaa");
+  };
+
+  const submitStep4Form = (data) => {
+    // calculation of bmr
+
+    setCustomerDetails({
+      ...customerDetails,
+      weekly_goal: data.weekly_goal,
+    });
+
+    console.log("object after step 3 = ", customerDetails);
+    setStep4(false);
+    setStep1(true);
     // setCustomerDetails({
     //   ...customerDetails,
     //   weekly_goal: data.weekly_goal,
@@ -274,24 +306,6 @@ const UserRegister = () => {
     // });
 
     console.log(calorieObject);
-
-    console.log("before request");
-    userService
-      .register_user(calorieObject)
-      .then((data) => {
-        console.log(data);
-        // props.history.push("/login");
-        // navigate("/login");
-        login_func();
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err.response.data, {
-          position: toast.POSITION.TOP_LEFT,
-        });
-      });
-
-    console.log("after request");
   };
 
   return (
@@ -310,18 +324,18 @@ const UserRegister = () => {
                   <input
                     type="text"
                     name="full_name"
-                    value={customerDetails.user_id.full_name}
+                    // value={customerDetails.user_id.full_name}
                     {...controlStep1("full_name")}
-                    onChange={(e) => {
-                      setCustomerDetails({
-                        ...customerDetails,
-                        user_id: {
-                          ...customerDetails.user_id,
-                          full_name: e.target.value,
-                        },
-                      });
-                      console.log(customerDetails.user_id.full_name);
-                    }}
+                    // onChange={(e) => {
+                    //   setCustomerDetails({
+                    //     ...customerDetails,
+                    //     user_id: {
+                    //       ...customerDetails.user_id,
+                    //       full_name: e.target.value,
+                    //     },
+                    //   });
+                    //   console.log(customerDetails.user_id.full_name);
+                    // }}
                   />
                   <p>{errorsStep1.full_name?.message}</p>
                 </div>
@@ -332,14 +346,14 @@ const UserRegister = () => {
                     type="date"
                     // placeholder="DD/MM/YYYY"
                     name="dob"
-                    value={customerDetails.dob}
+                    // value={customerDetails.dob}
                     {...controlStep1("dob")}
-                    onChange={(e) => {
-                      setCustomerDetails({
-                        ...customerDetails,
-                        dob: e.target.value,
-                      });
-                    }}
+                    // onChange={(e) => {
+                    //   setCustomerDetails({
+                    //     ...customerDetails,
+                    //     dob: e.target.value,
+                    //   });
+                    // }}
                   />
                   <p>{errorsStep1.dob?.message}</p>
                 </div>
@@ -369,18 +383,18 @@ const UserRegister = () => {
                   <input
                     type="email"
                     name="email"
-                    value={customerDetails.user_id.email}
+                    // value={customerDetails.user_id.email}
                     {...controlStep1("email")}
-                    onChange={(e) => {
-                      setCustomerDetails({
-                        ...customerDetails,
-                        user_id: {
-                          ...customerDetails.user_id,
-                          email: e.target.value,
-                        },
-                      });
-                      console.log(customerDetails.user_id.email);
-                    }}
+                    // onChange={(e) => {
+                    //   setCustomerDetails({
+                    //     ...customerDetails,
+                    //     user_id: {
+                    //       ...customerDetails.user_id,
+                    //       email: e.target.value,
+                    //     },
+                    //   });
+                    //   console.log(customerDetails.user_id.email);
+                    // }}
                   />
                   <p>{errorsStep1.email?.message}</p>
                 </div>
@@ -389,17 +403,17 @@ const UserRegister = () => {
                   <input
                     type="password"
                     name="password"
-                    value={customerDetails.user_id.password}
+                    // value={customerDetails.user_id.password}
                     {...controlStep1("password")}
-                    onChange={(e) => {
-                      setCustomerDetails({
-                        ...customerDetails,
-                        user_id: {
-                          ...customerDetails.user_id,
-                          password: e.target.value,
-                        },
-                      });
-                    }}
+                    // onChange={(e) => {
+                    //   setCustomerDetails({
+                    //     ...customerDetails,
+                    //     user_id: {
+                    //       ...customerDetails.user_id,
+                    //       password: e.target.value,
+                    //     },
+                    //   });
+                    // }}
                   />
                   <p>{errorsStep1.password?.message}</p>
                 </div>
@@ -407,11 +421,19 @@ const UserRegister = () => {
             </div>
 
             <div className="buttons-step1 d-flex justify-content-between mt-3">
-              <Link className="step1-btn" to="/register">
-                <Button>back</Button>
-              </Link>
+              {/* <Link className="step1-btn" to="/register"> */}
+              <Button
+                onClick={() => {
+                  setStep4(true);
+                  setStep1(false);
+                }}
+              >
+                {" "}
+                back
+              </Button>
+              {/* </Link> */}
 
-              <Button type="submit">next</Button>
+              <Button type="submit">submit</Button>
             </div>
           </form>
         </div>
@@ -433,14 +455,14 @@ const UserRegister = () => {
                       min="30"
                       type="number"
                       placeholder="Weight"
-                      value={customerDetails.weight}
+                      // value={customerDetails.weight}
                       {...controlStep2("weight")}
-                      onChange={(e) => {
-                        setCustomerDetails({
-                          ...customerDetails,
-                          weight: e.target.value,
-                        });
-                      }}
+                      // onChange={(e) => {
+                      //   setCustomerDetails({
+                      //     // ...customerDetails,
+                      //     weight: e.target.value,
+                      //   });
+                      // }}
                     />
 
                     {/* <FormControl className="m-3 dropdown">
@@ -554,8 +576,7 @@ const UserRegister = () => {
             <div className="buttons-step2 d-flex justify-content-between mt-3">
               <Button
                 onClick={() => {
-                  setStep2(false);
-                  setStep1(true);
+                  navigate(-1);
                 }}
               >
                 back
@@ -655,7 +676,7 @@ const UserRegister = () => {
                 back
               </Button>
 
-              <Button type="submit">Signup</Button>
+              <Button type="submit">next</Button>
             </div>
           </form>
         </div>
