@@ -1,4 +1,5 @@
 import React from 'react'
+import './home.css'
 
 const Home = () => {
   return (
@@ -55,15 +56,17 @@ const Home = () => {
 
       {/* <!-- ***** Main Banner Area Start ***** --> */}
       <div className="main-banner" id="top">
-        <video autoplay muted loop id="bg-video">
-          <source src="assets/images/gym-video.mp4" type="video/mp4" />
-        </video>
+        {/* <img autoplay muted loop id="bg-video">
+          <source src="HomeImage/gym-video.mp4" type="video/mp4" />
+        </img> */}
+
+        <img src="HomeImage/front.jpg" />
 
         <div className="video-overlay header-text">
           <div className="caption">
             <h6>work harder, get stronger</h6>
             <h2>
-              easy with our <em>gym</em>
+              easy with our <em>APP</em>
             </h2>
             <div className="main-button scroll-to-section">
               <a href="/register">Become a member</a>
@@ -82,7 +85,7 @@ const Home = () => {
                 <h2>
                   Choose <em>Program</em>
                 </h2>
-                <img src="assets/images/line-dec.png" alt="waves" />
+                <img src="HomeImage/line-dec.png" alt="waves" />
                 <p>
                   Training Studio is free CSS template for gyms and fitness
                   centers. You are allowed to use this layout for your business
@@ -95,7 +98,7 @@ const Home = () => {
                 <li className="feature-item">
                   <div className="left-icon">
                     <img
-                      src="assets/images/features-first-icon.png"
+                      src="HomeImage/features-first-icon.png"
                       alt="First One"
                     />
                   </div>
@@ -105,15 +108,15 @@ const Home = () => {
                       Please do not re-distribute this template ZIP file on any
                       template collection website. This is not allowed.
                     </p>
-                    <a href="#" className="text-button">
+                    {/* <a href="#" className="text-button">
                       Discover More
-                    </a>
+                    </a> */}
                   </div>
                 </li>
                 <li className="feature-item">
                   <div className="left-icon">
                     <img
-                      src="assets/images/features-first-icon.png"
+                      src="HomeImage/features-first-icon.png"
                       alt="second one"
                     />
                   </div>
@@ -123,15 +126,15 @@ const Home = () => {
                       If you wish to support TemplateMo website via PayPal,
                       please feel free to contact us. We appreciate it a lot.
                     </p>
-                    <a href="#" className="text-button">
+                    {/* <a href="#" className="text-button">
                       Discover More
-                    </a>
+                    </a> */}
                   </div>
                 </li>
                 <li className="feature-item">
                   <div className="left-icon">
                     <img
-                      src="assets/images/features-first-icon.png"
+                      src="HomeImage/features-first-icon.png"
                       alt="third gym training"
                     />
                   </div>
@@ -149,9 +152,9 @@ const Home = () => {
                       for images and video background used in this HTML
                       template.
                     </p>
-                    <a href="#" className="text-button">
+                    {/* <a href="#" className="text-button">
                       Discover More
-                    </a>
+                    </a> */}
                   </div>
                 </li>
               </ul>
@@ -161,7 +164,7 @@ const Home = () => {
                 <li className="feature-item">
                   <div className="left-icon">
                     <img
-                      src="assets/images/features-first-icon.png"
+                      src="HomeImage/features-first-icon.png"
                       alt="fourth muscle"
                     />
                   </div>
@@ -182,15 +185,15 @@ const Home = () => {
                       </a>{' '}
                       HTML CSS templates on our website.
                     </p>
-                    <a href="#" className="text-button">
+                    {/* <a href="#" className="text-button">
                       Discover More
-                    </a>
+                    </a> */}
                   </div>
                 </li>
                 <li className="feature-item">
                   <div className="left-icon">
                     <img
-                      src="assets/images/features-first-icon.png"
+                      src="HomeImage/features-first-icon.png"
                       alt="training fifth"
                     />
                   </div>
@@ -200,15 +203,15 @@ const Home = () => {
                       This template is built on Bootstrap v4.3.1 framework. It
                       is easy to adapt the columns and sections.
                     </p>
-                    <a href="#" className="text-button">
+                    {/* <a href="#" className="text-button">
                       Discover More
-                    </a>
+                    </a> */}
                   </div>
                 </li>
                 <li className="feature-item">
                   <div className="left-icon">
                     <img
-                      src="assets/images/features-first-icon.png"
+                      src="HomeImage/features-first-icon.png"
                       alt="gym training"
                     />
                   </div>
@@ -218,9 +221,9 @@ const Home = () => {
                       Suspendisse fringilla et nisi et mattis. Curabitur sed
                       finibus nisi. Integer nibh sapien, vehicula et auctor.
                     </p>
-                    <a href="#" className="text-button">
+                    {/* <a href="#" className="text-button">
                       Discover More
-                    </a>
+                    </a> */}
                   </div>
                 </li>
               </ul>
@@ -261,7 +264,7 @@ const Home = () => {
                 <h2>
                   Expert <em>Trainers</em>
                 </h2>
-                <img src="assets/images/line-dec.png" alt="" />
+                <img src="HomeImage/line-dec.png" alt="" />
                 <p>
                   Nunc urna sem, laoreet ut metus id, aliquet consequat magna.
                   Sed viverra ipsum dolor, ultricies fermentum massa consequat
@@ -274,7 +277,7 @@ const Home = () => {
             <div className="col-lg-4">
               <div className="trainer-item">
                 <div className="image-thumb">
-                  <img src="assets/images/first-trainer.jpg" alt="" />
+                  <img src="HomeImage/first-trainer.jpg" alt="" />
                 </div>
                 <div className="down-content">
                   <span>Strength Trainer</span>
@@ -312,7 +315,7 @@ const Home = () => {
             <div className="col-lg-4">
               <div className="trainer-item">
                 <div className="image-thumb">
-                  <img src="assets/images/second-trainer.jpg" alt="" />
+                  <img src="HomeImage/second-trainer.jpg" alt="" />
                 </div>
                 <div className="down-content">
                   <span>Muscle Trainer</span>
@@ -350,7 +353,7 @@ const Home = () => {
             <div className="col-lg-4">
               <div className="trainer-item">
                 <div className="image-thumb">
-                  <img src="assets/images/third-trainer.jpg" alt="" />
+                  <img src="HomeImage/third-trainer.jpg" alt="" />
                 </div>
                 <div className="down-content">
                   <span>Power Trainer</span>
