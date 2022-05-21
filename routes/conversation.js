@@ -5,14 +5,19 @@ const Conversation = require('../models/Conversation')
 
 router.post('/', async (req, res) => {
   try {
-    // let user = await conversation.find({
-    //   members: [{ 0: req.body.senderId }, { 1: req.body.receiverId }],
-    // })
+    let user = await Conversation.find({
+      members: [req.body.senderId, req.body.receiverId],
+    })
+    console.log('GET USER', user)
+    console.log('GET USER SENDER', req.body.senderId)
+    console.log('GET USER TRAIER', req.body.receiverId)
 
-    // if (user) return res.status(400).send('user with given email already exist')
+    if (user && user.length > 0)
+      return res.status(400).send('user with given email already exist')
     const newConversation = new Conversation({
       members: [req.body.senderId, req.body.receiverId],
     })
+    console.log('GET VHAT', newConversation)
     const savedConversation = await newConversation.save()
     res.status(200).json(savedConversation)
   } catch (err) {
@@ -27,6 +32,7 @@ router.get('/:userId', async (req, res) => {
     const conversation = await Conversation.find({
       members: { $in: [req.params.userId] },
     })
+    console.log('GET CONVO', conversation)
     res.status(200).json(conversation)
   } catch (err) {
     res.status(500).json(err)
