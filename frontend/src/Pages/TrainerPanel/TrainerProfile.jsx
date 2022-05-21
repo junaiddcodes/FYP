@@ -96,6 +96,7 @@ const TrainerProfile = () => {
     company_name: "",
     designation: "",
     time_worked: "",
+    qualification: "",
 
     trainer_desc: "",
     certificate_file: "asdasd",
@@ -208,7 +209,7 @@ const TrainerProfile = () => {
       company_name: data.company_name,
       designation: data.designation,
       time_worked: data.time_worked,
-
+      qualification: data.qualification,
       trainer_desc: data.trainer_desc,
       // certificate_file: "",
       // trainer_photo: "",
@@ -263,6 +264,7 @@ const TrainerProfile = () => {
                     id="demo-simple-select"
                     name="exercise_type"
                     {...controlTrainerProfile("exercise_type")}
+                    defaultValue={getCustomer.exercise_type}
                   >
                     <MenuItem value="cardio">Cardio</MenuItem>
                     <MenuItem value="gym">Gym</MenuItem>
@@ -287,6 +289,7 @@ const TrainerProfile = () => {
               <input
                 type="text"
                 id=""
+                defaultValue={getCustomer.qualification}
                 name="qualification"
                 {...controlTrainerProfile("qualification")}
               />
@@ -297,6 +300,7 @@ const TrainerProfile = () => {
                 id=""
                 name="company_name"
                 {...controlTrainerProfile("company_name")}
+                defaultValue={getCustomer.company_name}
               />
 
               <p>{errorsTrainerProfile.company_name?.message}</p>
@@ -306,6 +310,7 @@ const TrainerProfile = () => {
                 id=""
                 name="designation"
                 {...controlTrainerProfile("designation")}
+                defaultValue={getCustomer.designation}
               />
               <p>{errorsTrainerProfile.designation?.message}</p>
               <label for="lname">
@@ -316,6 +321,7 @@ const TrainerProfile = () => {
                 id=""
                 name="time_worked"
                 {...controlTrainerProfile("time_worked")}
+                defaultValue={getCustomer.time_worked}
               />
               <p>{errorsTrainerProfile.time_worked?.message}</p>
               {/* <label for="lname">Your gender</label> */}
@@ -351,6 +357,7 @@ const TrainerProfile = () => {
               className="text-field mt-2"
               name="trainer_desc"
               {...controlTrainerProfile("trainer_desc")}
+              defaultValue={getCustomer.trainer_desc}
             />
             <p>{errorsTrainerProfile.trainer_desc?.message}</p>
 

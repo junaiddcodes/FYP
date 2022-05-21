@@ -1,7 +1,7 @@
-const mongoose = require('mongoose')
-const { userSchema } = require('./userModel')
+const mongoose = require("mongoose");
+const { userSchema } = require("./userModel");
 
-const Joi = require('joi')
+const Joi = require("joi");
 
 var trainerDetailsSchema = mongoose.Schema({
   user_id: userSchema,
@@ -9,18 +9,19 @@ var trainerDetailsSchema = mongoose.Schema({
   gender: String,
   exercise_type: String,
   listed: String, //Trainer approved by admin or not
+  qualification: String,
   company_name: String,
   designation: String,
   time_worked: Number, //In Years
-  dob: Date,
+
   trainer_desc: String, //Trainer Description
-  certificate_file: String,
+
   trainer_photo: String,
-  cloudinary_id: String
-})
+  cloudinary_id: String,
+});
 
 // Create Model of Schema in Trainer_Details
-var trainerDetails = mongoose.model('Trainer_Details', trainerDetailsSchema)
+var trainerDetails = mongoose.model("Trainer_Details", trainerDetailsSchema);
 
 function validateTrainer(data) {
   const schema = Joi.object({
@@ -42,10 +43,10 @@ function validateTrainer(data) {
     certificate_file: Joi.string(),
     trainer_photo: Joi.string(),
     cloudinary_id: Joi.string(),
-  })
-  return schema.validate(data)
+  });
+  return schema.validate(data);
 }
 
-module.exports.trainerDetails = trainerDetails
+module.exports.trainerDetails = trainerDetails;
 
-module.exports.Validate = validateTrainer
+module.exports.Validate = validateTrainer;

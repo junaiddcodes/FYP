@@ -52,7 +52,7 @@ const Login = () => {
       })
       .catch((err) => {
         console.log(err.toString());
-        setAuthError(`No ${data.role} account exists for this email!`);
+        setAuthError("Email or password is not correct!");
       });
   };
   return (
@@ -95,13 +95,13 @@ const Login = () => {
               <h4>Gym owner</h4>
             </div>
             <p>{errors.role?.message}</p>
-            <p>{authError}</p>
+            <p className="m-2">{authError}</p>
             <Button type="submit" className="mt-3 w-25">
               Sign in{" "}
             </Button>
           </form>
           <div className="w-100 d-flex justify-content-center align-items-center">
-            <p className="signup-option">
+            <p className="signup-option text-light">
               Do not have an account? <Link to="/register">Signup here</Link>{" "}
             </p>
           </div>

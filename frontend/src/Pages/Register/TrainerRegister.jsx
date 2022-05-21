@@ -25,7 +25,14 @@ const trainerSchema = yup.object().shape({
     .required("Name is required")
     .nullable(),
   email: yup.string().min(3).required().email(),
-  password: yup.string().min(8).required(),
+  password: yup
+    .string()
+    .min(8)
+    .required()
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+    ),
   gender: yup.string().required("A radio option is required").nullable(),
   dob: yup
     .string()
@@ -56,12 +63,22 @@ const TrainerRegister = () => {
   });
 
   const submitTrainerForm = (data) => {
-    // console.log("aaaaaaa");
-    // setStep3(false);
-    // setStep4(true);
-    // setTrainerDetails({ ...trainerDetails, weekly_goal: data.weekly_goal });
-    // console.log(trainerDetails);
-    // console.log("aaaaaaa");
+    const login_func = (customerDetails) => {
+      userService
+        .login(
+          customerDetails.user_id.email,
+          customerDetails.user_id.password,
+          customerDetails.user_id.user_type
+        )
+        .then((token) => {
+          // console.log(token);
+          navigate("/trainer-dashboard");
+        })
+        .catch((err) => {
+          console.log(err.toString());
+          // setAuthError(`No ${data.role} account exists for this email!`);
+        });
+    };
     console.log("before request");
     trainerDetails = {
       ...trainerDetails,
@@ -78,8 +95,8 @@ const TrainerRegister = () => {
       .register_trainer(trainerDetails)
       .then((data) => {
         console.log(data);
-        // props.history.push("/login");
-        navigate("/login");
+
+        login_func(trainerDetails);
       })
       .catch((err) => {
         console.log(err);

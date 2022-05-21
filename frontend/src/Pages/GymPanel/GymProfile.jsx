@@ -56,6 +56,9 @@ const GymProfile = () => {
   const [previewImage3, setPreviewImage3] = React.useState("");
   const [isProfile, setIsProfile] = useState(false);
   const [isAsk, setIsAsk] = useState(false);
+  // const [male, setMale] = useState(false);
+  // const [female, setFemale] = useState(false);
+  // const [both, setBoth] = useState(false);
   const [getGym, setGetGym] = useState("");
   const [isGymForm, setIsGymForm] = useState(false);
   const [gymPhotos, setGymPhotos] = useState([]);
@@ -121,6 +124,15 @@ const GymProfile = () => {
       }
     }
     get_gym();
+    // if (getGym.gender_facilitation == "male") {
+    //   setMale(true);
+    // }
+    // if (getGym.gender_facilitation == "female") {
+    //   setFemale(true);
+    // }
+    // if (getGym.gender_facilitation == "both") {
+    //   setBoth(true);
+    // }
   }, [loginId]);
 
   const onChangeFile = (e) => {
@@ -190,6 +202,7 @@ const GymProfile = () => {
       gender_facilitation: data.gender_facilitation,
       gym_photo: data.gym_photo,
     };
+
     gymService
       .update_gym(gymProfileDetails, loggedInId)
       .then((data) => {
@@ -237,22 +250,43 @@ const GymProfile = () => {
               {/* <p>{loggedInId}</p> */}
               <label for="">Gym Location</label>
               <label for="">State</label>
-              <input type="text" name="state" {...controlGymProfile("state")} />
+              <input
+                type="text"
+                name="state"
+                defaultValue={getGym.location.state}
+                {...controlGymProfile("state")}
+              />
               <p>{errorsGymProfile.state?.message}</p>
               <label for="">City</label>
-              <input type="text" name="city" {...controlGymProfile("city")} />
+              <input
+                type="text"
+                name="city"
+                defaultValue={getGym.location.city}
+                {...controlGymProfile("city")}
+              />
               <p>{errorsGymProfile.city?.message}</p>
               <label for="">Address</label>
-              <input type="text" name="address" {...controlGymProfile("address")} />
+              <input
+                type="text"
+                name="address"
+                defaultValue={getGym.location.address}
+                {...controlGymProfile("address")}
+              />
               <p>{errorsGymProfile.address?.message}</p>
 
               <label for="">Gym Contact Number</label>
-              <input type="text" name="gym_contact_no" {...controlGymProfile("gym_contact_no")} />
+              <input
+                type="text"
+                name="gym_contact_no"
+                defaultValue={getGym.gym_contact_no}
+                {...controlGymProfile("gym_contact_no")}
+              />
               <p>{errorsGymProfile.gym_contact_no?.message}</p>
               <label for="">Gym Membership Price</label>
               <input
                 type="Number"
                 name="gym_membership_price"
+                defaultValue={getGym.gym_membership_price}
                 {...controlGymProfile("gym_membership_price")}
               />
               <p>{errorsGymProfile.gym_membership_price?.message}</p>
@@ -263,12 +297,17 @@ const GymProfile = () => {
                 type="radio"
                 value="Male"
                 name="gender_facilitaion"
+                defaultValue={getGym.gender_facilitation}
+                // checked={male}
                 {...controlGymProfile("gender_facilitation")}
               />
               <h4>Male</h4>
               <input
                 type="radio"
                 value="Female"
+                defaultValue={getGym.gender_facilitation}
+                // {getGym.gender_facilitation == female ? checked="true" : checked="false"}
+                // checked={female}
                 name="gender_facilitaion"
                 {...controlGymProfile("gender_facilitation")}
               />
@@ -277,7 +316,10 @@ const GymProfile = () => {
                 type="radio"
                 value="Both"
                 name="gender_facilitaion"
+                // checked={both}
+                // checked={getGym.gender_facilitation}
                 {...controlGymProfile("gender_facilitation")}
+                defaultValue={getGym.gender_facilitation}
               />
               <h4>Both</h4>
             </div>
@@ -289,6 +331,7 @@ const GymProfile = () => {
               className="text-field mt-2"
               name="gym_desc"
               {...controlGymProfile("gym_desc")}
+              defaultValue={getGym.gym_desc}
             />
             <p>{errorsGymProfile.gym_desc?.message}</p>
 

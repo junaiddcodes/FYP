@@ -22,7 +22,14 @@ const gymSchema = yup.object().shape({
     .required("Gym name is required")
     .nullable(),
   email: yup.string().min(3).required().email(),
-  password: yup.string().min(8).required(),
+  password: yup
+    .string()
+    .min(8)
+    .required()
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+    ),
   // gender: yup.string().required("A radio option is required").nullable(),
 });
 
@@ -54,7 +61,22 @@ const GymRegister = () => {
 
   const submitGymForm = (data) => {
     // setCustomerDetails({ ...customerDetails, gender: data.gender });
-
+    const login_func = (customerDetails) => {
+      userService
+        .login(
+          customerDetails.user_id.email,
+          customerDetails.user_id.password,
+          customerDetails.user_id.user_type
+        )
+        .then((token) => {
+          // console.log(token);
+          navigate("/gym-dashboard");
+        })
+        .catch((err) => {
+          console.log(err.toString());
+          // setAuthError(`No ${data.role} account exists for this email!`);
+        });
+    };
     // setStep1(false);
     // setStep2(true);
 
@@ -66,7 +88,8 @@ const GymRegister = () => {
       .then((data) => {
         console.log(data);
         // props.history.push("/login");
-        navigate("/login");
+        login_func(gymDetails);
+        // navigate("/login");
       })
       .catch((err) => {
         console.log(err);
