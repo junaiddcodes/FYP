@@ -8,16 +8,16 @@ router.post('/', async (req, res) => {
     let user = await Conversation.find({
       members: [req.body.senderId, req.body.receiverId],
     })
-    console.log('GET USER', user)
-    console.log('GET USER SENDER', req.body.senderId)
-    console.log('GET USER TRAIER', req.body.receiverId)
+    // console.log('GET USER', user)
+    // console.log('GET USER SENDER', req.body.senderId)
+    // console.log('GET USER TRAIER', req.body.receiverId)
 
     if (user && user.length > 0)
-      return res.status(400).send('user with given email already exist')
+      return res.status(400).send('conversation already exist')
     const newConversation = new Conversation({
       members: [req.body.senderId, req.body.receiverId],
     })
-    console.log('GET VHAT', newConversation)
+    // console.log('GET VHAT', newConversation)
     const savedConversation = await newConversation.save()
     res.status(200).json(savedConversation)
   } catch (err) {
