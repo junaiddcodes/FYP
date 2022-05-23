@@ -22,11 +22,25 @@ const SearchGym = () => {
   const [filterOpen, setFilterOpen] = useState(false);
   const [searchedGyms, setSearchedGyms] = useState([]);
   const [searchResults, setSearchResults] = useState(false);
+  const [isSearched, setIsSearched] =useState(false);
   const [searchGym, setSearchGym] = useState({
     full_name: "",
     city: "",
     gender_facilitation: "",
   });
+
+  function getFeatureGyms() {
+    gymService
+      .get_all_gyms()
+      .then((res) => {
+        setSearchedGyms(res.crud);
+        setIsSearched(false);
+        console.log(res.crud);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   function getSeacrhedGyms() {
     console.log(searchGym);
@@ -34,6 +48,7 @@ const SearchGym = () => {
       .get_search_gyms(searchGym)
       .then((res) => {
         setSearchedGyms(res.crud);
+        setIsSearched(true)
         setSearchResults(false);
         console.log(res);
       })
@@ -52,6 +67,8 @@ const SearchGym = () => {
       navigate("/login");
       // console.log("log in first");
     }
+
+    getFeatureGyms();
   }, []);
   return (
     <div className="page-container-user">
@@ -111,7 +128,10 @@ const SearchGym = () => {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               onChange={(e) => {
-                setSearchGym({ ...searchGym, gender_facilitation: e.target.value });
+                setSearchGym({
+                  ...searchGym,
+                  gender_facilitation: e.target.value,
+                });
               }}
             >
               <MenuItem value="Male">Male</MenuItem>
@@ -139,8 +159,10 @@ const SearchGym = () => {
         </div>
       )}
       <div className=" mt-5">
-        <div className="gym-grid-container">
-          {searchResults ? <p className="text-light w-100">Search Results not Found</p> : null}
+        {isSearched ? <h2>Searched Gyms</h2> : <h2>Featured Gyms</h2>}
+        
+        <div className="gym-grid-container mt-3">
+        {searchResults ? <p className="text-light w-100">Search Results not Found</p> : null}
           {searchedGyms.map((e, key) => {
             return (
               <div

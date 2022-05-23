@@ -5,6 +5,7 @@ class TrainerService extends GenericService {
     super();
   }
   delete_plan = (id) => this.delete("createplan/" + id);
+  get_all_trainer = () => this.get("trainer/trainer")
   register_trainer = (trainerDetails) => this.post("trainer/trainerregister", trainerDetails);
   create_plan = (activityDetails) => this.post("createplan/createplan", activityDetails);
   get_all_not_listed_trainers = () => this.get("trainer/not-listed");
