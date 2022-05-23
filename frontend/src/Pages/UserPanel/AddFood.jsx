@@ -23,6 +23,12 @@ const AddFood = () => {
   const [showEdit, setShowEdit] = useState(false);
   const [editMealId, setEditMealId] = useState("");
   const location = useLocation();
+  var [currentCalorie, setCurrentCalorie] = useState({
+    food_calories: 0,
+    food_proteins: 0,
+    food_carbs: 0,
+    food_fats: 0,
+  });
 
   const schema = yup.object().shape({
     meal_name: yup.string().required("Meal cannot be Empty"),
@@ -32,8 +38,7 @@ const AddFood = () => {
   const navigate = useNavigate();
   var user_id = userService.getLoggedInUser()._id;
   const [mealData, setMealData] = useState([]);
-  const userData = location.state.userData;
-  const [userDetails, setUserDetails] = useState(location.state.userData);
+  const [userDetails, setUserDetails] = useState(location.state?.userData);
   const [editData, setEditData] = useState({});
   const {
     register,
@@ -47,7 +52,6 @@ const AddFood = () => {
     if (!value) {
       setFoodCheck(false);
     } else {
-      
       setFoodCheck(true);
 
       var mealPost = {
@@ -78,22 +82,22 @@ const AddFood = () => {
     }
   };
 
-  function getSingleFood(id){
-
-    userService.get_single_food(id).then((res)=>{
-      setValue(res.crud)
-      console.log(res)
-    }).catch((err)=>{
-      console.log(err)
-    })
-
+  function getSingleFood(id) {
+    userService
+      .get_single_food(id)
+      .then((res) => {
+        setValue(res.crud);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
   const submitForm = (data) => {
     if (!value) {
       setFoodCheck(false);
     } else {
       setFoodCheck(true);
-      
 
       var mealPost = {
         customer_Id: user_id,
@@ -128,10 +132,35 @@ const AddFood = () => {
     });
   }
 
-  function getFoodData(e) {
-    
-    if (e) {
+  function getMealData() {
+    if (location.state) {
+      userService.getMealData(userDetails._id).then((data) => {
+        var calorieData = {
+          food_calories: 0,
+          food_proteins: 0,
+          food_carbs: 0,
+          food_fats: 0,
+        };
+        setMealData(data.crud);
+        data.crud.map((e) => {
+          calorieData.food_calories =
+            calorieData.food_calories + e.food_calories;
+          calorieData.food_fats = calorieData.food_fats + e.food_fats;
+          calorieData.food_proteins =
+            calorieData.food_proteins + e.food_proteins;
+          calorieData.food_carbs = calorieData.food_carbs + e.food_carbs;
+          // x=x+e.food_calories;
+        });
 
+        setCurrentCalorie(calorieData);
+      });
+    }else{
+      console.log("Empty State")
+    }
+  }
+
+  function getFoodData(e) {
+    if (e) {
       var foodSet = {
         food_name: e,
       };
@@ -173,10 +202,9 @@ const AddFood = () => {
         <div className="d-flex flex-column">
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
-              <h4>Calories Gained: {userDetails.food_calories}</h4>
+              <h4>Calories Gained: {currentCalorie?.food_calories}</h4>
               <h4>Calories Burnt:</h4>
-              <h4>Net Calories:</h4>
-              <h4>Calorie Goal:</h4>
+              <h4>Calorie Goal: {Math.floor(userDetails?.calorie_goal)}</h4>
             </div>
             {/* <div className="d-flex justify-content-around align-items-end w-50">
               <Button>Add Food</Button>
@@ -361,8 +389,8 @@ const AddFood = () => {
                               onClick={() => {
                                 setEditModalOpen(true);
                                 setEditMealId(e._id);
-                                setEditData(e)
-                                getSingleFood(e.food_id)
+                                setEditData(e);
+                                getSingleFood(e.food_id);
                                 console.log(e);
                               }}
                             >
@@ -410,118 +438,113 @@ const AddFood = () => {
                                     <i class="bx bx-x"></i>
                                   </a>
 
-
-                                  
-                                    <div className="mt-2">
-                                      <form
-                                        onSubmit={handleSubmit(updateForm)}
-                                        className="d-flex flex-column"
-                                      >
-                                        <FormControl className="w-100 dropdown-trainer">
-                                          <InputLabel id="demo-simple-select-label-x">
-                                            Select Meal
-                                          </InputLabel>
-                                          <Select
+                                  <div className="mt-2">
+                                    <form
+                                      onSubmit={handleSubmit(updateForm)}
+                                      className="d-flex flex-column"
+                                    >
+                                      <FormControl className="w-100 dropdown-trainer">
+                                        <InputLabel id="demo-simple-select-label-x">
+                                          Select Meal
+                                        </InputLabel>
+                                        <Select
                                           defaultValue={editData.meal_name}
-                                            labelId="demo-simple-select-label"
-                                            placeholder="Select Meal"
-                                            id="demo-simple-select-2"
-                                            name="meal_name"
-                                            label="Select Meal"
-                                            {...register("meal_name")}
-                                          >
-                                            <MenuItem value="breakfast">
-                                              Breakfast
-                                            </MenuItem>
-                                            <MenuItem value="lunch">
-                                              Lunch
-                                            </MenuItem>
-                                            <MenuItem value="snacks">
-                                              Snacks
-                                            </MenuItem>
-                                            <MenuItem value="dinner">
-                                              Dinner
-                                            </MenuItem>
-                                          </Select>
-                                        </FormControl>
+                                          labelId="demo-simple-select-label"
+                                          placeholder="Select Meal"
+                                          id="demo-simple-select-2"
+                                          name="meal_name"
+                                          label="Select Meal"
+                                          {...register("meal_name")}
+                                        >
+                                          <MenuItem value="breakfast">
+                                            Breakfast
+                                          </MenuItem>
+                                          <MenuItem value="lunch">
+                                            Lunch
+                                          </MenuItem>
+                                          <MenuItem value="snacks">
+                                            Snacks
+                                          </MenuItem>
+                                          <MenuItem value="dinner">
+                                            Dinner
+                                          </MenuItem>
+                                        </Select>
+                                      </FormControl>
+                                      <p
+                                        id="error-text"
+                                        style={{ color: "rgb(255, 34, 34)" }}
+                                      >
+                                        {errors.meal_name?.message}
+                                      </p>
+
+                                      <Dropdown
+                                        className="w-100 "
+                                        prompt="Selec Food"
+                                        value={value}
+                                        onChange={setValue}
+                                        options={foodOptions}
+                                        label="food_name"
+                                        getData={getFoodData}
+                                      />
+                                      {!foodCheck ? (
                                         <p
                                           id="error-text"
-                                          style={{ color: "rgb(255, 34, 34)" }}
+                                          style={{
+                                            color: "rgb(255, 34, 34)",
+                                          }}
                                         >
-                                          {errors.meal_name?.message}
+                                          Food cannot be Empty
                                         </p>
+                                      ) : null}
 
-                                        <Dropdown
-                                          className="w-100 "
-                                          prompt="Selec Food"
-                                          value={value}
-                                          onChange={setValue}
-                                          options={foodOptions}
-                                          label="food_name"
-                                          getData={getFoodData}
-                                        />
-                                        {!foodCheck ? (
-                                          <p
-                                            id="error-text"
-                                            style={{
-                                              color: "rgb(255, 34, 34)",
-                                            }}
-                                          >
-                                            Food cannot be Empty
+                                      <div className="mt-3 w-100">
+                                        {value ? (
+                                          <p>
+                                            Enter the Quantity of meal per{" "}
+                                            {value?.food_weight} grams
                                           </p>
                                         ) : null}
+                                        <TextField
+                                          id="demo-simple-select-2"
+                                          className="w-100"
+                                          label="Quantity"
+                                          variant="outlined"
+                                          name="food_quantity"
+                                          defaultValue={editData.food_quantity}
+                                          {...register("food_quantity")}
+                                          placeholder="Select Quantity"
+                                          InputLabelProps={{
+                                            style: { color: "#777" },
+                                          }}
+                                        />
+                                      </div>
 
-                                        <div className="mt-3 w-100">
-                                          {value ? (
-                                            <p>
-                                              Enter the Quantity of meal per{" "}
-                                              {value?.food_weight} grams
-                                            </p>
-                                          ) : null}
-                                          <TextField
-                                            id="demo-simple-select-2"
-                                            className="w-100"
-                                            label="Quantity"
-                                            variant="outlined"
-                                            name="food_quantity"
-                                            defaultValue={editData.food_quantity}
-                                            {...register("food_quantity")}
-                                            placeholder="Select Quantity"
-                                            InputLabelProps={{
-                                              style: { color: "#777" },
-                                            }}
+                                      <p
+                                        id="error-text"
+                                        style={{ color: "rgb(255, 34, 34)" }}
+                                      >
+                                        {errors.food_quantity?.message}
+                                      </p>
+                                      <div className="mb-3">
+                                        <div>
+                                          <label htmlFor="time">
+                                            Enter time of your meal
+                                          </label>
+                                        </div>
+                                        <div>
+                                          <input
+                                            name="time"
+                                            className="time-input mb-1 py-3"
+                                            type="time"
                                           />
                                         </div>
+                                      </div>
 
-                                        <p
-                                          id="error-text"
-                                          style={{ color: "rgb(255, 34, 34)" }}
-                                        >
-                                          {errors.food_quantity?.message}
-                                        </p>
-                                        <div className="mb-3">
-                                          <div>
-                                            <label htmlFor="time">
-                                              Enter time of your meal
-                                            </label>
-                                          </div>
-                                          <div>
-                                            <input
-                                              name="time"
-                                              className="time-input mb-1 py-3"
-                                              type="time"
-                                            />
-                                          </div>
-                                        </div>
-
-                                        <div>
-                                          <Button type="submit">
-                                            Edit Food
-                                          </Button>
-                                        </div>
-                                      </form>
-                                    </div>
-                                  
+                                      <div>
+                                        <Button type="submit">Edit Food</Button>
+                                      </div>
+                                    </form>
+                                  </div>
                                 </div>
                               </Modal>
                             </div>

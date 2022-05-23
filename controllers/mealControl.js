@@ -34,8 +34,8 @@ const getOneData = async (req, res) => {
       getDate = '0' + getDate
     }
 
-    var startDate = getYear + '-' + getMonth + '-' + (getDate-1)
-    var endDate = getYear + '-' + getMonth + '-' + (getDate)
+    var startDate = getYear + '-' + getMonth + '-' + (getDate)
+    var endDate = getYear + '-' + getMonth + '-' + (getDate + 1)
     console.log(startDate + ' and ' + endDate)
 
     const {customerId: crudId } = req.params
