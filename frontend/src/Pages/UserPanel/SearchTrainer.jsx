@@ -20,7 +20,7 @@ const SearchTrainer = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const [searchResults, setSearchResults] = useState(false);
-  const [isSearched, setIsSearched] =useState(false);
+  const [isSearched, setIsSearched] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     // userService.getLoggedInUser();
@@ -37,7 +37,7 @@ const SearchTrainer = () => {
         navigate("/login");
       }
     }
-    getFeaturedTrainer()
+    getFeaturedTrainer();
   }, []);
   const [searchedTrainer, setSearchedTrainer] = useState([]);
   const [searchTrainer, setSearchTrainer] = useState({
@@ -46,13 +46,16 @@ const SearchTrainer = () => {
     exercise_type: "",
   });
 
-  function getFeaturedTrainer(){
-    trainerService.get_all_trainer().then((res)=>{
-      setSearchedTrainer(res.crud);
-      setIsSearched(false);
-    }).catch((err)=>{
-      console.log(err)
-    })
+  function getFeaturedTrainer() {
+    trainerService
+      .get_all_trainer()
+      .then((res) => {
+        setSearchedTrainer(res.crud);
+        setIsSearched(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function getSeacrhedTrainers() {
@@ -61,7 +64,7 @@ const SearchTrainer = () => {
       .get_search_trainers(searchTrainer)
       .then((res) => {
         setSearchedTrainer(res.crud);
-        setIsSearched(true)
+        setIsSearched(true);
         setSearchResults(false);
       })
       .catch((err) => {
@@ -155,8 +158,8 @@ const SearchTrainer = () => {
         </div>
       )}
       <div className=" mt-5">
-      {isSearched ? <h2>Searched Trainers</h2> : <h2>Featured Trainers</h2>}
-        <div className="gym-grid-container">
+        {isSearched ? <h2>Searched Trainers</h2> : <h2>Featured Trainers</h2>}
+        <div className="gym-grid-container pb-3">
           {searchResults ? <p className="text-light w-100">Search Results not Found</p> : null}
           {searchedTrainer.map((e, key) => {
             return (
