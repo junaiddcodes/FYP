@@ -20,7 +20,7 @@ const ActivityPlans = () => {
   const navigate = useNavigate();
   const location = useLocation();
   // const data = location.state.e;
-  const userId = "";
+  var userId = "";
   useEffect(() => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);

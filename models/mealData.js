@@ -4,6 +4,7 @@ const Joi = require('joi')
 const mealDataSchema = mongoose.Schema({
   customer_Id: String,
   meal_name: String,
+  food_id: String,
   food_name: String,
   food_weight: Number,
   food_calories: Number,
@@ -20,6 +21,7 @@ function validateMeal(data) {
   const schema = Joi.object({
     customer_Id: Joi.string().required(),
     meal_name: Joi.string().required(),
+    food_id: Joi.string().required(),
     food_name: Joi.string().required(),
     food_weight: Joi.number().positive().required(),
     food_calories: Joi.number().required(),

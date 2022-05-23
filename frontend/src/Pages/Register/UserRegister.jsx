@@ -654,13 +654,13 @@ const UserRegister = () => {
                   {...controlStep4("weekly_goal")}
                 />
                 <div className="d-flex flex-column w-75 ">
-                  <h4>{goalText} 0.5 pounds per week (Recommended)</h4>
+                  <h4>{goalText} 0.2 KGs per week (Recommended)</h4>
                 </div>
               </div>
               <div className="activity-btn2 d-flex justify-content-between">
                 <input type="radio" name="weekly_goal" value="1" {...controlStep4("weekly_goal")} />
                 <div className="d-flex flex-column w-75">
-                  <h4>{goalText} 1 pound per week</h4>
+                  <h4>{goalText} 0.45 KGs per week</h4>
                 </div>
               </div>
               <p>{errorsStep4.weekly_goal?.message}</p>

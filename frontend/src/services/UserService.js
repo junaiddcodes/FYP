@@ -49,9 +49,11 @@ class UserService extends GenericService {
   getExcercise = (excerciseName) => this.post('excercise/name', excerciseName)
 // Meals
   getMealData = (customerId) => this.get('meal/mealdata/' + customerId)
-  editMealData = (mealId,mealData) => this.get('meal/' + mealId, mealData)
+  editMealData = (mealId,mealData) => this.patch('meal/' + mealId, mealData)
   deleteMealData = (mealId) => this.delete('meal/' + mealId)
   createMeal = (meal) => this.post('meal/addmeal', meal)
+
+  get_single_food =(id)=>this.get("food/" + id)
   // Conversation Chat
   createConvo = (convo) => this.post('conversation', convo)
 
