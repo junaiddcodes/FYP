@@ -32,13 +32,13 @@ const SideMenu = () => {
             </i>
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link to="">
             <i class="bx bx-history">
               <span className="links_name">History</span>
             </i>
           </Link>
-        </li>
+        </li> */}
         <li>
           <Link to="/Messenger">
             <i class="bx bx-chat">
