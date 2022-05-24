@@ -71,6 +71,10 @@ const AddWater = () => {
 
     console.log('before request')
 
+    userService.waterIntake(waterIntake).then((res)=>{
+      console.log(res)
+    })
+
     userService.waterIntake(waterIntake)
     getWaterData()
   }
