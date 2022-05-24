@@ -53,7 +53,7 @@ const AdminDashboard = () => {
         navigate("/login");
       }
     }
-    console.log("abdullah taxi");
+
     gymService
       .get_all_not_listed_gyms()
       .then((data) => {

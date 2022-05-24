@@ -16,12 +16,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 import userService from "../../services/UserService";
 import trainerService from "../../services/TrainerService";
 
-const ActivityPlans = () => {
+const ActivityPlanDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [allPlans, setAllPlans] = useState([]);
-  var name = "";
   // const data = location.state.e;
+  var data = location.state.e;
   var userId = "";
   useEffect(() => {
     // userService.getLoggedInUser();
@@ -42,17 +42,8 @@ const ActivityPlans = () => {
 
     if (location.state) {
       // data = location.state.trainerDetails;
-      console.log("state data = ", location.state.trainerDetails);
-      name = location.state.trainerDetails.user_id.full_name;
-      trainerService
-        .get_plans(location.state.trainerDetails._id)
-        .then((data) => {
-          console.log("plan data = ", data);
-          setAllPlans(data.crud);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      console.log("state data = ", location.state.e);
+      data = location.state.e;
     } else {
       console.log("state empty");
     }
@@ -62,40 +53,24 @@ const ActivityPlans = () => {
     <div className="page-container-user">
       <TopBar />
       <SideMenu />
-      <h2>Activity Plans by {location.state.trainerDetails.user_id.full_name}</h2>
-      <div className=" mt-5">
-        {allPlans.length == 0 ? (
-          <h2>No plans</h2>
-        ) : (
-          allPlans.map((e, index) => {
-            return (
-              <div
-                onClick={() => {
-                  navigate("/activity-plan-details", { state: { e, name } });
-                }}
-                className="activity-grid-container"
-              >
-                <div className="activity-card grid-item p-3">
-                  <h4>{e.plan_title} Activity Plan</h4>
-                  {/* <p>{e.plan_desc}</p> */}
-                  <div className="d-flex justify-content-between">
-                    <div>
-                      <h4>Duration:</h4>
-                      <p>{e.plan_duration} weeks</p>
-                    </div>
-                    <div>
-                      <h4>Price:</h4>
-                      <p>{e.plan_price} PKR</p>
-                    </div>
-                  </div>
-                </div>
+      <h2> {data.plan_title} plan</h2>
+      <div className="trainer-desc mt-3 d-flex flex-column">
+        <div className="d-flex ">
+          <div className="d-flex w-75 justify-content-between">
+            <div className="trainer-img d-flex">
+              <div className="d-flex mt-5 flex-column">
+                <h4>Duration: {data.plan_duration} weeks</h4>
+                <h4>Price: {data.plan_price} PKR</h4>
+                <h4>Description: </h4>
+                <p> {data.plan_desc}</p>
+                <Button className="w-25 m-3">Buy plan</Button>
               </div>
-            );
-          })
-        )}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default ActivityPlans;
+export default ActivityPlanDetails;
