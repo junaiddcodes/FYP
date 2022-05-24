@@ -80,6 +80,9 @@ const SearchGym = () => {
           <input
             type="text"
             placeholder="Search gym by name..."
+            onKeyDown={(e)=>{if(e.key === 'Enter'){
+              getSeacrhedGyms();
+            }}}
             onChange={(e) => {
               setSearchGym({ ...searchGym, full_name: e.target.value });
             }}

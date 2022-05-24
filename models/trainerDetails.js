@@ -20,7 +20,7 @@ var trainerDetailsSchema = mongoose.Schema({
   cloudinary_id: String,
 });
 
-// Create Model of Schema in Trainer_Details
+
 var trainerDetails = mongoose.model("Trainer_Details", trainerDetailsSchema);
 
 function validateTrainer(data) {

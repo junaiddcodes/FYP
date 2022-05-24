@@ -84,6 +84,9 @@ const SearchTrainer = () => {
           <input
             type="text"
             placeholder="Search trainer by name..."
+            onKeyDown={(e)=>{if(e.key === 'Enter'){
+              getSeacrhedTrainers();
+            }}}
             onChange={(e) => {
               setSearchTrainer({ ...searchTrainer, full_name: e.target.value });
             }}
@@ -113,7 +116,7 @@ const SearchTrainer = () => {
       {filterOpen && (
         <div className="d-flex align-items-center">
           <FormControl className="m-4 w-25 dropdown-modal">
-            <InputLabel id="demo-simple-select-label">Select Gender</InputLabel>
+            <InputLabel id="demo-simple-select-label" >Select Gender</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"

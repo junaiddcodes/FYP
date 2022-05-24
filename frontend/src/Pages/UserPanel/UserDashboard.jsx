@@ -7,7 +7,6 @@ import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
 import userService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
-// console.log(userId)
 
 const UserDashboard = () => {
   const navigate = useNavigate();
@@ -102,30 +101,58 @@ const UserDashboard = () => {
           </div>
           <div className="d-flex flex-column mt-3">
             <div>
-              <h4>Calorie Goal</h4>
+              <div className="w-100 d-flex justify-content-between">
+                <h4>Calorie Goal</h4>
+                <div>
+                  <p className="text-light">{currentCalorie.food_calories +"/" +Math.floor(userData.calorie_goal)}</p>
+                </div>
+              </div>
               <Progress
-                done={Math.floor((currentCalorie.food_calories * 100) / userData.calorie_goal)}
+                done={Math.floor(
+                  (currentCalorie.food_calories * 100) / userData.calorie_goal
+                )}
                 heading="Calorie Goal"
               />
             </div>
             <div>
-              <h4>Carbohydrates</h4>
+            <div className="w-100 d-flex justify-content-between">
+                <h4>Carbohydrates</h4>
+                <div>
+                  <p className="text-light">{currentCalorie.food_carbs +"/" +Math.floor(userData.carbs)}</p>
+                </div>
+              </div>
               <Progress
-                done={Math.floor((currentCalorie.food_carbs * 100) / userData.carbs)}
+                done={Math.floor(
+                  (currentCalorie.food_carbs * 100) / userData.carbs
+                )}
                 heading="Calorie Goal"
               />
             </div>
             <div>
-              <h4>Proteins</h4>
+            <div className="w-100 d-flex justify-content-between">
+                <h4>Proteins</h4>
+                <div>
+                  <p className="text-light">{currentCalorie.food_proteins +"/" +Math.floor(userData.protein)}</p>
+                </div>
+              </div>
               <Progress
-                done={Math.floor((currentCalorie.food_proteins * 100) / userData.protein)}
+                done={Math.floor(
+                  (currentCalorie.food_proteins * 100) / userData.protein
+                )}
                 heading="Calorie Goal"
               />
             </div>
             <div>
-              <h4>Fats</h4>
+            <div className="w-100 d-flex justify-content-between">
+                <h4>Fats</h4>
+                <div>
+                  <p className="text-light">{currentCalorie.food_fats +"/" +Math.floor(userData.fats)}</p>
+                </div>
+              </div>
               <Progress
-                done={Math.floor((currentCalorie.food_fats * 100) / userData.fats)}
+                done={Math.floor(
+                  (currentCalorie.food_fats * 100) / userData.fats
+                )}
                 heading="Calorie Goal"
               />
             </div>

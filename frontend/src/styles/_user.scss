@@ -291,6 +291,8 @@
   border-radius: 1rem;
 }
 
+
+
 #demo-simple-select-2 {
   color: $color1;
   background-color: #fff;
@@ -301,4 +303,19 @@
 }
 #demo-simple-select-label-x:focus {
   color: $color3s;
+}
+
+#error-text{
+  color: rgb(255, 34, 34)
+}
+
+.text-link{
+  color: $color1;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+.text-link:hover{
+  color: $color1;
+  cursor: pointer !important;
 }

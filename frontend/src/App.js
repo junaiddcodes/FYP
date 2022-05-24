@@ -32,6 +32,7 @@ import Login from "./Pages/Register/Login";
 import LoginAdmin from "./Pages/Register/LoginAdmin";
 import CreateQuery from "./Pages/CreateQuery";
 import Messenger from "./Messenger/Messenger";
+import Home from "./Pages/HomePanel/home";
 import ActivityPlanDetails from "./Pages/UserPanel/ActivityPlanDetails";
 function App() {
   return (
@@ -40,7 +41,7 @@ function App() {
         {/* <TopBar /> */}
         {/* <SideMenu /> */}
         <Routes>
-          <Route path="/" element={<h1>Well cum</h1>} />
+          <Route path="/" element={<Home />} />
           <Route path="/user-add-food" element={<AddFood />} />
           <Route path="/user-add-exercise" element={<AddExercise />} />
           <Route path="/user-add-water" element={<AddWater />} />
@@ -49,9 +50,15 @@ function App() {
           <Route path="/gym-description/:id" element={<GymDescription />} />
           <Route path="/gym-dashboard" element={<GymProfile />} />
           <Route path="/trainer-profile" element={<TrainerProfile />} />
-          <Route path="/trainer-description/:id" element={<TrainerDescription />} />
+          <Route
+            path="/trainer-description/:id"
+            element={<TrainerDescription />}
+          />
           <Route path="/activity-plans" element={<ActivityPlans />} />
-          <Route path="/trainer-activity-plans" element={<TrainerActivityPlans />} />
+          <Route
+            path="/trainer-activity-plans"
+            element={<TrainerActivityPlans />}
+          />
           <Route path="/trainer-create-plan" element={<CreatePlan />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/trainer-dashboard" element={<TrainerDashboard />} />
