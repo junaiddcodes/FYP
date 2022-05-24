@@ -33,6 +33,7 @@ import LoginAdmin from "./Pages/Register/LoginAdmin";
 import CreateQuery from "./Pages/CreateQuery";
 import Messenger from "./Messenger/Messenger";
 import Home from "./Pages/HomePanel/home";
+import ActivityPlanDetails from "./Pages/UserPanel/ActivityPlanDetails";
 function App() {
   return (
     <BrowserRouter>
@@ -68,6 +69,7 @@ function App() {
           <Route path="/payment-request" element={<PaymentRequest />} />
           <Route path="/Messenger" element={<Messenger />} />
           <Route path="/query" element={<CreateQuery />} />
+          <Route path="/activity-plan-details" element={<ActivityPlanDetails />} />
 
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
