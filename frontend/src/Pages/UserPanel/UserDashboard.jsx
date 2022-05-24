@@ -10,16 +10,46 @@ import { useNavigate } from "react-router-dom";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
+  var [waterAmount, setWaterAmount] = useState()
+
   var [currentCalorie, setCurrentCalorie] = useState({
     food_calories: 0,
     food_proteins: 0,
     food_carbs: 0,
     food_fats: 0,
   });
+
+  var waterIntake = {
+    userId: '',
+    amount_litres: 0,
+    time_date: '',
+  }
   var [userData, setUserData] = useState({});
   var userId = userService.getLoggedInUser()._id;
   var [mealData, setMealData] = useState([]);
   var errorUser = "Login as a customer first!";
+
+  function getWaterData() {
+    userService
+      .waterPage(userId)
+      .then((data) => {
+        var waterIntake = data.crud.map((e) => {
+          var data = 0
+          data = data + e.amount_litres
+          return data
+        })
+
+        // Getting sum of numbers
+        var sumWater = waterIntake.reduce(function (a, b) {
+          return a + b
+        }, 0)
+
+        setWaterAmount(sumWater)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   function getUserCalorie() {
     userService
@@ -66,6 +96,7 @@ const UserDashboard = () => {
 
     getUserCalorie();
     getMealData();
+    getWaterData()
   }, []);
 
   return (
@@ -81,6 +112,7 @@ const UserDashboard = () => {
               <h4>Calories Gained:{currentCalorie.food_calories}</h4>
               <h4>Calories Burnt:</h4>
               <h4>Calorie Goal: {parseInt(userData.calorie_goal)}</h4>
+              <h4>Water Taken: {parseInt(waterAmount)}</h4>
             </div>
             <div className="d-flex justify-content-around align-items-end w-50">
               <Button
@@ -157,8 +189,15 @@ const UserDashboard = () => {
               />
             </div>
             <div>
-              <h4>Water Intake</h4>
-              <Progress done="10" heading="Calorie Goal" />
+            <div className="w-100 d-flex justify-content-between">
+                <h4>Water Intake </h4>
+                <div>
+                  <p className="text-light">{waterAmount +"/" + 6 }</p>
+                </div>
+              </div>
+              <Progress done={Math.floor(
+                  (waterAmount * 100) / 6
+                )} heading="Calorie Goal" />
             </div>
           </div>
         </div>

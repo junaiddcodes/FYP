@@ -116,9 +116,9 @@ const AddFood = () => {
       userService
         .createMeal(mealPost)
         .then((e) => {
+          setEditModalOpen(false);
           getMealData();
           setValue(null);
-          setEditModalOpen(false);
           console.log("Meal Posted Successfully");
         })
         .catch((err) => {

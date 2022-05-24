@@ -2,8 +2,7 @@ const mongoose = require('mongoose')
 
 const excerciseApiSchema = mongoose.Schema({
   excercise_name: String,
-  excercise_duration: String,
-  burnt_calories: String,
+  met_value: Number
 })
 
 const excerciseApiModel = mongoose.model('Excercise_Api', excerciseApiSchema)
