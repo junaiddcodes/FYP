@@ -19,20 +19,24 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
 const AddExercise = () => {
-  const [foodCheck, setFoodCheck] = useState(true);
+  const [excerciseCheck, setExcerciseCheck] = useState(true);
+  const [editData, setEditData] = useState({});
+  const [editExcerciselId, setEditExcerciseId] = useState("");
   const [value, setValue] = useState(null);
   const location = useLocation();
   var [excersiseOptions, setExcerciseOptions] = useState([]);
+  var [excersiseData, setExcerciseData] = useState([]);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const navigate = useNavigate();
+  var user_id = userService.getLoggedInUser()._id;
   const [userDetails, setUserDetails] = useState(location.state?.userData);
   const [calorieData, setCalorieData] = useState(
     location.state?.currentCalorie
   );
   const schema = yup.object().shape({
-    time_minute: yup.string().required("Time cannot be Empty"),
+    time_minute: yup.number().required("Time cannot be Empty"),
   });
   const {
     register,
@@ -42,28 +46,120 @@ const AddExercise = () => {
     resolver: yupResolver(schema),
   });
 
+  function updateExcercise(data) {
+    setModalOpen(false);
+    if (!value) {
+      setExcerciseCheck(false);
+    } else {
+      setExcerciseCheck(true);
+
+      var excercisePost = {
+        customer_Id: user_id,
+        excercise_name: value.excercise_name,
+        excercise_id: value._id,
+        excercise_type: value.excercise_type,
+        user_weight: userDetails.weight,
+        excercise_calories: 10,
+        excercise_proteins: 10,
+        excercise_carbs: 10,
+        excercise_fats: 10,
+        excercise_time: data.time_minute,
+        met_value: value.met_value,
+        time_date: new Date().getTime(),
+      };
+
+      console.log(excercisePost);
+
+      userService
+        .editExcerciseData(editExcerciselId, excercisePost)
+        .then((e) => {
+          setValue(null);
+          setEditModalOpen(false);
+          getExcerciseData();
+          console.log("Excercise Update Successfully");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
+  function getSingleExcercise(id) {
+    console.log(id);
+    userService
+      .get_single_excercise(id)
+      .then((res) => {
+        setValue(res.crud);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   function postExcercise(data) {
     setModalOpen(false);
     if (!value) {
-      setFoodCheck(false);
+      setExcerciseCheck(false);
     } else {
-      setFoodCheck(true);
+      setExcerciseCheck(true);
+
+      var excercisePost = {
+        customer_Id: user_id,
+        excercise_name: value.excercise_name,
+        excercise_id: value._id,
+        excercise_type: value.excercise_type,
+        user_weight: userDetails.weight,
+        excercise_calories: 10,
+        excercise_proteins: 10,
+        excercise_carbs: 10,
+        excercise_fats: 10,
+        excercise_time: data.time_minute,
+        met_value: value.met_value,
+        time_date: new Date().getTime(),
+      };
+
+      console.log(excercisePost);
+
+      userService
+        .postExcercise(excercisePost)
+        .then((e) => {
+          setValue(null);
+          setModalOpen(false);
+          getExcerciseData();
+          console.log("Excercise Posted Successfully");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
 
-  function getExcerciseData(e) {
+  function getExcerciseAPIData(e) {
     console.log(e);
     if (e) {
       var x = e;
-
-      console.log(x);
       var exSet = {
         excercise_name: x,
       };
       userService.getExcercise(exSet).then((data) => {
         setExcerciseOptions(data.crud);
-        console.log(excersiseOptions);
       });
+    }
+  }
+
+  function getExcerciseData() {
+    if (location.state) {
+      userService
+        .getExcerciseData(user_id)
+        .then((res) => {
+          setExcerciseData(res.crud);
+          console.log(res.crud);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("Empty State");
     }
   }
 
@@ -82,6 +178,7 @@ const AddExercise = () => {
         navigate("/login");
       }
     }
+    getExcerciseData();
   }, []);
   const workoutOptions = [
     { value: "benchpress", label: "Bench Press" },
@@ -172,8 +269,13 @@ const AddExercise = () => {
                   onChange={setValue}
                   options={excersiseOptions}
                   label="excercise_name"
-                  getData={getExcerciseData}
+                  getData={getExcerciseAPIData}
                 />
+                {!excerciseCheck ? (
+                  <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+                    Food cannot be Empty
+                  </p>
+                ) : null}
               </div>
 
               <div className="mt-2 w-100">
@@ -194,7 +296,9 @@ const AddExercise = () => {
                 </p>
               </div>
               <div>
-                <Button type="submit" className="mt-4">Add Exercise</Button>
+                <Button type="submit" className="mt-4">
+                  Add Exercise
+                </Button>
               </div>
             </form>
           </div>
@@ -214,165 +318,215 @@ const AddExercise = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Cardio</td>
-                  <td>Breath Control</td>
-                  <td>20</td>
-                  <td>300</td>
-                  <td>
-                    <div className="d-flex align-items-center">
-                      <Button
-                        className="btn btn-warning edit-btn"
-                        onClick={() => {
-                          setEditModalOpen(true);
-                        }}
-                      >
-                        Edit{" "}
-                      </Button>
-                      <div className="modal-container">
-                        <Modal
-                          style={{
-                            overlay: {
-                              position: "fixed",
-                              top: 0,
-                              left: 0,
-                              right: 0,
-                              bottom: 0,
-
-                              backgroundColor: "rgba(0, 0, 0, 0.75)",
-                            },
-                            content: {
-                              color: "white",
-                              position: "absolute",
-                              top: "40px",
-                              left: "40px",
-                              right: "40px",
-                              bottom: "40px",
-                              background: "rgba(0,30,60,1)",
-                              overflow: "auto",
-                              WebkitOverflowScrolling: "touch",
-                              borderRadius: "1rem",
-                              outline: "none",
-                              padding: "20px",
-                            },
-                          }}
-                          className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
-                          isOpen={editModalOpen}
-                          onRequestClose={() => {
-                            setEditModalOpen(false);
-                          }}
-                        >
-                          <div className="modal-inner w-75 d-flex flex-column">
-                            <a
+                {excersiseData.length == 0 ? (
+                  <tr>
+                    <td>There are no Meal for Today</td>
+                  </tr>
+                ) : (
+                  excersiseData.map((e, index) => {
+                    return (
+                      <tr>
+                        <td>{e.excercise_type}</td>
+                        <td>{e.excercise_name}</td>
+                        <td>{e.excercise_time}</td>
+                        <td>{e.excercise_calories}</td>
+                        <td>
+                          <div className="d-flex align-items-center">
+                            <Button
+                              className="btn btn-warning edit-btn"
                               onClick={() => {
-                                setEditModalOpen(false);
+                                setEditModalOpen(true);
+                                setEditData(e);
+                                setEditExcerciseId(e._id);
+                                getSingleExcercise(e.excercise_id);
                               }}
                             >
-                              <i class="bx bx-x"></i>
-                            </a>
-                            <Select
-                              className="select-drop"
-                              placeholder="Select Exercise"
-                              options={workoutOptions}
-                            />{" "}
-                            <input
-                              className="input-modal"
-                              type="number"
-                              placeholder="Enter Time (in minutes)"
-                            />
-                          </div>
-                          <div>
-                            <Button type="submit ">Add Exercise</Button>
-                          </div>
-                        </Modal>
-                      </div>
-                      <a
-                        className="delete-icon"
-                        onClick={() => {
-                          setConfirmDelete(true);
-                        }}
-                      >
-                        <ImCross />
-                      </a>
-                      <div className="modal-container">
-                        <Modal
-                          style={{
-                            overlay: {
-                              position: "fixed",
-                              top: 0,
-                              left: 0,
-                              right: 0,
-                              bottom: 0,
+                              Edit{" "}
+                            </Button>
+                            <div className="modal-container">
+                              <Modal
+                                style={{
+                                  overlay: {
+                                    position: "fixed",
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
 
-                              backgroundColor: "rgba(0, 0, 0, 0.75)",
-                            },
-                            content: {
-                              color: "white",
-                              position: "absolute",
-                              top: "40px",
-                              left: "40px",
-                              right: "40px",
-                              bottom: "40px",
-                              background: "rgba(0,30,60,1)",
-                              overflow: "auto",
-                              WebkitOverflowScrolling: "touch",
-                              borderRadius: "1rem",
-                              outline: "none",
-                              padding: "20px",
-                            },
-                          }}
-                          className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
-                          isOpen={confirmDelete}
-                          onRequestClose={() => {
-                            setConfirmDelete(false);
-                          }}
-                        >
-                          <div className="modal-inner w-75 d-flex flex-column">
+                                    backgroundColor: "rgba(0, 0, 0, 0.75)",
+                                  },
+                                  content: {
+                                    color: "white",
+                                    position: "absolute",
+                                    top: "40px",
+                                    left: "40px",
+                                    right: "40px",
+                                    bottom: "40px",
+                                    background: "rgba(0,30,60,1)",
+                                    overflow: "auto",
+                                    WebkitOverflowScrolling: "touch",
+                                    borderRadius: "1rem",
+                                    outline: "none",
+                                    padding: "20px",
+                                  },
+                                }}
+                                className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+                                isOpen={editModalOpen}
+                                onRequestClose={() => {
+                                  setEditModalOpen(false);
+                                }}
+                              >
+                                <div className="modal-inner w-75 d-flex flex-column">
+                                  <a
+                                    onClick={() => {
+                                      setEditModalOpen(false);
+                                    }}
+                                  >
+                                    <i class="bx bx-x"></i>
+                                  </a>
+                                  <form
+                                    onSubmit={handleSubmit(updateExcercise)}
+                                    className="d-flex flex-column"
+                                  >
+                                    <div>
+                                      <Dropdown
+                                        prompt="Select Excercise"
+                                        value={value}
+                                        onChange={setValue}
+                                        options={excersiseOptions}
+                                        label="excercise_name"
+                                        getData={getExcerciseAPIData}
+                                      />
+                                      {!excerciseCheck ? (
+                                        <p
+                                          id="error-text"
+                                          style={{ color: "rgb(255, 34, 34)" }}
+                                        >
+                                          Food cannot be Empty
+                                        </p>
+                                      ) : null}
+                                    </div>
+
+                                    <div className="mt-2 w-100">
+                                      <TextField
+                                        id="demo-simple-select-2"
+                                        className="w-100"
+                                        label="Time"
+                                        variant="outlined"
+                                        name="time_minute"
+                                        defaultValue={editData.excercise_time}
+                                        {...register("time_minute")}
+                                        placeholder="Enter time (in minutes)"
+                                        InputLabelProps={{
+                                          style: { color: "#777" },
+                                        }}
+                                      />
+                                      <p
+                                        id="error-text"
+                                        style={{ color: "rgb(255, 34, 34)" }}
+                                      >
+                                        {errors.time_minute?.message}
+                                      </p>
+                                    </div>
+                                    <div>
+                                      <Button type="submit" className="mt-4">
+                                        Edit Exercise
+                                      </Button>
+                                    </div>
+                                  </form>
+                                </div>
+                              </Modal>
+                            </div>
                             <a
+                              className="delete-icon"
                               onClick={() => {
-                                setConfirmDelete(false);
+                                setConfirmDelete(true);
                               }}
                             >
-                              <i class="bx bx-x"></i>
+                              <ImCross />
                             </a>
-                            <h3>
-                              Are you sure you want to delete the exercise?
-                            </h3>
-                            <p>Select yes to delete the item</p>
+                            <div className="modal-container">
+                              <Modal
+                                style={{
+                                  overlay: {
+                                    position: "fixed",
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+
+                                    backgroundColor: "rgba(0, 0, 0, 0.75)",
+                                  },
+                                  content: {
+                                    color: "white",
+                                    position: "absolute",
+                                    top: "40px",
+                                    left: "40px",
+                                    right: "40px",
+                                    bottom: "40px",
+                                    background: "rgba(0,30,60,1)",
+                                    overflow: "auto",
+                                    WebkitOverflowScrolling: "touch",
+                                    borderRadius: "1rem",
+                                    outline: "none",
+                                    padding: "20px",
+                                  },
+                                }}
+                                className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+                                isOpen={confirmDelete}
+                                onRequestClose={() => {
+                                  setConfirmDelete(false);
+                                }}
+                              >
+                                <div className="modal-inner w-75 d-flex flex-column">
+                                  <a
+                                    onClick={() => {
+                                      setConfirmDelete(false);
+                                    }}
+                                  >
+                                    <i class="bx bx-x"></i>
+                                  </a>
+                                  <h3>
+                                    Are you sure you want to delete the
+                                    exercise?
+                                  </h3>
+                                  <p>Select yes to delete the item</p>
+                                </div>
+                                <div className="d-flex">
+                                  <Button
+                                    className="btn-dark m-3"
+                                    type="submit "
+                                    onClick={() => {
+                                      userService
+                                        .deleteExcerciseData(e._id)
+                                        .then(() => {
+                                          console.log("Excercise is Deleted");
+                                          getExcerciseData();
+                                        });
+
+                                      setConfirmDelete(false);
+                                    }}
+                                  >
+                                    Yes
+                                  </Button>
+                                  <Button
+                                    className="m-3"
+                                    type="submit "
+                                    onClick={() => {
+                                      setConfirmDelete(false);
+                                    }}
+                                  >
+                                    No
+                                  </Button>
+                                </div>
+                              </Modal>
+                            </div>
                           </div>
-                          <div className="d-flex">
-                            <Button className="btn-dark m-3" type="submit ">
-                              Yes
-                            </Button>
-                            <Button className="m-3" type="submit ">
-                              No
-                            </Button>
-                          </div>
-                        </Modal>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Cardio</td>
-                  <td>Super Step</td>
-                  <td>15</td>
-                  <td>500</td>
-                  <td>
-                    <Button className="btn btn-warning edit-btn">Edit </Button>
-                    <ImCross className="delete-icon" />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Gym</td>
-                  <td>Bench Press</td>
-                  <td>30</td>
-                  <td>800</td>
-                  <td>
-                    <Button className="btn btn-warning edit-btn">Edit </Button>
-                    <ImCross className="delete-icon" />
-                  </td>
-                </tr>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
               </tbody>
             </table>
           </div>

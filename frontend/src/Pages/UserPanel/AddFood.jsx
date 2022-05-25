@@ -125,11 +125,11 @@ const AddFood = () => {
         });
     }
   };
-  function getMealData() {
-    userService.getMealData(user_id).then((data) => {
-      setMealData(data.crud);
-    });
-  }
+  // function getMealData() {
+  //   userService.getMealData(user_id).then((data) => {
+  //     setMealData(data.crud);
+  //   });
+  // }
 
   function getMealData() {
     if (location.state) {

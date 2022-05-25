@@ -5,7 +5,7 @@ var router = express.Router()
 
 const {
   //   getAllData,
-  //   getOneData,
+  getOneData,
   updateData,
   deleteData,
 
@@ -15,7 +15,7 @@ const {
 
 router.route('/addexercise').post(createData)
 // router.route('/getfood').get(getAllData)
-router.route('/:exerciseId').patch(updateData).delete(deleteData)
+router.route('/:exerciseId').patch(updateData).delete(deleteData).get(getOneData)
 
 router.route('/name').post(getbyName)
 module.exports = router

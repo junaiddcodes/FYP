@@ -22,11 +22,28 @@ const createData = async (req, res) => {
 // // //use to get only one data from db
 const getOneData = async (req, res) => {
   try {
-    const { selectId: crudId } = req.params
+    var getDate = new Date().getDate()
+    var getMonth = new Date().getMonth()
+    var getYear = new Date().getFullYear()
+
+    getMonth += 1
+    if (getMonth < 10) {
+      getMonth = '0' + getMonth
+    }
+    if (getDate < 10) {
+      getDate = '0' + getDate
+    }
+
+    var startDate = getYear + '-' + getMonth + '-' + (getDate)
+    var endDate = getYear + '-' + getMonth + '-' + (getDate + 1)
+    const { customerId: crudId } = req.params
     console.log(req.params)
     // console.log(foodId)
     // console.log(crudId)
-    const crud = await selectedExcerciseModel.findOne({ _id: crudId })
+    const crud = await selectedExcerciseModel.find({
+      customer_Id: crudId,
+      time_date: { $gt: new Date(startDate), $lt: new Date(endDate) },
+    })
 
     if (!crud) {
       return res.status(404).jason({ message: 'item does not exist' })

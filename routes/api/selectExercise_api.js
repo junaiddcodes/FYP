@@ -15,8 +15,8 @@ const {
 } = require('../../controllers/selectExcersiseController')
 
 router.route('/addSelectexercise').post(createData)
-// router.route('/getfood').get(getAllData)
-router.route('/:selectId').get(getOneData).patch(updateData).delete(deleteData)
+router.route('/user/:customerId').get(getOneData)
+router.route('/:selectId').patch(updateData).delete(deleteData)
 
 // router.route('/name/:excercise_name').get(getbyName)
 module.exports = router
