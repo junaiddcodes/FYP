@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 
 const selectedExcerciseSchema = mongoose.Schema({
   excercise_name: String,
+  excercise_type: String,
   excercise_id : String,
   excercise_weight: Number,
   excercise_calories: Number,

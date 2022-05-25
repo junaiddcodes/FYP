@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
-  var [waterAmount, setWaterAmount] = useState()
+  var [waterAmount, setWaterAmount] = useState();
 
   var [currentCalorie, setCurrentCalorie] = useState({
     food_calories: 0,
@@ -20,10 +20,10 @@ const UserDashboard = () => {
   });
 
   var waterIntake = {
-    userId: '',
+    userId: "",
     amount_litres: 0,
-    time_date: '',
-  }
+    time_date: "",
+  };
   var [userData, setUserData] = useState({});
   var userId = userService.getLoggedInUser()._id;
   var [mealData, setMealData] = useState([]);
@@ -34,21 +34,21 @@ const UserDashboard = () => {
       .waterPage(userId)
       .then((data) => {
         var waterIntake = data.crud.map((e) => {
-          var data = 0
-          data = data + e.amount_litres
-          return data
-        })
+          var data = 0;
+          data = data + e.amount_litres;
+          return data;
+        });
 
         // Getting sum of numbers
         var sumWater = waterIntake.reduce(function (a, b) {
-          return a + b
-        }, 0)
+          return a + b;
+        }, 0);
 
-        setWaterAmount(sumWater)
+        setWaterAmount(sumWater);
       })
       .catch((err) => {
-        console.log(err)
-      })
+        console.log(err);
+      });
   }
 
   function getUserCalorie() {
@@ -96,7 +96,7 @@ const UserDashboard = () => {
 
     getUserCalorie();
     getMealData();
-    getWaterData()
+    getWaterData();
   }, []);
 
   return (
@@ -117,15 +117,22 @@ const UserDashboard = () => {
             <div className="d-flex justify-content-around align-items-end w-50">
               <Button
                 onClick={() => {
-                  navigate("/user-add-food", { state: { userData } });
+                  navigate("/user-add-food", { state: { userData} });
                 }}
               >
                 Add Food
               </Button>
 
-              <Link to="/user-add-exercise">
-                <Button>Add Exercise</Button>
-              </Link>
+              <Button
+                onClick={() => {
+                  navigate("/user-add-exercise", {
+                    state: { userData, currentCalorie },
+                  });
+                }}
+              >
+                Add Exercise
+              </Button>
+
               <Link to="/user-add-water">
                 <Button>Add Water</Button>
               </Link>
@@ -136,7 +143,11 @@ const UserDashboard = () => {
               <div className="w-100 d-flex justify-content-between">
                 <h4>Calorie Goal</h4>
                 <div>
-                  <p className="text-light">{currentCalorie.food_calories +"/" +Math.floor(userData.calorie_goal)}</p>
+                  <p className="text-light">
+                    {currentCalorie.food_calories +
+                      "/" +
+                      Math.floor(userData.calorie_goal)}
+                  </p>
                 </div>
               </div>
               <Progress
@@ -147,10 +158,14 @@ const UserDashboard = () => {
               />
             </div>
             <div>
-            <div className="w-100 d-flex justify-content-between">
+              <div className="w-100 d-flex justify-content-between">
                 <h4>Carbohydrates</h4>
                 <div>
-                  <p className="text-light">{currentCalorie.food_carbs +"/" +Math.floor(userData.carbs)}</p>
+                  <p className="text-light">
+                    {currentCalorie.food_carbs +
+                      "/" +
+                      Math.floor(userData.carbs)}
+                  </p>
                 </div>
               </div>
               <Progress
@@ -161,10 +176,14 @@ const UserDashboard = () => {
               />
             </div>
             <div>
-            <div className="w-100 d-flex justify-content-between">
+              <div className="w-100 d-flex justify-content-between">
                 <h4>Proteins</h4>
                 <div>
-                  <p className="text-light">{currentCalorie.food_proteins +"/" +Math.floor(userData.protein)}</p>
+                  <p className="text-light">
+                    {currentCalorie.food_proteins +
+                      "/" +
+                      Math.floor(userData.protein)}
+                  </p>
                 </div>
               </div>
               <Progress
@@ -175,10 +194,12 @@ const UserDashboard = () => {
               />
             </div>
             <div>
-            <div className="w-100 d-flex justify-content-between">
+              <div className="w-100 d-flex justify-content-between">
                 <h4>Fats</h4>
                 <div>
-                  <p className="text-light">{currentCalorie.food_fats +"/" +Math.floor(userData.fats)}</p>
+                  <p className="text-light">
+                    {currentCalorie.food_fats + "/" + Math.floor(userData.fats)}
+                  </p>
                 </div>
               </div>
               <Progress
@@ -189,15 +210,16 @@ const UserDashboard = () => {
               />
             </div>
             <div>
-            <div className="w-100 d-flex justify-content-between">
+              <div className="w-100 d-flex justify-content-between">
                 <h4>Water Intake </h4>
                 <div>
-                  <p className="text-light">{waterAmount +"/" + 6 }</p>
+                  <p className="text-light">{waterAmount + "/" + 6}</p>
                 </div>
               </div>
-              <Progress done={Math.floor(
-                  (waterAmount * 100) / 6
-                )} heading="Calorie Goal" />
+              <Progress
+                done={Math.floor((waterAmount * 100) / 6)}
+                heading="Calorie Goal"
+              />
             </div>
           </div>
         </div>

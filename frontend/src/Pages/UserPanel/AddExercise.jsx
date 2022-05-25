@@ -11,15 +11,45 @@ import SideMenu from "../../Components/SideMenu";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import userService from "../../services/UserService";
+import { useLocation } from "react-router-dom";
 import Dropdown from "../../Components/dropdown";
+import { TextField } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const AddExercise = () => {
+  const [foodCheck, setFoodCheck] = useState(true);
   const [value, setValue] = useState(null);
+  const location = useLocation();
   var [excersiseOptions, setExcerciseOptions] = useState([]);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const navigate = useNavigate();
+  const [userDetails, setUserDetails] = useState(location.state?.userData);
+  const [calorieData, setCalorieData] = useState(
+    location.state?.currentCalorie
+  );
+  const schema = yup.object().shape({
+    time_minute: yup.string().required("Time cannot be Empty"),
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  function postExcercise(data) {
+    setModalOpen(false);
+    if (!value) {
+      setFoodCheck(false);
+    } else {
+      setFoodCheck(true);
+    }
+  }
 
   function getExcerciseData(e) {
     console.log(e);
@@ -69,11 +99,11 @@ const AddExercise = () => {
         <div className="d-flex flex-column">
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
-              <h4>Calories Gained:</h4>
-              <h4>Calories Burnt:</h4>
+              <h4>Calories Gained: {calorieData.food_calories}</h4>
+              <h4>Calories Burnt: </h4>
               <h4>Net Calories:</h4>
 
-              <h4>Calorie Goal:</h4>
+              <h4>Calorie Goal: {Math.floor(userDetails.calorie_goal)}</h4>
             </div>
           </div>
           <div className="d-flex flex-column mt-3"></div>
@@ -131,29 +161,42 @@ const AddExercise = () => {
             >
               <i class="bx bx-x"></i>
             </a>
-            {/* <Select
-              className="select-drop"
-              placeholder="Select Exercise"
-              options={workoutOptions}
-            /> */}
+            <form
+              onSubmit={handleSubmit(postExcercise)}
+              className="d-flex flex-column"
+            >
+              <div>
+                <Dropdown
+                  prompt="Select Excercise"
+                  value={value}
+                  onChange={setValue}
+                  options={excersiseOptions}
+                  label="excercise_name"
+                  getData={getExcerciseData}
+                />
+              </div>
 
-            <Dropdown
-              prompt="Select Food"
-              value={value}
-              onChange={setValue}
-              options={excersiseOptions}
-              label="excercise_name"
-              getData={getExcerciseData}
-            />
-
-            <input
-              className="input-modal"
-              type="number"
-              placeholder="Enter Time (in minutes)"
-            />
-          </div>
-          <div>
-            <Button type="submit ">Add Exercise</Button>
+              <div className="mt-2 w-100">
+                <TextField
+                  id="demo-simple-select-2"
+                  className="w-100"
+                  label="Time"
+                  variant="outlined"
+                  name="time_minute"
+                  {...register("time_minute")}
+                  placeholder="Enter time (in minutes)"
+                  InputLabelProps={{
+                    style: { color: "#777" },
+                  }}
+                />
+                <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+                  {errors.time_minute?.message}
+                </p>
+              </div>
+              <div>
+                <Button type="submit" className="mt-4">Add Exercise</Button>
+              </div>
+            </form>
           </div>
         </Modal>
       </div>

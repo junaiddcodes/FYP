@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 
 const excerciseApiSchema = mongoose.Schema({
   excercise_name: String,
+  excercise_type: String,
   met_value: Number
 })
 

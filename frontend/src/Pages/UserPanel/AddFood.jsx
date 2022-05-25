@@ -9,7 +9,6 @@ import Select from "@mui/material/Select";
 import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
 import { useLocation } from "react-router-dom";
-
 import userService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "../../Components/dropdown";
@@ -71,8 +70,8 @@ const AddFood = () => {
       userService
         .editMealData(editMealId, mealPost)
         .then((e) => {
-          getMealData();
           setValue(null);
+          getMealData();
           setEditModalOpen(false);
           console.log("Meal Update Successfully");
         })
@@ -116,9 +115,9 @@ const AddFood = () => {
       userService
         .createMeal(mealPost)
         .then((e) => {
-          setEditModalOpen(false);
-          getMealData();
           setValue(null);
+          setModalOpen(false);
+          getMealData();
           console.log("Meal Posted Successfully");
         })
         .catch((err) => {
@@ -220,6 +219,7 @@ const AddFood = () => {
         <Button
           onClick={() => {
             setModalOpen(true);
+            setValue({"food_name": ""});
           }}
           className="m-3"
         >
@@ -271,7 +271,7 @@ const AddFood = () => {
               onSubmit={handleSubmit(submitForm)}
               className="d-flex flex-column"
             >
-              <FormControl className="w-100 dropdown-trainer">
+              <FormControl className="w-100 dropdown-trainer mb-2">
                 <InputLabel id="demo-simple-select-label-x">
                   Select Meal
                 </InputLabel>
@@ -443,7 +443,7 @@ const AddFood = () => {
                                       onSubmit={handleSubmit(updateForm)}
                                       className="d-flex flex-column"
                                     >
-                                      <FormControl className="w-100 dropdown-trainer">
+                                      <FormControl className="w-100 dropdown-trainer mb-2">
                                         <InputLabel id="demo-simple-select-label-x">
                                           Select Meal
                                         </InputLabel>
