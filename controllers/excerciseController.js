@@ -19,24 +19,24 @@ const createData = async (req, res) => {
   }
 }
 
-// // //use to get only one data from db
-// const getOneData = async (req, res) => {
-//   try {
-//     const { foodId: crudId } = req.params
-//     console.log(req.params)
-//     // console.log(foodId)
-//     // console.log(crudId)
-//     const crud = await foodApiDetails.findOne({ _id: crudId })
+// //use to get only one data from db
+const getOneData = async (req, res) => {
+  try {
+    const { exerciseId: crudId } = req.params
+    console.log(req.params)
+    // console.log(foodId)
+    // console.log(crudId)
+    const crud = await excerciseApiModel.findOne({ _id: crudId })
 
-//     if (!crud) {
-//       return res.status(404).jason({ message: 'item does not exist' })
-//     }
+    if (!crud) {
+      return res.status(404).jason({ message: 'item does not exist' })
+    }
 
-//     res.status(200).json({ crud })
-//   } catch (error) {
-//     res.status(500).json({ message: error })
-//   }
-// }
+    res.status(200).json({ crud })
+  } catch (error) {
+    res.status(500).json({ message: error })
+  }
+}
 
 const getbyName = async (req, res) => {
   try {
@@ -101,7 +101,7 @@ const deleteData = async (req, res) => {
 
 module.exports = {
   //   getAllData,
-  //   getOneData,
+  getOneData,
   updateData,
   deleteData,
   createData,

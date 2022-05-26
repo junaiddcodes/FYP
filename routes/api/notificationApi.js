@@ -5,18 +5,19 @@ var router = express.Router()
 // var { Verify } = require('../../middleware/food')
 
 const {
-  //   getAllData,
+  getAllData,
   getOneData,
-  updateData,
-  deleteData,
 
+  deleteData,
   createData,
   //   getbyName,
-} = require('../../controllers/selectExcersiseController')
+} = require('../../controllers/notificationControl')
 
-router.route('/addSelectexercise').post(createData)
-router.route('/user/:customerId').get(getOneData)
-router.route('/:selectId').patch(updateData).delete(deleteData)
-
+router.route('/createNotification').post(createData)
+router.route('/getNotification').get(getAllData)
+router.route('/:messageId').delete(deleteData).get(getOneData)
+// router.route("/:planId/:trainerId").patch(updateData);
 // router.route('/name/:excercise_name').get(getbyName)
 module.exports = router
+
+//

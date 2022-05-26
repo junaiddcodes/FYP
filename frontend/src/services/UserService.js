@@ -46,13 +46,18 @@ class UserService extends GenericService {
 
   getFood = (foodName) => this.post("food/name", foodName);
   // Excercises
-  getExcercise = (excerciseName) => this.post("excercise/name", excerciseName);
+  getExcercise = (excerciseName) => this.post('excercise/name', excerciseName)
+  postExcercise = (excercise) => this.post('SelectExcercise/addSelectexercise', excercise)
+  getExcerciseData = (customerId) => this.get('SelectExcercise/user/' + customerId)
+  editExcerciseData = (excerciseId,excerciseData) => this.patch('SelectExcercise/' + excerciseId, excerciseData)
+  deleteExcerciseData = (excerciseId) => this.delete('SelectExcercise/' + excerciseId)
+  get_single_excercise =(id)=>this.get("excercise/" + id)
   update_user = (userDetails, id) => this.patch("customer/" + id, userDetails);
-  // Meals
-  getMealData = (customerId) => this.get("meal/mealdata/" + customerId);
-  editMealData = (mealId, mealData) => this.patch("meal/" + mealId, mealData);
-  deleteMealData = (mealId) => this.delete("meal/" + mealId);
-  createMeal = (meal) => this.post("meal/addmeal", meal);
+// Meals
+  getMealData = (customerId) => this.get('meal/mealdata/' + customerId)
+  editMealData = (mealId,mealData) => this.patch('meal/' + mealId, mealData)
+  deleteMealData = (mealId) => this.delete('meal/' + mealId)
+  createMeal = (meal) => this.post('meal/addmeal', meal)
 
   get_single_food = (id) => this.get("food/" + id);
   // Conversation Chat

@@ -1,14 +1,18 @@
 const mongoose = require('mongoose')
 
 const selectedExcerciseSchema = mongoose.Schema({
+  customer_Id: String,
   excercise_name: String,
+  excercise_type: String,
   excercise_id : String,
-  excercise_weight: Number,
+  user_weight: Number,
   excercise_calories: Number,
   excercise_proteins: Number,
   excercise_carbs: Number,
   excercise_fats: Number,
-  met_value: Number
+  excercise_time: Number,
+  met_value: Number,
+  time_date: Date,
 })
 
 const selectedExcerciseModel = mongoose.model(

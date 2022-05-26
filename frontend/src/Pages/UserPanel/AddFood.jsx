@@ -9,7 +9,6 @@ import Select from "@mui/material/Select";
 import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
 import { useLocation } from "react-router-dom";
-
 import userService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
 import Dropdown from "../../Components/dropdown";
@@ -17,18 +16,23 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { TextField } from "@mui/material";
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+
 
 const AddFood = () => {
+
   const [foodCheck, setFoodCheck] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
-  const [editMealId, setEditMealId] = useState("");
+  const [editMealId, setEditMealId] = useState(""); 
   const location = useLocation();
   var [currentCalorie, setCurrentCalorie] = useState({
     food_calories: 0,
     food_proteins: 0,
     food_carbs: 0,
     food_fats: 0,
-  });
+  })
 
   const schema = yup.object().shape({
     meal_name: yup.string().required("Meal cannot be Empty"),
@@ -36,9 +40,22 @@ const AddFood = () => {
   });
   const [value, setValue] = useState(null);
   const navigate = useNavigate();
+  const notify = () => {
+    // Calling toast method by passing string
+    toast.success('Food Edit')
+  }
+  const Add = () => {
+    // Calling toast method by passing string
+    toast.success('Food Added')
+  }
+  const Delete= () => {
+    // Calling toast method by passing string
+    toast.success('Food Deleted')
+  }
   var user_id = userService.getLoggedInUser()._id;
   const [mealData, setMealData] = useState([]);
   const [userDetails, setUserDetails] = useState(location.state?.userData);
+  const [calorieBurn, setCalorieBurn] = useState(location.state?.currentBurn);
   const [editData, setEditData] = useState({});
   const {
     register,
@@ -46,13 +63,13 @@ const AddFood = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-  });
+  })
 
   const updateForm = (data) => {
     if (!value) {
-      setFoodCheck(false);
+      setFoodCheck(false)
     } else {
-      setFoodCheck(true);
+      setFoodCheck(true)
 
       var mealPost = {
         customer_Id: user_id,
@@ -66,38 +83,39 @@ const AddFood = () => {
         food_fats: data.food_quantity * value.food_fats,
         food_quantity: data.food_quantity,
         time_date: new Date().getTime(),
-      };
+      }
+      notify()
 
       userService
         .editMealData(editMealId, mealPost)
         .then((e) => {
-          getMealData();
           setValue(null);
+          getMealData();
           setEditModalOpen(false);
           console.log("Meal Update Successfully");
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     }
-  };
+  }
 
   function getSingleFood(id) {
     userService
       .get_single_food(id)
       .then((res) => {
-        setValue(res.crud);
-        console.log(res);
+        setValue(res.crud)
+        console.log(res)
       })
       .catch((err) => {
-        console.log(err);
-      });
+        console.log(err)
+      })
   }
   const submitForm = (data) => {
     if (!value) {
-      setFoodCheck(false);
+      setFoodCheck(false)
     } else {
-      setFoodCheck(true);
+      setFoodCheck(true)
 
       var mealPost = {
         customer_Id: user_id,
@@ -111,26 +129,26 @@ const AddFood = () => {
         food_fats: data.food_quantity * value.food_fats,
         food_quantity: data.food_quantity,
         time_date: new Date().getTime(),
-      };
-
+      }
+      Add()
       userService
         .createMeal(mealPost)
         .then((e) => {
-          setEditModalOpen(false);
-          getMealData();
           setValue(null);
+          setModalOpen(false);
+          getMealData();
           console.log("Meal Posted Successfully");
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     }
   };
-  function getMealData() {
-    userService.getMealData(user_id).then((data) => {
-      setMealData(data.crud);
-    });
-  }
+  // function getMealData() {
+  //   userService.getMealData(user_id).then((data) => {
+  //     setMealData(data.crud);
+  //   });
+  // }
 
   function getMealData() {
     if (location.state) {
@@ -140,19 +158,20 @@ const AddFood = () => {
           food_proteins: 0,
           food_carbs: 0,
           food_fats: 0,
-        };
-        setMealData(data.crud);
+        }
+        setMealData(data.crud)
         data.crud.map((e) => {
           calorieData.food_calories =
-            calorieData.food_calories + e.food_calories;
-          calorieData.food_fats = calorieData.food_fats + e.food_fats;
+            calorieData.food_calories + e.food_calories
+          calorieData.food_fats = calorieData.food_fats + e.food_fats
           calorieData.food_proteins =
-            calorieData.food_proteins + e.food_proteins;
-          calorieData.food_carbs = calorieData.food_carbs + e.food_carbs;
+            calorieData.food_proteins + e.food_proteins
+          calorieData.food_carbs = calorieData.food_carbs + e.food_carbs
           // x=x+e.food_calories;
-        });
+        })
 
         setCurrentCalorie(calorieData);
+        console.log(calorieBurn)
       });
     }else{
       console.log("Empty State")
@@ -163,34 +182,34 @@ const AddFood = () => {
     if (e) {
       var foodSet = {
         food_name: e,
-      };
+      }
       userService.getFood(foodSet).then((data) => {
-        setFoodOptions(data.crud);
-        setValue(null);
-      });
+        setFoodOptions(data.crud)
+        setValue(null)
+      })
     }
   }
 
   useEffect(() => {
     if (userService.isLoggedIn() == false) {
-      navigate("/login");
+      navigate('/login')
     } else {
       if (
-        userService.getLoggedInUser().user_type == "trainer" ||
-        userService.getLoggedInUser().user_type == "gym" ||
-        userService.getLoggedInUser().user_type == "admin"
+        userService.getLoggedInUser().user_type == 'trainer' ||
+        userService.getLoggedInUser().user_type == 'gym' ||
+        userService.getLoggedInUser().user_type == 'admin'
       ) {
-        navigate("/login");
+        navigate('/login')
       }
     }
-    getMealData();
-  }, []);
+    getMealData()
+  }, [])
 
-  var [foodOptions, setFoodOptions] = useState([]);
+  var [foodOptions, setFoodOptions] = useState([])
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false)
+  const [editModalOpen, setEditModalOpen] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(false)
 
   return (
     <div className="page-container-user">
@@ -203,7 +222,7 @@ const AddFood = () => {
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
               <h4>Calories Gained: {currentCalorie?.food_calories}</h4>
-              <h4>Calories Burnt:</h4>
+              <h4>Calories Burnt:{Math.floor(calorieBurn.excercise_calories)}</h4>
               <h4>Calorie Goal: {Math.floor(userDetails?.calorie_goal)}</h4>
             </div>
             {/* <div className="d-flex justify-content-around align-items-end w-50">
@@ -220,6 +239,7 @@ const AddFood = () => {
         <Button
           onClick={() => {
             setModalOpen(true);
+            setValue(null);
           }}
           className="m-3"
         >
@@ -230,39 +250,39 @@ const AddFood = () => {
         <Modal
           style={{
             overlay: {
-              position: "fixed",
+              position: 'fixed',
               top: 0,
               left: 0,
               right: 0,
               bottom: 0,
 
-              backgroundColor: "rgba(0, 0, 0, 0.75)",
+              backgroundColor: 'rgba(0, 0, 0, 0.75)',
             },
             content: {
-              color: "white",
-              position: "absolute",
-              top: "40px",
-              left: "40px",
-              right: "40px",
-              bottom: "40px",
-              background: "rgba(0,30,60,1)",
-              overflow: "auto",
-              WebkitOverflowScrolling: "touch",
-              borderRadius: "1rem",
-              outline: "none",
-              padding: "20px",
+              color: 'white',
+              position: 'absolute',
+              top: '40px',
+              left: '40px',
+              right: '40px',
+              bottom: '40px',
+              background: 'rgba(0,30,60,1)',
+              overflow: 'auto',
+              WebkitOverflowScrolling: 'touch',
+              borderRadius: '1rem',
+              outline: 'none',
+              padding: '20px',
             },
           }}
           className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
           isOpen={modalOpen}
           onRequestClose={() => {
-            setModalOpen(false);
+            setModalOpen(false)
           }}
         >
           <div className="modal-inner w-75 d-flex flex-column">
             <a
               onClick={() => {
-                setModalOpen(false);
+                setModalOpen(false)
               }}
             >
               <i class="bx bx-x"></i>
@@ -271,7 +291,7 @@ const AddFood = () => {
               onSubmit={handleSubmit(submitForm)}
               className="d-flex flex-column"
             >
-              <FormControl className="w-100 dropdown-trainer">
+              <FormControl className="w-100 dropdown-trainer mb-2">
                 <InputLabel id="demo-simple-select-label-x">
                   Select Meal
                 </InputLabel>
@@ -281,7 +301,7 @@ const AddFood = () => {
                   id="demo-simple-select-2"
                   name="meal_name"
                   label="Select Meal"
-                  {...register("meal_name")}
+                  {...register('meal_name')}
                 >
                   <MenuItem value="breakfast">Breakfast</MenuItem>
                   <MenuItem value="lunch">Lunch</MenuItem>
@@ -289,7 +309,7 @@ const AddFood = () => {
                   <MenuItem value="dinner">Dinner</MenuItem>
                 </Select>
               </FormControl>
-              <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+              <p id="error-text" style={{ color: 'rgb(255, 34, 34)' }}>
                 {errors.meal_name?.message}
               </p>
 
@@ -303,7 +323,7 @@ const AddFood = () => {
                 getData={getFoodData}
               />
               {!foodCheck ? (
-                <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+                <p id="error-text" style={{ color: 'rgb(255, 34, 34)' }}>
                   Food cannot be Empty
                 </p>
               ) : null}
@@ -320,20 +340,20 @@ const AddFood = () => {
                   label="Quantity"
                   variant="outlined"
                   name="food_quantity"
-                  {...register("food_quantity")}
+                  {...register('food_quantity')}
                   placeholder="Select Quantity"
                   InputLabelProps={{
-                    style: { color: "#777" },
+                    style: { color: '#777' },
                   }}
                 />
               </div>
 
-              <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+              <p id="error-text" style={{ color: 'rgb(255, 34, 34)' }}>
                 {errors.food_quantity?.message}
               </p>
               <div className="mb-3">
                 <div>
-                  <label htmlFor="time">Enter time of your meal</label>
+                  <label htmlFor="time">Enter time of your meal {"("+"Optional" +")"}</label>
                 </div>
                 <div>
                   <input
@@ -387,11 +407,11 @@ const AddFood = () => {
                             <Button
                               className="btn btn-warning edit-btn"
                               onClick={() => {
-                                setEditModalOpen(true);
-                                setEditMealId(e._id);
-                                setEditData(e);
-                                getSingleFood(e.food_id);
-                                console.log(e);
+                                setEditModalOpen(true)
+                                setEditMealId(e._id)
+                                setEditData(e)
+                                getSingleFood(e.food_id)
+                                console.log(e)
                               }}
                             >
                               Edit
@@ -400,39 +420,39 @@ const AddFood = () => {
                               <Modal
                                 style={{
                                   overlay: {
-                                    position: "fixed",
+                                    position: 'fixed',
                                     top: 0,
                                     left: 0,
                                     right: 0,
                                     bottom: 0,
 
-                                    backgroundColor: "rgba(0, 0, 0, 0.75)",
+                                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
                                   },
                                   content: {
-                                    color: "white",
-                                    position: "absolute",
-                                    top: "40px",
-                                    left: "40px",
-                                    right: "40px",
-                                    bottom: "40px",
-                                    background: "rgba(0,30,60,1)",
-                                    overflow: "auto",
-                                    WebkitOverflowScrolling: "touch",
-                                    borderRadius: "1rem",
-                                    outline: "none",
-                                    padding: "20px",
+                                    color: 'white',
+                                    position: 'absolute',
+                                    top: '40px',
+                                    left: '40px',
+                                    right: '40px',
+                                    bottom: '40px',
+                                    background: 'rgba(0,30,60,1)',
+                                    overflow: 'auto',
+                                    WebkitOverflowScrolling: 'touch',
+                                    borderRadius: '1rem',
+                                    outline: 'none',
+                                    padding: '20px',
                                   },
                                 }}
                                 className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
                                 isOpen={editModalOpen}
                                 onRequestClose={() => {
-                                  setEditModalOpen(false);
+                                  setEditModalOpen(false)
                                 }}
                               >
                                 <div className="modal-inner w-75 py-3">
                                   <a
                                     onClick={() => {
-                                      setEditModalOpen(false);
+                                      setEditModalOpen(false)
                                     }}
                                   >
                                     <i class="bx bx-x"></i>
@@ -443,7 +463,7 @@ const AddFood = () => {
                                       onSubmit={handleSubmit(updateForm)}
                                       className="d-flex flex-column"
                                     >
-                                      <FormControl className="w-100 dropdown-trainer">
+                                      <FormControl className="w-100 dropdown-trainer mb-2">
                                         <InputLabel id="demo-simple-select-label-x">
                                           Select Meal
                                         </InputLabel>
@@ -454,7 +474,7 @@ const AddFood = () => {
                                           id="demo-simple-select-2"
                                           name="meal_name"
                                           label="Select Meal"
-                                          {...register("meal_name")}
+                                          {...register('meal_name')}
                                         >
                                           <MenuItem value="breakfast">
                                             Breakfast
@@ -472,7 +492,7 @@ const AddFood = () => {
                                       </FormControl>
                                       <p
                                         id="error-text"
-                                        style={{ color: "rgb(255, 34, 34)" }}
+                                        style={{ color: 'rgb(255, 34, 34)' }}
                                       >
                                         {errors.meal_name?.message}
                                       </p>
@@ -490,7 +510,7 @@ const AddFood = () => {
                                         <p
                                           id="error-text"
                                           style={{
-                                            color: "rgb(255, 34, 34)",
+                                            color: 'rgb(255, 34, 34)',
                                           }}
                                         >
                                           Food cannot be Empty
@@ -500,7 +520,7 @@ const AddFood = () => {
                                       <div className="mt-3 w-100">
                                         {value ? (
                                           <p>
-                                            Enter the Quantity of meal per{" "}
+                                            Enter the Quantity of meal per{' '}
                                             {value?.food_weight} grams
                                           </p>
                                         ) : null}
@@ -511,24 +531,24 @@ const AddFood = () => {
                                           variant="outlined"
                                           name="food_quantity"
                                           defaultValue={editData.food_quantity}
-                                          {...register("food_quantity")}
+                                          {...register('food_quantity')}
                                           placeholder="Select Quantity"
                                           InputLabelProps={{
-                                            style: { color: "#777" },
+                                            style: { color: '#777' },
                                           }}
                                         />
                                       </div>
 
                                       <p
                                         id="error-text"
-                                        style={{ color: "rgb(255, 34, 34)" }}
+                                        style={{ color: 'rgb(255, 34, 34)' }}
                                       >
                                         {errors.food_quantity?.message}
                                       </p>
                                       <div className="mb-3">
                                         <div>
                                           <label htmlFor="time">
-                                            Enter time of your meal
+                                            Enter time of your meal {"("+"Optional" +")"}
                                           </label>
                                         </div>
                                         <div>
@@ -551,7 +571,7 @@ const AddFood = () => {
                             <a
                               className="delete-icon"
                               onClick={() => {
-                                setConfirmDelete(true);
+                                setConfirmDelete(true)
                               }}
                             >
                               <ImCross />
@@ -560,39 +580,39 @@ const AddFood = () => {
                               <Modal
                                 style={{
                                   overlay: {
-                                    position: "fixed",
+                                    position: 'fixed',
                                     top: 0,
                                     left: 0,
                                     right: 0,
                                     bottom: 0,
 
-                                    backgroundColor: "rgba(0, 0, 0, 0.75)",
+                                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
                                   },
                                   content: {
-                                    color: "white",
-                                    position: "absolute",
-                                    top: "40px",
-                                    left: "40px",
-                                    right: "40px",
-                                    bottom: "40px",
-                                    background: "rgba(0,30,60,1)",
-                                    overflow: "auto",
-                                    WebkitOverflowScrolling: "touch",
-                                    borderRadius: "1rem",
-                                    outline: "none",
-                                    padding: "20px",
+                                    color: 'white',
+                                    position: 'absolute',
+                                    top: '40px',
+                                    left: '40px',
+                                    right: '40px',
+                                    bottom: '40px',
+                                    background: 'rgba(0,30,60,1)',
+                                    overflow: 'auto',
+                                    WebkitOverflowScrolling: 'touch',
+                                    borderRadius: '1rem',
+                                    outline: 'none',
+                                    padding: '20px',
                                   },
                                 }}
                                 className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
                                 isOpen={confirmDelete}
                                 onRequestClose={() => {
-                                  setConfirmDelete(false);
+                                  setConfirmDelete(false)
                                 }}
                               >
                                 <div className="modal-inner w-75 d-flex flex-column">
                                   <a
                                     onClick={() => {
-                                      setConfirmDelete(false);
+                                      setConfirmDelete(false)
                                     }}
                                   >
                                     <i class="bx bx-x"></i>
@@ -607,14 +627,15 @@ const AddFood = () => {
                                     className="btn-dark m-3"
                                     type="submit "
                                     onClick={() => {
+                                      Delete()
                                       userService
                                         .deleteMealData(e._id)
                                         .then(() => {
-                                          console.log("Meal is Deleted");
-                                          getMealData();
-                                        });
+                                          console.log('Meal is Deleted')
+                                          getMealData()
+                                        })
 
-                                      setConfirmDelete(false);
+                                      setConfirmDelete(false)
                                     }}
                                   >
                                     Yes
@@ -623,7 +644,7 @@ const AddFood = () => {
                                     className="m-3"
                                     type="submit"
                                     onClick={() => {
-                                      setConfirmDelete(false);
+                                      setConfirmDelete(false)
                                     }}
                                   >
                                     No
@@ -634,7 +655,7 @@ const AddFood = () => {
                           </div>
                         </td>
                       </tr>
-                    );
+                    )
                   })
                 )}
               </tbody>
@@ -642,8 +663,9 @@ const AddFood = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
-  );
-};
+  )
+}
 
-export default AddFood;
+export default AddFood
