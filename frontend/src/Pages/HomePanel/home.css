@@ -1299,14 +1299,14 @@ preloader
   z-index: -1;
 }
 .serviceBox .title {
-  color: #ff5f55;
-  font-size: 20px;
+  color: #007fff;
+  font-size: 30px;
   font-weight: 600;
   text-transform: uppercase;
   margin: 0 0 7px;
 }
 .serviceBox .description {
-  color: #555;
+  color: red;
   font-size: 14px;
   line-height: 25px;
   margin: 0;
@@ -1329,6 +1329,14 @@ preloader
 .serviceBox.blue .title {
   color: #69a5f2;
 }
+.card {
+  width: 100%;
+  background-color: white;
+}
+.message {
+  padding: 1em;
+}
+
 @media only screen and (max-width: 990px) {
   .serviceBox {
     margin: 0 0 30px;
