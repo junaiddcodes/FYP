@@ -45,7 +45,7 @@ const MyPlans = () => {
         .get_bought_plans(userId)
         .then((data) => {
           console.log("plan data = ", data);
-          setAllPlans(data.crud);
+          setAllPlans(data.plans);
         })
         .catch((err) => {
           console.log(err);
