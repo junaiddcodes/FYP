@@ -1419,6 +1419,21 @@
   -webkit-transition: 1s ease 0.3s;
   transition: 1s ease 0.3s;
 }
+.red-bar {
+  background: #e32636;
+}
+.yellow-bar {
+  background: #f7de3a;
+  color: rgb(15, 1, 1);
+}
+.green-bar {
+  background: #a4de02;
+  color: rgb(15, 1, 1);
+}
+.dark-green-bar {
+  background: #4c9a2a;
+  color: rgb(15, 1, 1);
+}
 
 ::-webkit-scrollbar {
   width: 12px;
@@ -1462,4 +1477,6 @@ body {
   padding-left: 40px;
   padding-right: 40px;
 }
+
+
 /*# sourceMappingURL=pages.css.map */
