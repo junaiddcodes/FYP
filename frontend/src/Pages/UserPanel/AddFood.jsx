@@ -20,7 +20,7 @@ import { TextField } from "@mui/material";
 const AddFood = () => {
   const [foodCheck, setFoodCheck] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
-  const [editMealId, setEditMealId] = useState("");
+  const [editMealId, setEditMealId] = useState(""); 
   const location = useLocation();
   var [currentCalorie, setCurrentCalorie] = useState({
     food_calories: 0,
@@ -38,6 +38,7 @@ const AddFood = () => {
   var user_id = userService.getLoggedInUser()._id;
   const [mealData, setMealData] = useState([]);
   const [userDetails, setUserDetails] = useState(location.state?.userData);
+  const [calorieBurn, setCalorieBurn] = useState(location.state?.currentBurn);
   const [editData, setEditData] = useState({});
   const {
     register,
@@ -152,6 +153,7 @@ const AddFood = () => {
         });
 
         setCurrentCalorie(calorieData);
+        console.log(calorieBurn)
       });
     }else{
       console.log("Empty State")
@@ -202,7 +204,7 @@ const AddFood = () => {
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
               <h4>Calories Gained: {currentCalorie?.food_calories}</h4>
-              <h4>Calories Burnt:</h4>
+              <h4>Calories Burnt:{Math.floor(calorieBurn.excercise_calories)}</h4>
               <h4>Calorie Goal: {Math.floor(userDetails?.calorie_goal)}</h4>
             </div>
             {/* <div className="d-flex justify-content-around align-items-end w-50">
@@ -219,7 +221,7 @@ const AddFood = () => {
         <Button
           onClick={() => {
             setModalOpen(true);
-            setValue({"food_name": ""});
+            setValue(null);
           }}
           className="m-3"
         >

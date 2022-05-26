@@ -18,6 +18,12 @@ const UserDashboard = () => {
     food_carbs: 0,
     food_fats: 0,
   });
+  const [currentBurn, setCurrentBurn] = useState({
+    excercise_calories: 0,
+    excercise_proteins: 0,
+    excercise_carbs: 0,
+    excercise_fats: 0,
+  });
 
   var waterIntake = {
     userId: "",
@@ -28,6 +34,7 @@ const UserDashboard = () => {
   var userId = userService.getLoggedInUser()._id;
   var [mealData, setMealData] = useState([]);
   var errorUser = "Login as a customer first!";
+  const [excersiseData, setExcerciseData] = useState([]);
 
   function getWaterData() {
     userService
@@ -80,6 +87,34 @@ const UserDashboard = () => {
       setCurrentCalorie(calorieData);
     });
   }
+  function getExcerciseData() {
+    var burnCalorie = {
+      excercise_calories: 0,
+      excercise_proteins: 0,
+      excercise_carbs: 0,
+      excercise_fats: 0,
+    };
+    userService
+      .getExcerciseData(userId)
+      .then((res) => {
+        setExcerciseData(res.crud);
+        res.crud.map((e) => {
+          burnCalorie.excercise_calories =
+            burnCalorie.excercise_calories + e.excercise_calories;
+          burnCalorie.excercise_proteins =
+            burnCalorie.excercise_proteins + e.excercise_proteins;
+          burnCalorie.excercise_carbs =
+            burnCalorie.excercise_carbs + e.excercise_carbs;
+          burnCalorie.excercise_fats =
+            burnCalorie.excercise_fats + e.excercise_fats;
+        });
+        setCurrentBurn(burnCalorie);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   useEffect(() => {
     if (userService.isLoggedIn() == false) {
       navigate("/login");
@@ -97,6 +132,7 @@ const UserDashboard = () => {
     getUserCalorie();
     getMealData();
     getWaterData();
+    getExcerciseData();
   }, []);
 
   return (
@@ -110,14 +146,17 @@ const UserDashboard = () => {
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
               <h4>Calories Gained:{currentCalorie.food_calories}</h4>
-              <h4>Calories Burnt:</h4>
+              <h4>Calories Burnt:{Math.floor(currentBurn.excercise_calories)}</h4>
+              <h4>Net Calories:{currentCalorie.food_calories - Math.floor(currentBurn.excercise_calories)}</h4>
               <h4>Calorie Goal: {parseInt(userData.calorie_goal)}</h4>
               <h4>Water Taken: {parseInt(waterAmount)}</h4>
             </div>
             <div className="d-flex justify-content-around align-items-end w-50">
               <Button
                 onClick={() => {
-                  navigate("/user-add-food", { state: { userData} });
+                  navigate("/user-add-food", {
+                    state: { userData, currentBurn },
+                  });
                 }}
               >
                 Add Food
@@ -144,7 +183,7 @@ const UserDashboard = () => {
                 <h4>Calorie Goal</h4>
                 <div>
                   <p className="text-light">
-                    {currentCalorie.food_calories +
+                    {(currentCalorie.food_calories - Math.floor(currentBurn.excercise_calories)) +
                       "/" +
                       Math.floor(userData.calorie_goal)}
                   </p>

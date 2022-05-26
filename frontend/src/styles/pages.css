@@ -54,7 +54,7 @@
 .inner-box-step1 p {
   margin: 5px;
   margin-left: 10px;
-  color: rgb(184, 17, 17);
+  color: yellow;
 }
 
 .inner-box-step1 .radio p {
@@ -131,7 +131,7 @@
 .inner-box-step2 p {
   margin: 5px;
   margin-left: 10px;
-  color: rgb(184, 17, 17);
+  color: yellow;
 }
 
 .inner-box-step2 .radio input {
@@ -238,7 +238,7 @@
 .btn-group2 p {
   margin: 5px;
   margin-left: 10px;
-  color: rgb(184, 17, 17);
+  color: yellow;
 }
 
 .btn-group2 input {
@@ -314,7 +314,7 @@
 .inner-box-step4 p {
   margin: 5px;
   margin-left: 10px;
-  color: rgb(184, 17, 17);
+  color: yellow;
 }
 
 .buttons-trainer {
@@ -359,7 +359,7 @@
 .inner-box-gym p {
   margin: 5px;
   margin-left: 10px;
-  color: rgb(184, 17, 17);
+  color: yellow;
 }
 
 .inner-box-gym input {
@@ -456,7 +456,7 @@
 
 .inner-box-login p {
   margin: 5px;
-  color: rgb(184, 17, 17);
+  color: yellow;
 }
 
 .inner-box-login .input-text input {
@@ -485,7 +485,7 @@
 
 .sidebar {
   -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+          box-sizing: border-box;
   position: relative;
   min-height: 100vh;
   overflow: hidden;
@@ -510,8 +510,8 @@
   height: 50px;
   width: 100%;
   -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .sidebar .logo-content .logo i {
@@ -536,7 +536,7 @@
   text-align: center;
   line-height: 50px;
   -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
+          transform: translateX(-50%);
 }
 
 .sidebar ul {
@@ -558,8 +558,8 @@
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   text-decoration: none;
   -webkit-transition: all 0.4s ease;
   transition: all 0.4s ease;
@@ -589,7 +589,7 @@
   left: 88%;
   bottom: 5px;
   -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
+          transform: translateX(-50%);
   min-width: 50px;
   color: white;
 }
@@ -672,7 +672,7 @@
 .modal-inner i:hover {
   color: #007fff;
   -webkit-transform: scale(1.3);
-  transform: scale(1.3);
+          transform: scale(1.3);
 }
 
 .modal-inner .select-drop {
@@ -698,8 +698,8 @@
   display: flex;
   color: white;
   -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   overflow: hidden;
 }
 
@@ -712,8 +712,8 @@
   background: transparent;
   color: white;
   -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
+      -ms-flex: 1;
+          flex: 1;
   height: 30px;
   border: none;
   outline: none;
@@ -793,7 +793,7 @@
 .gym-card:hover,
 .activity-card:hover {
   -webkit-transform: scale(1.05);
-  transform: scale(1.05);
+          transform: scale(1.05);
   -webkit-transition: 0.3s;
   transition: 0.3s;
 }
@@ -808,8 +808,8 @@
   display: -ms-grid;
   display: grid;
   row-gap: 2rem;
-  -ms-grid-columns: (33%) [3];
-  grid-template-columns: repeat(3, 33%);
+  -ms-grid-columns: (33%)[3];
+      grid-template-columns: repeat(3, 33%);
 }
 
 .gym-desc {
@@ -896,20 +896,20 @@
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
   -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   color: white;
 }
 
 .date-input::-webkit-calendar-picker-indicator {
   -webkit-filter: invert(1);
-  filter: invert(1);
+          filter: invert(1);
 }
 
-.signup-option {
+.signup-option p {
   color: white;
 }
 
@@ -924,11 +924,11 @@
   height: 95vh;
   background: #9ba78c;
   -webkit-box-pack: space-evenly;
-  -ms-flex-pack: space-evenly;
-  justify-content: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
   -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .preview {
@@ -951,6 +951,30 @@
 
 #demo-simple-select-label-x {
   color: #777;
+}
+
+#demo-simple-select-label-x.MuiInputLabel-shrink {
+  color: #007fff !important;
+}
+
+#demo-simple-select-2-label.MuiInputLabel-shrink {
+  color: #007fff !important;
+  background-color: #fff;
+}
+
+#error-text {
+  color: #ff2222;
+}
+
+.text-link {
+  color: #0a1929;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+.text-link:hover {
+  color: #0a1929;
+  cursor: pointer !important;
 }
 
 .page-container-admin {
@@ -1070,7 +1094,7 @@
 .query-box p {
   margin: 5px;
   margin-left: 10px;
-  color: rgb(184, 17, 17);
+  color: yellow;
 }
 
 .query-box .general-p {
@@ -1130,7 +1154,7 @@
 .gym-box p {
   margin: 5px;
   margin-left: 10px;
-  color: rgb(184, 17, 17);
+  color: yellow;
 }
 
 .gym-box .general-p {
@@ -1287,12 +1311,12 @@
 .top-header a {
   text-decoration: none;
   -webkit-filter: brightness(0.9);
-  filter: brightness(0.9);
+          filter: brightness(0.9);
 }
 
 .top-header a:hover {
   -webkit-filter: brightness(1);
-  filter: brightness(1);
+          filter: brightness(1);
 }
 
 .top-header li {
@@ -1310,7 +1334,7 @@
   width: 200px;
   z-index: 10;
   -webkit-transform: translateX(-80%);
-  transform: translateX(-80%);
+          transform: translateX(-80%);
   background: white;
   border-radius: 10px;
   padding: 1rem;
@@ -1323,8 +1347,8 @@
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   border-radius: 5px;
   -webkit-transition: background(500);
   transition: background(500);
@@ -1358,11 +1382,11 @@
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
   -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   height: 100%;
   width: 0;
   opacity: 0;

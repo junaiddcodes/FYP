@@ -21,11 +21,17 @@ import * as yup from "yup";
 const AddExercise = () => {
   const [excerciseCheck, setExcerciseCheck] = useState(true);
   const [editData, setEditData] = useState({});
+  const [currentBurn, setCurrentBurn] = useState({
+    excercise_calories: 0,
+    excercise_proteins: 0,
+    excercise_carbs: 0,
+    excercise_fats: 0,
+  });
   const [editExcerciselId, setEditExcerciseId] = useState("");
   const [value, setValue] = useState(null);
   const location = useLocation();
-  var [excersiseOptions, setExcerciseOptions] = useState([]);
-  var [excersiseData, setExcerciseData] = useState([]);
+  const [excersiseOptions, setExcerciseOptions] = useState([]);
+  const [excersiseData, setExcerciseData] = useState([]);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -52,14 +58,14 @@ const AddExercise = () => {
       setExcerciseCheck(false);
     } else {
       setExcerciseCheck(true);
-
+      var burnedCalories = calorieBurnCalculation(data.time_minute);
       var excercisePost = {
         customer_Id: user_id,
         excercise_name: value.excercise_name,
         excercise_id: value._id,
         excercise_type: value.excercise_type,
         user_weight: userDetails.weight,
-        excercise_calories: 10,
+        excercise_calories: burnedCalories * data.time_minute,
         excercise_proteins: 10,
         excercise_carbs: 10,
         excercise_fats: 10,
@@ -95,6 +101,11 @@ const AddExercise = () => {
         console.log(err);
       });
   }
+  //Function to caluclate calorie Burn per minute
+  function calorieBurnCalculation(time) {
+    var calorieBurn = value.met_value * 3.5 * (userDetails.weight / 200);
+    return calorieBurn;
+  }
 
   function postExcercise(data) {
     setModalOpen(false);
@@ -103,13 +114,15 @@ const AddExercise = () => {
     } else {
       setExcerciseCheck(true);
 
+      var burnedCalories = calorieBurnCalculation(data.time_minute);
+
       var excercisePost = {
         customer_Id: user_id,
         excercise_name: value.excercise_name,
         excercise_id: value._id,
         excercise_type: value.excercise_type,
         user_weight: userDetails.weight,
-        excercise_calories: 10,
+        excercise_calories: burnedCalories * data.time_minute,
         excercise_proteins: 10,
         excercise_carbs: 10,
         excercise_fats: 10,
@@ -149,11 +162,23 @@ const AddExercise = () => {
 
   function getExcerciseData() {
     if (location.state) {
+      var burnCalorie ={
+        excercise_calories: 0,
+        excercise_proteins: 0,
+        excercise_carbs: 0,
+        excercise_fats: 0,
+      }
       userService
         .getExcerciseData(user_id)
         .then((res) => {
           setExcerciseData(res.crud);
-          console.log(res.crud);
+          res.crud.map((e)=>{
+            burnCalorie.excercise_calories = burnCalorie.excercise_calories + e.excercise_calories
+            burnCalorie.excercise_proteins = burnCalorie.excercise_proteins + e.excercise_proteins
+            burnCalorie.excercise_carbs = burnCalorie.excercise_carbs + e.excercise_carbs
+            burnCalorie.excercise_fats = burnCalorie.excercise_fats + e.excercise_fats
+          })
+          setCurrentBurn(burnCalorie)
         })
         .catch((err) => {
           console.log(err);
@@ -197,8 +222,8 @@ const AddExercise = () => {
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
               <h4>Calories Gained: {calorieData.food_calories}</h4>
-              <h4>Calories Burnt: </h4>
-              <h4>Net Calories:</h4>
+              <h4>Calories Burnt: {Math.floor(currentBurn.excercise_calories)} </h4>
+              <h4>Net Calories:{calorieData.food_calories - Math.floor(currentBurn.excercise_calories)}</h4>
 
               <h4>Calorie Goal: {Math.floor(userDetails.calorie_goal)}</h4>
             </div>
@@ -329,7 +354,7 @@ const AddExercise = () => {
                         <td>{e.excercise_type}</td>
                         <td>{e.excercise_name}</td>
                         <td>{e.excercise_time}</td>
-                        <td>{e.excercise_calories}</td>
+                        <td>{Math.floor(e.excercise_calories)}</td>
                         <td>
                           <div className="d-flex align-items-center">
                             <Button
