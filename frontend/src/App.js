@@ -17,6 +17,7 @@ import GymDescription from "./Pages/UserPanel/GymDescription";
 import SearchTrainer from "./Pages/UserPanel/SearchTrainer";
 import TrainerDescription from "./Pages/UserPanel/TrainerDescription";
 import ActivityPlans from "./Pages/UserPanel/ActivityPlans";
+import MyPlans from "./Pages/UserPanel/MyPlans";
 import GymProfile from "./Pages/GymPanel/GymProfile";
 import AdminDashboard from "./Pages/AdminPanel/AdminDashboard";
 import GymRequest from "./Pages/AdminPanel/GymRequest";
@@ -34,6 +35,7 @@ import CreateQuery from "./Pages/CreateQuery";
 import Messenger from "./Messenger/Messenger";
 import Home from "./Pages/HomePanel/home";
 import ActivityPlanDetails from "./Pages/UserPanel/ActivityPlanDetails";
+import UserProfile from "./Pages/UserPanel/UserProfile";
 function App() {
   return (
     <BrowserRouter>
@@ -50,16 +52,11 @@ function App() {
           <Route path="/gym-description/:id" element={<GymDescription />} />
           <Route path="/gym-dashboard" element={<GymProfile />} />
           <Route path="/trainer-profile" element={<TrainerProfile />} />
-          <Route
-            path="/trainer-description/:id"
-            element={<TrainerDescription />}
-          />
+          <Route path="/trainer-description/:id" element={<TrainerDescription />} />
           <Route path="/activity-plans" element={<ActivityPlans />} />
-          <Route
-            path="/trainer-activity-plans"
-            element={<TrainerActivityPlans />}
-          />
+          <Route path="/trainer-activity-plans" element={<TrainerActivityPlans />} />
           <Route path="/trainer-create-plan" element={<CreatePlan />} />
+          <Route path="/my-plans" element={<MyPlans />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/trainer-dashboard" element={<TrainerDashboard />} />
           <Route path="/admin-gym-request" element={<GymRequest />} />
@@ -70,6 +67,7 @@ function App() {
           <Route path="/Messenger" element={<Messenger />} />
           <Route path="/query" element={<CreateQuery />} />
           <Route path="/activity-plan-details" element={<ActivityPlanDetails />} />
+          <Route path="/user-profile" element={<UserProfile />} />
 
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />

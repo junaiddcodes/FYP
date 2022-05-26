@@ -22,7 +22,12 @@ const ActivityPlanDetails = () => {
   const [allPlans, setAllPlans] = useState([]);
   // const data = location.state.e;
   var data = location.state.e;
+  const [order, setOrder] = useState({
+    user_id: "",
+    plan_id: "",
+  });
   var userId = "";
+
   useEffect(() => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
@@ -43,12 +48,24 @@ const ActivityPlanDetails = () => {
     if (location.state) {
       // data = location.state.trainerDetails;
       console.log("state data = ", location.state.e);
+      setOrder({ plan_id: location.state.e._id, user_id: userId });
       data = location.state.e;
     } else {
       console.log("state empty");
     }
     // console.log(location.state.e);
   }, []);
+  const handleBuyPlan = () => {
+    userService
+      .buy_plan(order)
+      .then((data) => {
+        console.log(data);
+        console.log("plan bought");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <div className="page-container-user">
       <TopBar />
@@ -63,7 +80,9 @@ const ActivityPlanDetails = () => {
                 <h4>Price: {data.plan_price} PKR</h4>
                 <h4>Description: </h4>
                 <p> {data.plan_desc}</p>
-                <Button className="w-25 m-3">Buy plan</Button>
+                <Button className="w-25 m-3" onClick={handleBuyPlan}>
+                  Buy plan
+                </Button>
               </div>
             </div>
           </div>

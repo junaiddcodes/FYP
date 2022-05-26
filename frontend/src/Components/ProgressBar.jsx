@@ -15,7 +15,20 @@ const Progress = ({ done }) => {
   return (
     <div className="progress-container">
       <div className="progress">
-        <div className="progress-done" style={style}>
+        <div
+          className={`progress-done ${
+            done <= 20
+              ? "red-bar"
+              : done >= 20 && done <= 60
+              ? "yellow-bar"
+              : done > 60 && done < 95
+              ? "green-bar"
+              : done > 95
+              ? "dark-green-bar"
+              : ""
+          } `}
+          style={style}
+        >
           {done}%
         </div>
       </div>

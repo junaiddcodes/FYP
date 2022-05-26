@@ -7,10 +7,12 @@ import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
 import userService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
-  var [waterAmount, setWaterAmount] = useState()
+  var [waterAmount, setWaterAmount] = useState(0);
 
   var [currentCalorie, setCurrentCalorie] = useState({
     food_calories: 0,
@@ -19,14 +21,21 @@ const UserDashboard = () => {
     food_fats: 0,
   });
 
+  const notify = () => {
+    // Calling toast method by passing string
+    toast.info("Water is less");
+  };
+
   var waterIntake = {
-    userId: '',
+    userId: "",
     amount_litres: 0,
-    time_date: '',
-  }
+    time_date: "",
+  };
   var [userData, setUserData] = useState({});
   var userId = userService.getLoggedInUser()._id;
   var [mealData, setMealData] = useState([]);
+  const [bmi, setBmi] = useState(0);
+  const [height, setHeight] = useState(0);
   var errorUser = "Login as a customer first!";
 
   function getWaterData() {
@@ -34,21 +43,21 @@ const UserDashboard = () => {
       .waterPage(userId)
       .then((data) => {
         var waterIntake = data.crud.map((e) => {
-          var data = 0
-          data = data + e.amount_litres
-          return data
-        })
+          var data = 0;
+          data = data + e.amount_litres;
+          return data;
+        });
 
         // Getting sum of numbers
         var sumWater = waterIntake.reduce(function (a, b) {
-          return a + b
-        }, 0)
+          return a + b;
+        }, 0);
 
-        setWaterAmount(sumWater)
+        setWaterAmount(sumWater);
       })
       .catch((err) => {
-        console.log(err)
-      })
+        console.log(err);
+      });
   }
 
   function getUserCalorie() {
@@ -57,7 +66,7 @@ const UserDashboard = () => {
 
       .then((data) => {
         setUserData(data.crud);
-        console.log(data.crud);
+        console.log("user data = ", data.crud);
       });
   }
   function getMealData() {
@@ -94,9 +103,23 @@ const UserDashboard = () => {
       }
     }
 
+    // if (Math.floor((waterAmount * 100) / 6) <= 20) {
+    //   notify();
+    // }
+
     getUserCalorie();
     getMealData();
-    getWaterData()
+    getWaterData();
+    const calculate_bmi = () => {
+      setHeight(userData.height / 0.3048);
+      setHeight(height * height);
+
+      console.log(userData.weight);
+      setBmi(height / userData.weight);
+
+      console.log(bmi);
+    };
+    calculate_bmi();
   }, []);
 
   return (
@@ -104,15 +127,16 @@ const UserDashboard = () => {
       <TopBar />
       <SideMenu />
 
-      <h2>Today's Progress</h2>
+      <h2 className="m-2">Today's Progress</h2>
       <div className="user-box d-flex flex-column p-3">
         <div className="d-flex flex-column">
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
-              <h4>Calories Gained:{currentCalorie.food_calories}</h4>
+              <h4> Calories Gained:{currentCalorie.food_calories}</h4>
               <h4>Calories Burnt:</h4>
               <h4>Calorie Goal: {parseInt(userData.calorie_goal)}</h4>
               <h4>Water Taken: {parseInt(waterAmount)}</h4>
+              <h4>Your BMI: {bmi}</h4>
             </div>
             <div className="d-flex justify-content-around align-items-end w-50">
               <Button
@@ -137,7 +161,7 @@ const UserDashboard = () => {
                 <h4>Calorie Goal</h4>
                 <div>
                   <p className="text-light">
-                    {currentCalorie.food_calories + "/" + Math.floor(userData.calorie_goal)}
+                    {currentCalorie.food_calories + "/" + Math.floor(userData.calorie_goal)}{" "}
                   </p>
                 </div>
               </div>
@@ -189,19 +213,18 @@ const UserDashboard = () => {
               />
             </div>
             <div>
-            <div className="w-100 d-flex justify-content-between">
+              <div className="w-100 d-flex justify-content-between">
                 <h4>Water Intake </h4>
                 <div>
-                  <p className="text-light">{waterAmount +"/" + 6 }</p>
+                  <p className="text-light">{waterAmount + "/" + 6}</p>
                 </div>
               </div>
-              <Progress done={Math.floor(
-                  (waterAmount * 100) / 6
-                )} heading="Calorie Goal" />
+              <Progress done={Math.floor((waterAmount * 100) / 6)} heading="Calorie Goal" />
             </div>
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

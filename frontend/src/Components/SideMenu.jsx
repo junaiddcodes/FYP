@@ -19,6 +19,13 @@ const SideMenu = () => {
           </Link>
         </li>
         <li>
+          <Link to="/user-profile">
+            <i class="bx bxs-user">
+              <span className="links_name">Profile</span>
+            </i>
+          </Link>
+        </li>
+        <li>
           <Link to="/search-gym">
             <i class="bx bx-search">
               <span className="links_name">Gym</span>
@@ -29,6 +36,13 @@ const SideMenu = () => {
           <Link to="/search-trainer">
             <i class="bx bx-search-alt">
               <span className="links_name">Trainer</span>
+            </i>
+          </Link>
+        </li>
+        <li>
+          <Link to="/my-plans">
+            <i class="bx bx-calendar-check">
+              <span className="links_name">My plans</span>
             </i>
           </Link>
         </li>

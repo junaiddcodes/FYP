@@ -16,6 +16,11 @@
   .user-box {
     background-color: $color2;
     border-radius: 1rem;
+    h4 {
+      font-size: 2rem;
+      color: $color4;
+      font-weight: 600;
+    }
   }
 }
 .dropdown-modal {
@@ -291,8 +296,6 @@
   border-radius: 1rem;
 }
 
-
-
 #demo-simple-select-2 {
   color: $color1;
   background-color: #fff;
@@ -305,17 +308,17 @@
   color: $color3s;
 }
 
-#error-text{
-  color: rgb(255, 34, 34)
+#error-text {
+  color: rgb(255, 34, 34);
 }
 
-.text-link{
+.text-link {
   color: $color1;
   font-size: 14px;
   text-decoration: underline;
 }
 
-.text-link:hover{
+.text-link:hover {
   color: $color1;
   cursor: pointer !important;
 }

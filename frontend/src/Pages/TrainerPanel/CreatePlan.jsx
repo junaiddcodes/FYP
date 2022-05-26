@@ -87,6 +87,8 @@ const CreatePlan = () => {
   const [saturday, setSaturday] = useState("");
   const [sunday, setSunday] = useState("");
   var userId = "";
+  const user_type = userService.getLoggedInUser().user_type;
+
   const [activityDetails, setActivityDetails] = useState({
     trainer_id: "",
     plan_title: "",
