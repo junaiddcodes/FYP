@@ -11,7 +11,6 @@ import SideMenu from "../../Components/SideMenu";
 import { func } from "joi";
 import userService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { getAccordionDetailsUtilityClass } from "@mui/material";
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -22,6 +21,10 @@ const AddWater = () => {
   var [errorMessage, setErrorMessage] = useState("");
   var [waterAmount, setWaterAmount] = useState();
   const navigate = useNavigate();
+  const notify = () => {
+    // Calling toast method by passing string
+    toast.success('Water Added')
+  }
 
   var user_id = userService.getLoggedInUser()._id;
 

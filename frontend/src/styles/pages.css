@@ -613,9 +613,11 @@
   background-color: #001e3c;
   border-radius: 1rem;
 }
-.user-box h4 {
+
+.page-container-user .user-box h4 {
+  font-size: 1rem;
+  color: white;
   font-weight: 600;
-  margin-top: 5px;
 }
 
 .dropdown-modal {
@@ -774,9 +776,6 @@
   height: 100%;
   border-radius: 5px;
   overflow: hidden;
-  color: white;
-}
-.activity-card p {
   color: white;
 }
 
@@ -966,7 +965,6 @@
 
 #demo-simple-select-2-label.MuiInputLabel-shrink {
   color: #007fff !important;
-  background-color: #fff;
 }
 
 #error-text {
@@ -1382,7 +1380,7 @@
 }
 
 .progress-done {
-  /* background: #007fff; */
+  background: #007fff;
   border-radius: 10px;
   color: #fff;
   display: -webkit-box;
@@ -1399,21 +1397,6 @@
   opacity: 0;
   -webkit-transition: 1s ease 0.3s;
   transition: 1s ease 0.3s;
-}
-.red-bar {
-  background: #e32636;
-}
-.yellow-bar {
-  background: #f7de3a;
-  color: rgb(15, 1, 1);
-}
-.green-bar {
-  background: #a4de02;
-  color: rgb(15, 1, 1);
-}
-.dark-green-bar {
-  background: #4c9a2a;
-  color: rgb(15, 1, 1);
 }
 
 ::-webkit-scrollbar {

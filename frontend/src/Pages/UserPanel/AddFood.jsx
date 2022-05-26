@@ -19,7 +19,10 @@ import { TextField } from "@mui/material";
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
+
+
 const AddFood = () => {
+
   const [foodCheck, setFoodCheck] = useState(true);
   const [showEdit, setShowEdit] = useState(false);
   const [editMealId, setEditMealId] = useState(""); 
@@ -37,6 +40,18 @@ const AddFood = () => {
   });
   const [value, setValue] = useState(null);
   const navigate = useNavigate();
+  const notify = () => {
+    // Calling toast method by passing string
+    toast.success('Food Edit')
+  }
+  const Add = () => {
+    // Calling toast method by passing string
+    toast.success('Food Added')
+  }
+  const Delete= () => {
+    // Calling toast method by passing string
+    toast.success('Food Deleted')
+  }
   var user_id = userService.getLoggedInUser()._id;
   const [mealData, setMealData] = useState([]);
   const [userDetails, setUserDetails] = useState(location.state?.userData);
@@ -338,7 +353,7 @@ const AddFood = () => {
               </p>
               <div className="mb-3">
                 <div>
-                  <label htmlFor="time">Enter time of your meal</label>
+                  <label htmlFor="time">Enter time of your meal {"("+"Optional" +")"}</label>
                 </div>
                 <div>
                   <input
@@ -533,7 +548,7 @@ const AddFood = () => {
                                       <div className="mb-3">
                                         <div>
                                           <label htmlFor="time">
-                                            Enter time of your meal
+                                            Enter time of your meal {"("+"Optional" +")"}
                                           </label>
                                         </div>
                                         <div>
