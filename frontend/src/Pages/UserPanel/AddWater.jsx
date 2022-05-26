@@ -13,6 +13,8 @@ import userService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { getAccordionDetailsUtilityClass } from "@mui/material";
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 // import { useNavigate } from "react-router-dom";
 
 const AddWater = () => {
@@ -71,9 +73,8 @@ const AddWater = () => {
 
     console.log("before request");
 
-    // userService.waterIntake(waterIntake).then((res)=>{
-    //   console.log(res)
-    // })
+    console.log('before request')
+    notify()
 
     userService.waterIntake(waterIntake);
     getWaterData();
@@ -82,14 +83,14 @@ const AddWater = () => {
 
   useEffect(() => {
     if (userService.isLoggedIn() == false) {
-      navigate("/login");
+      navigate('/login')
     } else {
       if (
-        userService.getLoggedInUser().user_type == "trainer" ||
-        userService.getLoggedInUser().user_type == "gym" ||
-        userService.getLoggedInUser().user_type == "admin"
+        userService.getLoggedInUser().user_type == 'trainer' ||
+        userService.getLoggedInUser().user_type == 'gym' ||
+        userService.getLoggedInUser().user_type == 'admin'
       ) {
-        navigate("/login");
+        navigate('/login')
       }
     }
     getWaterData();
@@ -139,6 +140,7 @@ const AddWater = () => {
           {errorMessage}{" "}
         </p>
       )}
+      <ToastContainer />
     </div>
   );
 };

@@ -20,8 +20,9 @@ var CreatePlanRouter = require('./routes/api/createPlan')
 var ConversationRouter = require('./routes/conversation')
 var MessageRouter = require('./routes/message')
 var QueryRouter = require('./routes/api/query')
-var AdminQuery = require('./routes/api/admin_api') 
-var OrderRouter = require('./routes/api/ordersApi') 
+var AdminQuery = require('./routes/api/admin_api')
+var OrderRouter = require('./routes/api/ordersApi')
+var AdminMessage = require('./routes/api/notificationApi')
 
 var app = express()
 
@@ -52,6 +53,7 @@ app.use('/api/message', MessageRouter)
 app.use('/api/query', QueryRouter)
 app.use('/api/admin', AdminQuery)
 app.use('/api/order', OrderRouter)
+app.use('/api/notification', AdminMessage)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))

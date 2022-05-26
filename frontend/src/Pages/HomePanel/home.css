@@ -1276,6 +1276,80 @@ preloader
   background: #fff;
   border-radius: 50%;
 }
+.serviceBox {
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  padding: 20px 15px;
+  border: 5px solid #eee;
+}
+.serviceBox .service-icon {
+  color: #fff;
+  background-color: #fff;
+  font-size: 35px;
+  line-height: 100px;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 20px;
+  border-radius: 50% 50% 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1;
+}
+.serviceBox .service-icon:before {
+  content: '';
+  background: linear-gradient(#fa8b50, #ff5f55);
+  border-radius: 50%;
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 10px;
+  bottom: 10px;
+  z-index: -1;
+}
+.serviceBox .title {
+  color: #007fff;
+  font-size: 30px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0 0 7px;
+}
+.serviceBox .description {
+  color: red;
+  font-size: 14px;
+  line-height: 25px;
+  margin: 0;
+}
+.serviceBox.pink .service-icon:before {
+  background: linear-gradient(#d357b8, #f2506b);
+}
+.serviceBox.pink .title {
+  color: #f2506b;
+}
+.serviceBox.purple .service-icon:before {
+  background: linear-gradient(#ac5ef5, #494c9f);
+}
+.serviceBox.purple .title {
+  color: #494c9f;
+}
+.serviceBox.blue .service-icon:before {
+  background: linear-gradient(#5dc4b9, #69a5f2);
+}
+.serviceBox.blue .title {
+  color: #69a5f2;
+}
+.card {
+  width: 100%;
+  background-color: white;
+}
+.message {
+  padding: 1em;
+}
+
+@media only screen and (max-width: 990px) {
+  .serviceBox {
+    margin: 0 0 30px;
+  }
+}
 
 /* 
 ---------------------------------------------
