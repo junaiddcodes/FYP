@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import adminService from '../../services/AdminService'
+import React, { useEffect, useState } from 'react'
 import { Button, Form } from "react-bootstrap";
 import "./home.css";
 
@@ -7,7 +8,8 @@ const Home = () => {
   const [feet, SetFeet] = useState();
   const [weight, SetWeight] = useState();
   const [bmi, setBmi] = useState();
-
+  const [allQueries, setAllQueries] = useState([])
+  
   function calculateBMI() {
     if (inches && feet && weight) {
       var height = feet * 12 + parseInt(inches);
@@ -24,6 +26,18 @@ const Home = () => {
       console.log("Input Missing");
     }
   }
+
+  useEffect(() => {
+    adminService
+      .admin_message()
+      .then((data) => {
+        console.log(data)
+        setAllQueries(data.crud)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [])
   return (
     <div>
       {/* <!-- ***** Header Area Start ***** --> */}
@@ -100,6 +114,29 @@ const Home = () => {
         </div>
       </div>
       {/* <!-- ***** Main Banner Area End ***** --> */}
+
+      {/* //notification start here */}
+      <div className=''>
+        <div className='row '>
+          <div className='col-md-3 col-sm-6 card'>
+            <div className='serviceBox card'>
+              <div className='service-icon'>
+                <i class='bx bx-cheese'></i>
+                {/* <span></span> */}
+              </div>
+              <h3 className='title'>Notification from admin</h3>
+              <p></p>
+              <ul className='message'>
+                {allQueries.map((e) => {
+                  return <li className='description'>{e.message} </li>
+                })}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* //ends here */}
 
       {/* <!-- ***** Features Item Start ***** --> */}
       <section className="section" id="features">

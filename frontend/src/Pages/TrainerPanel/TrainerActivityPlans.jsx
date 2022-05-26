@@ -1,64 +1,78 @@
-import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
-import Modal from "react-modal";
-import { FaSearch } from "react-icons/fa";
-import Tooltip from "@mui/material/Tooltip";
-import { ImCross } from "react-icons/im";
-import { MdLocationPin } from "react-icons/md";
-import { MdMyLocation } from "react-icons/md";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import TopBar from "../../Components/TopBar";
-import SideMenuTrainer from "../../Components/SideMenuTrainer";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import userService from "../../services/UserService";
-import trainerService from "../../services/TrainerService";
+import React, { useEffect, useState } from 'react'
+import { Button } from 'react-bootstrap'
+import Modal from 'react-modal'
+import { FaSearch } from 'react-icons/fa'
+import Tooltip from '@mui/material/Tooltip'
+import { ImCross } from 'react-icons/im'
+import { MdLocationPin } from 'react-icons/md'
+import { MdMyLocation } from 'react-icons/md'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import Select from '@mui/material/Select'
+import TopBar from '../../Components/TopBar'
+import SideMenuTrainer from '../../Components/SideMenuTrainer'
+import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import userService from '../../services/UserService'
+import trainerService from '../../services/TrainerService'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const TrainerActivityPlans = () => {
-  const navigate = useNavigate();
-  const [allPlans, setAllPlans] = useState([]);
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  var edit = true;
-  var userId = "";
+  const navigate = useNavigate()
+  const [allPlans, setAllPlans] = useState([])
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  var edit = true
+  var userId = ''
+  const notify = () => {
+    // Calling toast method by passing string
+    toast.success('Plan added')
+  }
+  const editPlan = () => {
+    // Calling toast method by passing string
+    toast.success('Plan Edited')
+  }
+  const deletePlan = () => {
+    // Calling toast method by passing string
+    toast.success('Plan deleted')
+  }
   const get_plans = () => {
     trainerService
       .get_plans(userId)
       .then((data) => {
-        console.log(data);
-        setAllPlans(data.crud);
+        console.log(data)
+        setAllPlans(data.crud)
       })
       .catch((err) => {
-        console.log(err);
-      });
-  };
+        console.log(err)
+      })
+  }
   useEffect(() => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
     if (userService.isLoggedIn() == false) {
-      navigate("/login");
+      navigate('/login')
     } else {
-      userId = userService.getLoggedInUser()._id;
+      userId = userService.getLoggedInUser()._id
       if (
-        userService.getLoggedInUser().user_type == "customer" ||
-        userService.getLoggedInUser().user_type == "gym" ||
-        userService.getLoggedInUser().user_type == "admin"
+        userService.getLoggedInUser().user_type == 'customer' ||
+        userService.getLoggedInUser().user_type == 'gym' ||
+        userService.getLoggedInUser().user_type == 'admin'
       ) {
-        navigate("/login");
+        navigate('/login')
       }
     }
-    console.log(userId);
-    get_plans();
-  }, []);
+    console.log(userId)
+    get_plans()
+  }, [])
   const page_refresh = () => {
-    window.location.reload(true);
-  };
+    window.location.reload(true)
+  }
   const handleEdit = (e) => {
-    navigate("/trainer-create-plan", { state: { e, edit } });
-  };
+    navigate('/trainer-create-plan', { state: { e, edit } })
+  }
   return (
     <div className="page-container-user">
       <TopBar />
@@ -81,7 +95,7 @@ const TrainerActivityPlans = () => {
                       <Button
                         className="btn btn-warning btn-sm mr-2"
                         onClick={(event) => {
-                          handleEdit(e);
+                          handleEdit(e)
                         }}
                       >
                         Edit
@@ -89,7 +103,8 @@ const TrainerActivityPlans = () => {
                       <a
                         className="delete-icon m-1"
                         onClick={() => {
-                          setConfirmDelete(true);
+                          deletePlan()
+                          setConfirmDelete(true)
                         }}
                       >
                         <ImCross />
@@ -98,39 +113,39 @@ const TrainerActivityPlans = () => {
                         <Modal
                           style={{
                             overlay: {
-                              position: "fixed",
+                              position: 'fixed',
                               top: 0,
                               left: 0,
                               right: 0,
                               bottom: 0,
 
-                              backgroundColor: "rgba(0, 0, 0, 0.75)",
+                              backgroundColor: 'rgba(0, 0, 0, 0.75)',
                             },
                             content: {
-                              color: "white",
-                              position: "absolute",
-                              top: "40px",
-                              left: "40px",
-                              right: "40px",
-                              bottom: "40px",
-                              background: "rgba(0,30,60,1)",
-                              overflow: "auto",
-                              WebkitOverflowScrolling: "touch",
-                              borderRadius: "1rem",
-                              outline: "none",
-                              padding: "20px",
+                              color: 'white',
+                              position: 'absolute',
+                              top: '40px',
+                              left: '40px',
+                              right: '40px',
+                              bottom: '40px',
+                              background: 'rgba(0,30,60,1)',
+                              overflow: 'auto',
+                              WebkitOverflowScrolling: 'touch',
+                              borderRadius: '1rem',
+                              outline: 'none',
+                              padding: '20px',
                             },
                           }}
                           className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
                           isOpen={confirmDelete}
                           onRequestClose={() => {
-                            setConfirmDelete(false);
+                            setConfirmDelete(false)
                           }}
                         >
                           <div className="modal-inner w-75 d-flex flex-column">
                             <a
                               onClick={() => {
-                                setConfirmDelete(false);
+                                setConfirmDelete(false)
                               }}
                             >
                               <i class="bx bx-x"></i>
@@ -143,12 +158,13 @@ const TrainerActivityPlans = () => {
                               className="btn-dark m-3"
                               type="submit "
                               onClick={() => {
+                                notify()
                                 trainerService.delete_plan(e._id).then(() => {
-                                  console.log("plan is Deleted");
-                                });
-                                page_refresh();
+                                  console.log('plan is Deleted')
+                                })
+                                page_refresh()
 
-                                setConfirmDelete(false);
+                                setConfirmDelete(false)
                               }}
                             >
                               Yes
@@ -157,7 +173,7 @@ const TrainerActivityPlans = () => {
                               className="m-3"
                               type="submit"
                               onClick={() => {
-                                setConfirmDelete(false);
+                                setConfirmDelete(false)
                               }}
                             >
                               No
@@ -185,11 +201,11 @@ const TrainerActivityPlans = () => {
                 </div>
               </div>
             </div>
-          );
+          )
         })
       )}
     </div>
-  );
-};
+  )
+}
 
-export default TrainerActivityPlans;
+export default TrainerActivityPlans
