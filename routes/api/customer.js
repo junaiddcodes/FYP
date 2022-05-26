@@ -21,7 +21,7 @@ router.route('/').get(getAllData)
 router
   .route('/:userId')
   .get(getOneData)
-  .patch(Verify, Hash, updateData)
+  .patch(Hash, updateData)
   .delete(deleteData)
 
 router.route('/login').post(loginUser)

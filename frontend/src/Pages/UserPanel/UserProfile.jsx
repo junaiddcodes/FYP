@@ -26,12 +26,6 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Link } from "react-router-dom";
 
 const UserProfileSchema = yup.object().shape({
-  company_name: yup
-    .string()
-    .min(2, "Company name must be of at least 2 characters")
-    .max(30, "Company name must be of at most 30 characters")
-    .required("Company name can't be empty")
-    .nullable(),
   full_name: yup
     .string()
     .min(3, "Name must be of at least 3 characters")
@@ -45,6 +39,19 @@ const UserProfileSchema = yup.object().shape({
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
       "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
     ),
+  weight: yup.number().positive().required().nullable(),
+  feet: yup.number().typeError("feet is required").min(4).max(8).positive().required().nullable(),
+  inches: yup
+    .number()
+    .typeError("inches are required")
+    .min(0)
+    .max(11)
+
+    .required()
+    .nullable(),
+  activity_level: yup.string().required("Activity level can't be empty"),
+  weight_goal: yup.string().required("Weight goal can't be empty"),
+  weekly_goal: yup.string().required("Activity level can't be empty"),
 });
 
 const UserProfile = () => {
@@ -61,6 +68,8 @@ const UserProfile = () => {
   const [isListed, setIsListed] = useState("");
   const [trainerAge, setTrainerAge] = useState(10);
   const [selectedValue, setSelectedValue] = useState(10);
+  const [inches, setInches] = useState("");
+  const [feet, setFeet] = useState("");
   var trainersAge = "";
   var loginId = "";
   const workoutOptions = [
@@ -101,6 +110,8 @@ const UserProfile = () => {
       .then((res) => {
         console.log(res);
         setGetCustomer(res.crud);
+        setFeet(res.crud.height.toString().charAt(0));
+        setInches(res.crud.height.toString().charAt(2));
         if (res.crud.weight) {
           setIsProfile(true);
           //   setIsProfilePicForm(false);
@@ -160,9 +171,11 @@ const UserProfile = () => {
     console.log("before request");
     userProfileDetails = {
       ...userProfileDetails,
-      full_name: data.full_name,
-      // listed: "",
-      password: data.password,
+      user_id: {
+        full_name: data.full_name,
+        // listed: "",
+        password: data.password,
+      },
       weight: data.weight,
       height: data.height,
       activity_level: data.activity_level,
@@ -171,16 +184,20 @@ const UserProfile = () => {
       // certificate_file: "",
       // trainer_photo: "",
     };
+
+    console.log("before update");
     userService
       .update_user(userProfileDetails, loggedInId)
       .then((data) => {
         // console.log(data);
         setIsProfile(true);
         setIsTrainerForm(false);
+        page_refresh();
       })
       .catch((err) => {
         console.log(err);
       });
+
     console.log(userProfileDetails);
     console.log("after request");
   };
@@ -259,10 +276,12 @@ const UserProfile = () => {
                 {...controlUserProfile("weight")}
                 defaultValue={getCustomer.weight}
               />
-              <div className="d-flex flex-column w-75">
+              <div className="d-flex flex-column w-50">
                 <h3 className="p-4 pb-0">Your Current height:</h3>
-                <div className="d-flex justify-content-center">
+                <div className="d-flex justify-content-around">
                   <input
+                    className="w-25"
+                    defaultValue={feet}
                     type="number"
                     placeholder="Feet"
                     min="4"
@@ -271,7 +290,9 @@ const UserProfile = () => {
                   />
 
                   <input
+                    className="w-25"
                     type="number"
+                    defaultValue={inches}
                     placeholder="Inches"
                     min="0"
                     max="11"
@@ -290,69 +311,77 @@ const UserProfile = () => {
                 <p className="error">{errorsUserProfile.inches?.message}</p>
               </div>
               <label for="fname">Select your activity level</label>
-              <FormControl className="m-3 w-100 dropdown-trainer">
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="activity_level"
-                  {...controlUserProfile("activity_level")}
-                  defaultValue={getCustomer.activity_level}
-                >
-                  <MenuItem value="1.2">
-                    <h4>Not Very Active</h4>
-                    <p>Spend most of the day sitting ( e.g. bank teller, desk job) </p>
-                  </MenuItem>
-                  <MenuItem value="1.375">
-                    <h4>Lightly Active</h4>
-                    <p>Spend a good part of your day on your feet ( e.g. teacher, salesperson )</p>
-                  </MenuItem>
-                  <MenuItem value="1.55">
-                    {" "}
-                    <h4>Active</h4>
-                    <p>
+              <div className="dropdown-container-user">
+                <FormControl className="m-3 w-50 dropdown-user" size="small">
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="activity_level"
+                    {...controlUserProfile("activity_level")}
+                    defaultValue={getCustomer.activity_level}
+                  >
+                    <MenuItem value="1.2" className="d-flex flex-column">
+                      <h4>Not Very Active</h4>
+                      <p>Spend most of the day sitting ( e.g. bank teller, desk job) </p>
+                    </MenuItem>
+                    <MenuItem value="1.375" className="d-flex flex-column">
+                      <h4>Lightly Active</h4>
+                      <p>
+                        Spend a good part of your day on your feet ( e.g. teacher, salesperson )
+                      </p>
+                    </MenuItem>
+                    <MenuItem value="1.55" className="d-flex flex-column">
                       {" "}
-                      Spend a good part of your day doing some physical activity ( e.g. food server,
-                      postal carrier )
-                    </p>
-                  </MenuItem>
-                  <MenuItem value="1.725">
-                    {" "}
-                    <h4>Very Active</h4>
-                    <p>
-                      Spend a good part of the day doing heavy physical activity ( e.g. bike
-                      messenger, carpenter )
-                    </p>
-                  </MenuItem>
-                </Select>
-              </FormControl>{" "}
+                      <h4>Active</h4>
+                      <p>
+                        {" "}
+                        Spend a good part of your day doing some physical activity ( e.g. food
+                        server, postal carrier )
+                      </p>
+                    </MenuItem>
+                    <MenuItem value="1.725" className="d-flex flex-column">
+                      {" "}
+                      <h4>Very Active</h4>
+                      <p>
+                        Spend a good part of the day doing heavy physical activity ( e.g. bike
+                        messenger, carpenter )
+                      </p>
+                    </MenuItem>
+                  </Select>
+                </FormControl>{" "}
+              </div>
               <p>{errorsUserProfile.activity_level?.message}</p>
               <label for="fname">Select your weight goal</label>
-              <FormControl className="m-3 w-100 dropdown-trainer">
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="weight_goal"
-                  {...controlUserProfile("weight_goal")}
-                  defaultValue={getCustomer.weight_goal}
-                >
-                  <MenuItem value="gain_weight">gain weight</MenuItem>
-                  <MenuItem value="lose_weight">lose weight</MenuItem>
-                </Select>
-              </FormControl>{" "}
+              <div className="dropdown-container-user">
+                <FormControl className="m-3 w-50 dropdown-user" size="small">
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="weight_goal"
+                    {...controlUserProfile("weight_goal")}
+                    defaultValue={getCustomer.weight_goal}
+                  >
+                    <MenuItem value="gain_weight">gain weight</MenuItem>
+                    <MenuItem value="lose_weight">lose weight</MenuItem>
+                  </Select>
+                </FormControl>{" "}
+              </div>
               <p>{errorsUserProfile.weight_goal?.message}</p>
               <label for="fname">Select your weekly goal</label>
-              <FormControl className="m-3 w-100 dropdown-trainer">
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="weekly_goal"
-                  {...controlUserProfile("weekly_goal")}
-                  defaultValue={getCustomer.weekly_goal}
-                >
-                  <MenuItem value="0.5">gain / lose 0.5 pound per week</MenuItem>
-                  <MenuItem value="1">gain / lose 1 pound per week</MenuItem>
-                </Select>
-              </FormControl>{" "}
+              <div className="dropdown-container-user">
+                <FormControl className="m-3 w-50 dropdown-user" size="small">
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="weekly_goal"
+                    {...controlUserProfile("weekly_goal")}
+                    defaultValue={getCustomer.weekly_goal}
+                  >
+                    <MenuItem value="0.5">gain / lose 0.5 pound per week</MenuItem>
+                    <MenuItem value="1">gain / lose 1 pound per week</MenuItem>
+                  </Select>
+                </FormControl>{" "}
+              </div>
               <p>{errorsUserProfile.weekly_goal?.message}</p>
             </div>
 
@@ -375,10 +404,15 @@ const UserProfile = () => {
             <div className="d-flex w-75 justify-content-between">
               <div className="trainer-photo d-flex">
                 {/* <img clasName="trainer-photo" src={getCustomer.trainer_photo} alt="" /> */}
-                <div className="d-flex mt-5 flex-column">
+                <div className="d-flex m-4 flex-column">
                   <h4>Name: {getCustomer.user_id.full_name}</h4>
                   <h4>Age: {trainerAge}</h4>
                   <h4>Gender: {getCustomer.gender}</h4>
+                  <h4>Weight: {getCustomer.weight} kg</h4>
+                  <h4>
+                    Height: {getCustomer.height.toString().charAt(0)} '{" "}
+                    {getCustomer.height.toString().charAt(2)}{" "}
+                  </h4>
                 </div>
               </div>
               <div className="trainer-btn d-flex flex-column">
@@ -395,9 +429,28 @@ const UserProfile = () => {
             </div>
           </div>
           <div className="m-4 d-flex flex-column">
-            <h4>Activity level: {getCustomer.activity_level}</h4>
-            <h4>Weight goal: {getCustomer.weight_goal}</h4>
-            <h4>Weekly goal: {getCustomer.weekly_goal}</h4>
+            <h4>
+              Activity level:{" "}
+              {getCustomer.activity_level == "1.2"
+                ? "Not Very Active"
+                : getCustomer.activity_level == "1.375"
+                ? "Lightly Active"
+                : getCustomer.activity_level == "1.55"
+                ? "Active"
+                : getCustomer.activity_level == "1.725"
+                ? "Very Active"
+                : null}
+            </h4>
+            <h4>
+              Weight goal:{" "}
+              {getCustomer.weight_goal == "gain_weight" ? " Gain weight" : "Lose weight  "}
+            </h4>
+            <h4>
+              Weekly goal:{" "}
+              {getCustomer.weight_goal == "gain_weight"
+                ? ` Gain weight ${getCustomer.weekly_goal} pounds per week`
+                : `Lose weight ${getCustomer.weekly_goal} pounds per week`}
+            </h4>
           </div>
         </div>
       ) : null}
