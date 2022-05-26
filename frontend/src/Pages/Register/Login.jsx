@@ -24,6 +24,10 @@ const Login = () => {
   const [authError, setAuthError] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
+  const notify = () => {
+    // Calling toast method by passing string
+    toast.info("Loading");
+  };
 
   // const data = location.state.errorUser;
   // const [isSubmit, setIsSubmit] = useState(false);
@@ -41,11 +45,13 @@ const Login = () => {
 
   const submitForm = (data) => {
     console.log(data.role);
+    notify();
 
     userService
       .login(email, password, data.role)
       .then((token) => {
         // console.log(token);
+
         if (data.role == "customer") navigate("/user-dashboard");
         if (data.role == "trainer") navigate("/trainer-dashboard");
         if (data.role == "gym") navigate("/gym-dashboard");
@@ -107,6 +113,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

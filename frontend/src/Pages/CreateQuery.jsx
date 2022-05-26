@@ -15,6 +15,9 @@ import gymService from "../services/GymService";
 import { Link } from "react-router-dom";
 import adminService from "../services/AdminService";
 import { Button } from "react-bootstrap";
+import SideMenu from "../Components/SideMenu";
+import SideMenuTrainer from "../Components/SideMenuTrainer";
+import SideMenuGym from "../Components/SideMenuGym";
 
 const querySchema = yup.object().shape({
   query_subject: yup
@@ -38,6 +41,8 @@ const CreateQuery = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   var loginId = "";
+  const user_type = userService.getLoggedInUser().user_type;
+
   var queryDetails = {
     user_id: "",
     user_type: "",
@@ -107,7 +112,13 @@ const CreateQuery = () => {
   return (
     <div className="page-container-admin">
       <TopBar />
-      <SideMenuBack />
+      {user_type == "customer" ? (
+        <SideMenu />
+      ) : user_type == "trainer" ? (
+        <SideMenuTrainer />
+      ) : user_type == "gym" ? (
+        <SideMenuGym />
+      ) : null}
 
       <h3 id="gym-reqs">Your Queries</h3>
       <div className="admin-box mt-3">
