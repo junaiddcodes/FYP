@@ -47,6 +47,7 @@ class UserService extends GenericService {
   getFood = (foodName) => this.post("food/name", foodName);
   // Excercises
   getExcercise = (excerciseName) => this.post("excercise/name", excerciseName);
+  update_user = (userDetails, id) => this.patch("customer/" + id, userDetails);
   // Meals
   getMealData = (customerId) => this.get("meal/mealdata/" + customerId);
   editMealData = (mealId, mealData) => this.patch("meal/" + mealId, mealData);

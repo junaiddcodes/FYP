@@ -17,12 +17,26 @@
     background-color: $color2;
     border-radius: 1rem;
     h4 {
-      font-size: 2rem;
+      font-size: 1rem;
       color: $color4;
       font-weight: 600;
     }
   }
 }
+.dropdown-user {
+  border-radius: 5px;
+  background-color: #007fff;
+}
+
+.dropdown-user #demo-simple-select-label {
+  color: white;
+}
+
+.dropdown-user #demo-simple-select {
+  color: white;
+  background-color: #007fff;
+}
+
 .dropdown-modal {
   width: 30%;
   border-radius: 5px;
