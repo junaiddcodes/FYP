@@ -73,6 +73,7 @@ const UserDashboard = () => {
 
       .then((data) => {
         setUserData(data.crud);
+        calculate_bmi(data.crud.height, data.crud.weight);
         console.log("user data = ", data.crud);
       });
   }
@@ -123,6 +124,13 @@ const UserDashboard = () => {
         console.log(err);
       });
   }
+  const calculate_bmi = (height, weight) => {
+    var meterHeight = 73 * 0.0254;
+    var sqHeight = meterHeight * meterHeight;
+    var bmi = weight / sqHeight;
+    console.log(weight / sqHeight);
+    setBmi(bmi);
+  };
 
   useEffect(() => {
     if (userService.isLoggedIn() == false) {
@@ -138,24 +146,10 @@ const UserDashboard = () => {
       }
     }
 
-    // if (Math.floor((waterAmount * 100) / 6) <= 20) {
-    //   notify();
-    // }
-
     getUserCalorie();
     getMealData();
     getWaterData();
     getExcerciseData();
-    const calculate_bmi = () => {
-      setHeight(userData.height / 0.3048);
-      setHeight(height * height);
-
-      console.log(userData.weight);
-      setBmi(height / userData.weight);
-
-      console.log(bmi);
-    };
-    calculate_bmi();
   }, []);
 
   return (
@@ -169,11 +163,17 @@ const UserDashboard = () => {
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
               <h4>Calories Gained:{currentCalorie.food_calories}</h4>
-              <h4>Calories Burnt:{Math.floor(currentBurn.excercise_calories)}</h4>
-              <h4>Net Calories:{currentCalorie.food_calories - Math.floor(currentBurn.excercise_calories)}</h4>
+              <h4>
+                Calories Burnt:{Math.floor(currentBurn.excercise_calories)}
+              </h4>
+              <h4>
+                Net Calories:
+                {currentCalorie.food_calories -
+                  Math.floor(currentBurn.excercise_calories)}
+              </h4>
               <h4>Calorie Goal: {parseInt(userData.calorie_goal)}</h4>
               <h4>Water Taken: {parseInt(waterAmount)}</h4>
-              <h4>Your BMI: {bmi}</h4>
+              <h4>Your BMI: {Math.round(bmi * 100) / 100}</h4>
             </div>
             <div className="d-flex justify-content-around align-items-end w-50">
               <Button
@@ -207,14 +207,17 @@ const UserDashboard = () => {
                 <h4>Calorie Goal</h4>
                 <div>
                   <p className="text-light">
-                    {(currentCalorie.food_calories - Math.floor(currentBurn.excercise_calories)) +
+                    {currentCalorie.food_calories -
+                      Math.floor(currentBurn.excercise_calories) +
                       "/" +
                       Math.floor(userData.calorie_goal)}
                   </p>
                 </div>
               </div>
               <Progress
-                done={Math.floor((currentCalorie.food_calories * 100) / userData.calorie_goal)}
+                done={Math.floor(
+                  (currentCalorie.food_calories * 100) / userData.calorie_goal
+                )}
                 heading="Calorie Goal"
               />
             </div>
@@ -230,7 +233,9 @@ const UserDashboard = () => {
                 </div>
               </div>
               <Progress
-                done={Math.floor((currentCalorie.food_carbs * 100) / userData.carbs)}
+                done={Math.floor(
+                  (currentCalorie.food_carbs * 100) / userData.carbs
+                )}
                 heading="Calorie Goal"
               />
             </div>
@@ -246,7 +251,9 @@ const UserDashboard = () => {
                 </div>
               </div>
               <Progress
-                done={Math.floor((currentCalorie.food_proteins * 100) / userData.protein)}
+                done={Math.floor(
+                  (currentCalorie.food_proteins * 100) / userData.protein
+                )}
                 heading="Calorie Goal"
               />
             </div>
@@ -260,7 +267,9 @@ const UserDashboard = () => {
                 </div>
               </div>
               <Progress
-                done={Math.floor((currentCalorie.food_fats * 100) / userData.fats)}
+                done={Math.floor(
+                  (currentCalorie.food_fats * 100) / userData.fats
+                )}
                 heading="Calorie Goal"
               />
             </div>
