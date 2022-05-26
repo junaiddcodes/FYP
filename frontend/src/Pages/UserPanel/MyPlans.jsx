@@ -16,7 +16,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import userService from "../../services/UserService";
 import trainerService from "../../services/TrainerService";
 
-const ActivityPlans = () => {
+const MyPlans = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [allPlans, setAllPlans] = useState([]);
@@ -40,12 +40,9 @@ const ActivityPlans = () => {
       }
     }
 
-    if (location.state) {
-      // data = location.state.trainerDetails;
-      console.log("state data = ", location.state.trainerDetails);
-      name = location.state.trainerDetails.user_id.full_name;
-      trainerService
-        .get_plans(location.state.trainerDetails._id)
+    const get_plans = () => {
+      userService
+        .get_bought_plans(userId)
         .then((data) => {
           console.log("plan data = ", data);
           setAllPlans(data.crud);
@@ -53,16 +50,31 @@ const ActivityPlans = () => {
         .catch((err) => {
           console.log(err);
         });
-    } else {
-      console.log("state empty");
-    }
+    };
+    get_plans();
+    // if (location.state) {
+    //   // data = location.state.trainerDetails;
+    //   console.log("state data = ", location.state.trainerDetails);
+    //   name = location.state.trainerDetails.user_id.full_name;
+    //   trainerService
+    //     .get_plans(location.state.trainerDetails._id)
+    //     .then((data) => {
+    //       console.log("plan data = ", data);
+    //       setAllPlans(data.crud);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // } else {
+    //   console.log("state empty");
+    // }
     // console.log(location.state.e);
   }, []);
   return (
     <div className="page-container-user">
       <TopBar />
       <SideMenu />
-      <h2>Activity Plans by {location.state.trainerDetails.user_id.full_name}</h2>
+      <h2>heading 2</h2>
       <div className=" mt-5">
         {allPlans.length == 0 ? (
           <h2>No plans</h2>
@@ -71,7 +83,7 @@ const ActivityPlans = () => {
             return (
               <div
                 onClick={() => {
-                  // navigate("/activity-plan-details", { state: { e, name } });
+                  navigate("/activity-plan-details", { state: { e, name } });
                 }}
                 className="activity-grid-container"
               >
@@ -98,4 +110,4 @@ const ActivityPlans = () => {
   );
 };
 
-export default ActivityPlans;
+export default MyPlans;

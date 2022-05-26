@@ -7,10 +7,12 @@ import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
 import userService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
-  var [waterAmount, setWaterAmount] = useState();
+  var [waterAmount, setWaterAmount] = useState(0);
 
   var [currentCalorie, setCurrentCalorie] = useState({
     food_calories: 0,
@@ -25,6 +27,11 @@ const UserDashboard = () => {
     excercise_fats: 0,
   });
 
+  const notify = () => {
+    // Calling toast method by passing string
+    toast.info("Water is less");
+  };
+
   var waterIntake = {
     userId: "",
     amount_litres: 0,
@@ -33,6 +40,8 @@ const UserDashboard = () => {
   var [userData, setUserData] = useState({});
   var userId = userService.getLoggedInUser()._id;
   var [mealData, setMealData] = useState([]);
+  const [bmi, setBmi] = useState(0);
+  const [height, setHeight] = useState(0);
   var errorUser = "Login as a customer first!";
   const [excersiseData, setExcerciseData] = useState([]);
 
@@ -64,7 +73,7 @@ const UserDashboard = () => {
 
       .then((data) => {
         setUserData(data.crud);
-        console.log(data.crud);
+        console.log("user data = ", data.crud);
       });
   }
   function getMealData() {
@@ -129,10 +138,24 @@ const UserDashboard = () => {
       }
     }
 
+    // if (Math.floor((waterAmount * 100) / 6) <= 20) {
+    //   notify();
+    // }
+
     getUserCalorie();
     getMealData();
     getWaterData();
     getExcerciseData();
+    const calculate_bmi = () => {
+      setHeight(userData.height / 0.3048);
+      setHeight(height * height);
+
+      console.log(userData.weight);
+      setBmi(height / userData.weight);
+
+      console.log(bmi);
+    };
+    calculate_bmi();
   }, []);
 
   return (
@@ -140,7 +163,7 @@ const UserDashboard = () => {
       <TopBar />
       <SideMenu />
 
-      <h2>Today's Progress</h2>
+      <h2 className="m-2">Today's Progress</h2>
       <div className="user-box d-flex flex-column p-3">
         <div className="d-flex flex-column">
           <div className="d-flex">
@@ -150,6 +173,7 @@ const UserDashboard = () => {
               <h4>Net Calories:{currentCalorie.food_calories - Math.floor(currentBurn.excercise_calories)}</h4>
               <h4>Calorie Goal: {parseInt(userData.calorie_goal)}</h4>
               <h4>Water Taken: {parseInt(waterAmount)}</h4>
+              <h4>Your BMI: {bmi}</h4>
             </div>
             <div className="d-flex justify-content-around align-items-end w-50">
               <Button
@@ -190,9 +214,7 @@ const UserDashboard = () => {
                 </div>
               </div>
               <Progress
-                done={Math.floor(
-                  (currentCalorie.food_calories * 100) / userData.calorie_goal
-                )}
+                done={Math.floor((currentCalorie.food_calories * 100) / userData.calorie_goal)}
                 heading="Calorie Goal"
               />
             </div>
@@ -208,9 +230,7 @@ const UserDashboard = () => {
                 </div>
               </div>
               <Progress
-                done={Math.floor(
-                  (currentCalorie.food_carbs * 100) / userData.carbs
-                )}
+                done={Math.floor((currentCalorie.food_carbs * 100) / userData.carbs)}
                 heading="Calorie Goal"
               />
             </div>
@@ -226,9 +246,7 @@ const UserDashboard = () => {
                 </div>
               </div>
               <Progress
-                done={Math.floor(
-                  (currentCalorie.food_proteins * 100) / userData.protein
-                )}
+                done={Math.floor((currentCalorie.food_proteins * 100) / userData.protein)}
                 heading="Calorie Goal"
               />
             </div>
@@ -242,9 +260,7 @@ const UserDashboard = () => {
                 </div>
               </div>
               <Progress
-                done={Math.floor(
-                  (currentCalorie.food_fats * 100) / userData.fats
-                )}
+                done={Math.floor((currentCalorie.food_fats * 100) / userData.fats)}
                 heading="Calorie Goal"
               />
             </div>
@@ -263,6 +279,7 @@ const UserDashboard = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

@@ -19,6 +19,13 @@ const SideMenu = () => {
           </Link>
         </li>
         <li>
+          <Link to="/user-profile">
+            <i class="bx bxs-user">
+              <span className="links_name">Profile</span>
+            </i>
+          </Link>
+        </li>
+        <li>
           <Link to="/search-gym">
             <i class="bx bx-search">
               <span className="links_name">Gym</span>
@@ -33,12 +40,19 @@ const SideMenu = () => {
           </Link>
         </li>
         <li>
+          <Link to="/my-plans">
+            <i class="bx bx-calendar-check">
+              <span className="links_name">My plans</span>
+            </i>
+          </Link>
+        </li>
+        {/* <li>
           <Link to="">
             <i class="bx bx-history">
               <span className="links_name">History</span>
             </i>
           </Link>
-        </li>
+        </li> */}
         <li>
           <Link to="/Messenger">
             <i class="bx bx-chat">

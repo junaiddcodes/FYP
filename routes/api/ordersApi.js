@@ -2,7 +2,6 @@ var express = require("express");
 var router = express.Router();
 var { Verify } = require("../../middleware/orderMiddlewares");
 
-
 const {
     getAllData,
     getOneData,
@@ -17,4 +16,4 @@ const {
   router.route("/user/:userId").get(getbyUser);
   router.route("/:orderId").get(getOneData).delete(deleteData).patch(updateData);
 
-  module.exports = router;
+module.exports = router;

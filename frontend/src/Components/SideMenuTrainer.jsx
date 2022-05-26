@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 
 const SideMenuTrainer = () => {
   return (
@@ -8,7 +8,7 @@ const SideMenuTrainer = () => {
         <div className="logo">
           <i class="bx bx-dumbbell"></i>
           <div className="logo-name">Fit</div>
-        </div>{' '}
+        </div>{" "}
       </div>
       <ul className="nav_list">
         <li>
@@ -32,13 +32,13 @@ const SideMenuTrainer = () => {
             </i>
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link to="">
             <i class="bx bx-history">
               <span className="links_name">History</span>
             </i>
           </Link>
-        </li>
+        </li> */}
         <li>
           <Link to="/query">
             <i class="bx bx-question-mark">
@@ -66,7 +66,7 @@ const SideMenuTrainer = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SideMenuTrainer
+export default SideMenuTrainer;
