@@ -82,8 +82,19 @@ function calculation(customerDetails, genderie, dob) {
 }
 
 const step1Schema = yup.object().shape({
-  full_name: yup.string().min(3).max(32).required(),
-  email: yup.string().min(3).required().email(),
+  full_name: yup
+    .string()
+    .min(4, "Name must be of at least 4 characters")
+    .max(25, "Name must be of at most 25 characters")
+    .required()
+    .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for name "),
+
+  email: yup
+    .string()
+    .min(7, "Email must be of at least 7 characters")
+    .max(30, "Email must of at most 30 characters")
+    .required()
+    .email(),
   password: yup
     .string()
     .min(8)
@@ -92,17 +103,20 @@ const step1Schema = yup.object().shape({
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
       "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
     ),
+  confirm_password: yup.string().oneOf([yup.ref("password"), null], "Passwords must match"),
   gender: yup.string().required("An option is required").nullable(),
   dob: yup
     .string()
     .required("DOB is Required")
-    .test("DOB", "You must be 18 years old", (value) => {
-      return moment().diff(moment(value), "years") >= 18;
+    .test("DOB", "You must be more than 18 years old and less than 100 years old ", (value) => {
+      return (
+        moment().diff(moment(value), "years") >= 18 || moment().diff(moment(value), "years") < 100
+      );
     }),
 });
 
 const step2Schema = yup.object().shape({
-  weight: yup.number().positive().required().nullable(),
+  weight: yup.number().typeError("weight cant be empty").positive().required().nullable(),
   feet: yup.number().typeError("feet is required").min(4).max(8).positive().required().nullable(),
   inches: yup
     .number()
@@ -344,7 +358,9 @@ const UserRegister = () => {
                   <input
                     className="date-input"
                     type="date"
-                    // placeholder="DD/MM/YYYY"
+                    min="1930-01-01"
+                    max="2004-01-01"
+                    placeholder="dd-mm-yyyy"
                     name="dob"
                     // value={customerDetails.dob}
                     {...controlStep1("dob")}
@@ -373,8 +389,8 @@ const UserRegister = () => {
                       />
                       <h4 className="m-2">Female</h4>
                     </div>
-                    <p>{errorsStep1.gender?.message}</p>
                   </div>
+                  <p>{errorsStep1.gender?.message}</p>
                 </div>
               </div>
               <div className="d-flex flex-column w-50">
@@ -400,22 +416,15 @@ const UserRegister = () => {
                 </div>
                 <div className="d-flex flex-column">
                   <h3 className="p-4 pb-0">Password:</h3>
+                  <input type="password" name="password" {...controlStep1("password")} />
+                  <p>{errorsStep1.password?.message}</p>
+                  <h3 className="p-4 pb-0">Confirm password:</h3>
                   <input
                     type="password"
-                    name="password"
-                    // value={customerDetails.user_id.password}
-                    {...controlStep1("password")}
-                    // onChange={(e) => {
-                    //   setCustomerDetails({
-                    //     ...customerDetails,
-                    //     user_id: {
-                    //       ...customerDetails.user_id,
-                    //       password: e.target.value,
-                    //     },
-                    //   });
-                    // }}
+                    name="confirm_password"
+                    {...controlStep1("confirm_password")}
                   />
-                  <p>{errorsStep1.password?.message}</p>
+                  <p className="p-3">{errorsStep1.confirm_password?.message}</p>
                 </div>
               </div>
             </div>
@@ -654,13 +663,13 @@ const UserRegister = () => {
                   {...controlStep4("weekly_goal")}
                 />
                 <div className="d-flex flex-column w-75 ">
-                  <h4>{goalText} 0.2 KGs per week (Recommended)</h4>
+                  <h4>{goalText} 0.5 pounds per week (Recommended)</h4>
                 </div>
               </div>
               <div className="activity-btn2 d-flex justify-content-between">
                 <input type="radio" name="weekly_goal" value="1" {...controlStep4("weekly_goal")} />
                 <div className="d-flex flex-column w-75">
-                  <h4>{goalText} 0.45 KGs per week</h4>
+                  <h4>{goalText} 1 pound per week</h4>
                 </div>
               </div>
               <p>{errorsStep4.weekly_goal?.message}</p>

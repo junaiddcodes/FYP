@@ -17,11 +17,16 @@ import { toast } from "react-toastify";
 const gymSchema = yup.object().shape({
   full_name: yup
     .string()
-    .min(6, "Gym name must be at least 6 characters")
-    .max(32, "Gym name must be at most 32 characters")
-    .required("Gym name is required")
-    .nullable(),
-  email: yup.string().min(3).required().email(),
+    .min(4, "Name must be of at least 4 characters")
+    .max(25, "Name must be of at most 25 characters")
+    .required()
+    .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for name "),
+  email: yup
+    .string()
+    .min(7, "Email must be of at least 7 characters")
+    .max(30, "Email must of at most 30 characters")
+    .required()
+    .email(),
   password: yup
     .string()
     .min(8)
@@ -30,6 +35,7 @@ const gymSchema = yup.object().shape({
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
       "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
     ),
+  confirm_password: yup.string().oneOf([yup.ref("password"), null], "Passwords must match"),
   // gender: yup.string().required("A radio option is required").nullable(),
 });
 
@@ -151,8 +157,11 @@ const GymRegister = () => {
                   });
                 }}
               />
+              <h3 className="p-4 pb-0">Confirm password:</h3>
+              <input type="password" name="confirm_password" {...controlGym("confirm_password")} />
             </div>
             <p>{errorsGym.password?.message}</p>
+            <p>{errorsGym.confirm_password?.message}</p>
           </div>
 
           <div className="buttons-gym d-flex justify-content-between mt-3">

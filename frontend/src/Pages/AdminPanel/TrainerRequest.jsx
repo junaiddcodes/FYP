@@ -57,6 +57,15 @@ const TrainerRequest = () => {
     <div className="page-container-admin">
       <TopBar />
       <SideMenuAdmin />
+      <Button
+        className="m-2"
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        <i class="bx bx-arrow-back m-1"></i> Back
+      </Button>
+      <h2>Trainer Request</h2>
       <div className="d-flex  w-100">
         <div className="w-50 "></div>
         <div className="d-flex justify-content-center w-50">

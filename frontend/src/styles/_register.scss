@@ -269,12 +269,12 @@
 // GYM
 
 .outer-box-gym {
-  @include outerBox(40%, 85%);
+  @include outerBox(50%, 95%);
 }
 .inner-box-gym {
   @include heading3(1.25rem, 600);
 
-  @include innerBox(90%, 70%);
+  @include innerBox(90%, 80%);
   p {
     margin: 5px;
     margin-left: 10px;

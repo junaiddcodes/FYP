@@ -12,8 +12,8 @@ import { func } from "joi";
 import userService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
 import { getAccordionDetailsUtilityClass } from "@mui/material";
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import { useNavigate } from "react-router-dom";
 
 const AddWater = () => {
@@ -23,8 +23,8 @@ const AddWater = () => {
   const navigate = useNavigate();
   const notify = () => {
     // Calling toast method by passing string
-    toast.success('Water Added')
-  }
+    toast.success("Water Added");
+  };
 
   var user_id = userService.getLoggedInUser()._id;
 
@@ -76,8 +76,8 @@ const AddWater = () => {
 
     console.log("before request");
 
-    console.log('before request')
-    notify()
+    console.log("before request");
+    notify();
 
     userService.waterIntake(waterIntake);
     getWaterData();
@@ -86,14 +86,14 @@ const AddWater = () => {
 
   useEffect(() => {
     if (userService.isLoggedIn() == false) {
-      navigate('/login')
+      navigate("/login");
     } else {
       if (
-        userService.getLoggedInUser().user_type == 'trainer' ||
-        userService.getLoggedInUser().user_type == 'gym' ||
-        userService.getLoggedInUser().user_type == 'admin'
+        userService.getLoggedInUser().user_type == "trainer" ||
+        userService.getLoggedInUser().user_type == "gym" ||
+        userService.getLoggedInUser().user_type == "admin"
       ) {
-        navigate('/login')
+        navigate("/login");
       }
     }
     getWaterData();
@@ -103,6 +103,14 @@ const AddWater = () => {
     <div className="page-container-user">
       <TopBar />
       <SideMenu />
+      <Button
+        className="m-2"
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        <i class="bx bx-arrow-back m-1"></i> Back
+      </Button>
       <h2>Add Water</h2>
       <div className="user-box d-flex flex-column p-3">
         <div className="d-flex flex-column">

@@ -86,7 +86,13 @@ const Messenger = () => {
       <TopBar />
       {}
 
-      {user_type == "customer" ? <SideMenu /> : user_type == "trainer" ? <SideMenuTrainer /> : null}
+      {user_type == "customer" ? (
+        <SideMenu />
+      ) : user_type == "trainer" ? (
+        <SideMenuTrainer />
+      ) : (
+        <SideMenuBack />
+      )}
       <div className="messenger">
         <div className="chatBox">
           <div className="chatBoxWrapper">

@@ -18,7 +18,7 @@ const SideMenuAdmin = () => {
             </i>
           </Link>
         </li>
-        <li>
+        {/* <li>
           <a href="#gym-reqs">
             <i class="bx bx-dumbbell">
               <span className="links_name">Gym Profiles</span>
@@ -45,7 +45,7 @@ const SideMenuAdmin = () => {
               <span className="links_name">Payment Reqs</span>
             </i>
           </a>
-        </li>
+        </li> */}
       </ul>
 
       <div className="profile_content">

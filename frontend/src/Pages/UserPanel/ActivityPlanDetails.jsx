@@ -70,6 +70,14 @@ const ActivityPlanDetails = () => {
     <div className="page-container-user">
       <TopBar />
       <SideMenu />
+      <Button
+        className="m-2"
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        <i class="bx bx-arrow-back m-1"></i> Back
+      </Button>
       <h2> {data.plan_title} plan</h2>
       <div className="trainer-desc mt-3 d-flex flex-column">
         <div className="d-flex ">

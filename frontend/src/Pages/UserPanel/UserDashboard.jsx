@@ -109,14 +109,10 @@ const UserDashboard = () => {
       .then((res) => {
         setExcerciseData(res.crud);
         res.crud.map((e) => {
-          burnCalorie.excercise_calories =
-            burnCalorie.excercise_calories + e.excercise_calories;
-          burnCalorie.excercise_proteins =
-            burnCalorie.excercise_proteins + e.excercise_proteins;
-          burnCalorie.excercise_carbs =
-            burnCalorie.excercise_carbs + e.excercise_carbs;
-          burnCalorie.excercise_fats =
-            burnCalorie.excercise_fats + e.excercise_fats;
+          burnCalorie.excercise_calories = burnCalorie.excercise_calories + e.excercise_calories;
+          burnCalorie.excercise_proteins = burnCalorie.excercise_proteins + e.excercise_proteins;
+          burnCalorie.excercise_carbs = burnCalorie.excercise_carbs + e.excercise_carbs;
+          burnCalorie.excercise_fats = burnCalorie.excercise_fats + e.excercise_fats;
         });
         setCurrentBurn(burnCalorie);
       })
@@ -162,20 +158,19 @@ const UserDashboard = () => {
         <div className="d-flex flex-column">
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
-              <h4>Calories Gained:{currentCalorie.food_calories}</h4>
-              <h4>
-                Calories Burnt:{Math.floor(currentBurn.excercise_calories)}
+              <h4 className="mt-1">Calories goal: {parseInt(userData.calorie_goal)}</h4>
+              <h4 className="mt-1">Calories consumed from food: {currentCalorie.food_calories}</h4>
+              <h4 className="mt-1">
+                Calories yet to be consumed:
+                <span> {parseInt(userData.calorie_goal) - currentCalorie.food_calories}</span>
               </h4>
-              <h4>
-                Net Calories:
-                {currentCalorie.food_calories -
-                  Math.floor(currentBurn.excercise_calories)}
+              <h4 className="mt-1">
+                Calories burnt by exercise: {Math.floor(currentBurn.excercise_calories)}
               </h4>
-              <h4>Calorie Goal: {parseInt(userData.calorie_goal)}</h4>
-              <h4>Water Taken: {parseInt(waterAmount)}</h4>
-              <h4>Your BMI: {Math.round(bmi * 100) / 100}</h4>
+              <h4 className="mt-1">Water consumed: {parseInt(waterAmount)} litres</h4>
+              <h4 className="mt-1">Your BMI: {Math.round(bmi * 100) / 100}</h4>
             </div>
-            <div className="d-flex justify-content-around align-items-end w-50">
+            <div className="d-flex justify-content-around align-items-start w-50">
               <Button
                 onClick={() => {
                   navigate("/user-add-food", {
@@ -204,86 +199,71 @@ const UserDashboard = () => {
           <div className="d-flex flex-column mt-3">
             <div>
               <div className="w-100 d-flex justify-content-between">
-                <h4>Calorie Goal</h4>
+                <h3 className="text-light">Calorie Goal</h3>
                 <div>
-                  <p className="text-light">
+                  <h3 className="text-light">
                     {currentCalorie.food_calories -
                       Math.floor(currentBurn.excercise_calories) +
                       "/" +
                       Math.floor(userData.calorie_goal)}
-                  </p>
+                  </h3>
                 </div>
               </div>
               <Progress
-                done={Math.floor(
-                  (currentCalorie.food_calories * 100) / userData.calorie_goal
-                )}
+                done={Math.floor((currentCalorie.food_calories * 100) / userData.calorie_goal)}
                 heading="Calorie Goal"
               />
             </div>
             <div>
               <div className="w-100 d-flex justify-content-between">
-                <h4>Carbohydrates</h4>
+                <h4>Proteins (grams)</h4>
                 <div>
-                  <p className="text-light">
-                    {currentCalorie.food_carbs +
-                      "/" +
-                      Math.floor(userData.carbs)}
-                  </p>
+                  <h4 className="text-light font-weight-bold">
+                    {currentCalorie.food_proteins + "/" + Math.floor(userData.protein)}
+                  </h4>
                 </div>
               </div>
               <Progress
-                done={Math.floor(
-                  (currentCalorie.food_carbs * 100) / userData.carbs
-                )}
+                done={Math.floor((currentCalorie.food_proteins * 100) / userData.protein)}
                 heading="Calorie Goal"
               />
             </div>
             <div>
               <div className="w-100 d-flex justify-content-between">
-                <h4>Proteins</h4>
+                <h4>Carbohydrates (grams)</h4>
                 <div>
-                  <p className="text-light">
-                    {currentCalorie.food_proteins +
-                      "/" +
-                      Math.floor(userData.protein)}
-                  </p>
+                  <h4 className="text-light">
+                    {currentCalorie.food_carbs + "/" + Math.floor(userData.carbs)}
+                  </h4>
                 </div>
               </div>
               <Progress
-                done={Math.floor(
-                  (currentCalorie.food_proteins * 100) / userData.protein
-                )}
+                done={Math.floor((currentCalorie.food_carbs * 100) / userData.carbs)}
                 heading="Calorie Goal"
               />
             </div>
             <div>
               <div className="w-100 d-flex justify-content-between">
-                <h4>Fats</h4>
+                <h4>Fats (grams)</h4>
                 <div>
-                  <p className="text-light">
+                  <h4 className="text-light">
                     {currentCalorie.food_fats + "/" + Math.floor(userData.fats)}
-                  </p>
+                  </h4>
                 </div>
               </div>
               <Progress
-                done={Math.floor(
-                  (currentCalorie.food_fats * 100) / userData.fats
-                )}
+                done={Math.floor((currentCalorie.food_fats * 100) / userData.fats)}
                 heading="Calorie Goal"
               />
             </div>
             <div>
               <div className="w-100 d-flex justify-content-between">
-                <h4>Water Intake </h4>
+                <h4>Water Intake (litres) </h4>
                 <div>
-                  <p className="text-light">{waterAmount + "/" + 6}</p>
+                  <h4 className="text-light">{waterAmount + "/" + 6} </h4>
                 </div>
               </div>
-              <Progress
-                done={Math.floor((waterAmount * 100) / 6)}
-                heading="Calorie Goal"
-              />
+              <Progress done={Math.floor((waterAmount * 100) / 6)} heading="Calorie Goal" />
             </div>
           </div>
         </div>

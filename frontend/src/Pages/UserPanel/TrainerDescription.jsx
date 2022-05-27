@@ -48,6 +48,17 @@ const TrainerDescription = () => {
     trainer_photo: "",
   });
 
+  function getAge(dateString) {
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  }
+
   const handlePlan = (trainerDetails) => {
     console.log(trainerDetails);
     navigate("/activity-plans", { state: { trainerDetails } });
@@ -76,6 +87,14 @@ const TrainerDescription = () => {
     <div className="page-container-user">
       <TopBar />
       <SideMenu />
+      <Button
+        className="m-2"
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        <i class="bx bx-arrow-back m-1"></i> Back
+      </Button>
       <h2>Trainer Description</h2>
       <div className="trainer-desc mt-3 d-flex flex-column">
         <div className="d-flex ">
@@ -84,7 +103,7 @@ const TrainerDescription = () => {
               <img src={trainerDetails.trainer_photo} alt="" width="400" />
               <div className="d-flex mt-5 flex-column">
                 <h4>{trainerDetails.user_id.full_name}</h4>
-                <h4>Age:</h4>
+                <h4>Age: {getAge(trainerDetails.dob)}</h4>
                 <h4>Gender: {trainerDetails.gender}</h4>
               </div>
             </div>
