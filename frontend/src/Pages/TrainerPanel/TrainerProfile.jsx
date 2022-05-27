@@ -309,7 +309,7 @@ const TrainerProfile = () => {
                 {...controlTrainerProfile('qualification')}
               />
               <p>{errorsTrainerProfile.qualification?.message}</p>
-              <label>Enter your company name</label>
+              <label>Enter company where you are currently working</label>
               <input
                 type="text"
                 id=""
@@ -319,7 +319,9 @@ const TrainerProfile = () => {
               />
 
               <p>{errorsTrainerProfile.company_name?.message}</p>
-              <label for="lname">Enter your designation </label>
+              <label for="lname">
+                Enter your designation of current company{' '}
+              </label>
               <input
                 type="text"
                 id=""

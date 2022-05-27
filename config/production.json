@@ -1,7 +1,8 @@
 {
   "db": "mongodb+srv://fitness_first:chulbulpandey@cluster0.zx6fv.mongodb.net/Fitness_Application?retryWrites=true&w=majority",
   "jwtPrivateKey": "FitnessAppKey",
-  "cloudinary-cloud-name":"fitness-applications",
-  "cloudinary-api-key":"316668557648285",
-  "cloudinary-api-secret":"ptT1OgZ-9x-_3p41EPsGiQ7AAnc"
+  "cloudinary-cloud-name": "fitness-applications",
+  "cloudinary-api-key": "316668557648285",
+  "cloudinary-api-secret": "ptT1OgZ-9x-_3p41EPsGiQ7AAnc",
+  "STRIPE_SECRET_TEST": "sk_test_51L1NMyAkwQT4XQAqrLC6bfmINon95ntBfSHXYNkvPKHkn8jLoydqXpZ9ZfjGb956N84zB3ke63Ibuq2UvwChnKxI00RT3P4C4U"
 }

@@ -129,6 +129,11 @@ const Login = () => {
               Do not have an account? <Link to="/register">Signup here</Link>{' '}
             </p>
           </div>
+          <div className="w-100 d-flex justify-content-center align-items-center">
+            <p className="signup-option text-light">
+              Forget Password? <Link to="/forgottenpassword">Reset here</Link>{' '}
+            </p>
+          </div>
         </div>
       </div>
       <ToastContainer />

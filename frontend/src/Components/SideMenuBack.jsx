@@ -1,22 +1,24 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 const SideMenuBack = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   return (
     <div className="sidebar">
       <div className="logo-content">
-        <div className="logo">
-          <i class="bx bx-dumbbell"></i>
-          <div className="logo-name">Fit</div>
-        </div>{" "}
+        <Link to="/user-dashboard">
+          <div className="logo">
+            <i class="bx bx-dumbbell"></i>
+            <div className="logo-name">Fit</div>
+          </div>{' '}
+        </Link>
       </div>
       <ul className="nav_list">
         <li
           onClick={() => {
-            navigate(-1);
+            navigate(-1)
           }}
         >
           <Link to="">
@@ -38,7 +40,7 @@ const SideMenuBack = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SideMenuBack;
+export default SideMenuBack

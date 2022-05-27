@@ -1,14 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 const SideMenuTrainer = () => {
   return (
     <div className="sidebar">
       <div className="logo-content">
-        <div className="logo">
-          <i class="bx bx-dumbbell"></i>
-          <div className="logo-name">Fit</div>
-        </div>{" "}
+        <Link to="/user-dashboard">
+          <div className="logo">
+            <i class="bx bx-dumbbell"></i>
+            <div className="logo-name">Fit</div>
+          </div>{' '}
+        </Link>
       </div>
       <ul className="nav_list">
         <li>
@@ -66,7 +68,7 @@ const SideMenuTrainer = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SideMenuTrainer;
+export default SideMenuTrainer
