@@ -72,6 +72,7 @@ const Messenger = () => {
     try {
       const res = await axios.post("message/", message);
       setMessages([...messages, res.data]);
+      setNewMessage("")
     } catch (err) {
       console.log(err);
     }
@@ -112,13 +113,18 @@ const Messenger = () => {
                     onChange={(e) => setNewMessage(e.target.value)}
                     value={newMessage}
                   ></textarea>
-                  <button className="chatSubmitButton " onClick={handleSubmit}>
+                  <button
+                    className="chatSubmitButton "
+                    onClick={handleSubmit}
+                  >
                     Send
                   </button>
                 </div>
               </>
             ) : (
-              <span className="noConversationText">chat is empty start new conversation</span>
+              <span className="noConversationText">
+                chat is empty start new conversation
+              </span>
             )}
           </div>
         </div>

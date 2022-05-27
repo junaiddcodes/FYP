@@ -13,6 +13,8 @@ var trainerDetailsSchema = mongoose.Schema({
   company_name: String,
   designation: String,
   time_worked: Number, //In Years
+  trainer_availblity: String,
+  location: { city: String, address: String, state: String },
 
   trainer_desc: String, //Trainer Description
 
@@ -40,7 +42,13 @@ function validateTrainer(data) {
     time_worked: Joi.number().positive().max(24),
     dob: Joi.date().required(),
     trainer_desc: Joi.string(),
+    trainer_availblity: Joi.string(),
     certificate_file: Joi.string(),
+    location: {
+      city: Joi.string(),
+      address: Joi.string(),
+      state: Joi.string(),
+    },
     trainer_photo: Joi.string(),
     cloudinary_id: Joi.string(),
   });

@@ -1,26 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
-import Modal from "react-modal";
-import { ImCross } from "react-icons/im";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
+import React, { useEffect, useState } from 'react'
+import { Button } from 'react-bootstrap'
+import Modal from 'react-modal'
+import { ImCross } from 'react-icons/im'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
 // import Select from "@mui/material/Select";
-import TopBar from "../../Components/TopBar";
-import SideMenu from "../../Components/SideMenu";
-import Select from "react-select";
-import { useNavigate } from "react-router-dom";
-import userService from "../../services/UserService";
-import { useLocation } from "react-router-dom";
-import Dropdown from "../../Components/dropdown";
-import { TextField } from "@mui/material";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import TopBar from '../../Components/TopBar'
+import SideMenu from '../../Components/SideMenu'
+import Select from 'react-select'
+import { useNavigate } from 'react-router-dom'
+import userService from '../../services/UserService'
+import { useLocation } from 'react-router-dom'
+import Dropdown from '../../Components/dropdown'
+import { TextField } from '@mui/material'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 
 const AddExercise = () => {
-  const [excerciseCheck, setExcerciseCheck] = useState(true);
-  const [editData, setEditData] = useState({});
+  const [excerciseCheck, setExcerciseCheck] = useState(true)
+  const [editData, setEditData] = useState({})
   const [currentBurn, setCurrentBurn] = useState({
     excercise_calories: 0,
     excercise_proteins: 0,
@@ -40,23 +40,28 @@ const AddExercise = () => {
   const [userDetails, setUserDetails] = useState(location.state?.userData);
   const [calorieData, setCalorieData] = useState(location.state?.currentCalorie);
   const schema = yup.object().shape({
-    time_minute: yup.number().required("Time cannot be Empty"),
-  });
+    time_minute: yup
+      .number()
+      .typeError('Cannot be Empty')
+      .min(1, 'Time Cannot be less than 1 minute')
+      .max(90, 'Time cannot be more than 90 minutes')
+      .required('Time cannot be Empty'),
+  })
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-  });
+  })
 
   function updateExcercise(data) {
-    setModalOpen(false);
+    setModalOpen(false)
     if (!value) {
-      setExcerciseCheck(false);
+      setExcerciseCheck(false)
     } else {
-      setExcerciseCheck(true);
-      var burnedCalories = calorieBurnCalculation(data.time_minute);
+      setExcerciseCheck(true)
+      var burnedCalories = calorieBurnCalculation(data.time_minute)
       var excercisePost = {
         customer_Id: user_id,
         excercise_name: value.excercise_name,
@@ -70,49 +75,49 @@ const AddExercise = () => {
         excercise_time: data.time_minute,
         met_value: value.met_value,
         time_date: new Date().getTime(),
-      };
+      }
 
-      console.log(excercisePost);
+      console.log(excercisePost)
 
       userService
         .editExcerciseData(editExcerciselId, excercisePost)
         .then((e) => {
-          setValue(null);
-          setEditModalOpen(false);
-          getExcerciseData();
-          console.log("Excercise Update Successfully");
+          setValue(null)
+          setEditModalOpen(false)
+          getExcerciseData()
+          console.log('Excercise Update Successfully')
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     }
   }
   function getSingleExcercise(id) {
-    console.log(id);
+    console.log(id)
     userService
       .get_single_excercise(id)
       .then((res) => {
-        setValue(res.crud);
-        console.log(res);
+        setValue(res.crud)
+        console.log(res)
       })
       .catch((err) => {
-        console.log(err);
-      });
+        console.log(err)
+      })
   }
   //Function to caluclate calorie Burn per minute
   function calorieBurnCalculation(time) {
-    var calorieBurn = value.met_value * 3.5 * (userDetails.weight / 200);
-    return calorieBurn;
+    var calorieBurn = value.met_value * 3.5 * (userDetails.weight / 200)
+    return calorieBurn
   }
 
   function postExcercise(data) {
-    setModalOpen(false);
+    setModalOpen(false)
     if (!value) {
-      setExcerciseCheck(false);
+      setExcerciseCheck(false)
     } else {
-      setExcerciseCheck(true);
+      setExcerciseCheck(true)
 
-      var burnedCalories = calorieBurnCalculation(data.time_minute);
+      var burnedCalories = calorieBurnCalculation(data.time_minute)
 
       var excercisePost = {
         customer_Id: user_id,
@@ -127,34 +132,34 @@ const AddExercise = () => {
         excercise_time: data.time_minute,
         met_value: value.met_value,
         time_date: new Date().getTime(),
-      };
+      }
 
-      console.log(excercisePost);
+      console.log(excercisePost)
 
       userService
         .postExcercise(excercisePost)
         .then((e) => {
-          setValue(null);
-          setModalOpen(false);
-          getExcerciseData();
-          console.log("Excercise Posted Successfully");
+          setValue(null)
+          setModalOpen(false)
+          getExcerciseData()
+          console.log('Excercise Posted Successfully')
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     }
   }
 
   function getExcerciseAPIData(e) {
-    console.log(e);
+    console.log(e)
     if (e) {
-      var x = e;
+      var x = e
       var exSet = {
         excercise_name: x,
-      };
+      }
       userService.getExcercise(exSet).then((data) => {
-        setExcerciseOptions(data.crud);
-      });
+        setExcerciseOptions(data.crud)
+      })
     }
   }
 
@@ -165,24 +170,28 @@ const AddExercise = () => {
         excercise_proteins: 0,
         excercise_carbs: 0,
         excercise_fats: 0,
-      };
+      }
       userService
         .getExcerciseData(user_id)
         .then((res) => {
-          setExcerciseData(res.crud);
+          setExcerciseData(res.crud)
           res.crud.map((e) => {
-            burnCalorie.excercise_calories = burnCalorie.excercise_calories + e.excercise_calories;
-            burnCalorie.excercise_proteins = burnCalorie.excercise_proteins + e.excercise_proteins;
-            burnCalorie.excercise_carbs = burnCalorie.excercise_carbs + e.excercise_carbs;
-            burnCalorie.excercise_fats = burnCalorie.excercise_fats + e.excercise_fats;
-          });
-          setCurrentBurn(burnCalorie);
+            burnCalorie.excercise_calories =
+              burnCalorie.excercise_calories + e.excercise_calories
+            burnCalorie.excercise_proteins =
+              burnCalorie.excercise_proteins + e.excercise_proteins
+            burnCalorie.excercise_carbs =
+              burnCalorie.excercise_carbs + e.excercise_carbs
+            burnCalorie.excercise_fats =
+              burnCalorie.excercise_fats + e.excercise_fats
+          })
+          setCurrentBurn(burnCalorie)
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     } else {
-      console.log("Empty State");
+      console.log('Empty State')
     }
   }
 
@@ -191,24 +200,25 @@ const AddExercise = () => {
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
     if (userService.isLoggedIn() == false) {
-      navigate("/login");
+      navigate('/login')
     } else {
       if (
-        userService.getLoggedInUser().user_type == "trainer" ||
-        userService.getLoggedInUser().user_type == "gym" ||
-        userService.getLoggedInUser().user_type == "admin"
+        userService.getLoggedInUser().user_type == 'trainer' ||
+        userService.getLoggedInUser().user_type == 'gym' ||
+        userService.getLoggedInUser().user_type == 'admin'
       ) {
-        navigate("/login");
+        navigate('/login')
       }
     }
-    getExcerciseData();
-  }, []);
+    getExcerciseData()
+    getExcerciseAPIData('a')
+  }, [])
   const workoutOptions = [
-    { value: "benchpress", label: "Bench Press" },
-    { value: "running", label: "Running" },
-    { value: "swimming", label: "Swimming" },
-    { value: "skipping", label: "Skipping Rope" },
-  ];
+    { value: 'benchpress', label: 'Bench Press' },
+    { value: 'running', label: 'Running' },
+    { value: 'swimming', label: 'Swimming' },
+    { value: 'skipping', label: 'Skipping Rope' },
+  ]
 
   return (
     <div className="page-container-user">
@@ -228,10 +238,13 @@ const AddExercise = () => {
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
               <h4>Calories Gained: {calorieData.food_calories}</h4>
-              <h4>Calories Burnt: {Math.floor(currentBurn.excercise_calories)} </h4>
+              <h4>
+                Calories Burnt: {Math.floor(currentBurn.excercise_calories)}{' '}
+              </h4>
               <h4>
                 Net Calories:
-                {calorieData.food_calories - Math.floor(currentBurn.excercise_calories)}
+                {calorieData.food_calories -
+                  Math.floor(currentBurn.excercise_calories)}
               </h4>
 
               <h4>Calorie Goal: {Math.floor(userDetails.calorie_goal)}</h4>
@@ -244,7 +257,7 @@ const AddExercise = () => {
         <h2 className="mt-3">Today's Exercises</h2>
         <Button
           onClick={() => {
-            setModalOpen(true);
+            setModalOpen(true)
           }}
           className="m-3"
         >
@@ -255,39 +268,39 @@ const AddExercise = () => {
         <Modal
           style={{
             overlay: {
-              position: "fixed",
+              position: 'fixed',
               top: 0,
               left: 0,
               right: 0,
               bottom: 0,
 
-              backgroundColor: "rgba(0, 0, 0, 0.75)",
+              backgroundColor: 'rgba(0, 0, 0, 0.75)',
             },
             content: {
-              color: "white",
-              position: "absolute",
-              top: "40px",
-              left: "40px",
-              right: "40px",
-              bottom: "40px",
-              background: "rgba(0,30,60,1)",
-              overflow: "auto",
-              WebkitOverflowScrolling: "touch",
-              borderRadius: "1rem",
-              outline: "none",
-              padding: "20px",
+              color: 'white',
+              position: 'absolute',
+              top: '40px',
+              left: '40px',
+              right: '40px',
+              bottom: '40px',
+              background: 'rgba(0,30,60,1)',
+              overflow: 'auto',
+              WebkitOverflowScrolling: 'touch',
+              borderRadius: '1rem',
+              outline: 'none',
+              padding: '20px',
             },
           }}
           className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
           isOpen={modalOpen}
           onRequestClose={() => {
-            setModalOpen(false);
+            setModalOpen(false)
           }}
         >
           <div className="modal-inner w-75 d-flex flex-column">
             <a
               onClick={() => {
-                setModalOpen(false);
+                setModalOpen(false)
               }}
             >
               <i class="bx bx-x"></i>
@@ -295,7 +308,7 @@ const AddExercise = () => {
             <form onSubmit={handleSubmit(postExcercise)} className="d-flex flex-column">
               <div>
                 <Dropdown
-                  prompt="Select Excercise"
+                  prompt="Select Excercise (E.g. 'Push ups')"
                   value={value}
                   onChange={setValue}
                   options={excersiseOptions}
@@ -303,7 +316,7 @@ const AddExercise = () => {
                   getData={getExcerciseAPIData}
                 />
                 {!excerciseCheck ? (
-                  <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+                  <p id="error-text" style={{ color: 'rgb(255, 34, 34)' }}>
                     Food cannot be Empty
                   </p>
                 ) : null}
@@ -316,13 +329,13 @@ const AddExercise = () => {
                   label="Time"
                   variant="outlined"
                   name="time_minute"
-                  {...register("time_minute")}
+                  {...register('time_minute')}
                   placeholder="Enter time (in minutes)"
                   InputLabelProps={{
-                    style: { color: "#777" },
+                    style: { color: '#777' },
                   }}
                 />
-                <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+                <p id="error-text" style={{ color: 'rgb(255, 34, 34)' }}>
                   {errors.time_minute?.message}
                 </p>
               </div>
@@ -366,51 +379,51 @@ const AddExercise = () => {
                             <Button
                               className="btn btn-warning edit-btn"
                               onClick={() => {
-                                setEditModalOpen(true);
-                                setEditData(e);
-                                setEditExcerciseId(e._id);
-                                getSingleExcercise(e.excercise_id);
+                                setEditModalOpen(true)
+                                setEditData(e)
+                                setEditExcerciseId(e._id)
+                                getSingleExcercise(e.excercise_id)
                               }}
                             >
-                              Edit{" "}
+                              Edit{' '}
                             </Button>
                             <div className="modal-container">
                               <Modal
                                 style={{
                                   overlay: {
-                                    position: "fixed",
+                                    position: 'fixed',
                                     top: 0,
                                     left: 0,
                                     right: 0,
                                     bottom: 0,
 
-                                    backgroundColor: "rgba(0, 0, 0, 0.75)",
+                                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
                                   },
                                   content: {
-                                    color: "white",
-                                    position: "absolute",
-                                    top: "40px",
-                                    left: "40px",
-                                    right: "40px",
-                                    bottom: "40px",
-                                    background: "rgba(0,30,60,1)",
-                                    overflow: "auto",
-                                    WebkitOverflowScrolling: "touch",
-                                    borderRadius: "1rem",
-                                    outline: "none",
-                                    padding: "20px",
+                                    color: 'white',
+                                    position: 'absolute',
+                                    top: '40px',
+                                    left: '40px',
+                                    right: '40px',
+                                    bottom: '40px',
+                                    background: 'rgba(0,30,60,1)',
+                                    overflow: 'auto',
+                                    WebkitOverflowScrolling: 'touch',
+                                    borderRadius: '1rem',
+                                    outline: 'none',
+                                    padding: '20px',
                                   },
                                 }}
                                 className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
                                 isOpen={editModalOpen}
                                 onRequestClose={() => {
-                                  setEditModalOpen(false);
+                                  setEditModalOpen(false)
                                 }}
                               >
                                 <div className="modal-inner w-75 d-flex flex-column">
                                   <a
                                     onClick={() => {
-                                      setEditModalOpen(false);
+                                      setEditModalOpen(false)
                                     }}
                                   >
                                     <i class="bx bx-x"></i>
@@ -429,7 +442,10 @@ const AddExercise = () => {
                                         getData={getExcerciseAPIData}
                                       />
                                       {!excerciseCheck ? (
-                                        <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+                                        <p
+                                          id="error-text"
+                                          style={{ color: 'rgb(255, 34, 34)' }}
+                                        >
                                           Food cannot be Empty
                                         </p>
                                       ) : null}
@@ -443,13 +459,16 @@ const AddExercise = () => {
                                         variant="outlined"
                                         name="time_minute"
                                         defaultValue={editData.excercise_time}
-                                        {...register("time_minute")}
+                                        {...register('time_minute')}
                                         placeholder="Enter time (in minutes)"
                                         InputLabelProps={{
-                                          style: { color: "#777" },
+                                          style: { color: '#777' },
                                         }}
                                       />
-                                      <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+                                      <p
+                                        id="error-text"
+                                        style={{ color: 'rgb(255, 34, 34)' }}
+                                      >
                                         {errors.time_minute?.message}
                                       </p>
                                     </div>
@@ -465,7 +484,7 @@ const AddExercise = () => {
                             <a
                               className="delete-icon"
                               onClick={() => {
-                                setConfirmDelete(true);
+                                setConfirmDelete(true)
                               }}
                             >
                               <ImCross />
@@ -474,39 +493,39 @@ const AddExercise = () => {
                               <Modal
                                 style={{
                                   overlay: {
-                                    position: "fixed",
+                                    position: 'fixed',
                                     top: 0,
                                     left: 0,
                                     right: 0,
                                     bottom: 0,
 
-                                    backgroundColor: "rgba(0, 0, 0, 0.75)",
+                                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
                                   },
                                   content: {
-                                    color: "white",
-                                    position: "absolute",
-                                    top: "40px",
-                                    left: "40px",
-                                    right: "40px",
-                                    bottom: "40px",
-                                    background: "rgba(0,30,60,1)",
-                                    overflow: "auto",
-                                    WebkitOverflowScrolling: "touch",
-                                    borderRadius: "1rem",
-                                    outline: "none",
-                                    padding: "20px",
+                                    color: 'white',
+                                    position: 'absolute',
+                                    top: '40px',
+                                    left: '40px',
+                                    right: '40px',
+                                    bottom: '40px',
+                                    background: 'rgba(0,30,60,1)',
+                                    overflow: 'auto',
+                                    WebkitOverflowScrolling: 'touch',
+                                    borderRadius: '1rem',
+                                    outline: 'none',
+                                    padding: '20px',
                                   },
                                 }}
                                 className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
                                 isOpen={confirmDelete}
                                 onRequestClose={() => {
-                                  setConfirmDelete(false);
+                                  setConfirmDelete(false)
                                 }}
                               >
                                 <div className="modal-inner w-75 d-flex flex-column">
                                   <a
                                     onClick={() => {
-                                      setConfirmDelete(false);
+                                      setConfirmDelete(false)
                                     }}
                                   >
                                     <i class="bx bx-x"></i>
@@ -524,7 +543,7 @@ const AddExercise = () => {
                                         getExcerciseData();
                                       });
 
-                                      setConfirmDelete(false);
+                                      setConfirmDelete(false)
                                     }}
                                   >
                                     Yes
@@ -533,7 +552,7 @@ const AddExercise = () => {
                                     className="m-3"
                                     type="submit "
                                     onClick={() => {
-                                      setConfirmDelete(false);
+                                      setConfirmDelete(false)
                                     }}
                                   >
                                     No
@@ -544,7 +563,7 @@ const AddExercise = () => {
                           </div>
                         </td>
                       </tr>
-                    );
+                    )
                   })
                 )}
               </tbody>
@@ -553,7 +572,7 @@ const AddExercise = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AddExercise;
+export default AddExercise

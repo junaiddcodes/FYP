@@ -1,57 +1,59 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react'
+import { NavLink } from 'react-router-dom'
 
 const SideMenuTrainer = () => {
   return (
     <div className="sidebar">
       <div className="logo-content">
-        <div className="logo">
-          <i class="bx bx-dumbbell"></i>
-          <div className="logo-name">Fit</div>
-        </div>{" "}
+        <Link to="/user-dashboard">
+          <div className="logo">
+            <i class="bx bx-dumbbell"></i>
+            <div className="logo-name">Fit</div>
+          </div>{' '}
+        </Link>
       </div>
       <ul className="nav_list">
         <li>
-          <Link to="/trainer-dashboard">
+          <NavLink to="/trainer-dashboard" activeClassName="active">
             <i class="bx bxs-home-circle">
               <span className="links_name">Home</span>
             </i>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/trainer-profile">
+          <NavLink to="/trainer-profile" activeClassName="active">
             <i class="bx bxs-user">
               <span className="links_name">Profile</span>
             </i>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/trainer-activity-plans">
+          <NavLink to="/trainer-activity-plans" activeClassName="active">
             <i class="bx bx-run">
               <span className="links_name">Activity plans</span>
             </i>
-          </Link>
+          </NavLink>
         </li>
         {/* <li>
-          <Link to="">
+          <NavLink to="">
             <i class="bx bx-history">
               <span className="links_name">History</span>
             </i>
-          </Link>
+          </NavLink>
         </li> */}
         <li>
-          <Link to="/query">
+          <NavLink to="/query" activeClassName="active">
             <i class="bx bx-question-mark">
               <span className="links_name">Query</span>
             </i>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/Messenger">
+          <NavLink to="/Messenger" activeClassName="active">
             <i class="bx bx-chat">
               <span className="links_name">Chat</span>
             </i>
-          </Link>
+          </NavLink>
         </li>
       </ul>
 
@@ -66,7 +68,7 @@ const SideMenuTrainer = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SideMenuTrainer;
+export default SideMenuTrainer

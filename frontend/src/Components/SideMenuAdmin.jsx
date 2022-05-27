@@ -1,48 +1,50 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react'
+import { NavLink } from 'react-router-dom'
 
 const SideMenuAdmin = () => {
   return (
     <div className="sidebar">
       <div className="logo-content">
-        <div className="logo">
-          <i class="bx bx-dumbbell"></i>
-          <div className="logo-name">Fit</div>
-        </div>{" "}
+        <Link to="/user-dashboard">
+          <div className="logo">
+            <i class="bx bx-dumbbell"></i>
+            <div className="logo-name">Fit</div>
+          </div>{' '}
+        </Link>
       </div>
       <ul className="nav_list">
         <li>
-          <Link to="/admin-dashboard">
+          <NavLink to="/admin-dashboard" activeClassName="active">
             <i class="bx bxs-home-circle">
-              <span className="links_name">Home</span>
+              <span className="NavLinks_name">Home</span>
             </i>
-          </Link>
+          </NavLink>
         </li>
         {/* <li>
           <a href="#gym-reqs">
             <i class="bx bx-dumbbell">
-              <span className="links_name">Gym Profiles</span>
+              <span className="NavLinks_name">Gym Profiles</span>
             </i>
           </a>
         </li>
         <li>
           <a href="#trainer-reqs">
             <i class="bx bxs-user">
-              <span className="links_name">Trainer Profiles</span>
+              <span className="NavLinks_name">Trainer Profiles</span>
             </i>
           </a>
         </li>
         <li>
           <a href="#queries">
             <i class="bx bxs-message-rounded-dots">
-              <span className="links_name">Queries</span>
+              <span className="NavLinks_name">Queries</span>
             </i>
           </a>
         </li>
         <li>
           <a href="#payment">
             <i class="bx bxs-bank">
-              <span className="links_name">Payment Reqs</span>
+              <span className="NavLinks_name">Payment Reqs</span>
             </i>
           </a>
         </li> */}
@@ -59,7 +61,7 @@ const SideMenuAdmin = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SideMenuAdmin;
+export default SideMenuAdmin

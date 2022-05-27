@@ -1,63 +1,63 @@
-import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
-import Modal from "react-modal";
-import { FaSearch } from "react-icons/fa";
-import Tooltip from "@mui/material/Tooltip";
-import { ImCross } from "react-icons/im";
-import { MdLocationPin } from "react-icons/md";
-import { MdMyLocation } from "react-icons/md";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import TopBar from "../../Components/TopBar";
-import SideMenu from "../../Components/SideMenu";
-import { useNavigate, useLocation } from "react-router-dom";
-import userService from "../../services/UserService";
-import trainerService from "../../services/TrainerService";
+import React, { useEffect, useState } from 'react'
+import { Button } from 'react-bootstrap'
+import Modal from 'react-modal'
+import { FaSearch } from 'react-icons/fa'
+import Tooltip from '@mui/material/Tooltip'
+import { ImCross } from 'react-icons/im'
+import { MdLocationPin } from 'react-icons/md'
+import { MdMyLocation } from 'react-icons/md'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import Select from '@mui/material/Select'
+import TopBar from '../../Components/TopBar'
+import SideMenu from '../../Components/SideMenu'
+import { useNavigate, useLocation } from 'react-router-dom'
+import userService from '../../services/UserService'
+import trainerService from '../../services/TrainerService'
 
 const ActivityPlans = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const [allPlans, setAllPlans] = useState([]);
-  var name = "";
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [allPlans, setAllPlans] = useState([])
+  var name = ''
   // const data = location.state.e;
-  var userId = "";
+  var userId = ''
   useEffect(() => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
     if (userService.isLoggedIn() == false) {
-      navigate("/login");
+      navigate('/login')
     } else {
-      userId = userService.getLoggedInUser()._id;
+      userId = userService.getLoggedInUser()._id
       if (
-        userService.getLoggedInUser().user_type == "trainer" ||
-        userService.getLoggedInUser().user_type == "gym" ||
-        userService.getLoggedInUser().user_type == "admin"
+        userService.getLoggedInUser().user_type == 'trainer' ||
+        userService.getLoggedInUser().user_type == 'gym' ||
+        userService.getLoggedInUser().user_type == 'admin'
       ) {
-        navigate("/login");
+        navigate('/login')
       }
     }
 
     if (location.state) {
       // data = location.state.trainerDetails;
-      console.log("state data = ", location.state.trainerDetails);
-      name = location.state.trainerDetails.user_id.full_name;
+      console.log('state data = ', location.state.trainerDetails)
+      name = location.state.trainerDetails.user_id.full_name
       trainerService
         .get_plans(location.state.trainerDetails._id)
         .then((data) => {
-          console.log("plan data = ", data);
-          setAllPlans(data.crud);
+          console.log('plan data = ', data)
+          setAllPlans(data.crud)
         })
         .catch((err) => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     } else {
-      console.log("state empty");
+      console.log('state empty')
     }
     // console.log(location.state.e);
-  }, []);
+  }, [])
   return (
     <div className="page-container-user">
       <TopBar />
@@ -99,12 +99,12 @@ const ActivityPlans = () => {
                   </div>
                 </div>
               </div>
-            );
+            )
           })
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ActivityPlans;
+export default ActivityPlans

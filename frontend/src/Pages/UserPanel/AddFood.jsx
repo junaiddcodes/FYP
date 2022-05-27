@@ -205,8 +205,9 @@ const AddFood = () => {
         navigate("/login");
       }
     }
-    getMealData();
-  }, []);
+    getMealData()
+    getFoodData("a")
+  }, [])
 
   var [foodOptions, setFoodOptions] = useState([]);
 

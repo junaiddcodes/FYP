@@ -219,7 +219,7 @@ const UserDashboard = () => {
                 <h4>Proteins (grams)</h4>
                 <div>
                   <h4 className="text-light font-weight-bold">
-                    {currentCalorie.food_proteins + "/" + Math.floor(userData.protein)}
+                    {Math.floor(currentCalorie.food_proteins) + "/" + Math.floor(userData.protein)}
                   </h4>
                 </div>
               </div>
@@ -233,7 +233,7 @@ const UserDashboard = () => {
                 <h4>Carbohydrates (grams)</h4>
                 <div>
                   <h4 className="text-light">
-                    {currentCalorie.food_carbs + "/" + Math.floor(userData.carbs)}
+                    {Math.floor(currentCalorie.food_carbs) + "/" + Math.floor(userData.carbs)}
                   </h4>
                 </div>
               </div>
@@ -247,7 +247,7 @@ const UserDashboard = () => {
                 <h4>Fats (grams)</h4>
                 <div>
                   <h4 className="text-light">
-                    {currentCalorie.food_fats + "/" + Math.floor(userData.fats)}
+                    {Math.floor(currentCalorie.food_fats) + "/" + Math.floor(userData.fats)}
                   </h4>
                 </div>
               </div>

@@ -43,9 +43,9 @@ const TrainerDescription = () => {
     user_id: { full_name: "", email: "" },
     exercise_type: "",
     gender: "",
-    certificate_file: "",
     trainer_desc: "",
     trainer_photo: "",
+    trainer_availblity:"",
   });
 
   function getAge(dateString) {
@@ -130,8 +130,8 @@ const TrainerDescription = () => {
           </div>
         </div>
         <div className="m-4 d-flex flex-column">
-          <h4>Exercise Type:{trainerDetails.exercise_type}</h4>
-          <h4>Qaulification and Certification:{trainerDetails.certificate_file}</h4>
+          <h4>Exercise Type: {trainerDetails.exercise_type}</h4>
+          <h4>Trainer Avaibility: {trainerDetails.trainer_availblity}</h4>
           <h4>About: </h4>
           <p> {trainerDetails.trainer_desc}</p>
         </div>

@@ -35,25 +35,31 @@ const gymProfileSchema = yup.object().shape({
     .string()
     .min(200, "Description must be at least 200 characters!")
     .required("Gym description can't be empty"),
-  gym_contact_no: yup.string().min(11, "Contact number must be at least 11 digits!").required(),
+  gym_contact_no: yup
+    .string()
+    .min(11, "Contact number must be at least 11 digits!")
+    .max(11, "Contact number must be at Most 11 digits!")
+    .required(),
   gym_membership_price: yup
     .number()
     .typeError("Membership price is required!")
     .positive("Membership price should be a positive number")
+    .max(50000, "Price should not be more than Rs 50,000")
+    .min(1000, "Price should not be less than Rs 1,000")
     .required("Gym membership price is required!"),
 
-  gender_facilitation: yup.string().required("An option is required").nullable(),
+  gender_facilitation: yup
+    .string()
+    .required("An option is required")
+    .nullable(),
   gym_photo: yup.string(),
 });
 
 const GymProfile = () => {
   const navigate = useNavigate();
-  const [fileName1, setFileName1] = React.useState("");
-  const [fileName2, setFileName2] = React.useState("");
-  const [fileName3, setFileName3] = React.useState("");
-  const [previewImage, setPreviewImage] = React.useState("");
-  const [previewImage2, setPreviewImage2] = React.useState("");
-  const [previewImage3, setPreviewImage3] = React.useState("");
+  const [fileName1, setFileName] = React.useState([]);
+  const [previewImage, setPreviewImage] = React.useState([]);
+
   const [isProfile, setIsProfile] = useState(false);
   const [isAsk, setIsAsk] = useState(false);
   // const [male, setMale] = useState(false);
@@ -67,6 +73,7 @@ const GymProfile = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [loggedInId, setLoggedInId] = useState("");
   const [file, setFile] = useState(null);
+  const [errorPic, setPicError] = useState(false);
 
   var loginId = "";
 
@@ -136,9 +143,6 @@ const GymProfile = () => {
   }, [loginId]);
 
   const onChangeFile = (e) => {
-    setFileName1(e.target.files[0]);
-    setFileName2(e.target.files[1]);
-    setFileName3(e.target.files[2]);
   };
 
   const changeOnClick = (e) => {
@@ -161,13 +165,16 @@ const GymProfile = () => {
     gymService
       .update_gym_photo(formData, loggedInId)
       .then((data) => {
+        setPicError(false);
         console.log(data);
         setIsGymPicForm(false);
         setIsProfile(true);
         page_refresh();
       })
       .catch((err) => {
-        console.log(err);
+        if (err.response.status == 500) {
+          setPicError(true);
+        }
       });
     // setIsProfile(true);
     // page_refresh();
@@ -231,7 +238,9 @@ const GymProfile = () => {
       <h2>Gym Profile</h2>
       {isAsk ? (
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
-          <h4>There is no profile present. Click below to create a gym profile:</h4>
+          <h4>
+            There is no profile present. Click below to create a gym profile:
+          </h4>
           <Button
             className="w-25 mt-4"
             onClick={() => {
@@ -244,110 +253,101 @@ const GymProfile = () => {
           </Button>
         </div>
       ) : isGymForm ? (
-        <div>
-          <Button
-            className="m-2"
-            onClick={() => {
-              page_refresh();
-            }}
+        <div className="gym-box mt-3 d-flex flex-column align-items-left">
+          <form
+            onSubmit={handleSubmitGymProfile(submitGymProfileForm)}
+            className="d-flex flex-column"
           >
-            <i class="bx bx-arrow-back m-1"></i> Back
-          </Button>
-          <div className="gym-box mt-3 d-flex flex-column align-items-left">
-            <form
-              onSubmit={handleSubmitGymProfile(submitGymProfileForm)}
-              className="d-flex flex-column"
-            >
-              <div className="input-text d-flex flex-column">
-                {/* <p>{gymProfileDetails.user_id.full_name}</p> */}
-                {/* <p>{gymProfileDetails.location}</p> */}
-                {/* <p>{loggedInId}</p> */}
-                <label for="">Gym Location</label>
-                <label for="">State</label>
-                <input
-                  type="text"
-                  name="state"
-                  defaultValue={getGym.location?.state}
-                  {...controlGymProfile("state")}
-                />
-                <p>{errorsGymProfile.state?.message}</p>
-                <label for="">City</label>
-                <input
-                  type="text"
-                  name="city"
-                  defaultValue={getGym.location?.city}
-                  {...controlGymProfile("city")}
-                />
-                <p>{errorsGymProfile.city?.message}</p>
-                <label for="">Address</label>
-                <input
-                  type="text"
-                  name="address"
-                  defaultValue={getGym.location?.address}
-                  {...controlGymProfile("address")}
-                />
-                <p>{errorsGymProfile.address?.message}</p>
-
-                <label for="">Gym Contact Number</label>
-                <input
-                  type="text"
-                  name="gym_contact_no"
-                  defaultValue={getGym.gym_contact_no}
-                  {...controlGymProfile("gym_contact_no")}
-                />
-                <p>{errorsGymProfile.gym_contact_no?.message}</p>
-                <label for="">Gym Membership Price</label>
-                <input
-                  type="Number"
-                  name="gym_membership_price"
-                  defaultValue={getGym.gym_membership_price}
-                  {...controlGymProfile("gym_membership_price")}
-                />
-                <p>{errorsGymProfile.gym_membership_price?.message}</p>
-                <label for="">Gender Facilitation</label>
-              </div>
-              <div className="d-flex mt-2 gender-radio justify-content-start">
-                <input
-                  type="radio"
-                  value="Male"
-                  name="gender_facilitaion"
-                  defaultValue={getGym.gender_facilitation}
-                  // checked={male}
-                  {...controlGymProfile("gender_facilitation")}
-                />
-                <h4>Male</h4>
-                <input
-                  type="radio"
-                  value="Female"
-                  defaultValue={getGym.gender_facilitation}
-                  // {getGym.gender_facilitation == female ? checked="true" : checked="false"}
-                  // checked={female}
-                  name="gender_facilitaion"
-                  {...controlGymProfile("gender_facilitation")}
-                />
-                <h4>Female</h4>
-                <input
-                  type="radio"
-                  value="Both"
-                  name="gender_facilitaion"
-                  // checked={both}
-                  // checked={getGym.gender_facilitation}
-                  {...controlGymProfile("gender_facilitation")}
-                  defaultValue={getGym.gender_facilitation}
-                />
-                <h4>Both</h4>
-              </div>
-              <p>{errorsGymProfile.gender_facilitation?.message}</p>
-
-              <label for="">Gym Description</label>
-
-              <textarea
-                className="text-field mt-2"
-                name="gym_desc"
-                {...controlGymProfile("gym_desc")}
-                defaultValue={getGym.gym_desc}
+            <div className="input-text d-flex flex-column">
+              {/* <p>{gymProfileDetails.user_id.full_name}</p> */}
+              {/* <p>{gymProfileDetails.location}</p> */}
+              {/* <p>{loggedInId}</p> */}
+              <label for="">Gym Location</label>
+              <label for="">State</label>
+              <input
+                type="text"
+                name="state"
+                defaultValue={getGym.location?.state}
+                {...controlGymProfile("state")}
               />
-              <p>{errorsGymProfile.gym_desc?.message}</p>
+              <p>{errorsGymProfile.state?.message}</p>
+              <label for="">City</label>
+              <input
+                type="text"
+                name="city"
+                defaultValue={getGym.location?.city}
+                {...controlGymProfile("city")}
+              />
+              <p>{errorsGymProfile.city?.message}</p>
+              <label for="">Address</label>
+              <input
+                type="text"
+                name="address"
+                defaultValue={getGym.location?.address}
+                {...controlGymProfile("address")}
+              />
+              <p>{errorsGymProfile.address?.message}</p>
+
+              <label for="">Gym Contact Number</label>
+              <input
+                type="text"
+                name="gym_contact_no"
+                defaultValue={getGym.gym_contact_no}
+                {...controlGymProfile("gym_contact_no")}
+              />
+              <p>{errorsGymProfile.gym_contact_no?.message}</p>
+              <label for="">Gym Membership Price (in Rs)</label>
+              <input
+                type="Number"
+                name="gym_membership_price"
+                defaultValue={getGym.gym_membership_price}
+                {...controlGymProfile("gym_membership_price")}
+              />
+              <p>{errorsGymProfile.gym_membership_price?.message}</p>
+              <label for="">Gender Facilitation</label>
+            </div>
+            <div className="d-flex mt-2 gender-radio justify-content-start">
+              <input
+                type="radio"
+                value="Male"
+                name="gender_facilitaion"
+                defaultValue={getGym.gender_facilitation}
+                // checked={male}
+                {...controlGymProfile("gender_facilitation")}
+              />
+              <h4>Male</h4>
+              <input
+                type="radio"
+                value="Female"
+                defaultValue={getGym.gender_facilitation}
+                // {getGym.gender_facilitation == female ? checked="true" : checked="false"}
+                // checked={female}
+                name="gender_facilitaion"
+                {...controlGymProfile("gender_facilitation")}
+              />
+              <h4>Female</h4>
+              <input
+                type="radio"
+                value="Both"
+                name="gender_facilitaion"
+                // checked={both}
+                // checked={getGym.gender_facilitation}
+                {...controlGymProfile("gender_facilitation")}
+                defaultValue={getGym.gender_facilitation}
+              />
+              <h4>Both</h4>
+            </div>
+            <p>{errorsGymProfile.gender_facilitation?.message}</p>
+
+            <label for="">Gym Description</label>
+
+            <textarea
+              className="text-field mt-2"
+              name="gym_desc"
+              {...controlGymProfile("gym_desc")}
+              defaultValue={getGym.gym_desc}
+            />
+            <p>{errorsGymProfile.gym_desc?.message}</p>
 
               {/* <div className="upload-photo-card">
                 <TransformWrapper>
@@ -374,27 +374,24 @@ const GymProfile = () => {
                 </div>
               </form> */}
 
-              <p className="mt-3 general-p">
-                Submit Profile to the Admin. Admin will review your profile and Approve it:
-              </p>
-              <Button type="submit" className="w-25">
-                Submit
-              </Button>
-            </form>
-          </div>
+            <p className="mt-3 general-p">
+              Submit Profile to the Admin. Admin will review your profile and
+              Approve it:
+            </p>
+            <Button type="submit" className="w-25">
+              Submit
+            </Button>
+          </form>
         </div>
       ) : isGymPicForm ? (
         <div>
-          <Button
-            className="m-2"
-            onClick={() => {
-              setIsProfile(true);
-              setIsGymPicForm(false);
-            }}
-          >
-            <i class="bx bx-arrow-back m-1"></i> Back
-          </Button>
           <p className="general-p">Please upload at least 3 gym pictures</p>
+
+          {errorPic ? (
+            <p className="text-danger">
+              Please Enter Right Format (PNG,JPEG,JPG)
+            </p>
+          ) : null}
 
           <form onSubmit={changeOnClick} encType="multipart/form-data">
             <div className="upload-form">
@@ -405,7 +402,9 @@ const GymProfile = () => {
                 type="file"
                 filename="gym"
                 // onChange={onChangeFile}
-                onChange={(e) => setFile(e.target.files)}
+                onChange={(e) => {
+                  setFile(e.target.files);
+                }}
               />
               {/* <input
                 style={{ marginTop: "1rem" }}
@@ -439,8 +438,8 @@ const GymProfile = () => {
                 <div className="m-4 d-flex mt-5 flex-column">
                   <h4>Gym Name: {getGym.user_id.full_name}</h4>
                   <h4>
-                    Location: {getGym.location?.address}, {getGym.location?.city},{" "}
-                    {getGym.location?.state}{" "}
+                    Location: {getGym.location?.address},{" "}
+                    {getGym.location?.city}, {getGym.location?.state}{" "}
                   </h4>
                   <h4>Gender: {getGym.gender_facilitation}</h4>
                   <h4>Status: {getGym.listed}</h4>
@@ -515,7 +514,7 @@ const GymProfile = () => {
           </div>
           <div className="m-4 d-flex flex-column">
             <h4>Gym Contact Number: {getGym.gym_contact_no}</h4>
-            <h4>Gym Membership Price: {getGym.gym_membership_price}</h4>
+            <h4>Gym Membership Price: {getGym.gym_membership_price} Rs</h4>
             <h4>About Gym: </h4>
             <p> {getGym.gym_desc}</p>
           </div>
