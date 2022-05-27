@@ -64,6 +64,14 @@ const GymDescription = () => {
     <div className="page-container-user">
       <TopBar />
       <SideMenu />
+      <Button
+        className="m-2"
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        <i class="bx bx-arrow-back m-1"></i> Back
+      </Button>
       <h2>Gym Description</h2>
       <div className="d-flex">
         <div className="gym-desc d-flex flex-column ">

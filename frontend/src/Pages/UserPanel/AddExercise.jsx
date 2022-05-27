@@ -38,9 +38,7 @@ const AddExercise = () => {
   const navigate = useNavigate();
   var user_id = userService.getLoggedInUser()._id;
   const [userDetails, setUserDetails] = useState(location.state?.userData);
-  const [calorieData, setCalorieData] = useState(
-    location.state?.currentCalorie
-  );
+  const [calorieData, setCalorieData] = useState(location.state?.currentCalorie);
   const schema = yup.object().shape({
     time_minute: yup
       .number()
@@ -226,6 +224,14 @@ const AddExercise = () => {
     <div className="page-container-user">
       <TopBar />
       <SideMenu />
+      <Button
+        className="m-2"
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        <i class="bx bx-arrow-back m-1"></i> Back
+      </Button>
       <h2>Add Exercise</h2>
       <div className="user-box d-flex flex-column p-3">
         <div className="d-flex flex-column">
@@ -299,10 +305,7 @@ const AddExercise = () => {
             >
               <i class="bx bx-x"></i>
             </a>
-            <form
-              onSubmit={handleSubmit(postExcercise)}
-              className="d-flex flex-column"
-            >
+            <form onSubmit={handleSubmit(postExcercise)} className="d-flex flex-column">
               <div>
                 <Dropdown
                   prompt="Select Excercise (E.g. 'Push ups')"
@@ -361,7 +364,7 @@ const AddExercise = () => {
               <tbody>
                 {excersiseData.length == 0 ? (
                   <tr>
-                    <td>There are no Meal for Today</td>
+                    <td>There are no exercises for today</td>
                   </tr>
                 ) : (
                   excersiseData.map((e, index) => {
@@ -439,10 +442,7 @@ const AddExercise = () => {
                                         getData={getExcerciseAPIData}
                                       />
                                       {!excerciseCheck ? (
-                                        <p
-                                          id="error-text"
-                                          style={{ color: "rgb(255, 34, 34)" }}
-                                        >
+                                        <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
                                           Food cannot be Empty
                                         </p>
                                       ) : null}
@@ -462,10 +462,7 @@ const AddExercise = () => {
                                           style: { color: "#777" },
                                         }}
                                       />
-                                      <p
-                                        id="error-text"
-                                        style={{ color: "rgb(255, 34, 34)" }}
-                                      >
+                                      <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
                                         {errors.time_minute?.message}
                                       </p>
                                     </div>
@@ -527,10 +524,7 @@ const AddExercise = () => {
                                   >
                                     <i class="bx bx-x"></i>
                                   </a>
-                                  <h3>
-                                    Are you sure you want to delete the
-                                    exercise?
-                                  </h3>
+                                  <h3>Are you sure you want to delete the exercise?</h3>
                                   <p>Select yes to delete the item</p>
                                 </div>
                                 <div className="d-flex">
@@ -538,12 +532,10 @@ const AddExercise = () => {
                                     className="btn-dark m-3"
                                     type="submit "
                                     onClick={() => {
-                                      userService
-                                        .deleteExcerciseData(e._id)
-                                        .then(() => {
-                                          console.log("Excercise is Deleted");
-                                          getExcerciseData();
-                                        });
+                                      userService.deleteExcerciseData(e._id).then(() => {
+                                        console.log("Excercise is Deleted");
+                                        getExcerciseData();
+                                      });
 
                                       setConfirmDelete(false);
                                     }}

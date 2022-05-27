@@ -91,7 +91,9 @@ const Messenger = () => {
         <SideMenu />
       ) : user_type == "trainer" ? (
         <SideMenuTrainer />
-      ) : null}
+      ) : (
+        <SideMenuBack />
+      )}
       <div className="messenger">
         <div className="chatBox">
           <div className="chatBoxWrapper">
