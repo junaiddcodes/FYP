@@ -77,22 +77,22 @@ const ChangePassword = () => {
             <div className="d-flex flex-column">
               <h3 className="p-4 pb-0">Current password:</h3>
               <input
-                type="text"
+                type="password"
                 {...controlPassword("password")}
                 onChange={(e) => {
                   setPassDetails({
                     ...passDetails,
-                    full_name: e.target.value,
+                    password: e.target.value,
                   });
                 }}
               />
             </div>
-            <p>{errorsGym.full_name?.message}</p>
+            <p>{errorsPassword.password?.message}</p>
             <div className="d-flex flex-column">
-              <h3 className="p-4 pb-0">Email:</h3>
+              <h3 className="p-4 pb-0">New password:</h3>
               <input
-                type="email"
-                name="email"
+                type="password"
+                name="new_password"
                 {...controlGym("email")}
                 onChange={(e) => {
                   setGymDetails({
