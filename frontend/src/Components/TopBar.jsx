@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
-import trainerService from '../services/TrainerService'
-import { useNavigate } from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import React, { useState } from "react";
+import trainerService from "../services/TrainerService";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const TopBar = () => {
-  const [open, setOpen] = useState(false)
-  const navigate = useNavigate()
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const notify = () => {
     // Calling toast method by passing string
-    toast.success('Logout Success')
-  }
+    toast.success("Logout Success");
+  };
   return (
     <header className="top-header">
       <nav className="navbar-top">
@@ -18,7 +18,7 @@ const TopBar = () => {
             <a
               href="#"
               onClick={() => {
-                setOpen(!open)
+                setOpen(!open);
               }}
             >
               <i class="bx bxs-user-circle"></i>
@@ -30,16 +30,17 @@ const TopBar = () => {
                 Profile Settings
               </a>
               <a href="" className="menu-item">
-                Help and support
+                Change password
               </a>
+
               <hr />
               <a
                 href=""
                 className="menu-item"
                 onClick={() => {
-                  notify()
-                  trainerService.logout()
-                  navigate('/login')
+                  notify();
+                  trainerService.logout();
+                  navigate("/login");
                 }}
               >
                 Log out
@@ -50,7 +51,7 @@ const TopBar = () => {
       </nav>
       <ToastContainer />
     </header>
-  )
-}
+  );
+};
 
-export default TopBar
+export default TopBar;
