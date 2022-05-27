@@ -1,3 +1,21 @@
 // @import "~bootstrap/scss/bootstrap";
 @import "./buttons";
 @import "./variables";
+.red-bar {
+  background: #e32636;
+}
+
+.yellow-bar {
+  background: #f7de3a;
+  color: #0f0101;
+}
+
+.green-bar {
+  background: #a4de02;
+  color: #0f0101;
+}
+
+.dark-green-bar {
+  background: #4c9a2a;
+  color: #0f0101;
+}

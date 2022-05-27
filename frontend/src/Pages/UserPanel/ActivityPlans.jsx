@@ -62,6 +62,14 @@ const ActivityPlans = () => {
     <div className="page-container-user">
       <TopBar />
       <SideMenu />
+      <Button
+        className="m-2"
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        <i class="bx bx-arrow-back m-1"></i> Back
+      </Button>
       <h2>Activity Plans by {location.state.trainerDetails.user_id.full_name}</h2>
       <div className=" mt-5">
         {allPlans.length == 0 ? (
@@ -71,21 +79,22 @@ const ActivityPlans = () => {
             return (
               <div
                 onClick={() => {
-                  // navigate("/activity-plan-details", { state: { e, name } });
+                  navigate("/activity-plan-details", { state: { e, name } });
                 }}
                 className="activity-grid-container"
               >
                 <div className="activity-card grid-item p-3">
-                  <h4>{e.plan_title} Activity Plan</h4>
-                  {/* <p>{e.plan_desc}</p> */}
+                  <h4>{e.plan_title} Plan</h4>
+                  <h4>Description</h4>
+                  <p className="text-light">{e.plan_desc}</p>
                   <div className="d-flex justify-content-between">
                     <div>
                       <h4>Duration:</h4>
-                      <p>{e.plan_duration} weeks</p>
+                      <p className="text-light">{e.plan_duration} weeks</p>
                     </div>
                     <div>
                       <h4>Price:</h4>
-                      <p>{e.plan_price} PKR</p>
+                      <p className="text-light">{e.plan_price} PKR</p>
                     </div>
                   </div>
                 </div>

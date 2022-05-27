@@ -143,7 +143,6 @@ const GymProfile = () => {
   }, [loginId]);
 
   const onChangeFile = (e) => {
-
   };
 
   const changeOnClick = (e) => {
@@ -350,14 +349,14 @@ const GymProfile = () => {
             />
             <p>{errorsGymProfile.gym_desc?.message}</p>
 
-            {/* <div className="upload-photo-card">
+              {/* <div className="upload-photo-card">
                 <TransformWrapper>
                   <TransformComponent>
                     <img className="preview-gym" src={previewImage} alt="" />
                   </TransformComponent>
                 </TransformWrapper>
               </div> */}
-            {/* <form onSubmit={changeOnClick} encType="multipart/form-data">
+              {/* <form onSubmit={changeOnClick} encType="multipart/form-data">
                 <div className="upload-form">
                   <input
                     style={{ marginTop: "1rem" }}
@@ -370,7 +369,7 @@ const GymProfile = () => {
                     className="btn btn-primary w-25"
                     type="submit"
                   >
-                    submit
+                  submit
                   </button>
                 </div>
               </form> */}
@@ -456,6 +455,17 @@ const GymProfile = () => {
                   }}
                 >
                   Edit
+                </Button>
+                <Button
+                  className="mt-5"
+                  onClick={() => {
+                    setIsGymForm(false);
+                    setIsProfile(false);
+                    setIsAsk(false);
+                    setIsGymPicForm(true);
+                  }}
+                >
+                  Edit Pictures
                 </Button>
                 <Button
                   className="mt-5"
