@@ -42,7 +42,12 @@ const AddExercise = () => {
     location.state?.currentCalorie
   );
   const schema = yup.object().shape({
-    time_minute: yup.number().required("Time cannot be Empty"),
+    time_minute: yup
+      .number()
+      .typeError("Cannot be Empty")
+      .min(1, "Time Cannot be less than 1 minute")
+      .max(90, "Time cannot be more than 90 minutes")
+      .required("Time cannot be Empty"),
   });
   const {
     register,
@@ -162,23 +167,27 @@ const AddExercise = () => {
 
   function getExcerciseData() {
     if (location.state) {
-      var burnCalorie ={
+      var burnCalorie = {
         excercise_calories: 0,
         excercise_proteins: 0,
         excercise_carbs: 0,
         excercise_fats: 0,
-      }
+      };
       userService
         .getExcerciseData(user_id)
         .then((res) => {
           setExcerciseData(res.crud);
-          res.crud.map((e)=>{
-            burnCalorie.excercise_calories = burnCalorie.excercise_calories + e.excercise_calories
-            burnCalorie.excercise_proteins = burnCalorie.excercise_proteins + e.excercise_proteins
-            burnCalorie.excercise_carbs = burnCalorie.excercise_carbs + e.excercise_carbs
-            burnCalorie.excercise_fats = burnCalorie.excercise_fats + e.excercise_fats
-          })
-          setCurrentBurn(burnCalorie)
+          res.crud.map((e) => {
+            burnCalorie.excercise_calories =
+              burnCalorie.excercise_calories + e.excercise_calories;
+            burnCalorie.excercise_proteins =
+              burnCalorie.excercise_proteins + e.excercise_proteins;
+            burnCalorie.excercise_carbs =
+              burnCalorie.excercise_carbs + e.excercise_carbs;
+            burnCalorie.excercise_fats =
+              burnCalorie.excercise_fats + e.excercise_fats;
+          });
+          setCurrentBurn(burnCalorie);
         })
         .catch((err) => {
           console.log(err);
@@ -204,6 +213,7 @@ const AddExercise = () => {
       }
     }
     getExcerciseData();
+    getExcerciseAPIData("a");
   }, []);
   const workoutOptions = [
     { value: "benchpress", label: "Bench Press" },
@@ -222,8 +232,14 @@ const AddExercise = () => {
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
               <h4>Calories Gained: {calorieData.food_calories}</h4>
-              <h4>Calories Burnt: {Math.floor(currentBurn.excercise_calories)} </h4>
-              <h4>Net Calories:{calorieData.food_calories - Math.floor(currentBurn.excercise_calories)}</h4>
+              <h4>
+                Calories Burnt: {Math.floor(currentBurn.excercise_calories)}{" "}
+              </h4>
+              <h4>
+                Net Calories:
+                {calorieData.food_calories -
+                  Math.floor(currentBurn.excercise_calories)}
+              </h4>
 
               <h4>Calorie Goal: {Math.floor(userDetails.calorie_goal)}</h4>
             </div>
@@ -289,7 +305,7 @@ const AddExercise = () => {
             >
               <div>
                 <Dropdown
-                  prompt="Select Excercise"
+                  prompt="Select Excercise (E.g. 'Push ups')"
                   value={value}
                   onChange={setValue}
                   options={excersiseOptions}

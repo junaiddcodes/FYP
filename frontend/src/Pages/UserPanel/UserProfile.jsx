@@ -53,6 +53,14 @@ const UserProfileSchema = yup.object().shape({
   weight_goal: yup.string().required("Weight goal can't be empty"),
   weekly_goal: yup.string().required("Activity level can't be empty"),
 });
+function getDecimalPart(num) {
+  if (Number.isInteger(num)) {
+    return 0;
+  }
+
+  const decimalStr = num.toString().split('.')[1];
+  return Number(decimalStr);
+}
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -111,7 +119,7 @@ const UserProfile = () => {
         console.log(res);
         setGetCustomer(res.crud);
         setFeet(res.crud.height.toString().charAt(0));
-        setInches(res.crud.height.toString().charAt(2));
+        setInches(getDecimalPart(res.crud.height));
         if (res.crud.weight) {
           setIsProfile(true);
           //   setIsProfilePicForm(false);
@@ -411,7 +419,8 @@ const UserProfile = () => {
                   <h4>Weight: {getCustomer.weight} kg</h4>
                   <h4>
                     Height: {getCustomer.height.toString().charAt(0)} '{" "}
-                    {getCustomer.height.toString().charAt(2)}{" "}
+                    {/* {getDecimalPart(getCustomer.height)}{" "} */}
+                    {(getCustomer.height+"").split(".")[1]}{" "}
                   </h4>
                 </div>
               </div>

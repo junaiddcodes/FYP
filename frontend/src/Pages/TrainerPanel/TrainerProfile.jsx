@@ -31,6 +31,7 @@ const trainerProfileSchema = yup.object().shape({
   gender: yup.string().nullable(),
   //   listed: yup.boolean(),
   exercise_type: yup.string().required("Exercise type can't be empty"),
+  trainer_availblity: yup.string().required("Trainer Avaiblity can't be empty"),
   company_name: yup
     .string()
     .min(2, 'Company name must be of at least 2 characters')
@@ -77,6 +78,8 @@ const TrainerProfile = () => {
   const [isListed, setIsListed] = useState('')
   const [trainerAge, setTrainerAge] = useState(10)
   const [selectedValue, setSelectedValue] = useState(10)
+  const [errorPic, setPicError]= useState(false)
+  
   var trainersAge = ''
   var loginId = ''
   const notify = () => {
@@ -111,6 +114,7 @@ const TrainerProfile = () => {
     trainer_desc: '',
     certificate_file: 'asdasd',
     trainer_photo: 'adsadasd',
+    trainer_availblity:''
   }
   function getAge(dateString) {
     var today = new Date()
@@ -187,13 +191,16 @@ const TrainerProfile = () => {
     trainerService
       .update_trainer_photo(formData, loggedInId)
       .then((data) => {
+        setPicError(false)
         console.log(data)
         setIsProfilePicForm(false)
         setIsProfile(true)
         page_refresh()
       })
       .catch((err) => {
-        console.log(err)
+        if(err.response.status == 500){
+          setPicError(true)
+      }
       })
   }
 
@@ -213,6 +220,7 @@ const TrainerProfile = () => {
     // console.log(trainerDetails);
     // console.log("aaaaaaa");
     console.log('before request')
+    console.log(data.trainer_availblity)
     trainerProfileDetails = {
       ...trainerProfileDetails,
       exercise_type: data.exercise_type,
@@ -222,6 +230,7 @@ const TrainerProfile = () => {
       time_worked: data.time_worked,
       qualification: data.qualification,
       trainer_desc: data.trainer_desc,
+      trainer_availblity: data.trainer_availblity
       // certificate_file: "",
       // trainer_photo: "",
     }
@@ -284,6 +293,19 @@ const TrainerProfile = () => {
                     <MenuItem value="cardio">Cardio</MenuItem>
                     <MenuItem value="gym">Gym</MenuItem>
                     <MenuItem value="stretching">Stretching</MenuItem>
+                  </Select>
+                </FormControl>
+                <label for="fname">Select your Training Availblity</label>
+                <FormControl className="m-3 w-100 dropdown-trainer">
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    name="trainer_availblity"
+                    {...controlTrainerProfile('trainer_availblity')}
+                    defaultValue={getCustomer.trainer_availblity}
+                  >
+                    <MenuItem value="online">Online Training</MenuItem>
+                    <MenuItem value="on-site">On Site Training</MenuItem>
                   </Select>
                 </FormControl>
 
@@ -398,10 +420,11 @@ const TrainerProfile = () => {
       ) : isProfilePicForm ? (
         <div>
           <p className="general-p">Please upload your profile picture</p>
+          {errorPic ? <p className='text-danger'>Please Enter Right Format (PNG,JPEG,JPG)</p>:null }
           <div className="upload-photo-card">
             <TransformWrapper>
               <TransformComponent>
-                <img className="preview" src={previewImage} alt="" />
+                {previewImage ? <img className="preview" src={previewImage} alt="" /> : null}
               </TransformComponent>
             </TransformWrapper>
           </div>

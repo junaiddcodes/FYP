@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const SideMenu = () => {
   return (
@@ -12,67 +12,67 @@ const SideMenu = () => {
       </div>
       <ul className="nav_list">
         <li>
-          <Link to="/user-dashboard">
+          <NavLink to="/user-dashboard" activeClassName="active">
             <i class="bx bx-grid-alt">
               <span className="links_name">Dashbaord</span>
             </i>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/user-profile">
+          <NavLink to="/user-profile" activeClassName="active">
             <i class="bx bxs-user">
               <span className="links_name">Profile</span>
             </i>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/search-gym">
+          <NavLink to="/search-gym" activeClassName="active">
             <i class="bx bx-search">
               <span className="links_name">Gym</span>
             </i>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/search-trainer">
+          <NavLink to="/search-trainer" activeClassName="active">
             <i class="bx bx-search-alt">
               <span className="links_name">Trainer</span>
             </i>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/my-plans">
+          <NavLink to="/my-plans" activeClassName="active">
             <i class="bx bx-calendar-check">
               <span className="links_name">My plans</span>
             </i>
-          </Link>
+          </NavLink>
         </li>
         {/* <li>
-          <Link to="">
+          <NavLink to="">
             <i class="bx bx-history">
               <span className="links_name">History</span>
             </i>
-          </Link>
+          </NavLink>
         </li> */}
         <li>
-          <Link to="/Messenger">
+          <NavLink to="/Messenger" activeClassName="active">
             <i class="bx bx-chat">
               <span className="links_name">Chat</span>
             </i>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/query">
+          <NavLink to="/query" activeClassName="active">
             <i class="bx bx-question-mark">
               <span className="links_name">Query</span>
             </i>
-          </Link>
+          </NavLink>
         </li>
         {/* <li>
-          <Link to="/activity-plans">
+          <NavLink to="/activity-plans">
             <i class="bx bx-run">
               <span className="links_name">Activity Plans</span>
             </i>
-          </Link>
+          </NavLink>
         </li> */}
       </ul>
 

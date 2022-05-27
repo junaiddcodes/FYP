@@ -1478,5 +1478,13 @@ body {
   padding-right: 40px;
 }
 
+.active{
+  background-color: white;
+  color: #007fff !important;
+ }
+ .thumb{
+   height: 40px;
+ }
+
 
 /*# sourceMappingURL=pages.css.map */
