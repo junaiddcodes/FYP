@@ -13,6 +13,7 @@ const {
   createData,
   loginUser,
   checkUser,
+  changePassword
   //registerCustomer,
 } = require('../../controllers/customerControl')
 
@@ -25,6 +26,7 @@ router
   .delete(deleteData)
 
 router.route('/login').post(loginUser)
+router.route('/password').post(changePassword)
 router.route('/log').post(Auth, checkUser)
 
 module.exports = router

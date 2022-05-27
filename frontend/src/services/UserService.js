@@ -26,9 +26,9 @@ class UserService extends GenericService {
     localStorage.removeItem("token");
   };
 
-  waterIntake = (water_intake) => {
-    this.post("waterIntake/addWaterIntake", water_intake);
-  };
+  waterIntake = (water_intake) => this.post("waterIntake/addWaterIntake", water_intake);
+  deleteWaterData = (waterId) => this.delete('waterIntake/' + waterId)
+  
   waterPage = (userId) => this.get("waterIntake/" + userId);
 
   isLoggedIn = () => {

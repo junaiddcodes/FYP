@@ -11,20 +11,44 @@ import SideMenu from "../../Components/SideMenu";
 import { func } from "joi";
 import userService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
-import { getAccordionDetailsUtilityClass } from "@mui/material";
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { getAccordionDetailsUtilityClass, TextField } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { min } from "lodash";
 // import { useNavigate } from "react-router-dom";
 
 const AddWater = () => {
-  const [modalOpen, setModalOpen] = useState(false);
   var [errorMessage, setErrorMessage] = useState("");
+  const [waterValue, setWaterValue] = useState()
   var [waterAmount, setWaterAmount] = useState();
+  const [waterData, setWaterData] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const navigate = useNavigate();
   const notify = () => {
     // Calling toast method by passing string
-    toast.success('Water Added')
-  }
+    toast.success("Water Added");
+  };
+
+  const schema = yup.object().shape({
+    water: yup
+      .number()
+      .min(0.1, "Water cannot be less than 0.1 Ltrs")
+      .max(6, "Water cannot be less than 6 Ltrs at one time")
+      .required("Water cannot be Empty"),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   var user_id = userService.getLoggedInUser()._id;
 
@@ -33,13 +57,19 @@ const AddWater = () => {
     amount_litres: 0,
     time_date: "",
   };
-  const [isInitialRender, setIsInitialRender] = useState(true);
-  const dateX = new Date().getTime();
+
+  function deleteWater(id) {
+    userService.deleteWaterData(id).then((e) => {
+      console.log("Water delete Successfully");
+      setConfirmDelete(false);
+    });
+  }
 
   function getWaterData() {
     userService
       .waterPage(user_id)
       .then((data) => {
+        setWaterData(data.crud);
         var waterIntake = data.crud.map((e) => {
           var data = 0;
           data = data + e.amount_litres;
@@ -58,46 +88,34 @@ const AddWater = () => {
       });
   }
 
-  function waterValidationForm() {
-    if (water.current.value < 0.1) {
-      // console.log('value is invalid')
-      setErrorMessage("value is invalid");
-      return false;
-    } else {
-      setErrorMessage("");
-    }
-
+  function waterValidationForm(data) {
     waterIntake = {
-      ...waterIntake,
-      amount_litres: water.current.value,
+      amount_litres: data.water,
       user_id: user_id,
       time_date: new Date().getTime(),
     };
 
-    console.log("before request");
-
-    console.log('before request')
-    notify()
-
-    userService.waterIntake(waterIntake);
-    getWaterData();
+    userService.waterIntake(waterIntake).then((e) => {
+      notify();
+      getWaterData();
+      setModalOpen(false);
+    });
   }
-  const water = useRef(null);
 
   useEffect(() => {
     if (userService.isLoggedIn() == false) {
-      navigate('/login')
+      navigate("/login");
     } else {
       if (
-        userService.getLoggedInUser().user_type == 'trainer' ||
-        userService.getLoggedInUser().user_type == 'gym' ||
-        userService.getLoggedInUser().user_type == 'admin'
+        userService.getLoggedInUser().user_type == "trainer" ||
+        userService.getLoggedInUser().user_type == "gym" ||
+        userService.getLoggedInUser().user_type == "admin"
       ) {
-        navigate('/login')
+        navigate("/login");
       }
     }
     getWaterData();
-  }, [getWaterData]);
+  }, []);
 
   return (
     <div className="page-container-user">
@@ -116,33 +134,197 @@ const AddWater = () => {
         </div>
       </div>
       <div className="d-flex justify-content-between">
-        <h2 className="mt-3">Water Taken</h2>
+        <h2 className="mt-3">Today's Meals</h2>
+        <Button
+          onClick={() => {
+            setModalOpen(true);
+          }}
+          className="m-3"
+        >
+          + Add Water
+        </Button>
       </div>
-      <div className="align-items-left">
-        <input
-          ref={water}
-          className="input-modal"
-          type="number"
-          placeholder="Water in Ltrs"
-          // onChange={(e) => {
-          //   setWaterIntake({
-          //     ...waterIntake,
-          //     amount_litres: water.current.value,
-          //     user_id: 'String',
-          //     time_date: date,
-          //   })
-          // }}
-        />
+      <div className="modal-container">
+        <Modal
+          style={{
+            overlay: {
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+
+              backgroundColor: "rgba(0, 0, 0, 0.75)",
+            },
+            content: {
+              color: "white",
+              position: "absolute",
+              top: "40px",
+              left: "40px",
+              right: "40px",
+              bottom: "40px",
+              background: "rgba(0,30,60,1)",
+              overflow: "auto",
+              WebkitOverflowScrolling: "touch",
+              borderRadius: "1rem",
+              outline: "none",
+              padding: "20px",
+            },
+          }}
+          className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+          isOpen={modalOpen}
+          onRequestClose={() => {
+            setModalOpen(false);
+          }}
+        >
+          <div className="modal-inner w-75 d-flex flex-column">
+            <a
+              onClick={() => {
+                setModalOpen(false);
+              }}
+            >
+              <i class="bx bx-x"></i>
+            </a>
+            <form
+              onSubmit={handleSubmit(waterValidationForm)}
+              className="d-flex flex-column"
+            >
+              <div className="mb-3">
+                <TextField
+                  id="demo-simple-select-2"
+                  className="w-100"
+                  label="Water"
+                  variant="outlined"
+                  name="water"
+                  {...register("water")}
+                  placeholder="Enter Water (in Liters)"
+                  InputLabelProps={{
+                    style: { color: "#777" },
+                  }}
+                />
+              </div>
+              <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+                {errors.water?.message}
+              </p>
+              <div>
+                <Button type="submit">Add Food</Button>
+              </div>
+            </form>
+          </div>
+        </Modal>
       </div>
-      <Button className="mt-3" onClick={waterValidationForm}>
-        + Add Water
-      </Button>
-      {errorMessage && (
-        <p className="error" style={{ color: "yellow" }}>
-          {" "}
-          {errorMessage}{" "}
-        </p>
-      )}
+      <div className="user-box d-flex flex-column p-3">
+        <div className="d-flex flex-column">
+          <div class="table-wrapper-scroll-y my-custom-scrollbar">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Water Quantity</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {waterData.length == 0 ? (
+                  <tr>
+                    <td>There are no Meal for Today</td>
+                  </tr>
+                ) : (
+                  waterData.map((e, index) => {
+                    return (
+                      <tr key={index}>
+                        <td>{e.amount_litres} Liters</td>
+
+                        <td>
+                          <div className="d-flex align-items-center">
+
+                            <a
+                              className="delete-icon"
+                              onClick={() => {
+                                setConfirmDelete(true);
+                              }}
+                            >
+                              <ImCross />
+                            </a>
+                            <div className="modal-container">
+                              <Modal
+                                style={{
+                                  overlay: {
+                                    position: "fixed",
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+
+                                    backgroundColor: "rgba(0, 0, 0, 0.75)",
+                                  },
+                                  content: {
+                                    color: "white",
+                                    position: "absolute",
+                                    top: "40px",
+                                    left: "40px",
+                                    right: "40px",
+                                    bottom: "40px",
+                                    background: "rgba(0,30,60,1)",
+                                    overflow: "auto",
+                                    WebkitOverflowScrolling: "touch",
+                                    borderRadius: "1rem",
+                                    outline: "none",
+                                    padding: "20px",
+                                  },
+                                }}
+                                className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+                                isOpen={confirmDelete}
+                                onRequestClose={() => {
+                                  setConfirmDelete(false);
+                                }}
+                              >
+                                <div className="modal-inner w-75 d-flex flex-column">
+                                  <a
+                                    onClick={() => {
+                                      setConfirmDelete(false);
+                                    }}
+                                  >
+                                    <i class="bx bx-x"></i>
+                                  </a>
+                                  <h3>
+                                    Are you sure you want to delete the food?
+                                  </h3>
+                                  <p>Select yes to delete the item</p>
+                                </div>
+                                <div className="d-flex">
+                                  <Button
+                                    className="btn-dark m-3"
+                                    type="submit "
+                                    onClick={() => {
+                                      deleteWater(e._id);
+                                    }}
+                                  >
+                                    Yes
+                                  </Button>
+                                  <Button
+                                    className="m-3"
+                                    type="submit"
+                                    onClick={() => {
+                                      setConfirmDelete(false);
+                                    }}
+                                  >
+                                    No
+                                  </Button>
+                                </div>
+                              </Modal>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
       <ToastContainer />
     </div>
   );
