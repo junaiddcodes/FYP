@@ -1,14 +1,16 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React from 'react'
+import { NavLink } from 'react-router-dom'
 
 const SideMenu = () => {
   return (
     <div className="sidebar">
       <div className="logo-content">
-        <div className="logo">
-          <i class="bx bx-dumbbell"></i>
-          <div className="logo-name">Fit</div>
-        </div>{" "}
+        <Link to="/user-dashboard">
+          <div className="logo">
+            <i class="bx bx-dumbbell"></i>
+            <div className="logo-name">Fit</div>
+          </div>{' '}
+        </Link>
       </div>
       <ul className="nav_list">
         <li>
@@ -87,7 +89,7 @@ const SideMenu = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SideMenu;
+export default SideMenu

@@ -16,7 +16,7 @@ function validateFood(data) {
   const schema = Joi.object({
     food_name: Joi.string().required(),
     food_weight: Joi.number().positive().required(),
-    food_calories: Joi.string().required(),
+    food_calories: Joi.number().required(),
     food_proteins: Joi.number().positive().required(),
     food_carbs: Joi.number().positive().required(),
     food_fats: Joi.number().positive().required(),
