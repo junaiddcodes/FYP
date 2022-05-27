@@ -203,6 +203,7 @@ const AddFood = () => {
       }
     }
     getMealData()
+    getFoodData("a")
   }, [])
 
   var [foodOptions, setFoodOptions] = useState([])

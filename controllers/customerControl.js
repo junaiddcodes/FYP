@@ -116,6 +116,51 @@ const deleteData = async (req, res) => {
   }
 };
 
+//delete data from id
+const changePassword = async (req, res) => {
+  try {
+    console.log(req.body)
+
+    let user = await customerDetails.findOne({
+      _id: req.body._id,
+    });
+ 
+
+    if(!user){
+      return res.status(404).json({ message: "item does not exist" });
+    }else{
+      let bodyPassword = req.body.password;
+      let userPassword = user.user_id.password;
+      
+      let isvalid = await bcryptjs.compare(bodyPassword, userPassword);
+
+      if (!isvalid){
+        return res.status(401).json({ message: "Current Password is invalid" });
+      } else{
+        console.log("Check Before")
+        let salt = await bcryptjs.genSalt(10)
+        var new_password = await bcryptjs.hash(
+          req.body.new_password,
+          salt
+        )
+        console.log("Check AFter")
+
+        user.user_id.password = new_password;
+
+        var crud = await customerDetails.findByIdAndUpdate({ _id: user._id }, user, {
+          new: true,
+          runValidators: true,
+        });
+    
+      }
+      
+    }
+    res.status(200).json({ message: "Password Change Successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
 module.exports = {
   getAllData,
   getOneData,
@@ -124,5 +169,6 @@ module.exports = {
   createData,
   loginUser,
   checkUser,
+  changePassword
   // registerCustomer,
 };

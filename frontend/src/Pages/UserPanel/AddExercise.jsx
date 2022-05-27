@@ -40,7 +40,12 @@ const AddExercise = () => {
   const [userDetails, setUserDetails] = useState(location.state?.userData)
   const [calorieData, setCalorieData] = useState(location.state?.currentCalorie)
   const schema = yup.object().shape({
-    time_minute: yup.number().required('Time cannot be Empty'),
+    time_minute: yup
+      .number()
+      .typeError('Cannot be Empty')
+      .min(1, 'Time Cannot be less than 1 minute')
+      .max(90, 'Time cannot be more than 90 minutes')
+      .required('Time cannot be Empty'),
   })
   const {
     register,
@@ -206,6 +211,7 @@ const AddExercise = () => {
       }
     }
     getExcerciseData()
+    getExcerciseAPIData('a')
   }, [])
   const workoutOptions = [
     { value: 'benchpress', label: 'Bench Press' },
@@ -297,7 +303,7 @@ const AddExercise = () => {
             >
               <div>
                 <Dropdown
-                  prompt="Select Excercise"
+                  prompt="Select Excercise (E.g. 'Push ups')"
                   value={value}
                   onChange={setValue}
                   options={excersiseOptions}

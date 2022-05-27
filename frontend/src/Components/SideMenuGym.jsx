@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 const SideMenuGym = () => {
   return (
@@ -14,18 +14,18 @@ const SideMenuGym = () => {
       </div>
       <ul className="nav_list">
         <li>
-          <Link to="/gym-dashboard">
+          <NavLink to="/gym-dashboard" activeClassName="active">
             <i class="bx bxs-home-circle">
               <span className="links_name">Home</span>
             </i>
-          </Link>
+          </NavLink>
         </li>
         <li>
-          <Link to="/query">
+          <NavLink to="/query" activeClassName="active">
             <i class="bx bx-question-mark">
               <span className="links_name">Query</span>
             </i>
-          </Link>
+          </NavLink>
         </li>
       </ul>
 

@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import userService from "../../services/UserService";
 import { useParams } from "react-router-dom";
 import gymService from "../../services/GymService";
+import { Carousel } from "react-responsive-carousel";
 
 const GymDescription = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -66,7 +67,22 @@ const GymDescription = () => {
       <h2>Gym Description</h2>
       <div className="d-flex">
         <div className="gym-desc d-flex flex-column ">
-          <img src={gymDetails.gym_photos[0]?.photo_url} alt="" />
+        <div className='slider-div d-flex justify-content-center p-5'>
+        <Carousel width='100%'>
+              {gymDetails.gym_photos.length == 0 ? (
+                <h2>No photos</h2>
+              ) : (
+                gymDetails.gym_photos.map((e, index) => {
+                  return (
+                    <div key={index}>
+                      <img src={e.photo_url} height="200"/>
+                    </div>
+                  )
+                })
+              )}
+            </Carousel>
+            </div>
+          {/* <img src={gymDetails.gym_photos?.photo_url} alt="" /> */}
           <h4>{gymDetails.user_id.full_name}</h4>
           <h4>Membership Price:{gymDetails.gym_membership_price}</h4>
           <h4>Gender:{gymDetails.gender_facilitation}</h4>

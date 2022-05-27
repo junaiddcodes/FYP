@@ -1482,4 +1482,12 @@ body {
   padding: 11px 15px 11px 0;
 }
 
+.active {
+  background-color: white;
+  color: #007fff !important;
+}
+.thumb {
+  height: 40px;
+}
+
 /*# sourceMappingURL=pages.css.map */
