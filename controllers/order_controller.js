@@ -33,9 +33,9 @@ const createData = async (req, res) => {
       plan_id: req.body.plan_id,
     });
 
-    console.log(checkPlan)
+    console.log(checkPlan);
 
-    if(checkPlan.length != 0){
+    if (checkPlan.length != 0) {
       return res.status(404).json({ message: "User already have that Plan" });
     }
     const crud = await orderDetails.create(req.body);
@@ -49,10 +49,14 @@ const createData = async (req, res) => {
 const updateData = async (req, res) => {
   try {
     const { orderId: crudId } = req.params;
-    const crud = await orderDetails.findByIdAndUpdate({ _id: crudId }, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const crud = await orderDetails.findByIdAndUpdate(
+      { _id: crudId },
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
     if (!crud) {
       return res.status(404).json({ message: "item does not exist" });
@@ -123,6 +127,24 @@ const getbyUser = async (req, res) => {
     res.status(500).json({ message: error });
   }
 };
+
+const checkUserOrder = async (req, res) => {
+  try {
+    const crud = await orderDetails.find({
+      user_id: req.body.user_id,
+      plan_id: req.body.plan_id,
+    });
+    if (crud.length == 0) {
+      return res.status(404).json({ message: "item does not exist" });
+    }else{
+      res.status(200).json({  message: "item exist" });
+
+    }
+
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
 // //use to get only one data from db
 // const getbyUser = async (req, res) => {
 //   try {
@@ -146,4 +168,5 @@ module.exports = {
   deleteData,
   createData,
   getbyUser,
+  checkUserOrder
 };

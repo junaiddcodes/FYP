@@ -36,6 +36,7 @@ import Messenger from "./Messenger/Messenger";
 import Home from "./Pages/HomePanel/home";
 import ActivityPlanDetails from "./Pages/UserPanel/ActivityPlanDetails";
 import UserProfile from "./Pages/UserPanel/UserProfile";
+import GymViewMap from "./Pages/UserPanel/GymViewMap";
 function App() {
   return (
     <BrowserRouter>
@@ -45,6 +46,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/user-add-food" element={<AddFood />} />
+          <Route path="/nearby-gyms" element={<GymViewMap/>} />
           <Route path="/user-add-exercise" element={<AddExercise />} />
           <Route path="/user-add-water" element={<AddWater />} />
           <Route path="/search-gym" element={<SearchGym />} />
@@ -68,7 +70,6 @@ function App() {
           <Route path="/query" element={<CreateQuery />} />
           <Route path="/activity-plan-details" element={<ActivityPlanDetails />} />
           <Route path="/user-profile" element={<UserProfile />} />
-
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/login/admin" element={<LoginAdmin />} />

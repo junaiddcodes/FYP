@@ -22,7 +22,7 @@ const CARD_OPTIONS = {
   },
 }
 
-export default function PaymentForm({ payment }) {
+export default function PaymentForm({ payment, action }) {
   const [success, setSuccess] = useState(false)
   const stripe = useStripe()
   const elements = useElements()
@@ -43,6 +43,7 @@ export default function PaymentForm({ payment }) {
 
         if (response.data.success) {
           console.log('Successful payment')
+          action()
           setSuccess(true)
         }
       } catch (error) {
