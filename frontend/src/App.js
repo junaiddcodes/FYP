@@ -36,6 +36,7 @@ import Messenger from "./Messenger/Messenger";
 import Home from "./Pages/HomePanel/home";
 import ActivityPlanDetails from "./Pages/UserPanel/ActivityPlanDetails";
 import UserProfile from "./Pages/UserPanel/UserProfile";
+import ChangePassword from "./Components/ChangePassword";
 function App() {
   return (
     <BrowserRouter>
@@ -68,6 +69,7 @@ function App() {
           <Route path="/query" element={<CreateQuery />} />
           <Route path="/activity-plan-details" element={<ActivityPlanDetails />} />
           <Route path="/user-profile" element={<UserProfile />} />
+          <Route path="/change-password" element={<ChangePassword />} />
 
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />

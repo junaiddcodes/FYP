@@ -1,5 +1,5 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React from "react";
+import { Link, NavLink } from "react-router-dom";
 
 const SideMenuGym = () => {
   return (
@@ -9,7 +9,7 @@ const SideMenuGym = () => {
           <div className="logo">
             <i class="bx bx-dumbbell"></i>
             <div className="logo-name">Fit</div>
-          </div>{' '}
+          </div>{" "}
         </Link>
       </div>
       <ul className="nav_list">
@@ -40,7 +40,7 @@ const SideMenuGym = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SideMenuGym
+export default SideMenuGym;
