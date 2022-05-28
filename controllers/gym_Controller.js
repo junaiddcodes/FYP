@@ -9,7 +9,7 @@ const cloudinary = require("../utils/cloudinary");
 //use to get all data from db
 const getAllData = async (req, res) => {
   try {
-    const crud = await gymDetails.find({listed:"listed"}).limit(9);
+    const crud = await gymDetails.find({ listed: "listed" }).limit(9);
     res.status(200).json({ crud });
   } catch (error) {
     res.status(500).json({ message: error });
@@ -176,14 +176,10 @@ const gymImage = async (req, res) => {
       gym_photos: gym_images,
     };
 
-    const crud = await gymDetails.findByIdAndUpdate(
-      { _id: crudId },
-      final_data,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    const crud = await gymDetails.findByIdAndUpdate({ _id: crudId }, final_data, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!crud) {
       return res.status(404).json({ message: "item does not exist" });
@@ -202,9 +198,9 @@ const gymSearchFilter = async (req, res) => {
     Object.keys(req.body).forEach(function (key) {
       if (req.body[key]) {
         if (key == "full_name") {
-          query["user_id.full_name"] = new RegExp(req.body[key], "i")
+          query["user_id.full_name"] = new RegExp(req.body[key], "i");
         } else if (key == "city") {
-          query["location.city"] = new RegExp(req.body[key], "i")
+          query["location.city"] = new RegExp(req.body[key], "i");
         } else {
           query[key] = req.body[key];
         }
@@ -213,7 +209,6 @@ const gymSearchFilter = async (req, res) => {
 
     if (req.body.full_name || req.body.city || req.body.gender_facilitation) {
       query.listed = "listed";
-  
 
       var crud = await gymDetails.find(query);
       if (crud.length == 0) {
@@ -224,6 +219,44 @@ const gymSearchFilter = async (req, res) => {
     }
 
     res.status(200).json({ crud });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
+const changePassword = async (req, res) => {
+  try {
+    console.log(req.body);
+
+    let user = await gymDetails.findOne({
+      _id: req.body._id,
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "item does not exist" });
+    } else {
+      let bodyPassword = req.body.password;
+      let userPassword = user.user_id.password;
+
+      let isvalid = await bcryptjs.compare(bodyPassword, userPassword);
+
+      if (!isvalid) {
+        return res.status(401).json({ message: "Current Password is invalid" });
+      } else {
+        console.log("Check Before");
+        let salt = await bcryptjs.genSalt(10);
+        var new_password = await bcryptjs.hash(req.body.new_password, salt);
+        console.log("Check AFter");
+
+        user.user_id.password = new_password;
+
+        var crud = await gymDetails.findByIdAndUpdate({ _id: user._id }, user, {
+          new: true,
+          runValidators: true,
+        });
+      }
+    }
+    res.status(200).json({ message: "Password Change Successfully" });
   } catch (error) {
     res.status(500).json({ message: error });
   }
@@ -241,4 +274,6 @@ module.exports = {
   gymImage,
   gymNotListed,
   gymSearchFilter,
+  changePassword,
+  changePassword,
 };
