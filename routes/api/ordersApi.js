@@ -8,12 +8,14 @@ const {
     updateData,
     deleteData,
     createData,
-    getbyUser
+    getbyUser,
+    checkUserOrder
   } = require("../../controllers/order_controller");
 
   router.route("/orderCreate").post(Verify, createData);
   router.route("/").get(getAllData);
   router.route("/user/:userId").get(getbyUser);
+  router.route("/check").post(checkUserOrder);
   router.route("/:orderId").get(getOneData).delete(deleteData).patch(updateData);
 
 module.exports = router;

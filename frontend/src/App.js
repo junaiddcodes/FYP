@@ -36,6 +36,7 @@ import Messenger from "./Messenger/Messenger";
 import Home from "./Pages/HomePanel/home";
 import ActivityPlanDetails from "./Pages/UserPanel/ActivityPlanDetails";
 import UserProfile from "./Pages/UserPanel/UserProfile";
+import GymViewMap from "./Pages/UserPanel/GymViewMap";
 import ChangePassword from "./Components/ChangePassword";
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/user-add-food" element={<AddFood />} />
+          <Route path="/nearby-gyms" element={<GymViewMap/>} />
           <Route path="/user-add-exercise" element={<AddExercise />} />
           <Route path="/user-add-water" element={<AddWater />} />
           <Route path="/search-gym" element={<SearchGym />} />
