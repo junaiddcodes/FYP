@@ -28,10 +28,16 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Link } from "react-router-dom";
 
 const trainerProfileSchema = yup.object().shape({
+  full_name: yup
+    .string()
+    .min(3, "Name must be of at least 3 characters")
+    .max(30, "Name must be of at most 30 characters")
+    .required("Name is required"),
   gender: yup.string().nullable(),
   //   listed: yup.boolean(),
   exercise_type: yup.string().required("Exercise type can't be empty"),
-  trainer_availblity: yup.string().required("Trainer Avaiblity can't be empty"),
+  qualification: yup.string().required("certification can't be empty"),
+
   company_name: yup
     .string()
     .min(2, "Company name must be of at least 2 characters")
@@ -45,16 +51,11 @@ const trainerProfileSchema = yup.object().shape({
     .required("Designation can't be empty")
     .nullable(),
 
-  time_worked: yup
-    .number()
-    .typeError("Time is required!")
-    .positive("Time should be a positive number")
-    .required("Time is required!"),
-  qualification: yup
-    .string()
-    .min(2, "Qualification name must be of at least 2 characters")
-    .max(30, "Qualification name must be of at most 30 characters")
-    .required("Qualification name can't be empty"),
+  // time_worked: yup
+  //   .number()
+  //   .typeError("Time is required!")
+  //   .positive("Time should be a positive number")
+  //   .required("Time is required!"),
   trainer_desc: yup
     .string()
     .min(200, "Trainer description must be at least 200 characters!")
@@ -78,8 +79,6 @@ const TrainerProfile = () => {
   const [isListed, setIsListed] = useState("");
   const [trainerAge, setTrainerAge] = useState(10);
   const [selectedValue, setSelectedValue] = useState(10);
-  const [errorPic, setPicError] = useState(false);
-
   var trainersAge = "";
   var loginId = "";
   const notify = () => {
@@ -98,23 +97,22 @@ const TrainerProfile = () => {
     { value: "aerobics", label: "Aerobics" },
   ];
   var trainerProfileDetails = {
-    // user_id: {
-    //   full_name: "",
-    //   email: "",
-    //   password: "",
-    //   user_type: "trainer",
-    // },
+    user_id: {
+      full_name: "",
+      email: "",
+      password: "",
+      user_type: "trainer",
+    },
     exercise_type: "",
     listed: "not-listed",
     company_name: "",
     designation: "",
-    time_worked: "",
+    // time_worked: "",
     qualification: "",
 
     trainer_desc: "",
     certificate_file: "asdasd",
     trainer_photo: "adsadasd",
-    trainer_availblity: "",
   };
   function getAge(dateString) {
     var today = new Date();
@@ -191,16 +189,13 @@ const TrainerProfile = () => {
     trainerService
       .update_trainer_photo(formData, loggedInId)
       .then((data) => {
-        setPicError(false);
         console.log(data);
         setIsProfilePicForm(false);
         setIsProfile(true);
         page_refresh();
       })
       .catch((err) => {
-        if (err.response.status == 500) {
-          setPicError(true);
-        }
+        console.log(err);
       });
   };
 
@@ -220,17 +215,21 @@ const TrainerProfile = () => {
     // console.log(trainerDetails);
     // console.log("aaaaaaa");
     console.log("before request");
-    console.log(data.trainer_availblity);
     trainerProfileDetails = {
       ...trainerProfileDetails,
+      user_id: {
+        full_name: data.full_name,
+        email: getCustomer.user_id.email,
+        password: getCustomer.user_id.password,
+        user_type: "trainer",
+      },
       exercise_type: data.exercise_type,
       // listed: "",
       company_name: data.company_name,
       designation: data.designation,
-      time_worked: data.time_worked,
+      // time_worked: data.time_worked,
       qualification: data.qualification,
       trainer_desc: data.trainer_desc,
-      trainer_availblity: data.trainer_availblity,
       // certificate_file: "",
       // trainer_photo: "",
     };
@@ -239,14 +238,16 @@ const TrainerProfile = () => {
       .update_trainer(trainerProfileDetails, loggedInId)
       .then((data) => {
         // console.log(data);
+        // setIsTrainerForm(false);
+        // setIsProfile(true);
+        // page_refresh();
       })
       .catch((err) => {
         console.log(err);
       });
     console.log(trainerProfileDetails);
     console.log("after request");
-    setIsProfilePicForm(true);
-    setIsTrainerForm(false);
+    // setIsProfilePicForm(true);
   };
   const handleChange = (e) => {
     setSelectedValue(e.value);
@@ -258,10 +259,7 @@ const TrainerProfile = () => {
       <h2>Trainer Profile</h2>
       {isAsk ? (
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
-          <h4>
-            There is no profile present. Click below to create a trainer
-            profile:
-          </h4>
+          <h4>There is no profile present. Click below to create a trainer profile:</h4>
           <Button
             className="w-25 mt-4"
             onClick={() => {
@@ -290,6 +288,16 @@ const TrainerProfile = () => {
             >
               <div className="input-text d-flex flex-column">
                 <div className="w-50 m-0">
+                  <label>Your Name</label>
+                  <input
+                    type="text"
+                    id=""
+                    name="full_name"
+                    {...controlTrainerProfile("full_name")}
+                    defaultValue={getCustomer.user_id.full_name}
+                  />
+
+                  <p>{errorsTrainerProfile.company_name?.message}</p>
                   <label for="fname">Select your exercise type</label>
                   <FormControl className="m-3 w-100 dropdown-trainer">
                     <Select
@@ -302,19 +310,10 @@ const TrainerProfile = () => {
                       <MenuItem value="cardio">Cardio</MenuItem>
                       <MenuItem value="gym">Gym</MenuItem>
                       <MenuItem value="stretching">Stretching</MenuItem>
-                    </Select>
-                  </FormControl>
-                  <label for="fname">Select your Training Availblity</label>
-                  <FormControl className="m-3 w-100 dropdown-trainer">
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      name="trainer_availblity"
-                      {...controlTrainerProfile("trainer_availblity")}
-                      defaultValue={getCustomer.trainer_availblity}
-                    >
-                      <MenuItem value="online">Online Training</MenuItem>
-                      <MenuItem value="on-site">On Site Training</MenuItem>
+                      <MenuItem value="boxing">boxing</MenuItem>
+                      <MenuItem value="aerobics">Aerobics</MenuItem>
+                      <MenuItem value="kickboxing">Kickboxing</MenuItem>
+                      <MenuItem value="swimming">Swimming</MenuItem>
                     </Select>
                   </FormControl>
 
@@ -329,18 +328,32 @@ const TrainerProfile = () => {
                   {...controlTrainerProfile("exercise_type")}
                 /> */}
                   <p>{errorsTrainerProfile.exercise_type?.message}</p>
+                  <label for="fname">Enter Your certification</label>
+                  <FormControl className="m-3 w-100 dropdown-trainer">
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      name="qualification"
+                      {...controlTrainerProfile("qualification")}
+                      defaultValue={getCustomer.qualification}
+                    >
+                      <MenuItem value="mfic">Master Fitness Instructor Course (MFIC)</MenuItem>
+                      <MenuItem value="ucbc">
+                        Unarmed Combat & Bayonet Fighting Course (UCBC)
+                      </MenuItem>
+                      <MenuItem value="advUCBC">
+                        Advance Unarmed Combat & Bayonet Fighting Course (Adv UCBC)
+                      </MenuItem>
+                      <MenuItem value="scc">
+                        Sports Coaching Courses army school of training
+                      </MenuItem>
+                      <MenuItem value="wsc">Water Sports Course (WSC)</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <p>{errorsTrainerProfile.qualification?.message}</p>
                 </div>
 
-                <label for="lname">Enter your qualification</label>
-                <input
-                  type="text"
-                  id=""
-                  defaultValue={getCustomer.qualification}
-                  name="qualification"
-                  {...controlTrainerProfile("qualification")}
-                />
-                <p>{errorsTrainerProfile.qualification?.message}</p>
-                <label>Enter your company name</label>
+                <label>Enter the company you are currently working at</label>
                 <input
                   type="text"
                   id=""
@@ -350,7 +363,7 @@ const TrainerProfile = () => {
                 />
 
                 <p>{errorsTrainerProfile.company_name?.message}</p>
-                <label for="lname">Enter your designation </label>
+                <label for="lname">Enter your designation in the current company </label>
                 <input
                   type="text"
                   id=""
@@ -359,7 +372,7 @@ const TrainerProfile = () => {
                   defaultValue={getCustomer.designation}
                 />
                 <p>{errorsTrainerProfile.designation?.message}</p>
-                <label for="lname">
+                {/* <label for="lname">
                   Enter the time you are available at daily basis ( 0-12 hrs )
                 </label>
                 <input
@@ -369,33 +382,9 @@ const TrainerProfile = () => {
                   {...controlTrainerProfile("time_worked")}
                   defaultValue={getCustomer.time_worked}
                 />
-                <p>{errorsTrainerProfile.time_worked?.message}</p>
+                <p>{errorsTrainerProfile.time_worked?.message}</p> */}
                 {/* <label for="lname">Your gender</label> */}
               </div>
-              {/* <div className="d-flex mt-2 gender-radio justify-content-start">
-                <input
-                  type="radio"
-                  value="Male"
-                  name="gender"
-                  {...controlTrainerProfile("gender")}
-                />
-                <h4>Male</h4>
-                <input
-                  type="radio"
-                  value="Female"
-                  name="gender"
-                  {...controlTrainerProfile("gender")}
-                />
-                <h4>Female</h4>
-                <input
-                  type="radio"
-                  value="Both"
-                  name="gender"
-                  {...controlTrainerProfile("gender")}
-                />
-                <h4>Both</h4>
-              </div>
-              <p>{errorsTrainerProfile.gender?.message}</p> */}
 
               <label for="lname">Your details</label>
 
@@ -411,8 +400,7 @@ const TrainerProfile = () => {
             <p className="general-p">Please upload your profile picture</p>
           <input type="file" /> */}
               <p className="general-p mt-5">
-                Submit Profile to the Admin. Admin will review your profile and
-                Approve it:
+                Submit Profile to the Admin. Admin will review your profile and Approve it:
               </p>
               <Button
                 type="submit"
@@ -439,17 +427,10 @@ const TrainerProfile = () => {
             <i class="bx bx-arrow-back m-1"></i> Back
           </Button>
           <p className="general-p">Please upload your profile picture</p>
-          {errorPic ? (
-            <p className="text-danger">
-              Please Enter Right Format (PNG,JPEG,JPG)
-            </p>
-          ) : null}
           <div className="upload-photo-card">
             <TransformWrapper>
               <TransformComponent>
-                {previewImage ? (
-                  <img className="preview" src={previewImage} alt="" />
-                ) : null}
+                <img className="preview" src={previewImage} alt="" />
               </TransformComponent>
             </TransformWrapper>
           </div>
@@ -477,11 +458,7 @@ const TrainerProfile = () => {
           <div className="d-flex ">
             <div className="d-flex w-75 justify-content-between">
               <div className="trainer-photo d-flex">
-                <img
-                  clasName="trainer-photo"
-                  src={getCustomer.trainer_photo}
-                  alt=""
-                />
+                <img clasName="trainer-photo" src={getCustomer.trainer_photo} alt="" />
                 <div className="d-flex mt-5 flex-column">
                   <h4>Name: {getCustomer.user_id.full_name}</h4>
                   <h4>Age: {trainerAge}</h4>
