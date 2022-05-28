@@ -1,10 +1,10 @@
-var express = require("express");
-var router = express.Router();
+var express = require('express')
+var router = express.Router()
 // // const { registerCustomer } = require('../../controllers/customerControl')
 var { Verify } = require('../../middleware/trainer')
 var { Hash } = require('../../middleware/coustomerDetails')
 var { Auth } = require('../../middleware/trainer')
-const upload = require("../../utils/multer");
+const upload = require('../../utils/multer')
 
 const {
   getAllData,
@@ -17,7 +17,9 @@ const {
   completeTrainer,
   trainerImage,
   trainerNotListed,
-  trainerSearchFilter
+  trainerSearchFilter,
+  forgetPassword,
+  resetPassword,
 } = require('../../controllers/trainer_Controller')
 
 router.route('/trainerregister').post(Verify, Hash, createData)
@@ -30,10 +32,12 @@ router
   .patch(completeTrainer)
   .delete(deleteData)
 
-router.route('/image/:trainerId').patch(upload.single('trainer'),trainerImage)
+router.route('/image/:trainerId').patch(upload.single('trainer'), trainerImage)
 
 router.route('/login').post(loginUser)
-router.route('/log').post( upload.single("image"), checkUser)
+router.route('/log').post(upload.single('image'), checkUser)
+router.route('/forgetPassword').put(forgetPassword)
+router.route('/resetPassword').put(resetPassword)
 module.exports = router
 //
 //

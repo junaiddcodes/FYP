@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const { userSchema } = require("./userModel");
-const Joi = require("joi");
+const mongoose = require('mongoose')
+const { userSchema } = require('./userModel')
+const Joi = require('joi')
 
 //gym Details Schema
 
@@ -12,12 +12,16 @@ var gymDetailsSchema = mongoose.Schema({
   gym_contact_no: String,
   gym_membership_price: Number,
   gender_facilitation: String,
-  gym_photos: [{photo_url:String,cloudinary_id: String}], 
-});
+  gym_photos: [{ photo_url: String, cloudinary_id: String }],
+  resetLink: {
+    data: String,
+    default: '',
+  },
+})
 
 // Create Model For Gym in Gym_Details Table
 
-var gymDetails = mongoose.model("Gym_Details", gymDetailsSchema);
+var gymDetails = mongoose.model('Gym_Details', gymDetailsSchema)
 
 function validateGym(data) {
   const schema = Joi.object({
@@ -37,14 +41,16 @@ function validateGym(data) {
     gym_contact_no: Joi.string().min(5),
     gym_membership_price: Joi.number().positive(),
     gender_facilitation: Joi.string(),
-    gym_photos:Joi.array().items(Joi.object({
-      photo_url:Joi.string(),
-      cloudinary_id: Joi.string()
-  }))
-  });
-  return schema.validate(data);
+    gym_photos: Joi.array().items(
+      Joi.object({
+        photo_url: Joi.string(),
+        cloudinary_id: Joi.string(),
+      })
+    ),
+  })
+  return schema.validate(data)
 }
 
 // Export Gym Details Model
-module.exports.gymDetails = gymDetails;
-module.exports.Validate = validateGym;
+module.exports.gymDetails = gymDetails
+module.exports.Validate = validateGym

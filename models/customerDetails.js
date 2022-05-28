@@ -1,9 +1,9 @@
-const mongoose = require("mongoose");
-const { userSchema } = require("./userModel");
-var bycrpt = require("bcryptjs");
+const mongoose = require('mongoose')
+const { userSchema } = require('./userModel')
+var bycrpt = require('bcryptjs')
 
-const Joi = require("joi");
-const bcryptjs = require("bcryptjs");
+const Joi = require('joi')
+const bcryptjs = require('bcryptjs')
 
 var customerDetailsSchema = mongoose.Schema({
   user_id: userSchema,
@@ -19,12 +19,16 @@ var customerDetailsSchema = mongoose.Schema({
   protein: Number,
   carbs: Number,
   fats: Number,
-});
+  resetLink: {
+    data: String,
+    default: '',
+  },
+})
 customerDetailsSchema.methods.generateHashPassword = async function () {
-  let salt = await bcrypt.genSalt(10);
-  user_id.password = await bcrypt.hash(user_id.password, salt);
-};
-var customerDetails = mongoose.model("Customer_Details", customerDetailsSchema);
+  let salt = await bcrypt.genSalt(10)
+  user_id.password = await bcrypt.hash(user_id.password, salt)
+}
+var customerDetails = mongoose.model('Customer_Details', customerDetailsSchema)
 
 function validateCoustomers(data) {
   const schema = Joi.object({
@@ -46,9 +50,9 @@ function validateCoustomers(data) {
     protein: Joi.number().positive().required(),
     carbs: Joi.number().positive().required(),
     fats: Joi.number().positive().required(),
-  });
-  return schema.validate(data);
+  })
+  return schema.validate(data)
 }
 
-module.exports = { customerDetails };
-module.exports.Validate = validateCoustomers;
+module.exports = { customerDetails }
+module.exports.Validate = validateCoustomers
