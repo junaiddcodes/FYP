@@ -17,6 +17,8 @@ import { TextField } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const AddExercise = () => {
   const [excerciseCheck, setExcerciseCheck] = useState(true)
@@ -39,6 +41,18 @@ const AddExercise = () => {
   var user_id = userService.getLoggedInUser()._id
   const [userDetails, setUserDetails] = useState(location.state?.userData)
   const [calorieData, setCalorieData] = useState(location.state?.currentCalorie)
+  const Edited = () => {
+    // Calling toast method by passing string
+    toast.success('Exercise Edit')
+  }
+  const Add = () => {
+    // Calling toast method by passing string
+    toast.success('Exercise Added')
+  }
+  const Delete = () => {
+    // Calling toast method by passing string
+    toast.success('Exercise Deleted')
+  }
   const schema = yup.object().shape({
     time_minute: yup
       .number()
@@ -86,6 +100,7 @@ const AddExercise = () => {
           setEditModalOpen(false)
           getExcerciseData()
           console.log('Excercise Update Successfully')
+          Edited()
         })
         .catch((err) => {
           console.log(err)
@@ -143,6 +158,7 @@ const AddExercise = () => {
           setModalOpen(false)
           getExcerciseData()
           console.log('Excercise Posted Successfully')
+          Add()
         })
         .catch((err) => {
           console.log(err)
@@ -541,6 +557,7 @@ const AddExercise = () => {
                                         .then(() => {
                                           console.log('Excercise is Deleted')
                                           getExcerciseData()
+                                          Delete()
                                         })
 
                                       setConfirmDelete(false)

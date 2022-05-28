@@ -1,32 +1,29 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Button } from "react-bootstrap";
-import Modal from "react-modal";
-import { ImCross } from "react-icons/im";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import TopBar from "../../Components/TopBar";
-import SideMenu from "../../Components/SideMenu";
-import { useLocation } from "react-router-dom";
-import userService from "../../services/UserService";
-import { useNavigate } from "react-router-dom";
-import Dropdown from "../../Components/dropdown";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { TextField } from "@mui/material";
+import React, { useState, useEffect, useRef } from 'react'
+import { Button } from 'react-bootstrap'
+import Modal from 'react-modal'
+import { ImCross } from 'react-icons/im'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import Select from '@mui/material/Select'
+import TopBar from '../../Components/TopBar'
+import SideMenu from '../../Components/SideMenu'
+import { useLocation } from 'react-router-dom'
+import userService from '../../services/UserService'
+import { useNavigate } from 'react-router-dom'
+import Dropdown from '../../Components/dropdown'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import { TextField } from '@mui/material'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-
-
 const AddFood = () => {
-
-  const [foodCheck, setFoodCheck] = useState(true);
-  const [showEdit, setShowEdit] = useState(false);
-  const [editMealId, setEditMealId] = useState(""); 
-  const location = useLocation();
+  const [foodCheck, setFoodCheck] = useState(true)
+  const [showEdit, setShowEdit] = useState(false)
+  const [editMealId, setEditMealId] = useState('')
+  const location = useLocation()
   var [currentCalorie, setCurrentCalorie] = useState({
     food_calories: 0,
     food_proteins: 0,
@@ -35,11 +32,11 @@ const AddFood = () => {
   })
 
   const schema = yup.object().shape({
-    meal_name: yup.string().required("Meal cannot be Empty"),
-    food_quantity: yup.string().required("Food Weight cannot be Empty"),
-  });
-  const [value, setValue] = useState(null);
-  const navigate = useNavigate();
+    meal_name: yup.string().required('Meal cannot be Empty'),
+    food_quantity: yup.string().required('Food Weight cannot be Empty'),
+  })
+  const [value, setValue] = useState(null)
+  const navigate = useNavigate()
   const notify = () => {
     // Calling toast method by passing string
     toast.success('Food Edit')
@@ -48,15 +45,15 @@ const AddFood = () => {
     // Calling toast method by passing string
     toast.success('Food Added')
   }
-  const Delete= () => {
+  const Delete = () => {
     // Calling toast method by passing string
     toast.success('Food Deleted')
   }
-  var user_id = userService.getLoggedInUser()._id;
-  const [mealData, setMealData] = useState([]);
-  const [userDetails, setUserDetails] = useState(location.state?.userData);
-  const [calorieBurn, setCalorieBurn] = useState(location.state?.currentBurn);
-  const [editData, setEditData] = useState({});
+  var user_id = userService.getLoggedInUser()._id
+  const [mealData, setMealData] = useState([])
+  const [userDetails, setUserDetails] = useState(location.state?.userData)
+  const [calorieBurn, setCalorieBurn] = useState(location.state?.currentBurn)
+  const [editData, setEditData] = useState({})
   const {
     register,
     handleSubmit,
@@ -84,15 +81,15 @@ const AddFood = () => {
         food_quantity: data.food_quantity,
         time_date: new Date().getTime(),
       }
-      notify()
 
       userService
         .editMealData(editMealId, mealPost)
         .then((e) => {
-          setValue(null);
-          getMealData();
-          setEditModalOpen(false);
-          console.log("Meal Update Successfully");
+          setValue(null)
+          getMealData()
+          setEditModalOpen(false)
+          console.log('Meal Update Successfully')
+          notify()
         })
         .catch((err) => {
           console.log(err)
@@ -130,20 +127,21 @@ const AddFood = () => {
         food_quantity: data.food_quantity,
         time_date: new Date().getTime(),
       }
-      Add()
+
       userService
         .createMeal(mealPost)
         .then((e) => {
-          setValue(null);
-          setModalOpen(false);
-          getMealData();
-          console.log("Meal Posted Successfully");
+          setValue(null)
+          setModalOpen(false)
+          getMealData()
+          console.log('Meal Posted Successfully')
+          Add()
         })
         .catch((err) => {
           console.log(err)
         })
     }
-  };
+  }
   // function getMealData() {
   //   userService.getMealData(user_id).then((data) => {
   //     setMealData(data.crud);
@@ -170,11 +168,11 @@ const AddFood = () => {
           // x=x+e.food_calories;
         })
 
-        setCurrentCalorie(calorieData);
+        setCurrentCalorie(calorieData)
         console.log(calorieBurn)
-      });
-    }else{
-      console.log("Empty State")
+      })
+    } else {
+      console.log('Empty State')
     }
   }
 
@@ -203,7 +201,7 @@ const AddFood = () => {
       }
     }
     getMealData()
-    getFoodData("a")
+    getFoodData('a')
   }, [])
 
   var [foodOptions, setFoodOptions] = useState([])
@@ -223,7 +221,9 @@ const AddFood = () => {
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
               <h4>Calories Gained: {currentCalorie?.food_calories}</h4>
-              <h4>Calories Burnt:{Math.floor(calorieBurn.excercise_calories)}</h4>
+              <h4>
+                Calories Burnt:{Math.floor(calorieBurn.excercise_calories)}
+              </h4>
               <h4>Calorie Goal: {Math.floor(userDetails?.calorie_goal)}</h4>
             </div>
             {/* <div className="d-flex justify-content-around align-items-end w-50">
@@ -239,8 +239,8 @@ const AddFood = () => {
         <h2 className="mt-3">Today's Meals</h2>
         <Button
           onClick={() => {
-            setModalOpen(true);
-            setValue(null);
+            setModalOpen(true)
+            setValue(null)
           }}
           className="m-3"
         >
@@ -354,7 +354,9 @@ const AddFood = () => {
               </p>
               <div className="mb-3">
                 <div>
-                  <label htmlFor="time">Enter time of your meal {"("+"Optional" +")"}</label>
+                  <label htmlFor="time">
+                    Enter time of your meal {'(' + 'Optional' + ')'}
+                  </label>
                 </div>
                 <div>
                   <input
@@ -549,7 +551,8 @@ const AddFood = () => {
                                       <div className="mb-3">
                                         <div>
                                           <label htmlFor="time">
-                                            Enter time of your meal {"("+"Optional" +")"}
+                                            Enter time of your meal{' '}
+                                            {'(' + 'Optional' + ')'}
                                           </label>
                                         </div>
                                         <div>
@@ -628,12 +631,12 @@ const AddFood = () => {
                                     className="btn-dark m-3"
                                     type="submit "
                                     onClick={() => {
-                                      Delete()
                                       userService
                                         .deleteMealData(e._id)
                                         .then(() => {
                                           console.log('Meal is Deleted')
                                           getMealData()
+                                          Delete()
                                         })
 
                                       setConfirmDelete(false)

@@ -1,77 +1,83 @@
-import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
-import Modal from "react-modal";
-import { FaSearch } from "react-icons/fa";
-import Tooltip from "@mui/material/Tooltip";
-import { ImCross } from "react-icons/im";
-import { MdLocationPin } from "react-icons/md";
-import { MdMyLocation } from "react-icons/md";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import TopBar from "../../Components/TopBar";
-import SideMenu from "../../Components/SideMenu";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import userService from "../../services/UserService";
-import { useParams } from "react-router-dom";
-import trainerService from "../../services/TrainerService";
+import React, { useEffect, useState } from 'react'
+import { Button } from 'react-bootstrap'
+import Modal from 'react-modal'
+import { FaSearch } from 'react-icons/fa'
+import Tooltip from '@mui/material/Tooltip'
+import { ImCross } from 'react-icons/im'
+import { MdBookmarkAdded, MdLocationPin } from 'react-icons/md'
+import { MdMyLocation } from 'react-icons/md'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import FormControl from '@mui/material/FormControl'
+import Select from '@mui/material/Select'
+import TopBar from '../../Components/TopBar'
+import SideMenu from '../../Components/SideMenu'
+import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import userService from '../../services/UserService'
+import { useParams } from 'react-router-dom'
+import trainerService from '../../services/TrainerService'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const TrainerDescription = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [filterOpen, setFilterOpen] = useState(false);
-  const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false)
+  const [filterOpen, setFilterOpen] = useState(false)
+  const navigate = useNavigate()
+  const Add = () => {
+    // Calling toast method by passing string
+    toast.success('Chat Created Added')
+  }
   useEffect(() => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
     if (userService.isLoggedIn() == false) {
-      navigate("/login");
+      navigate('/login')
     } else {
       if (
-        userService.getLoggedInUser().user_type == "trainer" ||
-        userService.getLoggedInUser().user_type == "gym" ||
-        userService.getLoggedInUser().user_type == "admin"
+        userService.getLoggedInUser().user_type == 'trainer' ||
+        userService.getLoggedInUser().user_type == 'gym' ||
+        userService.getLoggedInUser().user_type == 'admin'
       ) {
-        navigate("/login");
+        navigate('/login')
       }
     }
-  }, []);
-  const trainerId = useParams();
+  }, [])
+  const trainerId = useParams()
   const [trainerDetails, setTrainerDetails] = useState({
-    user_id: { full_name: "", email: "" },
-    exercise_type: "",
-    gender: "",
-    trainer_desc: "",
-    trainer_photo: "",
-    trainer_availblity:"",
-  });
+    user_id: { full_name: '', email: '' },
+    exercise_type: '',
+    gender: '',
+    trainer_desc: '',
+    trainer_photo: '',
+    trainer_availblity: '',
+  })
 
   const handlePlan = (trainerDetails) => {
-    console.log(trainerDetails);
-    navigate("/activity-plans", { state: { trainerDetails } });
-  };
+    console.log(trainerDetails)
+    navigate('/activity-plans', { state: { trainerDetails } })
+  }
   function getTrainer() {
     trainerService.get_one_trainer(trainerId.id).then((res) => {
-      setTrainerDetails(res.crud);
-      console.log(res);
-    });
+      setTrainerDetails(res.crud)
+      console.log(res)
+    })
   }
   function createConversation() {
-    console.log(trainerDetails._id);
-    console.log(convo);
+    console.log(trainerDetails._id)
+    console.log(convo)
     userService.createConvo(convo).then((data) => {
-      console.log(data);
-    });
-    navigate("/Messenger");
+      console.log(data)
+    })
+    navigate('/Messenger')
   }
 
   var convo = {
     senderId: userService.getLoggedInUser()._id,
     receiverId: trainerDetails._id,
-  };
-  useEffect(getTrainer, []);
+  }
+  useEffect(getTrainer, [])
   return (
     <div className="page-container-user">
       <TopBar />
@@ -92,7 +98,8 @@ const TrainerDescription = () => {
               <Button
                 className="mt-5"
                 onClick={() => {
-                  createConversation();
+                  createConversation()
+                  Add()
                 }}
               >
                 Message
@@ -101,8 +108,8 @@ const TrainerDescription = () => {
               <Button
                 className="mt-5"
                 onClick={() => {
-                  console.log("on click = ", trainerDetails);
-                  handlePlan(trainerDetails);
+                  console.log('on click = ', trainerDetails)
+                  handlePlan(trainerDetails)
                 }}
               >
                 View Plan
@@ -117,8 +124,9 @@ const TrainerDescription = () => {
           <p> {trainerDetails.trainer_desc}</p>
         </div>
       </div>
+      <ToastContainer />
     </div>
-  );
-};
+  )
+}
 
-export default TrainerDescription;
+export default TrainerDescription

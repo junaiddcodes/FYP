@@ -11,6 +11,8 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import TopBar from '../../Components/TopBar'
 import SideMenu from '../../Components/SideMenu'
@@ -19,7 +21,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import userService from '../../services/UserService'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
+
 import jwtDecode from 'jwt-decode'
 import trainerService from '../../services/TrainerService'
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
@@ -85,6 +87,10 @@ const UserProfile = () => {
   const [selectedValue, setSelectedValue] = useState(10)
   const [inches, setInches] = useState('')
   const [feet, setFeet] = useState('')
+  const Edited = () => {
+    // Calling toast method by passing string
+    toast.success('User Profile Edit')
+  }
   var trainersAge = ''
   var loginId = ''
   const workoutOptions = [
@@ -208,6 +214,7 @@ const UserProfile = () => {
         setIsProfile(true)
         setIsTrainerForm(false)
         page_refresh()
+        Edited()
       })
       .catch((err) => {
         console.log(err)

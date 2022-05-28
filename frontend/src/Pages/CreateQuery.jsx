@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import Modal from "react-modal";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import TopBar from "../Components/TopBar";
-import SideMenuBack from "../Components/SideMenuBack";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import userService from "../services/UserService";
-import { useNavigate } from "react-router-dom";
-import jwtDecode from "jwt-decode";
-import gymService from "../services/GymService";
-import { Link } from "react-router-dom";
-import adminService from "../services/AdminService";
-import { Button } from "react-bootstrap";
-import SideMenu from "../Components/SideMenu";
-import SideMenuTrainer from "../Components/SideMenuTrainer";
-import SideMenuGym from "../Components/SideMenuGym";
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import Modal from 'react-modal'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import TopBar from '../Components/TopBar'
+import SideMenuBack from '../Components/SideMenuBack'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import userService from '../services/UserService'
+import { useNavigate } from 'react-router-dom'
+import jwtDecode from 'jwt-decode'
+import gymService from '../services/GymService'
+import { Link } from 'react-router-dom'
+import adminService from '../services/AdminService'
+import { Button } from 'react-bootstrap'
+import SideMenu from '../Components/SideMenu'
+import SideMenuTrainer from '../Components/SideMenuTrainer'
+import SideMenuGym from '../Components/SideMenuGym'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -46,7 +46,7 @@ const CreateQuery = () => {
     // Calling toast method by passing string
     toast.success('Query Added')
   }
-  const user_type = userService.getLoggedInUser().user_type;
+  const user_type = userService.getLoggedInUser().user_type
   var loginId = ''
   var queryDetails = {
     user_id: '',
@@ -100,12 +100,13 @@ const CreateQuery = () => {
       query_subject: data.query_subject,
       query_desc: data.query_desc,
     }
-    notify()
+
     adminService
       .add_query(queryDetails)
       .then((data) => {
         console.log(data)
         setEditModalOpen(false)
+        notify()
       })
       .catch((err) => {
         console.log(err)
@@ -118,11 +119,11 @@ const CreateQuery = () => {
   return (
     <div className="page-container-admin">
       <TopBar />
-      {user_type == "customer" ? (
+      {user_type == 'customer' ? (
         <SideMenu />
-      ) : user_type == "trainer" ? (
+      ) : user_type == 'trainer' ? (
         <SideMenuTrainer />
-      ) : user_type == "gym" ? (
+      ) : user_type == 'gym' ? (
         <SideMenuGym />
       ) : null}
 
@@ -260,6 +261,7 @@ const CreateQuery = () => {
           </Modal>
         </div>
       </div>
+      <ToastContainer />
     </div>
   )
 }
