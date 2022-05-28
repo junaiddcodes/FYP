@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import trainerService from '../services/TrainerService'
-import { useNavigate } from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import { Link } from 'react-router-dom'
+import React, { useState } from "react";
+import trainerService from "../services/TrainerService";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 const TopBar = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const TopBar = () => {
               <Link to="/user-profile">
                 <a className="menu-item">Profile Settings</a>
               </Link>
-              <Link to="/">
+              <Link to="/change-password">
                 <a className="menu-item">Change Password</a>
               </Link>
               <hr />

@@ -292,6 +292,30 @@
     padding-left: 10px;
   }
 }
+.outer-box-password {
+  @include outerBox(40%, 90%);
+}
+.inner-box-password {
+  @include heading3(1.25rem, 600);
+
+  @include innerBox(80%, 75%);
+  p {
+    margin: 5px;
+    margin-left: 10px;
+    color: yellow;
+  }
+  input {
+    background-color: $color2;
+    width: 90%;
+    margin: auto;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    color: $color4;
+    font-family: "Montserrat", sans-serif;
+    padding-left: 10px;
+  }
+}
 .buttons-gym {
   width: 90%;
   font-family: "Montserrat", sans-serif;

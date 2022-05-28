@@ -9,7 +9,7 @@ const SideMenuAdmin = () => {
           <div className="logo">
             <i class="bx bx-dumbbell"></i>
             <div className="logo-name">Fit</div>
-          </div>{' '}
+          </div>{" "}
         </Link>
       </div>
       <ul className="nav_list">
@@ -61,7 +61,7 @@ const SideMenuAdmin = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SideMenuAdmin
+export default SideMenuAdmin;
