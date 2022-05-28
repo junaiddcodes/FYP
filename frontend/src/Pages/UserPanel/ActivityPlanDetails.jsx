@@ -29,6 +29,11 @@ const ActivityPlanDetails = () => {
     user_id: "",
     plan_id: "",
   };
+
+  const [orderX, SetOrderX] = useState({
+    user_id: "",
+    plan_id: "",
+  })
   var userId = "";
 
   const checkPlan = () => {
@@ -67,6 +72,11 @@ const ActivityPlanDetails = () => {
     if (location.state) {
       // data = location.state.trainerDetails;
       console.log("state data = ", location.state.e);
+
+      SetOrderX({
+        plan_id:location.state.e._id,
+        user_id:userId
+      })
       order.plan_id = location.state.e._id;
       order.user_id = userId;
       data = location.state.e;
@@ -79,8 +89,9 @@ const ActivityPlanDetails = () => {
     // console.log(location.state.e);
   }, []);
   const handleBuyPlan = () => {
+    console.log(orderX)
     userService
-      .buy_plan(order)
+      .buy_plan(orderX)
       .then((data) => {
         console.log(data);
         console.log("plan bought");
