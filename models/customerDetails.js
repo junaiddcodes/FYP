@@ -19,10 +19,6 @@ var customerDetailsSchema = mongoose.Schema({
   protein: Number,
   carbs: Number,
   fats: Number,
-  resetLink: {
-    data: String,
-    default: '',
-  },
 })
 customerDetailsSchema.methods.generateHashPassword = async function () {
   let salt = await bcrypt.genSalt(10)

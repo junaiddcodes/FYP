@@ -15,14 +15,11 @@ const {
   checkUser,
   changePassword,
   //registerCustomer,
-  forgetPassword,
-  resetPassword,
 } = require('../../controllers/customerControl')
 
 router.route('/register').post(Verify, Hash, createData)
 router.route('/').get(getAllData)
-router.route('/forgetPassword').put(forgetPassword)
-router.route('/resetPassword').put(resetPassword)
+
 router
   .route('/:userId')
   .get(getOneData)

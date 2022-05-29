@@ -18,8 +18,6 @@ const {
   trainerImage,
   trainerNotListed,
   trainerSearchFilter,
-  forgetPassword,
-  resetPassword,
 } = require('../../controllers/trainer_Controller')
 
 router.route('/trainerregister').post(Verify, Hash, createData)
@@ -36,8 +34,7 @@ router.route('/image/:trainerId').patch(upload.single('trainer'), trainerImage)
 
 router.route('/login').post(loginUser)
 router.route('/log').post(upload.single('image'), checkUser)
-router.route('/forgetPassword').put(forgetPassword)
-router.route('/resetPassword').put(resetPassword)
+
 module.exports = router
 //
 //

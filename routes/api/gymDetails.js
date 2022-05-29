@@ -18,8 +18,6 @@ const {
   gymImage,
   gymNotListed,
   gymSearchFilter,
-  forgetPassword,
-  resetPassword,
 } = require('../../controllers/gym_Controller')
 
 router.route('/gymregister').post(Verify, Hash, createData)
@@ -30,8 +28,6 @@ router.route('/:gymId').delete(deleteData).get(getOneData).patch(completeGym)
 router.route('/image/:gymId').patch(upload.array('gym'), gymImage)
 router.route('/login').post(loginGym)
 router.route('/log').post(Auth, checkUser)
-router.route('/forgetPassword').put(forgetPassword)
-router.route('/resetPassword').put(resetPassword)
 
 module.exports = router
 

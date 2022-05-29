@@ -13,10 +13,6 @@ var gymDetailsSchema = mongoose.Schema({
   gym_membership_price: Number,
   gender_facilitation: String,
   gym_photos: [{ photo_url: String, cloudinary_id: String }],
-  resetLink: {
-    data: String,
-    default: '',
-  },
 })
 
 // Create Model For Gym in Gym_Details Table

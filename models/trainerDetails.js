@@ -20,10 +20,6 @@ var trainerDetailsSchema = mongoose.Schema({
 
   trainer_photo: String,
   cloudinary_id: String,
-  resetLink: {
-    data: String,
-    default: '',
-  },
 })
 
 var trainerDetails = mongoose.model('Trainer_Details', trainerDetailsSchema)
