@@ -76,7 +76,7 @@ const AdminDashboard = () => {
     adminService
       .get_all_queries()
       .then((data) => {
-        console.log(data);
+        console.log("queires = ", data);
         setAllQueries(data.crud);
       })
       .catch((err) => {

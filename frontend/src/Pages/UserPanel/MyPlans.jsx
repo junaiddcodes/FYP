@@ -83,7 +83,7 @@ const MyPlans = () => {
             return (
               <div
                 onClick={() => {
-                  navigate("/activity-plan-details", { state: { e, name } });
+                  navigate("/my-plan-details", { state: { e, name } });
                 }}
                 className="activity-grid-container"
               >

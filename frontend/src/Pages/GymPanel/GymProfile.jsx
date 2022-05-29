@@ -28,6 +28,11 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Link } from "react-router-dom";
 
 const gymProfileSchema = yup.object().shape({
+  full_name: yup
+    .string()
+    .min(3, "Name must be of at least 3 characters")
+    .max(30, "Name must be of at most 30 characters")
+    .required("Name is required"),
   state: yup.string().required(),
   city: yup.string().required(),
   address: yup.string().required(),
@@ -48,10 +53,7 @@ const gymProfileSchema = yup.object().shape({
     .min(1000, "Price should not be less than Rs 1,000")
     .required("Gym membership price is required!"),
 
-  gender_facilitation: yup
-    .string()
-    .required("An option is required")
-    .nullable(),
+  gender_facilitation: yup.string().required("Gender facilitation can't be empty"),
   gym_photo: yup.string(),
 });
 
@@ -78,6 +80,12 @@ const GymProfile = () => {
   var loginId = "";
 
   var gymProfileDetails = {
+    user_id: {
+      full_name: "",
+      email: "",
+      password: "",
+      user_type: "trainer",
+    },
     location: { state: "", city: "", address: "" },
     gym_desc: "",
     gym_contact_no: "",
@@ -142,8 +150,7 @@ const GymProfile = () => {
     // }
   }, [loginId]);
 
-  const onChangeFile = (e) => {
-  };
+  const onChangeFile = (e) => {};
 
   const changeOnClick = (e) => {
     e.preventDefault();
@@ -202,6 +209,13 @@ const GymProfile = () => {
     console.log("before request");
     gymProfileDetails = {
       ...gymProfileDetails,
+
+      user_id: {
+        full_name: data.full_name,
+        email: getGym.user_id.email,
+        password: getGym.user_id.password,
+        user_type: "gym",
+      },
       location: {
         ...gymProfileDetails,
         state: data.state,
@@ -212,22 +226,22 @@ const GymProfile = () => {
       gym_contact_no: data.gym_contact_no,
       gym_membership_price: data.gym_membership_price,
       gender_facilitation: data.gender_facilitation,
-      gym_photo: data.gym_photo,
+      gym_photos: getGym.gym_photos,
     };
 
     gymService
       .update_gym(gymProfileDetails, loggedInId)
       .then((data) => {
         console.log(data);
+        setIsAsk(false);
+        setIsGymForm(false);
+        page_refresh();
       })
       .catch((err) => {
         console.log(err);
       });
     console.log(gymProfileDetails);
     console.log("after request");
-    setIsAsk(false);
-    setIsGymForm(false);
-    setIsGymPicForm(true);
   };
 
   return (
@@ -238,9 +252,7 @@ const GymProfile = () => {
       <h2>Gym Profile</h2>
       {isAsk ? (
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
-          <h4>
-            There is no profile present. Click below to create a gym profile:
-          </h4>
+          <h4>There is no profile present. Click below to create a gym profile:</h4>
           <Button
             className="w-25 mt-4"
             onClick={() => {
@@ -253,101 +265,100 @@ const GymProfile = () => {
           </Button>
         </div>
       ) : isGymForm ? (
-        <div className="gym-box mt-3 d-flex flex-column align-items-left">
-          <form
-            onSubmit={handleSubmitGymProfile(submitGymProfileForm)}
-            className="d-flex flex-column"
+        <div>
+          <Button
+            onClick={() => {
+              page_refresh();
+            }}
           >
-            <div className="input-text d-flex flex-column">
-              {/* <p>{gymProfileDetails.user_id.full_name}</p> */}
-              {/* <p>{gymProfileDetails.location}</p> */}
-              {/* <p>{loggedInId}</p> */}
-              <label for="">Gym Location</label>
-              <label for="">State</label>
-              <input
-                type="text"
-                name="state"
-                defaultValue={getGym.location?.state}
-                {...controlGymProfile("state")}
-              />
-              <p>{errorsGymProfile.state?.message}</p>
-              <label for="">City</label>
-              <input
-                type="text"
-                name="city"
-                defaultValue={getGym.location?.city}
-                {...controlGymProfile("city")}
-              />
-              <p>{errorsGymProfile.city?.message}</p>
-              <label for="">Address</label>
-              <input
-                type="text"
-                name="address"
-                defaultValue={getGym.location?.address}
-                {...controlGymProfile("address")}
-              />
-              <p>{errorsGymProfile.address?.message}</p>
+            back
+          </Button>
+          <div className="gym-box mt-3 d-flex flex-column align-items-left">
+            <form
+              onSubmit={handleSubmitGymProfile(submitGymProfileForm)}
+              className="d-flex flex-column"
+            >
+              <div className="input-text d-flex flex-column">
+                {/* <p>{gymProfileDetails.user_id.full_name}</p> */}
+                {/* <p>{gymProfileDetails.location}</p> */}
+                {/* <p>{loggedInId}</p> */}
+                <label>Your Name</label>
+                <input
+                  type="text"
+                  id=""
+                  name="full_name"
+                  {...controlGymProfile("full_name")}
+                  defaultValue={getGym.user_id.full_name}
+                />
+                <p>{errorsGymProfile.full_name?.message}</p>
+                <label for="">Gym Location</label>
+                <label for="">State</label>
+                <input
+                  type="text"
+                  name="state"
+                  defaultValue={getGym.location?.state}
+                  {...controlGymProfile("state")}
+                />
+                <p>{errorsGymProfile.state?.message}</p>
+                <label for="">City</label>
+                <input
+                  type="text"
+                  name="city"
+                  defaultValue={getGym.location?.city}
+                  {...controlGymProfile("city")}
+                />
+                <p>{errorsGymProfile.city?.message}</p>
+                <label for="">Address</label>
+                <input
+                  type="text"
+                  name="address"
+                  defaultValue={getGym.location?.address}
+                  {...controlGymProfile("address")}
+                />
+                <p>{errorsGymProfile.address?.message}</p>
 
-              <label for="">Gym Contact Number</label>
-              <input
-                type="text"
-                name="gym_contact_no"
-                defaultValue={getGym.gym_contact_no}
-                {...controlGymProfile("gym_contact_no")}
-              />
-              <p>{errorsGymProfile.gym_contact_no?.message}</p>
-              <label for="">Gym Membership Price (in Rs)</label>
-              <input
-                type="Number"
-                name="gym_membership_price"
-                defaultValue={getGym.gym_membership_price}
-                {...controlGymProfile("gym_membership_price")}
-              />
-              <p>{errorsGymProfile.gym_membership_price?.message}</p>
-              <label for="">Gender Facilitation</label>
-            </div>
-            <div className="d-flex mt-2 gender-radio justify-content-start">
-              <input
-                type="radio"
-                value="Male"
-                name="gender_facilitaion"
-                defaultValue={getGym.gender_facilitation}
-                // checked={male}
-                {...controlGymProfile("gender_facilitation")}
-              />
-              <h4>Male</h4>
-              <input
-                type="radio"
-                value="Female"
-                defaultValue={getGym.gender_facilitation}
-                // {getGym.gender_facilitation == female ? checked="true" : checked="false"}
-                // checked={female}
-                name="gender_facilitaion"
-                {...controlGymProfile("gender_facilitation")}
-              />
-              <h4>Female</h4>
-              <input
-                type="radio"
-                value="Both"
-                name="gender_facilitaion"
-                // checked={both}
-                // checked={getGym.gender_facilitation}
-                {...controlGymProfile("gender_facilitation")}
-                defaultValue={getGym.gender_facilitation}
-              />
-              <h4>Both</h4>
-            </div>
-            <p>{errorsGymProfile.gender_facilitation?.message}</p>
+                <label for="">Gym Contact Number</label>
+                <input
+                  type="text"
+                  name="gym_contact_no"
+                  defaultValue={getGym.gym_contact_no}
+                  {...controlGymProfile("gym_contact_no")}
+                />
+                <p>{errorsGymProfile.gym_contact_no?.message}</p>
+                <label for="">Gym Membership Price (in Rs)</label>
+                <input
+                  type="Number"
+                  name="gym_membership_price"
+                  defaultValue={getGym.gym_membership_price}
+                  {...controlGymProfile("gym_membership_price")}
+                />
+                <p>{errorsGymProfile.gym_membership_price?.message}</p>
+              </div>
+              <label for="fname">Gender Facilitation</label>
+              <FormControl className="m-3 w-100 dropdown-trainer">
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="gender_facilitation"
+                  {...controlGymProfile("gender_facilitation")}
+                  defaultValue={getGym.gender_facilitation}
+                >
+                  <MenuItem value="Male">Male</MenuItem>
+                  <MenuItem value="Female">Female</MenuItem>
+                  <MenuItem value="Both">Both</MenuItem>
+                </Select>
+              </FormControl>
+              <p>{errorsGymProfile.gender_facilitation?.message}</p>
 
-            <label for="">Gym Description</label>
+              <label for="">Gym Description</label>
 
-            <textarea
-              className="text-field mt-2"
-              name="gym_desc"
-              {...controlGymProfile("gym_desc")}
-              defaultValue={getGym.gym_desc}
-            />
-            <p>{errorsGymProfile.gym_desc?.message}</p>
+              <textarea
+                className="text-field mt-2"
+                name="gym_desc"
+                {...controlGymProfile("gym_desc")}
+                defaultValue={getGym.gym_desc}
+              />
+              <p>{errorsGymProfile.gym_desc?.message}</p>
 
               {/* <div className="upload-photo-card">
                 <TransformWrapper>
@@ -374,45 +385,52 @@ const GymProfile = () => {
                 </div>
               </form> */}
 
-            <p className="mt-3 general-p">
-              Submit Profile to the Admin. Admin will review your profile and
-              Approve it:
-            </p>
-            <Button type="submit" className="w-25">
-              Submit
-            </Button>
-          </form>
+              <p className="mt-3 general-p">
+                Submit Profile to the Admin. Admin will review your profile and Approve it:
+              </p>
+              <Button type="submit" className="w-25">
+                Submit
+              </Button>
+            </form>
+          </div>
         </div>
       ) : isGymPicForm ? (
         <div>
-          <p className="general-p">Please upload at least 3 gym pictures</p>
+          <Button
+            onClick={() => {
+              setIsGymPicForm(false);
+              setIsProfile(true);
+            }}
+          >
+            back
+          </Button>
+          <div>
+            <p className="general-p">Please upload at least 3 gym pictures</p>
 
-          {errorPic ? (
-            <p className="text-danger">
-              Please Enter Right Format (PNG,JPEG,JPG)
-            </p>
-          ) : null}
+            {errorPic ? (
+              <p className="text-danger">Please Enter Right Format (PNG,JPEG,JPG)</p>
+            ) : null}
 
-          <form onSubmit={changeOnClick} encType="multipart/form-data">
-            <div className="upload-form">
-              <input
-                multiple
-                style={{ marginTop: "1rem" }}
-                accept="image/*"
-                type="file"
-                filename="gym"
-                // onChange={onChangeFile}
-                onChange={(e) => {
-                  setFile(e.target.files);
-                }}
-              />
-              {/* <input
+            <form onSubmit={changeOnClick} encType="multipart/form-data">
+              <div className="upload-form">
+                <input
+                  multiple
+                  style={{ marginTop: "1rem" }}
+                  accept="image/*"
+                  type="file"
+                  filename="gym"
+                  // onChange={onChangeFile}
+                  onChange={(e) => {
+                    setFile(e.target.files);
+                  }}
+                />
+                {/* <input
                 style={{ marginTop: "1rem" }}
                 accept="image/*"
                 type="file"
                 filename="gym"
                 onChange={onChangeFile}
-              />
+                />
               <input
                 style={{ marginTop: "1rem" }}
                 accept="image/*"
@@ -420,15 +438,16 @@ const GymProfile = () => {
                 filename="gym"
                 onChange={onChangeFile}
               /> */}
-              <button
-                style={{ marginTop: "1rem", marginBottom: "1rem" }}
-                className="btn btn-primary w-25"
-                type="submit"
-              >
-                submit
-              </button>
-            </div>
-          </form>
+                <button
+                  style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                  className="btn btn-primary w-25"
+                  type="submit"
+                >
+                  submit
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       ) : isProfile ? (
         <div className="trainer-desc mt-3 d-flex flex-column">
@@ -438,8 +457,8 @@ const GymProfile = () => {
                 <div className="m-4 d-flex mt-5 flex-column">
                   <h4>Gym Name: {getGym.user_id.full_name}</h4>
                   <h4>
-                    Location: {getGym.location?.address},{" "}
-                    {getGym.location?.city}, {getGym.location?.state}{" "}
+                    Location: {getGym.location?.address}, {getGym.location?.city},{" "}
+                    {getGym.location?.state}{" "}
                   </h4>
                   <h4>Gender: {getGym.gender_facilitation}</h4>
                   <h4>Status: {getGym.listed}</h4>
