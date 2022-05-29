@@ -16,13 +16,64 @@ import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import gymService from "../../services/GymService";
 import userService from "../../services/UserService";
+import { TextField } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
 const GymRequest = () => {
+  const schema = yup.object().shape({
+    latitude: yup
+      .number()
+      .typeError("latitude cant be empty")
+      .positive("latitude cant be negative")
+      .min(-90, "latitude cant be less than -90")
+      .max(90, "latitude cant be more than 90")
+      .required(),
+    longitude: yup
+      .number()
+      .typeError("longitude cant be empty")
+      .positive("longitude cant be negative")
+      .min(-180, "longitude cant be less than -180")
+      .max(180, "longitude cant be more than 180")
+      .required(),
+    // .nullable(),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
   const navigate = useNavigate();
   const location = useLocation();
   const data = location.state.e;
   var gymProfileDetails = {
     listed: "",
   };
+
+  function submitProfileGym(dat) {
+
+    gymProfileDetails = {
+      ...gymProfileDetails,
+      listed: "listed",
+      cordinates: { lat: dat.latitude, long: dat.longitude }
+    };
+    console.log(gymProfileDetails)
+
+    gymService
+      .update_gym(gymProfileDetails, data._id)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    console.log(gymProfileDetails);
+    navigate("/admin-dashboard");
+  }
 
   useEffect(() => {
     // userService.getLoggedInUser();
@@ -55,71 +106,93 @@ const GymRequest = () => {
       </Button>
       <h2>Gym Request</h2>
 
-      <div className="d-flex  w-100">
-        <div className="w-50 "></div>
-        <div className="d-flex justify-content-center w-50">
-          <Button
-            className="m-3"
-            onClick={() => {
-              gymProfileDetails = {
-                ...gymProfileDetails,
-                listed: "listed",
-              };
-              gymService
-                .update_gym(gymProfileDetails, data._id)
-                .then((data) => {
-                  console.log(data);
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-              console.log(gymProfileDetails);
-              navigate("/admin-dashboard");
-            }}
-          >
-            Approve Gym
-          </Button>
-          <Button
-            className="m-3"
-            onClick={() => {
-              gymProfileDetails = {
-                ...gymProfileDetails,
-                listed: "rejected",
-              };
-              gymService
-                .update_gym(gymProfileDetails, data._id)
-                .then((data) => {
-                  console.log(data);
-                })
-                .catch((err) => {
-                  console.log(err);
-                });
-              console.log(gymProfileDetails);
-              navigate("/admin-dashboard");
-            }}
-          >
-            Reject Gym
-          </Button>
+      <form onSubmit={handleSubmit(submitProfileGym)}>
+        <div className="d-flex  w-100">
+          <div className="w-50 "></div>
+          <div className="d-flex justify-content-center w-50">
+            <Button className="m-3" type="submit">
+              Approve Gym
+            </Button>
+            <Button
+              className="m-3"
+              onClick={() => {
+                gymProfileDetails = {
+                  ...gymProfileDetails,
+                  listed: "rejected",
+                };
+                gymService
+                  .update_gym(gymProfileDetails, data._id)
+                  .then((data) => {
+                    console.log(data);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
+                console.log(gymProfileDetails);
+                navigate("/admin-dashboard");
+              }}
+            >
+              Reject Gym
+            </Button>
+          </div>
         </div>
-      </div>
-      <div className="gym-desc-admin d-flex flex-column ">
-        <img src="../../../images/dumbells.png" alt="" />
-        <h4>Name: {data.user_id.full_name}</h4>
-        <h4>Membership price: {data.gym_membership_price} pkr</h4>
-        <h4>Gender: {data.gender_facilitation}</h4>
-        <h4>Gym Description: </h4>
-        <p>{data.gym_desc}</p>
-        <div className="d-flex flex-column ">
-          <h4>Contact No.</h4>
-          <p>{data.gym_contact_no}</p>
-          <h4>Email</h4>
-          <p>{data.user_id.email}</p>
-          <h4>Location</h4>
-          <p>
-            {data.location.address} , {data.location.city} , {data.location.state}
-          </p>
+        <div className="gym-desc-admin d-flex flex-column ">
+          <img src="../../../images/dumbells.png" alt="" />
+          <h4>Name: {data.user_id.full_name}</h4>
+          <h4>Membership price: {data.gym_membership_price} pkr</h4>
+          <h4>Gender: {data.gender_facilitation}</h4>
+          <h4>Gym Description: </h4>
+          <p>{data.gym_desc}</p>
+          <div className="d-flex flex-column ">
+            <h4>Contact No.</h4>
+            <p>{data.gym_contact_no}</p>
+            <h4>Email</h4>
+            <p>{data.user_id.email}</p>
+            <h4>Location</h4>
+            <p>
+              {data.location.address} , {data.location.city} ,{" "}
+              {data.location.state}
+            </p>
+
+            <div className="mt-3 p-3">
+              <div className="mt-2">
+                <TextField
+                  id="demo-simple-select-2"
+                  className=""
+                  label="Latitude"
+                  variant="outlined"
+                  name="latitude"
+                  {...register("latitude")}
+                  placeholder="Enter Latitude"
+                  InputLabelProps={{
+                    style: { color: "#777" },
+                  }}
+                />
+                <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+                  {errors.latitude?.message}
+                </p>
+              </div>
+              <div className="mt-2">
+                <TextField
+                  id="demo-simple-select-2"
+                  className=""
+                  label="Longitude"
+                  variant="outlined"
+                  name="longitude"
+                  {...register("longitude")}
+                  placeholder="Enter Longitude"
+                  InputLabelProps={{
+                    style: { color: "#777" },
+                  }}
+                />
+                <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+                  {errors.longitude?.message}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
