@@ -18,6 +18,16 @@ import userService from "../../services/UserService";
 import gymService from "../../services/GymService";
 import trainerService from "../../services/TrainerService";
 import adminService from "../../services/AdminService";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const querySchema = yup.object().shape({
+  query_response: yup
+    .string()
+    .min(10, "Description must be at least 10 characters!")
+    .required("query description can't be empty"),
+});
 
 const QueryDetails = () => {
   const [response, setResponse] = useState("");
@@ -25,10 +35,19 @@ const QueryDetails = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [userInfo, setUserInfo] = useState({});
+  const [queryDesc, setQueryDesc] = useState([]);
   const data = location.state.e;
+
   var queryDetails = {
     query_response: " ",
   };
+  const {
+    register: controlQuery,
+    handleSubmit: handleSubmitQuery,
+    formState: { errors: errorsQuery },
+  } = useForm({
+    resolver: yupResolver(querySchema),
+  });
 
   const get_user = () => {
     userService
@@ -93,26 +112,37 @@ const QueryDetails = () => {
       get_user();
     }
     console.log(userInfo);
-
+    if (location.state) {
+      setQueryDesc(location.state.e.query_desc);
+      console.log("query desc = ", location.state.e.query_desc);
+    }
     // console.log(userInfo.user_id.full_name);
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    queryDetails = {
-      ...queryDetails,
-      query_response: response,
-    };
-    console.log("hm = ", queryDetails);
-    adminService
-      .update_query(queryDetails, data._id)
-      .then((data) => {
-        console.log(data);
-        navigate("/admin-dashboard");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const submitQueryForm = (e) => {
+    console.log("in request");
+    var index = 0;
+    for (var i = 0; i < queryDetails.length; i++) {
+      if (queryDetails[i].query_response == "?") {
+        index = i;
+      }
+    }
+
+    // queryDetails = {
+
+    //   query_desc[index].query_response:response,
+    // };
+    console.log("in queryDesc = ", queryDesc);
+    console.log("after entering response = ", queryDetails);
+    // adminService
+    //   .update_query(queryDetails, data._id)
+    //   .then((data) => {
+    //     console.log(data);
+    //     navigate("/admin-dashboard");
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
   return (
     <div className="page-container-admin">
@@ -133,19 +163,29 @@ const QueryDetails = () => {
         <h4 className="mt-2">User Name: {name}</h4>
         <h4 className="mt-2">User Type: {data.user_type}</h4>
         <h4 className="mt-2">Query Subject: {data.query_subject}</h4>
-        <h4 className="mt-2">Query Details: </h4>
-        <p>{data.query_desc}</p>
-        <h4 className="mt-2">Admin Response: </h4>
-        <form onSubmit={handleSubmit}>
+        {queryDesc.map((e, key) => {
+          return (
+            <div>
+              <h4 className="mt-2">Query Details: </h4>
+              <p>{e.query_text}</p>
+              <h4 className="mt-2">Admin Response: </h4>
+              {!e.query_response == "?" ? <p>e.query_response</p> : <p>No response yet!</p>}
+            </div>
+          );
+        })}
+        <form onSubmit={handleSubmitQuery(submitQueryForm)}>
           <textarea
+            {...controlQuery("query_response")}
+            name="query_response"
             className="text-field mt-2"
             value={response}
+            placeholder="Enter your response"
             onChange={(event) => {
               setResponse(event.target.value);
               console.log(event.target.value);
             }}
-            placeholder="Enter your response"
           />
+          <p>{errorsQuery.query_response?.message}</p>
           <Button type="submit" className="w-25 mt-3">
             Submit
           </Button>

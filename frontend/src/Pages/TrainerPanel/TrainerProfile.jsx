@@ -230,6 +230,7 @@ const TrainerProfile = () => {
       // time_worked: data.time_worked,
       qualification: data.qualification,
       trainer_desc: data.trainer_desc,
+      trainer_photo: getCustomer.trainer_photo,
       // certificate_file: "",
       // trainer_photo: "",
     };
@@ -238,9 +239,9 @@ const TrainerProfile = () => {
       .update_trainer(trainerProfileDetails, loggedInId)
       .then((data) => {
         // console.log(data);
-        // setIsTrainerForm(false);
-        // setIsProfile(true);
-        // page_refresh();
+        setIsTrainerForm(false);
+        setIsProfile(true);
+        page_refresh();
       })
       .catch((err) => {
         console.log(err);
@@ -297,7 +298,7 @@ const TrainerProfile = () => {
                     defaultValue={getCustomer.user_id.full_name}
                   />
 
-                  <p>{errorsTrainerProfile.company_name?.message}</p>
+                  <p>{errorsTrainerProfile.full_name?.message}</p>
                   <label for="fname">Select your exercise type</label>
                   <FormControl className="m-3 w-100 dropdown-trainer">
                     <Select
@@ -337,17 +338,21 @@ const TrainerProfile = () => {
                       {...controlTrainerProfile("qualification")}
                       defaultValue={getCustomer.qualification}
                     >
-                      <MenuItem value="mfic">Master Fitness Instructor Course (MFIC)</MenuItem>
-                      <MenuItem value="ucbc">
+                      <MenuItem value="Master Fitness Instructor Course (MFIC)">
+                        Master Fitness Instructor Course (MFIC)
+                      </MenuItem>
+                      <MenuItem value="                        Unarmed Combat & Bayonet Fighting Course (UCBC)">
                         Unarmed Combat & Bayonet Fighting Course (UCBC)
                       </MenuItem>
-                      <MenuItem value="advUCBC">
+                      <MenuItem value="                        Advance Unarmed Combat & Bayonet Fighting Course (Adv UCBC)">
                         Advance Unarmed Combat & Bayonet Fighting Course (Adv UCBC)
                       </MenuItem>
-                      <MenuItem value="scc">
+                      <MenuItem value="                        Sports Coaching Courses army school of training">
                         Sports Coaching Courses army school of training
                       </MenuItem>
-                      <MenuItem value="wsc">Water Sports Course (WSC)</MenuItem>
+                      <MenuItem value="Water Sports Course (WSC)">
+                        Water Sports Course (WSC)
+                      </MenuItem>
                     </Select>
                   </FormControl>
                   <p>{errorsTrainerProfile.qualification?.message}</p>
@@ -586,6 +591,7 @@ const TrainerProfile = () => {
             </div>
           </div>
           <div className="m-4 d-flex flex-column">
+            <h4>Certification: {getCustomer.qualification}</h4>
             <h4>Exercise Type: {getCustomer.exercise_type}</h4>
             <h4>Company Name: {getCustomer.company_name}</h4>
             <h4>Designation: {getCustomer.designation}</h4>

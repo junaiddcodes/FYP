@@ -11,6 +11,9 @@
   }
   table {
     color: $color4;
+    td {
+      font-size: 10px;
+    }
   }
 
   .user-box {
@@ -189,11 +192,14 @@
   }
   p {
     font-size: 0.75rem;
-    font-weight: 300;
+    font-weight: 600 !important;
   }
   img {
     border-radius: 10px;
   }
+}
+tr.activity-box td {
+  font-size: 10px !important;
 }
 .gym-card:hover,
 .activity-card:hover {

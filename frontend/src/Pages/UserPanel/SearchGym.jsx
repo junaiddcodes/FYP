@@ -22,7 +22,7 @@ const SearchGym = () => {
   const [filterOpen, setFilterOpen] = useState(false);
   const [searchedGyms, setSearchedGyms] = useState([]);
   const [searchResults, setSearchResults] = useState(false);
-  const [isSearched, setIsSearched] =useState(false);
+  const [isSearched, setIsSearched] = useState(false);
   const [searchGym, setSearchGym] = useState({
     full_name: "",
     city: "",
@@ -48,7 +48,7 @@ const SearchGym = () => {
       .get_search_gyms(searchGym)
       .then((res) => {
         setSearchedGyms(res.crud);
-        setIsSearched(true)
+        setIsSearched(true);
         setSearchResults(false);
         console.log(res);
       })
@@ -80,9 +80,11 @@ const SearchGym = () => {
           <input
             type="text"
             placeholder="Search gym by name..."
-            onKeyDown={(e)=>{if(e.key === 'Enter'){
-              getSeacrhedGyms();
-            }}}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                getSeacrhedGyms();
+              }
+            }}
             onChange={(e) => {
               setSearchGym({ ...searchGym, full_name: e.target.value });
             }}
@@ -163,9 +165,9 @@ const SearchGym = () => {
       )}
       <div className=" mt-5">
         {isSearched ? <h2>Searched Gyms</h2> : <h2>Featured Gyms</h2>}
-        
+
         <div className="gym-grid-container mt-3">
-        {searchResults ? <p className="text-light w-100">Search Results not Found</p> : null}
+          {searchResults ? <p className="text-light w-100">Search Results not Found</p> : null}
           {searchedGyms.map((e, key) => {
             return (
               <div
@@ -174,10 +176,16 @@ const SearchGym = () => {
                 className="gym-card grid-item"
               >
                 <img src={e.gym_photos[0]?.photo_url} alt="" height="250" />
-                <h4 className="m-2">{e.user_id.full_name}</h4>
+                <h4 className="m-1">{e.user_id.full_name}</h4>
+                <h6 className="m-1">Membership price: {e.gym_membership_price} PKR</h6>
+                <h6 className="m-1">
+                  Rating: 4 <i class="mt-1 text-warning bx bxs-star"></i>
+                </h6>
                 <div className="d-flex m-2 mb-0">
                   <MdLocationPin className="" />
-                  <p>{e.location.city}</p>
+                  <p className="text-light" style={{ fontWeight: "bold" }}>
+                    {e.location.city}
+                  </p>
                 </div>
               </div>
             );

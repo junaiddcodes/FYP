@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes, Redirect, BrowserRouter } from "react-router-dom";
 
 import "./styles/pages.css";
+import "./styles/extra.css";
 import Register from "./Pages/Register/Register";
 import UserRegister from "./Pages/Register/UserRegister";
 import TrainerRegister from "./Pages/Register/TrainerRegister";

@@ -253,22 +253,6 @@ const UserProfile = () => {
                     {...controlUserProfile("full_name")}
                   />
                   <p>{errorsUserProfile.full_name?.message}</p>
-                  {/* <label for="fname">Select your exercise type</label>
-                <FormControl className="m-3 w-100 dropdown-trainer">
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    name="exercise_type"
-                    {...controlTrainerProfile("exercise_type")}
-                    defaultValue={getCustomer.exercise_type}
-                  >
-                    <MenuItem value="cardio">Cardio</MenuItem>
-                    <MenuItem value="gym">Gym</MenuItem>
-                    <MenuItem value="stretching">Stretching</MenuItem>
-                  </Select>
-                </FormControl> */}
-
-                  {/* <p>{errorsTrainerProfile.exercise_type?.message}</p> */}
                 </div>
 
                 <label>Enter your weight(In Kgs)</label>
@@ -281,15 +265,12 @@ const UserProfile = () => {
                   {...controlUserProfile("weight")}
                   defaultValue={getCustomer.weight}
                 />
-              </div>
-              <div className="d-flex flex-column w-50">
-                {/* <h3 className="p-4 pb-0">Your Current height:</h3> */}
                 <label htmlFor="">Height</label>
-                <div className="d-flex justify-content-between ">
+                <div className="d-flex justify-content-around ">
                   <div className="d-flex flex-column w-100">
                     <h4>feet:</h4>
                     <input
-                      className="w-75"
+                      className="w-25"
                       defaultValue={feet}
                       type="number"
                       placeholder="Feet"
@@ -301,7 +282,7 @@ const UserProfile = () => {
                   <div className="d-flex flex-column w-100">
                     <h4>inches:</h4>
                     <input
-                      className="w-75"
+                      className="w-25"
                       type="number"
                       defaultValue={inches}
                       placeholder="Inches"
@@ -319,11 +300,14 @@ const UserProfile = () => {
                   </FormControl> */}
                   </div>
                 </div>
+                <div className="d-flex flex-column w-50">
+                  {/* <h3 className="p-4 pb-0">Your Current height:</h3> */}
+                </div>
                 <p className="error">{errorsUserProfile.feet?.message}</p>
                 <p className="error">{errorsUserProfile.inches?.message}</p>
                 <label for="fname">Select your activity level</label>
                 <div className="dropdown-container-user">
-                  <FormControl className="m-3 w-100 dropdown-user" size="medium">
+                  <FormControl className="m-3 w-50 dropdown-user" size="small">
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
@@ -364,7 +348,7 @@ const UserProfile = () => {
                 <p>{errorsUserProfile.activity_level?.message}</p>
                 <label for="fname">Select your weight goal</label>
                 <div className="dropdown-container-user">
-                  <FormControl className="m-3 w-100 dropdown-user" size="medium">
+                  <FormControl className="m-3 w-50 dropdown-user" size="medium">
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
@@ -380,7 +364,7 @@ const UserProfile = () => {
                 <p>{errorsUserProfile.weight_goal?.message}</p>
                 <label for="fname">Select your weekly goal</label>
                 <div className="dropdown-container-user">
-                  <FormControl className="m-3 w-100 dropdown-user" size="medium">
+                  <FormControl className="m-3 w-50 dropdown-user" size="medium">
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"

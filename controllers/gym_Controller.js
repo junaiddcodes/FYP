@@ -139,7 +139,7 @@ const completeGym = async (req, res) => {
       gym_membership_price: req.body.gym_membership_price,
       gender_facilitation: req.body.gender_facilitation,
     };
-    const crud = await gymDetails.findByIdAndUpdate({ _id: crudId }, data, {
+    const crud = await gymDetails.findByIdAndUpdate({ _id: crudId }, req.body, {
       new: true,
       runValidators: true,
     });

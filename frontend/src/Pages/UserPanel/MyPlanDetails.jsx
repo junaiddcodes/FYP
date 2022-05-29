@@ -56,8 +56,8 @@ const MyPlanDetails = () => {
       setPlanDetails(location.state.e);
     }
     let arr = [];
-    for (var i = 0; i < 4; i++) {
-      arr = arr.concat(planDetails);
+    for (var i = 0; i < data.plan_duration; i++) {
+      arr.push(planDetails);
       console.log(arr);
     }
     setAllPlans(arr);
@@ -76,32 +76,8 @@ const MyPlanDetails = () => {
         <i class="bx bx-arrow-back m-1"></i> Back
       </Button>
       <h2> {planDetails.plan_title} plan</h2>
-      <div className="trainer-desc mt-3 d-flex flex-column">
-        <div className="d-flex ">
-          <div className="d-flex w-75">
-            <div className="trainer-img d-flex">
-              <div className="App">
-                <>
-                  <div className="d-flex mt-5 flex-column">
-                    <h4>Duration: {data.plan_duration} weeks</h4>
-                    <h4>Price: {data.plan_price} PKR</h4>
-                    <h4>Description: </h4>
-                    <p> {data.plan_desc}</p>
-                    {/* {showItem ? (
-                      <Button className="w-25 m-3" onClick={() => setConfirmDelete(true)}>
-                        Buy plan
-                      </Button>
-                    ) : (
-                      <p className="text-success">Plan already bought</p>
-                    )} */}
-                  </div>
-                </>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <table className="table">
+
+      <table className="activity-box table table-bordered table-dark">
         <thead>
           <tr>
             <th>Week</th>
@@ -117,8 +93,8 @@ const MyPlanDetails = () => {
         <tbody>
           {allPlans.map((e, index) => {
             return (
-              <tr>
-                <td key={index}></td>
+              <tr className="activity-box">
+                <td key={index}>{index + 1}</td>
                 <td>{planDetails.monday_activities}</td>
                 <td>{planDetails.tuesday_activities}</td>
                 <td>{planDetails.wednesday_activities}</td>
