@@ -28,9 +28,9 @@ router.post('/reset', async (req, res) => {
       }).save()
     }
 
-    const link = `${config.get('CLIENT_URL')}password-reset/${user._id}/${
-      token.token
-    }`
+    const link = `${config.get('CLIENT_URL')}password-reset/customer/${
+      user._id
+    }/${token.token}`
     await sendEmail(user.user_id.email, 'Password reset', link)
 
     res.send('password reset link sent to your email account')
