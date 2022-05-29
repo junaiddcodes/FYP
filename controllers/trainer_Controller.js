@@ -120,7 +120,7 @@ const updateData = async (req, res) => {
 const completeTrainer = async (req, res) => {
   try {
     const { trainerId: crudId } = req.params
-    console.log(req.body.exercise_type)
+    console.log(req.body)
 
     var data = {
       listed: req.body.listed,
@@ -132,10 +132,14 @@ const completeTrainer = async (req, res) => {
       trainer_availblity: req.body.trainer_availblity,
       qualification: req.body.qualification,
     }
-    const crud = await trainerDetails.findByIdAndUpdate({ _id: crudId }, data, {
-      new: true,
-      runValidators: true,
-    })
+    const crud = await trainerDetails.findByIdAndUpdate(
+      { _id: crudId },
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
 
     if (!crud) {
       return res.status(404).json({ message: 'item does not exist' })

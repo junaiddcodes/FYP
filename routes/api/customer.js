@@ -19,7 +19,6 @@ const {
 
 router.route('/register').post(Verify, Hash, createData)
 router.route('/').get(getAllData)
-
 router
   .route('/:userId')
   .get(getOneData)

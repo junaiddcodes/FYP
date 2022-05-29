@@ -52,8 +52,8 @@ const CreateQuery = () => {
     user_id: '',
     user_type: '',
     query_subject: '',
-    query_desc: '',
-    query_response: '?',
+    query_desc: [],
+    // query_response: "?",
   }
   const handleRouteQuery = (e) => {
     console.log(e)
@@ -93,12 +93,22 @@ const CreateQuery = () => {
 
   const submitQueryForm = (data) => {
     console.log('before request')
+    // let arr = [];
+    let tempObject = {
+      query_text: data.query_desc,
+      query_response: '?',
+    }
+    queryDetails.query_desc.push(tempObject)
+    console.log(
+      'array after concatination of temp obj = ',
+      queryDetails.query_desc
+    )
     queryDetails = {
       ...queryDetails,
       user_id: users._id,
       user_type: users.user_type,
       query_subject: data.query_subject,
-      query_desc: data.query_desc,
+      // query_desc: [],
     }
 
     adminService
@@ -113,7 +123,7 @@ const CreateQuery = () => {
       })
     console.log(queryDetails)
     console.log('after request')
-    page_refresh()
+    // page_refresh();
   }
 
   return (

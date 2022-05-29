@@ -199,10 +199,16 @@ const SearchGym = () => {
                 className="gym-card grid-item"
               >
                 <img src={e.gym_photos[0]?.photo_url} alt="" height="250" />
-                <h4 className="m-2">{e.user_id.full_name}</h4>
+                <h4 className="m-1">{e.user_id.full_name}</h4>
+                <h6 className="m-1">Membership price: {e.gym_membership_price} PKR</h6>
+                <h6 className="m-1">
+                  Rating: 4 <i class="mt-1 text-warning bx bxs-star"></i>
+                </h6>
                 <div className="d-flex m-2 mb-0">
                   <MdLocationPin className="" />
-                  <p>{e.location.city}</p>
+                  <p className="text-light" style={{ fontWeight: "bold" }}>
+                    {e.location.city}
+                  </p>
                 </div>
               </div>
             );

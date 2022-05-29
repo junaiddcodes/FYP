@@ -11,8 +11,6 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 
 import TopBar from '../../Components/TopBar'
 import SideMenu from '../../Components/SideMenu'
@@ -21,7 +19,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import userService from '../../services/UserService'
 import { useNavigate } from 'react-router-dom'
-
+import { toast } from 'react-toastify'
 import jwtDecode from 'jwt-decode'
 import trainerService from '../../services/TrainerService'
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
@@ -33,14 +31,7 @@ const UserProfileSchema = yup.object().shape({
     .min(3, 'Name must be of at least 3 characters')
     .max(30, 'Name must be of at most 30 characters')
     .required('Name is required'),
-  password: yup
-    .string()
-    .min(8)
-    .required()
-    .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
-    ),
+
   weight: yup.number().positive().required().nullable(),
   feet: yup
     .number()
@@ -87,10 +78,6 @@ const UserProfile = () => {
   const [selectedValue, setSelectedValue] = useState(10)
   const [inches, setInches] = useState('')
   const [feet, setFeet] = useState('')
-  const Edited = () => {
-    // Calling toast method by passing string
-    toast.success('User Profile Edit')
-  }
   var trainersAge = ''
   var loginId = ''
   const workoutOptions = [
@@ -102,18 +89,18 @@ const UserProfile = () => {
   ]
   var userProfileDetails = {
     user_id: {
-      full_name: "",
-      email: "",
-      password: "",
-      user_type: "customer",
+      full_name: '',
+      email: '',
+      password: '',
+      user_type: 'customer',
     },
 
-    weight: "",
-    height: "",
-    activity_level: "",
-    weight_goal: "",
-    weekly_goal: "",
-  };
+    weight: '',
+    height: '',
+    activity_level: '',
+    weight_goal: '',
+    weekly_goal: '',
+  }
   function getAge(dateString) {
     var today = new Date()
     var birthDate = new Date(dateString)
@@ -195,7 +182,7 @@ const UserProfile = () => {
         full_name: data.full_name,
         // listed: "",
         email: getCustomer.user_id.email,
-        password: data.password,
+        password: getCustomer.user_id.password,
       },
       weight: data.weight,
       height: data.height,
@@ -206,8 +193,8 @@ const UserProfile = () => {
       // trainer_photo: "",
     }
 
-    console.log(userProfileDetails);
-    console.log("before update");
+    console.log(userProfileDetails)
+    console.log('before update')
     userService
       .update_user(userProfileDetails, loggedInId)
       .then((data) => {
@@ -215,7 +202,6 @@ const UserProfile = () => {
         setIsProfile(true)
         setIsTrainerForm(false)
         page_refresh()
-        Edited()
       })
       .catch((err) => {
         console.log(err)
@@ -255,8 +241,8 @@ const UserProfile = () => {
           <Button
             className="m-2"
             onClick={() => {
-              setIsProfile(true);
-              setIsTrainerForm(false);
+              setIsProfile(true)
+              setIsTrainerForm(false)
             }}
           >
             <i class="bx bx-arrow-back m-1"></i> Back
@@ -274,49 +260,22 @@ const UserProfile = () => {
                     id=""
                     defaultValue={getCustomer.user_id.full_name}
                     name="full_name"
-                    {...controlUserProfile("full_name")}
+                    {...controlUserProfile('full_name')}
                   />
                   <p>{errorsUserProfile.full_name?.message}</p>
-                  {/* <label for="fname">Select your exercise type</label>
-                <FormControl className="m-3 w-100 dropdown-trainer">
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    name="exercise_type"
-                    {...controlTrainerProfile("exercise_type")}
-                    defaultValue={getCustomer.exercise_type}
-                  >
-                    <MenuItem value="cardio">Cardio</MenuItem>
-                    <MenuItem value="gym">Gym</MenuItem>
-                    <MenuItem value="stretching">Stretching</MenuItem>
-                  </Select>
-                </FormControl> */}
+                </div>
 
-                {/* <p>{errorsTrainerProfile.exercise_type?.message}</p> */}
-              </div>
-              
-              <label for="lname">Enter password</label>
-              <input
-                type="password"
-                id=""
-                // defaultValue={getCustomer.password}
-                name="password"
-                {...controlUserProfile('password')}
-              />
-              <p>{errorsUserProfile.password?.message}</p>
-              <label>Enter your weight(In Kgs)</label>
-              <input
-                type="number"
-                id=""
-                max="200"
-                min="30"
-                name="weight"
-                {...controlUserProfile('weight')}
-                defaultValue={getCustomer.weight}
-              />
-              </div>
-              <div className="d-flex flex-column w-50">
-                <h3 className="p-4 pb-0">Your Current height:</h3>
+                <label>Enter your weight(In Kgs)</label>
+                <input
+                  type="number"
+                  id=""
+                  max="200"
+                  min="30"
+                  name="weight"
+                  {...controlUserProfile('weight')}
+                  defaultValue={getCustomer.weight}
+                />
+                <label htmlFor="">Height</label>
                 <div className="d-flex justify-content-around ">
                   <div className="d-flex flex-column w-100">
                     <h4>feet:</h4>
@@ -340,7 +299,7 @@ const UserProfile = () => {
                       min="0"
                       max="11"
                       // value="0"
-                      {...controlUserProfile("inches")}
+                      {...controlUserProfile('inches')}
                     />
                     {/* <FormControl className="m-3 dropdown">
                     <InputLabel id="demo-simple-select-label">Unit</InputLabel>
@@ -350,9 +309,12 @@ const UserProfile = () => {
                     </Select>
                   </FormControl> */}
                   </div>
-                  <p className="error">{errorsUserProfile.feet?.message}</p>
-                  <p className="error">{errorsUserProfile.inches?.message}</p>
                 </div>
+                <div className="d-flex flex-column w-50">
+                  {/* <h3 className="p-4 pb-0">Your Current height:</h3> */}
+                </div>
+                <p className="error">{errorsUserProfile.feet?.message}</p>
+                <p className="error">{errorsUserProfile.inches?.message}</p>
                 <label for="fname">Select your activity level</label>
                 <div className="dropdown-container-user">
                   <FormControl className="m-3 w-50 dropdown-user" size="small">
@@ -360,70 +322,78 @@ const UserProfile = () => {
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       name="activity_level"
-                      {...controlUserProfile("activity_level")}
+                      {...controlUserProfile('activity_level')}
                       defaultValue={getCustomer.activity_level}
                     >
                       <MenuItem value="1.2" className="d-flex flex-column">
                         <h4>Not Very Active</h4>
-                        <p>Spend most of the day sitting ( e.g. bank teller, desk job) </p>
+                        <p>
+                          Spend most of the day sitting ( e.g. bank teller, desk
+                          job){' '}
+                        </p>
                       </MenuItem>
                       <MenuItem value="1.375" className="d-flex flex-column">
                         <h4>Lightly Active</h4>
                         <p>
-                          Spend a good part of your day on your feet ( e.g. teacher, salesperson )
+                          Spend a good part of your day on your feet ( e.g.
+                          teacher, salesperson )
                         </p>
                       </MenuItem>
                       <MenuItem value="1.55" className="d-flex flex-column">
-                        {" "}
+                        {' '}
                         <h4>Active</h4>
                         <p>
-                          {" "}
-                          Spend a good part of your day doing some physical activity ( e.g. food
-                          server, postal carrier )
+                          {' '}
+                          Spend a good part of your day doing some physical
+                          activity ( e.g. food server, postal carrier )
                         </p>
                       </MenuItem>
                       <MenuItem value="1.725" className="d-flex flex-column">
-                        {" "}
+                        {' '}
                         <h4>Very Active</h4>
                         <p>
-                          Spend a good part of the day doing heavy physical activity ( e.g. bike
-                          messenger, carpenter )
+                          Spend a good part of the day doing heavy physical
+                          activity ( e.g. bike messenger, carpenter )
                         </p>
                       </MenuItem>
                     </Select>
-                  </FormControl>{" "}
+                  </FormControl>{' '}
                 </div>
                 <p>{errorsUserProfile.activity_level?.message}</p>
                 <label for="fname">Select your weight goal</label>
                 <div className="dropdown-container-user">
-                  <FormControl className="m-3 w-50 dropdown-user" size="small">
+                  <FormControl className="m-3 w-50 dropdown-user" size="medium">
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       name="weight_goal"
-                      {...controlUserProfile("weight_goal")}
+                      {...controlUserProfile('weight_goal')}
                       defaultValue={getCustomer.weight_goal}
                     >
                       <MenuItem value="gain_weight">gain weight</MenuItem>
                       <MenuItem value="lose_weight">lose weight</MenuItem>
                     </Select>
-                  </FormControl>{" "}
+                  </FormControl>{' '}
                 </div>
                 <p>{errorsUserProfile.weight_goal?.message}</p>
                 <label for="fname">Select your weekly goal</label>
                 <div className="dropdown-container-user">
-                  <FormControl className="m-3 w-50 dropdown-user" size="small">
+                  <FormControl className="m-3 w-50 dropdown-user" size="medium">
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       name="weekly_goal"
-                      {...controlUserProfile("weekly_goal")}
+                      {...controlUserProfile('weekly_goal')}
                       defaultValue={getCustomer.weekly_goal}
                     >
-                      <MenuItem value="0.5">gain / lose 0.5 pound per week</MenuItem>
-                      <MenuItem value="1">gain / lose 1 pound per week</MenuItem>
+                      <MenuItem value="0.5">
+                        gain / lose 0.5 pound per week
+                      </MenuItem>
+                      <MenuItem value="1">
+                        gain / lose 1 pound per week
+                      </MenuItem>
                     </Select>
-                  </FormControl>{" "}
+                  </FormControl>{' '}
                 </div>
                 <p>{errorsUserProfile.weekly_goal?.message}</p>
               </div>

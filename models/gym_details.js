@@ -12,6 +12,7 @@ var gymDetailsSchema = mongoose.Schema({
   gym_contact_no: String,
   gym_membership_price: Number,
   gender_facilitation: String,
+  cordinates: { lat: String, long: String },
   gym_photos: [{ photo_url: String, cloudinary_id: String }],
 })
 
@@ -33,6 +34,8 @@ function validateGym(data) {
       address: Joi.string(),
       state: Joi.string(),
     },
+    cordinates: { lat: Joi.number(), long: Joi.number() },
+
     gym_desc: Joi.string(),
     gym_contact_no: Joi.string().min(5),
     gym_membership_price: Joi.number().positive(),
