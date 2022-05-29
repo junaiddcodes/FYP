@@ -33,8 +33,23 @@ const ActivityPlanDetails = () => {
   const [orderX, SetOrderX] = useState({
     user_id: "",
     plan_id: "",
-  })
+    trainer_id: "",
+    price: 0,
+    time_date: new Date().getTime(),
+  });
   var userId = "";
+
+  const getAllPlans = (id) => {
+    userService
+      .get_all_plans(id)
+      .then((data) => {
+        console.log(data);
+        setAllPlans(data.crud);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const checkPlan = () => {
     userService
@@ -43,12 +58,11 @@ const ActivityPlanDetails = () => {
         console.log(data);
 
         console.log("Plan already Bought");
-        setShowItem(false)
+        setShowItem(false);
       })
       .catch((err) => {
-        console.log(err);
         console.log("Plan not Bought");
-        setShowItem(true)
+        setShowItem(true);
       });
   };
 
@@ -74,27 +88,37 @@ const ActivityPlanDetails = () => {
       console.log("state data = ", location.state.e);
 
       SetOrderX({
-        plan_id:location.state.e._id,
-        user_id:userId
-      })
+        ...orderX,
+        plan_id: location.state.e._id,
+        user_id: userId,
+        trainer_id: location.state.e.trainer_id,
+        plan_title: location.state.e.plan_title,
+        price: location.state.e.plan_price,
+      });
       order.plan_id = location.state.e._id;
       order.user_id = userId;
       data = location.state.e;
+      getAllPlans(location.state.e._id);
     } else {
       console.log("state empty");
     }
     if (order) {
       checkPlan();
     }
+
     // console.log(location.state.e);
   }, []);
   const handleBuyPlan = () => {
-    console.log(orderX)
+    console.log(orderX);
     userService
       .buy_plan(orderX)
       .then((data) => {
         console.log(data);
         console.log("plan bought");
+        setConfirmDelete(false);
+        order.plan_id = location.state.e._id;
+        order.user_id = userId;
+        setShowItem(false);
       })
       .catch((err) => {
         console.log(err);
@@ -181,13 +205,36 @@ const ActivityPlanDetails = () => {
                       >
                         Buy plan
                       </Button>
-                    ) : <p className="text-success">Plan already bought</p>}
+                    ) : (
+                      <p className="text-success">Plan already bought</p>
+                    )}
                   </div>
                 </>
               </div>
             </div>
           </div>
         </div>
+      </div>
+
+      <h2 className="mt-3"> Reviews</h2>
+      <div className="trainer-desc mt-3 d-flex flex-column p-4">
+        {!allPlans ? (
+          <p>Not reviewed Yet</p>
+        ) : (
+          allPlans.map((e, key) => {
+            return e.review ? (
+              <div>
+                <div className="text-light">
+                  <i class="bx bxs-star mr-2 text-warning"></i>
+                  <span> {e.review} </span>
+                </div>
+                <div>
+                  <p>{e.review_comment}</p>
+                </div>
+              </div>
+            ) : <p>Not reviewed Yet</p>;
+          })
+        )}
       </div>
     </div>
   );

@@ -18,6 +18,7 @@ class TrainerService extends GenericService {
   get_search_trainers = (filter) => this.post("trainer/search", filter);
   get_one_trainer = (id) => this.get("trainer/" + id);
   update_pass = (passDetails) => this.post("trainer/password", passDetails);
+  get_bought_plans = (id) => this.get("order/trainer/" + id);
 
   isLoggedIn = () => {
     return localStorage.getItem("token") ? true : false;

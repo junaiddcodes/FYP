@@ -21,6 +21,7 @@ class UserService extends GenericService {
   check_plan = (order) => this.post("order/check", order);
   get_user = (id) => this.get("customer/" + id);
   get_bought_plans = (id) => this.get("order/user/" + id);
+  get_all_plans = (id) => this.get("order/plan/" + id);
   register_gym = (gymDetails) => this.post("gym/gymregister", gymDetails);
   register_trainer = (trainerDetails) => this.post("trainer/trainerregister", trainerDetails);
   logout = () => {
@@ -49,8 +50,7 @@ class UserService extends GenericService {
   getExcercise = (excerciseName) => this.post("excercise/name", excerciseName);
   postExcercise = (excercise) => this.post("SelectExcercise/addSelectexercise", excercise);
   getExcerciseData = (customerId) => this.get("SelectExcercise/user/" + customerId);
-  editExcerciseData = (excerciseId, excerciseData) =>
-    this.patch("SelectExcercise/" + excerciseId, excerciseData);
+  editExcerciseData = (excerciseId, excerciseData) => this.patch("SelectExcercise/" + excerciseId, excerciseData);
   deleteExcerciseData = (excerciseId) => this.delete("SelectExcercise/" + excerciseId);
   get_single_excercise = (id) => this.get("excercise/" + id);
   update_user = (userDetails, id) => this.patch("customer/" + id, userDetails);
