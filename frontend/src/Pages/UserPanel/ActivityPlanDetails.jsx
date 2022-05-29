@@ -180,10 +180,7 @@ const ActivityPlanDetails = () => {
               >
                 <i class="bx bx-x"></i>
               </a>
-              <StripeContainer
-                amount={data.plan_price}
-                action={handleBuyPlan}
-              />
+              <StripeContainer amount={data.plan_price} action={handleBuyPlan} />
             </div>
           </Modal>
         </div>
@@ -199,10 +196,7 @@ const ActivityPlanDetails = () => {
                     <h4>Description: </h4>
                     <p> {data.plan_desc}</p>
                     {showItem ? (
-                      <Button
-                        className="w-25 m-3"
-                        onClick={() => setConfirmDelete(true)}
-                      >
+                      <Button className="w-25 m-3" onClick={() => setConfirmDelete(true)}>
                         Buy plan
                       </Button>
                     ) : (

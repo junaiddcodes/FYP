@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Modal from "react-modal";
 
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -9,10 +10,82 @@ import userService from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+const statsSchema = yup.object().shape({
+  weight: yup.number().positive().required().nullable(),
+  feet: yup.number().typeError("feet is required").min(4).max(8).positive().required().nullable(),
+  inches: yup.number().typeError("inches are required").min(0).max(11).required().nullable(),
+});
+function getDecimalPart(num) {
+  if (Number.isInteger(num)) {
+    return 0;
+  }
+
+  const decimalStr = num.toString().split(".")[1];
+  return Number(decimalStr);
+}
 
 const UserDashboard = () => {
+  var [userData, setUserData] = useState({});
+  var userId = userService.getLoggedInUser()._id;
+  var [mealData, setMealData] = useState([]);
+  const [bmi, setBmi] = useState(0);
+  const [height, setHeight] = useState(0);
+  var errorUser = "Login as a customer first!";
+  const [excersiseData, setExcerciseData] = useState([]);
   const navigate = useNavigate();
   var [waterAmount, setWaterAmount] = useState(0);
+  const [feet, setFeet] = useState(0);
+  const [inches, setInches] = useState(0);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  var statsDetails = {
+    user_id: {
+      full_name: "",
+      email: "",
+      password: "",
+      user_type: "customer",
+    },
+
+    weight: "",
+    height: "",
+  };
+  const {
+    register: controlStats,
+    handleSubmit: handleSubmitStats,
+    formState: { errors: errorsStats },
+  } = useForm({
+    resolver: yupResolver(statsSchema),
+  });
+  const submitStatsForm = (data) => {
+    console.log("in function");
+    const height = data.feet + "." + data.inches;
+    statsDetails = {
+      ...statsDetails,
+      user_id: {
+        full_name: userData.user_id.full_name,
+        // listed: "",
+        email: userData.user_id.email,
+        password: userData.user_id.password,
+      },
+      weight: data.weight,
+      height: height,
+    };
+
+    // console.log(userProfileDetails);
+    console.log("before update");
+    userService
+      .update_user(statsDetails, userId)
+      .then((data) => {
+        console.log("stats updated");
+        setEditModalOpen(false);
+        window.location.reload(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   var [currentCalorie, setCurrentCalorie] = useState({
     food_calories: 0,
@@ -37,13 +110,6 @@ const UserDashboard = () => {
     amount_litres: 0,
     time_date: "",
   };
-  var [userData, setUserData] = useState({});
-  var userId = userService.getLoggedInUser()._id;
-  var [mealData, setMealData] = useState([]);
-  const [bmi, setBmi] = useState(0);
-  const [height, setHeight] = useState(0);
-  var errorUser = "Login as a customer first!";
-  const [excersiseData, setExcerciseData] = useState([]);
 
   function getWaterData() {
     userService
@@ -73,6 +139,8 @@ const UserDashboard = () => {
 
       .then((data) => {
         setUserData(data.crud);
+        setFeet(data.crud.height.toString().charAt(0));
+        setInches(getDecimalPart(data.crud.height));
         calculate_bmi(data.crud.height, data.crud.weight);
         console.log("user data = ", data.crud);
       });
@@ -170,30 +238,148 @@ const UserDashboard = () => {
               <h4 className="mt-1">Water consumed: {parseInt(waterAmount)} litres</h4>
               <h4 className="mt-1">Your BMI: {Math.round(bmi * 100) / 100}</h4>
             </div>
-            <div className="d-flex justify-content-around align-items-start w-50">
-              <Button
-                onClick={() => {
-                  navigate("/user-add-food", {
-                    state: { userData, currentBurn },
-                  });
-                }}
-              >
-                Add Food
-              </Button>
+            <div className="d-flex flex-column w-50 h-50">
+              <div className="d-flex justify-content-around align-items-start">
+                <Button
+                  onClick={() => {
+                    navigate("/user-add-food", {
+                      state: { userData, currentBurn },
+                    });
+                  }}
+                >
+                  Add Food
+                </Button>
 
-              <Button
-                onClick={() => {
-                  navigate("/user-add-exercise", {
-                    state: { userData, currentCalorie },
-                  });
-                }}
-              >
-                Add Exercise
-              </Button>
+                <Button
+                  onClick={() => {
+                    navigate("/user-add-exercise", {
+                      state: { userData, currentCalorie },
+                    });
+                  }}
+                >
+                  Add Exercise
+                </Button>
 
-              <Link to="/user-add-water">
-                <Button>Add Water</Button>
-              </Link>
+                <Link to="/user-add-water">
+                  <Button>Add Water</Button>
+                </Link>
+              </div>
+              <div className="m-4 w-50 h-50 d-flex flex-column">
+                <h4 className="m-1">Your weight: {userData.weight} kgs</h4>
+                <h4 className="m-1">
+                  Your height: {userData.height?.toString().charAt(0)} '{" "}
+                  {/* {getDecimalPart(getCustomer.height)}{" "} */}
+                  {(userData.height + "").split(".")[1]}{" "}
+                </h4>
+                <Button
+                  className="btn btn-warning btn-sm w-25"
+                  onClick={() => {
+                    setEditModalOpen(true);
+                  }}
+                >
+                  edit
+                </Button>
+                <div className="modal-container">
+                  <Modal
+                    style={{
+                      overlay: {
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+
+                        backgroundColor: "rgba(0, 0, 0, 0.75)",
+                      },
+                      content: {
+                        color: "white",
+                        position: "absolute",
+                        top: "40px",
+                        left: "40px",
+                        right: "40px",
+                        bottom: "40px",
+                        background: "rgba(0,30,60,1)",
+                        overflow: "auto",
+                        WebkitOverflowScrolling: "touch",
+                        borderRadius: "1rem",
+                        outline: "none",
+                        padding: "20px",
+                      },
+                    }}
+                    className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+                    isOpen={editModalOpen}
+                    onRequestClose={() => {
+                      setEditModalOpen(false);
+                    }}
+                  >
+                    <div className="modal-inner w-75 py-3">
+                      <a
+                        onClick={() => {
+                          setEditModalOpen(false);
+                        }}
+                      >
+                        <i class="bx bx-x"></i>
+                      </a>
+
+                      <div className="mt-2">
+                        <form
+                          onSubmit={handleSubmitStats(submitStatsForm)}
+                          className="d-flex flex-column"
+                        >
+                          <label>Enter your weight(In Kgs)</label>
+                          <input
+                            type="number"
+                            id=""
+                            max="200"
+                            min="30"
+                            name="weight"
+                            {...controlStats("weight")}
+                            defaultValue={userData.weight}
+                          />
+                          <div className="mt-5 d-flex flex-column w-50">
+                            <label>Enter your height</label>
+
+                            <div className="d-flex justify-content-between ">
+                              <div className="d-flex flex-column w-100">
+                                <label>feet</label>
+
+                                <input
+                                  className="w-75"
+                                  defaultValue={feet}
+                                  type="number"
+                                  placeholder="Feet"
+                                  min="4"
+                                  max="8"
+                                  {...controlStats("feet")}
+                                />
+                              </div>
+                              <div className="d-flex flex-column w-100">
+                                <label>inches</label>
+
+                                <input
+                                  className="w-75"
+                                  type="number"
+                                  defaultValue={inches}
+                                  placeholder="Inches"
+                                  min="0"
+                                  max="11"
+                                  // value="0"
+                                  {...controlStats("inches")}
+                                />
+                              </div>
+                              <p className="error">{errorsStats.feet?.message}</p>
+                              <p className="error">{errorsStats.inches?.message}</p>
+                            </div>
+                          </div>
+                          <Button className="w-25 mt-5" type="submit">
+                            Update
+                          </Button>
+                        </form>
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+              </div>
             </div>
           </div>
           <div className="d-flex flex-column mt-3">

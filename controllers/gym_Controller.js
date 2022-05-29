@@ -96,10 +96,15 @@ const getOneData = async (req, res) => {
 const updateData = async (req, res) => {
   try {
     const { gymId: crudId } = req.params
-    const crud = await gymDetails.findByIdAndUpdate({ _id: crudId }, req.body, {
-      new: true,
-      runValidators: true,
-    })
+    console.log(req.body)
+    const crud = await gymDetails.findByIdAndUpdate(
+      { _id: crudId },
+      { $set: req.body },
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
 
     if (!crud) {
       return res.status(404).json({ message: 'item does not exist' })
@@ -139,10 +144,15 @@ const completeGym = async (req, res) => {
       gym_membership_price: req.body.gym_membership_price,
       gender_facilitation: req.body.gender_facilitation,
     }
-    const crud = await gymDetails.findByIdAndUpdate({ _id: crudId }, data, {
-      new: true,
-      runValidators: true,
-    })
+    console.log(req.body)
+    const crud = await gymDetails.findByIdAndUpdate(
+      { _id: crudId },
+      { $set: req.body },
+      {
+        new: true,
+        runValidators: true,
+      }
+    )
 
     if (!crud) {
       return res.status(404).json({ message: 'item does not exist' })

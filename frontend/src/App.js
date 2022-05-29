@@ -2,6 +2,7 @@ import React from 'react'
 import { Route, Routes, Redirect, BrowserRouter } from 'react-router-dom'
 
 import './styles/pages.css'
+import './styles/extra.css'
 import Register from './Pages/Register/Register'
 import UserRegister from './Pages/Register/UserRegister'
 import TrainerRegister from './Pages/Register/TrainerRegister'
@@ -36,10 +37,9 @@ import Messenger from './Messenger/Messenger'
 import Home from './Pages/HomePanel/home'
 import ActivityPlanDetails from './Pages/UserPanel/ActivityPlanDetails'
 import UserProfile from './Pages/UserPanel/UserProfile'
-import ForgotPassword from './Pages/Register/ForgetPassword'
-import ResetPassword from './Pages/Register/ResetPassword'
 import GymViewMap from './Pages/UserPanel/GymViewMap'
 import ChangePassword from './Components/ChangePassword'
+import MyPlanDetails from './Pages/UserPanel/MyPlanDetails'
 function App() {
   return (
     <BrowserRouter>
@@ -83,6 +83,7 @@ function App() {
           />
           <Route path="/user-profile" element={<UserProfile />} />
           <Route path="/change-password" element={<ChangePassword />} />
+          <Route path="/my-plan-details" element={<MyPlanDetails />} />
 
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />

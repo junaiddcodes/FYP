@@ -55,14 +55,14 @@ const TrainerDescription = () => {
   })
 
   function getAge(dateString) {
-    var today = new Date();
-    var birthDate = new Date(dateString);
-    var age = today.getFullYear() - birthDate.getFullYear();
-    var m = today.getMonth() - birthDate.getMonth();
+    var today = new Date()
+    var birthDate = new Date(dateString)
+    var age = today.getFullYear() - birthDate.getFullYear()
+    var m = today.getMonth() - birthDate.getMonth()
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
+      age--
     }
-    return age;
+    return age
   }
 
   const handlePlan = (trainerDetails) => {
@@ -96,7 +96,7 @@ const TrainerDescription = () => {
       <Button
         className="m-2"
         onClick={() => {
-          navigate(-1);
+          navigate(-1)
         }}
       >
         <i class="bx bx-arrow-back m-1"></i> Back
@@ -111,6 +111,9 @@ const TrainerDescription = () => {
                 <h4>{trainerDetails.user_id.full_name}</h4>
                 <h4>Age: {getAge(trainerDetails.dob)}</h4>
                 <h4>Gender: {trainerDetails.gender}</h4>
+                <h4>
+                  Rating: 4 <i class="mt-1 text-warning bx bxs-star"></i>
+                </h4>
               </div>
             </div>
             <div className="trainer-btn d-flex flex-column">
@@ -137,6 +140,7 @@ const TrainerDescription = () => {
           </div>
         </div>
         <div className="m-4 d-flex flex-column">
+          <h4>Certification: {trainerDetails.qualification}</h4>
           <h4>Exercise Type: {trainerDetails.exercise_type}</h4>
           <h4>Trainer Avaibility: {trainerDetails.trainer_availblity}</h4>
           <h4>About: </h4>

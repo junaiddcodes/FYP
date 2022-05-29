@@ -84,9 +84,11 @@ const SearchTrainer = () => {
           <input
             type="text"
             placeholder="Search trainer by name..."
-            onKeyDown={(e)=>{if(e.key === 'Enter'){
-              getSeacrhedTrainers();
-            }}}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                getSeacrhedTrainers();
+              }
+            }}
             onChange={(e) => {
               setSearchTrainer({ ...searchTrainer, full_name: e.target.value });
             }}
@@ -116,7 +118,7 @@ const SearchTrainer = () => {
       {filterOpen && (
         <div className="d-flex align-items-center">
           <FormControl className="m-4 w-25 dropdown-modal">
-            <InputLabel id="demo-simple-select-label" >Select Gender</InputLabel>
+            <InputLabel id="demo-simple-select-label">Select Gender</InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -172,10 +174,15 @@ const SearchTrainer = () => {
                 className="gym-card grid-item"
               >
                 <img src={e.trainer_photo} alt="" height="250" />
-                <h4 className="m-2">{e.user_id.full_name}</h4>
-                <div className="d-flex m-2 mb-0">
-                  <MdLocationPin className="" />
-                  <p>{e.exercise_type}</p>
+                <h4 className="m-1">{e.user_id.full_name}</h4>
+                <h6 className="m-1">Certification: {e.qualification}</h6>
+                <h6 className="m-1">
+                  Rating: 4 <i class="mt-1 text-warning bx bxs-star"></i>
+                </h6>
+                <div className="d-flex m-1 mb-0">
+                  <p className="text-light" style={{ fontWeight: "bold" }}>
+                    Specializing in: {e.exercise_type}
+                  </p>
                 </div>
               </div>
             );
