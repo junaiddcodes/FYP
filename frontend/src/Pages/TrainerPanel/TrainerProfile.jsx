@@ -468,7 +468,7 @@ const TrainerProfile = () => {
                   <h4>Name: {getCustomer.user_id.full_name}</h4>
                   <h4>Age: {trainerAge}</h4>
                   <h4>Gender: {getCustomer.gender}</h4>
-                  <h4>Status: {isListed}</h4>
+                  <h4>Status: {getCustomer.listed}</h4>
                 </div>
               </div>
               <div className="trainer-btn d-flex flex-column">

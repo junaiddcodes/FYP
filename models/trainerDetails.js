@@ -14,6 +14,8 @@ var trainerDetailsSchema = mongoose.Schema({
   designation: String,
   time_worked: Number, //In Years
   trainer_availblity: String,
+  numReview: Number,
+  countReview: Number,
   location: { city: String, address: String, state: String },
 
   trainer_desc: String, //Trainer Description
@@ -44,6 +46,8 @@ function validateTrainer(data) {
     trainer_desc: Joi.string(),
     trainer_availblity: Joi.string(),
     certificate_file: Joi.string(),
+    numReview: Joi.number(),
+    countReview: Joi.number(),
     location: {
       city: Joi.string(),
       address: Joi.string(),

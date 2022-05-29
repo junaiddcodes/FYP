@@ -17,6 +17,7 @@ import userService from "../../services/UserService";
 import { useParams } from "react-router-dom";
 import gymService from "../../services/GymService";
 import { Carousel } from "react-responsive-carousel";
+import GymViewMap from "../../Components/mapShow/mapShow"
 
 const GymDescription = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -103,6 +104,9 @@ const GymDescription = () => {
           <p>{gymDetails.user_id.email}</p>
           <h4>Location</h4>
           <p>{gymDetails.location.address + ", " + gymDetails.location.city}</p>
+          <div className="mt-3 custom-map">
+            <GymViewMap />
+          </div>
         </div>
       </div>
     </div>

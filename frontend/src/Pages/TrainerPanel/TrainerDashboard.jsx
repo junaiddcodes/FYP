@@ -15,10 +15,23 @@ import TopBar from "../../Components/TopBar";
 import SideMenuTrainer from "../../Components/SideMenuTrainer";
 import { useNavigate } from "react-router-dom";
 import userService from "../../services/UserService";
+import trainerService from '../../services/TrainerService'
+import moment from "moment";
 
 const TrainerDashboard = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const navigate = useNavigate();
+  const userId = userService.getLoggedInUser()._id
+  const [boughtPlans, setBoughtPlans] = useState([])
+
+  function getTrainerSales(){
+    trainerService.get_bought_plans(userId).then((res)=>{
+      setBoughtPlans(res.crud)
+      console.log(res)
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }
   useEffect(() => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
@@ -34,6 +47,7 @@ const TrainerDashboard = () => {
         navigate("/login");
       }
     }
+    getTrainerSales()
   }, []);
   return (
     <div className="page-container-admin">
@@ -49,47 +63,30 @@ const TrainerDashboard = () => {
                   <tr>
                     <th>Order ID</th>
                     <th>Activity Plan Title</th>
-                    <th>Earnings</th>
+                    <th>Earnings (Rs)</th>
                     <th>Date</th>
                   </tr>
                 </thead>
                 <tbody>
+                {boughtPlans.length == 0 ? (
                   <tr>
-                    <td>001</td>
-                    <td>60 Days Plan</td>
-                    <td>8000</td>
-                    <td>12/12/2021</td>
+                    <td>There are no Sales for now</td>
                   </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>60 Days Plan</td>
-                    <td>8000</td>
-                    <td>12/12/2021</td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>60 Days Plan</td>
-                    <td>8000</td>
-                    <td>12/12/2021</td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>60 Days Plan</td>
-                    <td>8000</td>
-                    <td>12/12/2021</td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>60 Days Plan</td>
-                    <td>8000</td>
-                    <td>12/12/2021</td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>60 Days Plan</td>
-                    <td>8000</td>
-                    <td>12/12/2021</td>
-                  </tr>
+                ) : (
+                  boughtPlans.map((e,key)=>{
+                    return(
+
+                      <tr>
+                      <td>{key+1}</td>
+                      <td>{e.plan_title}</td>
+                      <td>{e.price}</td>
+                      <td>{moment(e.time_date).format("DD/MM/YYYY") }</td>
+                    </tr>
+
+                    )
+                  })
+                  
+                )}
                 </tbody>
               </table>
             </div>

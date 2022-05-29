@@ -23,11 +23,24 @@ const SearchGym = () => {
   const [searchedGyms, setSearchedGyms] = useState([]);
   const [searchResults, setSearchResults] = useState(false);
   const [isSearched, setIsSearched] = useState(false);
+  const [details, setDetails] = useState(null);
   const [searchGym, setSearchGym] = useState({
     full_name: "",
     city: "",
     gender_facilitation: "",
   });
+
+  function nearbyGyms() {
+    fetch(
+      "https://geolocation-db.com/json/4bdf2390-d062-11ec-81c2-0baa51ec38e1"
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setDetails(data);
+        navigate("/nearby-gyms", { state: { data } })
+      });
+    console.log("Nearby");
+  }
 
   function getFeatureGyms() {
     gymService
@@ -72,6 +85,7 @@ const SearchGym = () => {
   }, []);
   return (
     <div className="page-container-user">
+      {details?.latitude}
       <TopBar />
       <SideMenu />
       <h2>Search Gym</h2>
@@ -128,7 +142,9 @@ const SearchGym = () => {
             </Select>
           </FormControl>
           <FormControl className="m-4 w-25 dropdown-modal">
-            <InputLabel id="demo-simple-select-label">Gender Preference</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              Gender Preference
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -145,7 +161,12 @@ const SearchGym = () => {
             </Select>
           </FormControl>
           <Tooltip title="Use your current location">
-            <button className="location-btn">
+            <button
+              className="location-btn"
+              onClick={() => {
+                nearbyGyms();
+              }}
+            >
               <MdMyLocation className="location-icon" />
             </button>
           </Tooltip>
@@ -167,7 +188,9 @@ const SearchGym = () => {
         {isSearched ? <h2>Searched Gyms</h2> : <h2>Featured Gyms</h2>}
 
         <div className="gym-grid-container mt-3">
-          {searchResults ? <p className="text-light w-100">Search Results not Found</p> : null}
+          {searchResults ? (
+            <p className="text-light w-100">Search Results not Found</p>
+          ) : null}
           {searchedGyms.map((e, key) => {
             return (
               <div

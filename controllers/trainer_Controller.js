@@ -96,7 +96,7 @@ const getOneData = async (req, res) => {
 const updateData = async (req, res) => {
   try {
     const { trainerId: crudId } = req.params;
-    console.log(req.body);
+    console.log(req.body)
     const crud = await trainerDetails.findByIdAndUpdate({ _id: crudId }, req.body, {
       new: true,
       runValidators: true,
