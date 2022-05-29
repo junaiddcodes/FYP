@@ -8,7 +8,7 @@
 }
 
 .outer-box-step1 h2 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   font-weight: 700;
   font-size: 2rem;
@@ -28,7 +28,7 @@
 }
 
 .inner-box-step1 h3 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   font-weight: 600;
   font-size: 1.25rem;
@@ -42,7 +42,7 @@
   border-radius: 0.5rem;
   border: none;
   color: white;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   padding-left: 10px;
 }
 
@@ -76,7 +76,7 @@
 .buttons-step1,
 .buttons-step2 {
   width: 90%;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .step1-btn Button,
@@ -96,7 +96,7 @@
 }
 
 .outer-box-step2 h2 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   font-weight: 700;
   font-size: 2rem;
@@ -110,7 +110,7 @@
 }
 
 .inner-box-step2 h3 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   font-weight: 600;
   font-size: 1.25rem;
@@ -124,7 +124,7 @@
   border-radius: 0.5rem;
   border: none;
   color: white;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   padding-left: 10px;
 }
 
@@ -140,7 +140,7 @@
 }
 
 .inner-box-step2 p {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 600;
 }
 
@@ -163,7 +163,7 @@
   margin: auto;
   background: #001e3c;
   border-radius: 0.5rem;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   border: none;
 }
@@ -202,7 +202,7 @@
 }
 
 .outer-box-step3 h2 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   font-weight: 700;
   font-size: 2rem;
@@ -216,7 +216,7 @@
 }
 
 .inner-box-step3 h3 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   font-weight: 600;
   font-size: 1.25rem;
@@ -227,7 +227,7 @@
   margin: auto;
   background: #001e3c;
   border-radius: 0.5rem;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   padding: 20px;
   border: none;
@@ -261,7 +261,7 @@
 
 .buttons-step3 {
   width: 90%;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .buttons-step3 Button {
@@ -278,7 +278,7 @@
 }
 
 .outer-box-step4 h2 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   font-weight: 700;
   font-size: 2rem;
@@ -292,7 +292,7 @@
 }
 
 .inner-box-step4 h3 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   font-weight: 600;
   font-size: 1.25rem;
@@ -303,7 +303,7 @@
   margin: auto;
   background: #001e3c;
   border-radius: 0.5rem;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   padding: 20px;
   margin-bottom: 10px;
@@ -319,7 +319,7 @@
 
 .buttons-trainer {
   width: 90%;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .buttons-trainer Button {
@@ -327,8 +327,8 @@
 }
 
 .outer-box-gym {
-  height: 85%;
-  width: 40%;
+  height: 95%;
+  width: 50%;
   background-color: #001e3c;
   border: 1px solid #007fff;
   margin: auto;
@@ -336,7 +336,7 @@
 }
 
 .outer-box-gym h2 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   font-weight: 700;
   font-size: 2rem;
@@ -344,13 +344,13 @@
 
 .inner-box-gym {
   background-color: #007fff;
-  height: 70%;
+  height: 80%;
   width: 90%;
   border-radius: 1rem;
 }
 
 .inner-box-gym h3 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   font-weight: 600;
   font-size: 1.25rem;
@@ -370,13 +370,61 @@
   border-radius: 0.5rem;
   border: none;
   color: white;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
+  padding-left: 10px;
+}
+
+.outer-box-password {
+  height: 90%;
+  width: 40%;
+  background-color: #001e3c;
+  border: 1px solid #007fff;
+  margin: auto;
+  border-radius: 1rem;
+}
+
+.outer-box-password h2 {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+.inner-box-password {
+  background-color: #007fff;
+  height: 75%;
+  width: 80%;
+  border-radius: 1rem;
+}
+
+.inner-box-password h3 {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.inner-box-password p {
+  margin: 5px;
+  margin-left: 10px;
+  color: yellow;
+}
+
+.inner-box-password input {
+  background-color: #001e3c;
+  width: 90%;
+  margin: auto;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  color: white;
+  font-family: "Montserrat", sans-serif;
   padding-left: 10px;
 }
 
 .buttons-gym {
   width: 90%;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .buttons-gym Button {
@@ -393,7 +441,7 @@
 }
 
 .outer-box-register h2 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   font-weight: 700;
   font-size: 2rem;
@@ -411,7 +459,7 @@
   margin: auto;
   background: #001e3c;
   border-radius: 0.5rem;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
 }
 
@@ -425,7 +473,7 @@
 }
 
 .outer-box-login h2 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   font-weight: 700;
   font-size: 2rem;
@@ -443,7 +491,7 @@
   margin: auto;
   background: #001e3c;
   border-radius: 0.5rem;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
 }
 
@@ -1106,6 +1154,12 @@
 .text-link:hover {
   color: #0a1929;
   cursor: pointer !important;
+}
+
+.custom-map {
+  width: 100%;
+  height: 400px;
+  background-color: #777;
 }
 
 .page-container-admin {

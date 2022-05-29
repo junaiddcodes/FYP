@@ -9,7 +9,7 @@ const SideMenuAdmin = () => {
           <div className="logo">
             <i class="bx bx-dumbbell"></i>
             <div className="logo-name">Fit</div>
-          </div>{' '}
+          </div>{" "}
         </Link>
       </div>
       <ul className="nav_list">
@@ -20,7 +20,7 @@ const SideMenuAdmin = () => {
             </i>
           </NavLink>
         </li>
-        <li>
+        {/* <li>
           <a href="#gym-reqs">
             <i class="bx bx-dumbbell">
               <span className="NavLinks_name">Gym Profiles</span>
@@ -47,7 +47,7 @@ const SideMenuAdmin = () => {
               <span className="NavLinks_name">Payment Reqs</span>
             </i>
           </a>
-        </li>
+        </li> */}
       </ul>
 
       <div className="profile_content">
@@ -61,7 +61,7 @@ const SideMenuAdmin = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SideMenuAdmin
+export default SideMenuAdmin;

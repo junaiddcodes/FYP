@@ -240,6 +240,14 @@ const AddExercise = () => {
     <div className="page-container-user">
       <TopBar />
       <SideMenu />
+      <Button
+        className="m-2"
+        onClick={() => {
+          navigate(-1)
+        }}
+      >
+        <i class="bx bx-arrow-back m-1"></i> Back
+      </Button>
       <h2>Add Exercise</h2>
       <div className="user-box d-flex flex-column p-3">
         <div className="d-flex flex-column">
@@ -375,7 +383,7 @@ const AddExercise = () => {
               <tbody>
                 {excersiseData.length == 0 ? (
                   <tr>
-                    <td>There are no Exercise for Today</td>
+                    <td>There are no exercises for today</td>
                   </tr>
                 ) : (
                   excersiseData.map((e, index) => {

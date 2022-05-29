@@ -9,7 +9,7 @@ const SideMenu = () => {
           <div className="logo">
             <i class="bx bx-dumbbell"></i>
             <div className="logo-name">Fit</div>
-          </div>{' '}
+          </div>{" "}
         </Link>
       </div>
       <ul className="nav_list">
@@ -89,7 +89,7 @@ const SideMenu = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SideMenu
+export default SideMenu;
