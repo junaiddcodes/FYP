@@ -118,7 +118,15 @@ const QueryDetails = () => {
     <div className="page-container-admin">
       <TopBar />
       <SideMenuAdmin />
-      <h2>Query Details</h2>
+      <Button
+        className="m-2"
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        <i class="bx bx-arrow-back m-1"></i> Back
+      </Button>
+      <h2>Query Detail</h2>
       <div className="admin-box d-flex flex-column">
         <h4 className="mt-2">User Id: {data.user_id}</h4>
         <h4 className="mt-2">Query Id: {data._id}</h4>

@@ -16,7 +16,6 @@ class UserService extends GenericService {
           reject(err)
         })
     })
-
   reset_pass_user = (passDetails) =>
     this.post('resetPassword/reset', passDetails)
   reset_user = (id, token, passDetails) =>
@@ -31,8 +30,10 @@ class UserService extends GenericService {
   register_user = (customerDetails) =>
     this.post('customer/register', customerDetails)
   buy_plan = (order) => this.post('order/ordercreate', order)
+  check_plan = (order) => this.post('order/check', order)
   get_user = (id) => this.get('customer/' + id)
   get_bought_plans = (id) => this.get('order/user/' + id)
+  get_all_plans = (id) => this.get('order/plan/' + id)
   register_gym = (gymDetails) => this.post('gym/gymregister', gymDetails)
   register_trainer = (trainerDetails) =>
     this.post('trainer/trainerregister', trainerDetails)
@@ -58,7 +59,6 @@ class UserService extends GenericService {
     }
   }
   getoneUser = (user_id) => this.get('customer/' + user_id)
-
   getFood = (foodName) => this.post('food/name', foodName)
   // Excercises
   getExcercise = (excerciseName) => this.post('excercise/name', excerciseName)
@@ -81,7 +81,7 @@ class UserService extends GenericService {
   get_single_food = (id) => this.get('food/' + id)
   // Conversation Chat
   createConvo = (convo) => this.post('conversation', convo)
-
+  update_pass = (passDetails) => this.post('customer/password', passDetails)
   isAdmin = () => {
     if (this.isLoggedIn()) {
       if (this.getLoggedInUser().role == 'admin') return true

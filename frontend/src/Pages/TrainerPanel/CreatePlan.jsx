@@ -221,6 +221,14 @@ const CreatePlan = () => {
     <div className="page-container-gym">
       <TopBar />
       <SideMenuTrainer />
+      <Button
+        className="m-2"
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        <i class="bx bx-arrow-back m-1"></i> Back
+      </Button>
       <h2>Create Activity Plan</h2>
       {isStep1 ? (
         <div className="gym-box mt-3 d-flex flex-column align-items-left">

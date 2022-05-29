@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
-import trainerService from '../services/TrainerService'
-import { useNavigate } from 'react-router-dom'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import { Link } from 'react-router-dom'
+import React, { useState } from "react";
+import trainerService from "../services/TrainerService";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 const TopBar = () => {
-  const [open, setOpen] = useState(false)
-  const navigate = useNavigate()
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const notify = () => {
     // Calling toast method by passing string
-    toast.success('Logout Success')
-  }
+    toast.success("Logout Success");
+  };
   return (
     <header className="top-header">
       <nav className="navbar-top">
@@ -19,7 +19,7 @@ const TopBar = () => {
             <a
               href="#"
               onClick={() => {
-                setOpen(!open)
+                setOpen(!open);
               }}
             >
               <i class="bx bxs-user-circle"></i>
@@ -30,17 +30,17 @@ const TopBar = () => {
               <Link to="/user-profile">
                 <a className="menu-item">Profile Settings</a>
               </Link>
-              <Link to="/query">
-                <a className="menu-item">Help and support</a>
+              <Link to="/change-password">
+                <a className="menu-item">Change Password</a>
               </Link>
               <hr />
               <a
                 href=""
                 className="menu-item"
                 onClick={() => {
-                  notify()
-                  trainerService.logout()
-                  navigate('/login')
+                  notify();
+                  trainerService.logout();
+                  navigate("/login");
                 }}
               >
                 Log out
@@ -51,7 +51,7 @@ const TopBar = () => {
       </nav>
       <ToastContainer />
     </header>
-  )
-}
+  );
+};
 
-export default TopBar
+export default TopBar;

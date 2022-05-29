@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const Joi = require('joi')
+const mongoose = require("mongoose");
+const Joi = require("joi");
 
 var foodApiSchema = mongoose.Schema({
   food_name: String,
@@ -8,9 +8,9 @@ var foodApiSchema = mongoose.Schema({
   food_proteins: Number,
   food_carbs: Number,
   food_fats: Number,
-})
+});
 
-var foodApiDetails = mongoose.model('Food_API_Data', foodApiSchema)
+var foodApiDetails = mongoose.model("Food_API_Data", foodApiSchema);
 
 function validateFood(data) {
   const schema = Joi.object({
@@ -20,9 +20,9 @@ function validateFood(data) {
     food_proteins: Joi.number().positive().required(),
     food_carbs: Joi.number().positive().required(),
     food_fats: Joi.number().positive().required(),
-  })
-  return schema.validate(data)
+  });
+  return schema.validate(data);
 }
 
-module.exports.foodApiDetails = foodApiDetails
-module.exports.Validate = validateFood
+module.exports.foodApiDetails = foodApiDetails;
+module.exports.Validate = validateFood;

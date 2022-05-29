@@ -89,15 +89,16 @@ const MyPlans = () => {
               >
                 <div className="activity-card grid-item p-3">
                   <h4>{e.plan_title} Activity Plan</h4>
-                  {/* <p>{e.plan_desc}</p> */}
+                  <h4>Description</h4>
+                  <p className="text-light">{e.plan_desc}</p>
                   <div className="d-flex justify-content-between">
                     <div>
                       <h4>Duration:</h4>
-                      <p>{e.plan_duration} weeks</p>
+                      <p className="text-light">{e.plan_duration} weeks</p>
                     </div>
                     <div>
                       <h4>Price:</h4>
-                      <p>{e.plan_price} PKR</p>
+                      <p className="text-light">{e.plan_price} PKR</p>
                     </div>
                   </div>
                 </div>

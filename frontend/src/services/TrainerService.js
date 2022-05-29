@@ -4,8 +4,9 @@ class TrainerService extends GenericService {
   constructor() {
     super();
   }
+  get_all_trainer = () => this.get("trainer/trainer");
+
   delete_plan = (id) => this.delete("createplan/" + id);
-  get_all_trainer = () => this.get("trainer/trainer")
   register_trainer = (trainerDetails) => this.post("trainer/trainerregister", trainerDetails);
   create_plan = (activityDetails) => this.post("createplan/createplan", activityDetails);
   get_all_not_listed_trainers = () => this.get("trainer/not-listed");
@@ -16,6 +17,9 @@ class TrainerService extends GenericService {
   update_trainer_photo = (formData, id) => this.patch("trainer/image/" + id, formData);
   get_search_trainers = (filter) => this.post("trainer/search", filter);
   get_one_trainer = (id) => this.get("trainer/" + id);
+  update_pass = (passDetails) => this.post("trainer/password", passDetails);
+  get_bought_plans = (id) => this.get("order/trainer/" + id);
+
   isLoggedIn = () => {
     return localStorage.getItem("token") ? true : false;
   };

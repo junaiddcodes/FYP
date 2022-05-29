@@ -1,5 +1,5 @@
-import adminService from '../../services/AdminService'
-import React, { useEffect, useState } from 'react'
+import adminService from "../../services/AdminService";
+import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import "./home.css";
 
@@ -8,8 +8,8 @@ const Home = () => {
   const [feet, SetFeet] = useState();
   const [weight, SetWeight] = useState();
   const [bmi, setBmi] = useState();
-  const [allQueries, setAllQueries] = useState([])
-  
+  const [allQueries, setAllQueries] = useState([]);
+
   function calculateBMI() {
     if (inches && feet && weight) {
       var height = feet * 12 + parseInt(inches);
@@ -31,13 +31,13 @@ const Home = () => {
     adminService
       .admin_message()
       .then((data) => {
-        console.log(data)
-        setAllQueries(data.crud)
+        console.log(data);
+        setAllQueries(data.crud);
       })
       .catch((err) => {
-        console.log(err)
-      })
-  }, [])
+        console.log(err);
+      });
+  }, []);
   return (
     <div>
       {/* <!-- ***** Header Area Start ***** --> */}
@@ -116,19 +116,19 @@ const Home = () => {
       {/* <!-- ***** Main Banner Area End ***** --> */}
 
       {/* //notification start here */}
-      <div className=''>
-        <div className='row '>
-          <div className='col-md-3 col-sm-6 card'>
-            <div className='serviceBox card'>
-              <div className='service-icon'>
-                <i class='bx bx-cheese'></i>
+      <div className="">
+        <div className="row ">
+          <div className="col-md-3 col-sm-6 card">
+            <div className="serviceBox card">
+              <div className="service-icon">
+                <i class="bx bx-cheese"></i>
                 {/* <span></span> */}
               </div>
-              <h3 className='title'>Notification from admin</h3>
+              <h3 className="title">Notification from admin</h3>
               <p></p>
-              <ul className='message'>
+              <ul className="message">
                 {allQueries.map((e) => {
-                  return <li className='description'>{e.message} </li>
+                  return <li className="description">{e.message} </li>;
                 })}
               </ul>
             </div>
@@ -159,17 +159,13 @@ const Home = () => {
               <ul className="features-items">
                 <li className="feature-item">
                   <div className="left-icon">
-                    <img
-                      src="HomeImage/features-first-icon.png"
-                      alt="First One"
-                    />
+                    <img src="HomeImage/features-first-icon.png" alt="First One" />
                   </div>
                   <div className="right-content">
                     <h4>Basic Fitness</h4>
                     <p>
-                      Physical fitness is a state of health and well-being and,
-                      more specifically, the ability to perform aspects of
-                      sports, occupations and daily activities.
+                      Physical fitness is a state of health and well-being and, more specifically,
+                      the ability to perform aspects of sports, occupations and daily activities.
                     </p>
                     {/* <a href="#" className="text-button">
                       Discover More
@@ -178,17 +174,11 @@ const Home = () => {
                 </li>
                 <li className="feature-item">
                   <div className="left-icon">
-                    <img
-                      src="HomeImage/features-first-icon.png"
-                      alt="second one"
-                    />
+                    <img src="HomeImage/features-first-icon.png" alt="second one" />
                   </div>
                   <div className="right-content">
                     <h4>New Gym </h4>
-                    <p>
-                      You can find new and best gyms on your platform according
-                      to your needs.
-                    </p>
+                    <p>You can find new and best gyms on your platform according to your needs.</p>
                     {/* <a href="#" className="text-button">
                       Discover More
                     </a> */}
@@ -196,17 +186,13 @@ const Home = () => {
                 </li>
                 <li className="feature-item">
                   <div className="left-icon">
-                    <img
-                      src="HomeImage/features-first-icon.png"
-                      alt="third gym training"
-                    />
+                    <img src="HomeImage/features-first-icon.png" alt="third gym training" />
                   </div>
                   <div className="right-content">
                     <h4>Calorie Calculator</h4>
                     <p>
-                      This calorie calculator estimates the number of calories
-                      needed each day to maintain, lose, or gain weight. Learn
-                      the kinds of calories and their effects.
+                      This calorie calculator estimates the number of calories needed each day to
+                      maintain, lose, or gain weight. Learn the kinds of calories and their effects.
                     </p>
                     {/* <a href="#" className="text-button">
                       Discover More
@@ -219,17 +205,11 @@ const Home = () => {
               <ul className="features-items">
                 <li className="feature-item">
                   <div className="left-icon">
-                    <img
-                      src="HomeImage/features-first-icon.png"
-                      alt="fourth muscle"
-                    />
+                    <img src="HomeImage/features-first-icon.png" alt="fourth muscle" />
                   </div>
                   <div className="right-content">
                     <h4>Chat with Trainers</h4>
-                    <p>
-                      Here you can chat with different trainers and buy there
-                      diet plans
-                    </p>
+                    <p>Here you can chat with different trainers and buy there diet plans</p>
                     {/* <a href="#" className="text-button">
                       Discover More
                     </a> */}
@@ -237,17 +217,11 @@ const Home = () => {
                 </li>
                 <li className="feature-item">
                   <div className="left-icon">
-                    <img
-                      src="HomeImage/features-first-icon.png"
-                      alt="training fifth"
-                    />
+                    <img src="HomeImage/features-first-icon.png" alt="training fifth" />
                   </div>
                   <div className="right-content">
                     <h4>Yoga Training</h4>
-                    <p>
-                      Complete at least 200 hours of training with a qualifying
-                      yoga school
-                    </p>
+                    <p>Complete at least 200 hours of training with a qualifying yoga school</p>
                     {/* <a href="#" className="text-button">
                       Discover More
                     </a> */}
@@ -255,17 +229,13 @@ const Home = () => {
                 </li>
                 <li className="feature-item">
                   <div className="left-icon">
-                    <img
-                      src="HomeImage/features-first-icon.png"
-                      alt="gym training"
-                    />
+                    <img src="HomeImage/features-first-icon.png" alt="gym training" />
                   </div>
                   <div className="right-content">
                     <h4>Body Building Course</h4>
                     <p>
-                      Bodybuilding, a regimen of exercises designed to enhance
-                      the human body's muscular development. and promote general
-                      health and fitness.
+                      Bodybuilding, a regimen of exercises designed to enhance the human body's
+                      muscular development. and promote general health and fitness.
                     </p>
                     {/* <a href="#" className="text-button">
                       Discover More
@@ -288,9 +258,8 @@ const Home = () => {
                   Don’t <em>think</em>, begin <em>today</em>!
                 </h2>
                 <p>
-                  The application of consistent, logical effort, over a
-                  prolonged period is the key to reaching your physical muscular
-                  potential.
+                  The application of consistent, logical effort, over a prolonged period is the key
+                  to reaching your physical muscular potential.
                 </p>
                 <div className="main-button scroll-to-section">
                   <a href="/register">Become a member</a>
@@ -312,14 +281,12 @@ const Home = () => {
                 </h2>
                 <img src="HomeImage/line-dec.png" alt="" />
                 <p>
-                  In the age of hectic work routines and busy schedules, we
-                  intend to build a fitness app which will help people to keep
-                  track of their fitness goals. It will also have the feature
-                  for its users to discover nearby suitable gyms and appropriate
-                  trainer facilities according to their aims. This app will help
-                  people improve their physical health by providing them all
-                  sorts of information on working out, diet, gyms and trainers
-                  on a single platform.
+                  In the age of hectic work routines and busy schedules, we intend to build a
+                  fitness app which will help people to keep track of their fitness goals. It will
+                  also have the feature for its users to discover nearby suitable gyms and
+                  appropriate trainer facilities according to their aims. This app will help people
+                  improve their physical health by providing them all sorts of information on
+                  working out, diet, gyms and trainers on a single platform.
                 </p>
               </div>
             </div>
@@ -455,10 +422,7 @@ const Home = () => {
                       />
                     </Form.Group>
 
-                    <Form.Group
-                      className="mb-3 text-light"
-                      controlId="formBasicPassword"
-                    >
+                    <Form.Group className="mb-3 text-light" controlId="formBasicPassword">
                       <Form.Label>Enter Feets</Form.Label>
                       <Form.Control
                         type="number"
@@ -470,10 +434,7 @@ const Home = () => {
                         }}
                       />
                     </Form.Group>
-                    <Form.Group
-                      className="mb-3 text-light"
-                      controlId="formBasicPassword"
-                    >
+                    <Form.Group className="mb-3 text-light" controlId="formBasicPassword">
                       <Form.Label>Enter Inches</Form.Label>
                       <Form.Control
                         type="number"
@@ -495,11 +456,13 @@ const Home = () => {
                       <div>
                         {" "}
                         <h3 className="text-light mt-3">BMI : {bmi} </h3>{" "}
-                        {bmi < 25
-                          ? <p>Light weight</p>
-                          : bmi > 35
-                          ? <p>Over weight</p>
-                          : null}{" "}
+                        {bmi < 18.5 ? (
+                          <p>Light weight</p>
+                        ) : bmi > 25 ? (
+                          <p>Over weight</p>
+                        ) : bmi > 18.5 && bmi < 25 ? (
+                          <p>Healthy Weight</p>
+                        ) : null}{" "}
                       </div>
                     ) : null}
                   </div>
@@ -515,9 +478,7 @@ const Home = () => {
         <div className="container">
           <div className="row">
             <div className="col-lg-12">
-              <p>
-                Copyright &copy; 2022 Fitness Application - Designed by Evilcops
-              </p>
+              <p>Copyright &copy; 2022 Fitness Application - Designed by Evilcops</p>
 
               {/* <!-- You shall support us a little via PayPal to info@templatemo.com --> */}
             </div>

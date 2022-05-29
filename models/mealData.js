@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const Joi = require('joi')
+const mongoose = require("mongoose");
+const Joi = require("joi");
 
 const mealDataSchema = mongoose.Schema({
   customer_Id: String,
@@ -11,11 +11,11 @@ const mealDataSchema = mongoose.Schema({
   food_proteins: Number,
   food_carbs: Number,
   food_fats: Number,
-  food_quantity: Number,
+  food_weight_selected: Number,
   time_date: Date,
-})
+});
 
-var mealDataDetails = mongoose.model('Meal_Data', mealDataSchema)
+var mealDataDetails = mongoose.model("Meal_Data", mealDataSchema);
 
 function validateMeal(data) {
   const schema = Joi.object({
@@ -28,11 +28,11 @@ function validateMeal(data) {
     food_proteins: Joi.number().positive().required(),
     food_carbs: Joi.number().positive().required(),
     food_fats: Joi.number().positive().required(),
-    food_quantity: Joi.number().positive().required(),
+    food_weight_selected: Joi.number().positive().required(),
     time_date: Joi.date().required(),
-  })
-  return schema.validate(data)
+  });
+  return schema.validate(data);
 }
 
-module.exports.mealDataDetails = mealDataDetails
-module.exports.Validate = validateMeal
+module.exports.mealDataDetails = mealDataDetails;
+module.exports.Validate = validateMeal;

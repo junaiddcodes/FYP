@@ -28,7 +28,7 @@ const querySchema = yup.object().shape({
     .required("query subject can't be empty"),
   query_desc: yup
     .string()
-    .min(200, 'Description must be at least 100 characters!')
+    .min(20, 'Description must be at least 20 characters!')
     .required("query description can't be empty"),
 })
 
@@ -125,7 +125,9 @@ const CreateQuery = () => {
         <SideMenuTrainer />
       ) : user_type == 'gym' ? (
         <SideMenuGym />
-      ) : null}
+      ) : (
+        <SideMenuBack />
+      )}
 
       <h3 id="gym-reqs">Your Queries</h3>
       <div className="admin-box mt-3">

@@ -38,6 +38,8 @@ import ActivityPlanDetails from './Pages/UserPanel/ActivityPlanDetails'
 import UserProfile from './Pages/UserPanel/UserProfile'
 import ForgotPassword from './Pages/Register/ForgetPassword'
 import ResetPassword from './Pages/Register/ResetPassword'
+import GymViewMap from './Pages/UserPanel/GymViewMap'
+import ChangePassword from './Components/ChangePassword'
 function App() {
   return (
     <BrowserRouter>
@@ -47,6 +49,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/user-add-food" element={<AddFood />} />
+          <Route path="/nearby-gyms" element={<GymViewMap />} />
           <Route path="/user-add-exercise" element={<AddExercise />} />
           <Route path="/user-add-water" element={<AddWater />} />
           <Route path="/search-gym" element={<SearchGym />} />
@@ -79,6 +82,7 @@ function App() {
             element={<ActivityPlanDetails />}
           />
           <Route path="/user-profile" element={<UserProfile />} />
+          <Route path="/change-password" element={<ChangePassword />} />
 
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
