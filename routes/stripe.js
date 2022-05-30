@@ -7,12 +7,12 @@ const cors = require('cors')
 // app.use(cors())
 
 router.post('/', async (req, res) => {
-  let { amount, id } = req.body
+  let { amount, id , description} = req.body
   try {
     const payment = await stripe.paymentIntents.create({
       amount,
       currency: 'USD',
-      description: 'Spatula company',
+      description: description,
       payment_method: id,
       confirm: true,
     })

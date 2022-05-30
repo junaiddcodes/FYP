@@ -5,7 +5,6 @@ const { orderDetails } = require("../models/orderDetails");
 const { createPlanModel } = require("../models/create_plan");
 const { customerDetails } = require("../models/customerDetails");
 const { trainerDetails } = require("../models/trainerDetails");
-const { userSchema } = require("../models/userModel");
 
 // //use to get all data from db
 const getAllData = async (req, res) => {
@@ -99,6 +98,8 @@ const getOneData = async (req, res) => {
     res.status(500).json({ message: error });
   }
 };
+
+
 
 //use to get only one data from db
 const getbyUser = async (req, res) => {
