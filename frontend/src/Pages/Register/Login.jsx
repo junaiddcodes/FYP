@@ -46,11 +46,11 @@ const Login = () => {
 
   const submitForm = (data) => {
     console.log(data.role)
-    notify()
 
     userService
       .login(email, password, data.role)
       .then((token) => {
+        notify()
         // console.log(token);
         if (data.role == 'customer') navigate('/user-dashboard')
         if (data.role == 'trainer') navigate('/trainer-dashboard')
@@ -131,7 +131,7 @@ const Login = () => {
           </div>
           <div className="w-100 d-flex justify-content-center align-items-center">
             <p className="signup-option text-light">
-              Forget Password? <Link to="/forgottenpassword">Reset here</Link>{' '}
+              Forget Password? <Link to="/forgot-password">Reset here</Link>{' '}
             </p>
           </div>
         </div>

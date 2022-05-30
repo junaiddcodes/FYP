@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const { userSchema } = require("./userModel");
+const mongoose = require('mongoose')
+const { userSchema } = require('./userModel')
 
-const Joi = require("joi");
+const Joi = require('joi')
 
 var trainerDetailsSchema = mongoose.Schema({
   user_id: userSchema,
@@ -22,10 +22,9 @@ var trainerDetailsSchema = mongoose.Schema({
 
   trainer_photo: String,
   cloudinary_id: String,
-});
+})
 
-
-var trainerDetails = mongoose.model("Trainer_Details", trainerDetailsSchema);
+var trainerDetails = mongoose.model('Trainer_Details', trainerDetailsSchema)
 
 function validateTrainer(data) {
   const schema = Joi.object({
@@ -55,10 +54,10 @@ function validateTrainer(data) {
     },
     trainer_photo: Joi.string(),
     cloudinary_id: Joi.string(),
-  });
-  return schema.validate(data);
+  })
+  return schema.validate(data)
 }
 
-module.exports.trainerDetails = trainerDetails;
+module.exports.trainerDetails = trainerDetails
 
-module.exports.Validate = validateTrainer;
+module.exports.Validate = validateTrainer

@@ -1,7 +1,7 @@
 // FUNCTIONS
 @mixin heading3($size-font, $weight) {
   h3 {
-    font-family: "Montserrat", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     color: $color4;
     font-weight: $weight;
     font-size: $size-font;
@@ -9,7 +9,7 @@
 }
 @mixin heading2($size-font, $weight) {
   h2 {
-    font-family: "Montserrat", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     color: $color4;
     font-weight: $weight;
     font-size: $size-font;
@@ -30,7 +30,7 @@
     margin: auto;
     background: $color2;
     border-radius: 0.5rem;
-    font-family: "Montserrat", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     color: $color4;
   }
 }
@@ -64,7 +64,7 @@
     border-radius: 0.5rem;
     border: none;
     color: $color4;
-    font-family: "Montserrat", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     padding-left: 10px;
   }
   h4 {
@@ -94,7 +94,7 @@
 .buttons-step1,
 .buttons-step2 {
   width: 90%;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   Button {
     width: 10%;
   }
@@ -116,7 +116,7 @@
     border-radius: 0.5rem;
     border: none;
     color: $color4;
-    font-family: "Montserrat", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     padding-left: 10px;
   }
   p {
@@ -129,7 +129,7 @@
     width: 1rem;
   }
   p {
-    font-family: "Montserrat", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 600;
   }
 }
@@ -151,7 +151,7 @@
     margin: auto;
     background: $color2;
     border-radius: 0.5rem;
-    font-family: "Montserrat", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     color: $color4;
     border: none;
     p {
@@ -193,7 +193,7 @@
     margin: auto;
     background: $color2;
     border-radius: 0.5rem;
-    font-family: "Montserrat", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     color: $color4;
     padding: 20px;
     border: none;
@@ -226,7 +226,7 @@
 
 .buttons-step3 {
   width: 90%;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   Button {
     width: 20%;
   }
@@ -244,7 +244,7 @@
     margin: auto;
     background: $color2;
     border-radius: 0.5rem;
-    font-family: "Montserrat", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     color: $color4;
     padding: 20px;
     margin-bottom: 10px;
@@ -261,7 +261,7 @@
 // TRAINER
 .buttons-trainer {
   width: 90%;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   Button {
     width: 20%;
   }
@@ -312,13 +312,13 @@
     border-radius: 0.5rem;
     border: none;
     color: $color4;
-    font-family: "Montserrat", sans-serif;
+    font-family: 'Montserrat', sans-serif;
     padding-left: 10px;
   }
 }
 .buttons-gym {
   width: 90%;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   Button {
     width: 20%;
   }
@@ -336,6 +336,66 @@
   @include outerBox(40%, 80%);
 }
 .inner-box-login {
+  @include innerBox(80%, 80%);
+  @include button1();
+  label {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0.5rem;
+    color: $color4;
+  }
+  p {
+    margin: 5px;
+    color: yellow;
+  }
+  .input-text input {
+    margin-left: 0.5rem;
+    width: 400px;
+    height: 40px;
+    border-radius: 5px;
+    background-color: $color2;
+    color: $color4;
+    border: none;
+    outline: none;
+    padding: 10px;
+  }
+  .gender-radio {
+    h4 {
+      font-size: 1rem;
+    }
+    input {
+      width: 4rem;
+    }
+  }
+}
+.outer-box-password {
+  @include outerBox(40%, 90%);
+}
+.inner-box-password {
+  @include heading3(1.25rem, 600);
+
+  @include innerBox(80%, 75%);
+  p {
+    margin: 5px;
+    margin-left: 10px;
+    color: yellow;
+  }
+  input {
+    background-color: $color2;
+    width: 90%;
+    margin: auto;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    color: $color4;
+    font-family: 'Montserrat', sans-serif;
+    padding-left: 10px;
+  }
+}
+.outer-box-forgot {
+  @include outerBox(40%, 80%);
+}
+.inner-box-forgot {
   @include innerBox(80%, 80%);
   @include button1();
   label {

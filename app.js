@@ -24,7 +24,10 @@ var AdminQuery = require('./routes/api/admin_api')
 var OrderRouter = require('./routes/api/ordersApi')
 var AdminMessage = require('./routes/api/notificationApi')
 var StripePayment = require('./routes/stripe')
-
+var PasswordReset = require('./routes/passwordReset')
+var ResetGym = require('./routes/resetGym')
+var ResetTrainer = require('./routes/resetTrainer')
+var OrderGymRouter = require('./routes/api/orderGymApi')
 var app = express()
 
 // view engine setup
@@ -56,7 +59,10 @@ app.use('/api/admin', AdminQuery)
 app.use('/api/order', OrderRouter)
 app.use('/api/notification', AdminMessage)
 app.use('/payment', StripePayment)
-
+app.use('/api/resetPassword', PasswordReset)
+app.use('/api/resetgym', ResetGym)
+app.use('/api/resettrainer', ResetTrainer)
+app.use('/api/order-gym', OrderGymRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))

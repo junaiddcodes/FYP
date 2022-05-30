@@ -158,9 +158,9 @@ const TrainerActivityPlans = () => {
                               className="btn-dark m-3"
                               type="submit "
                               onClick={() => {
-                                notify()
                                 trainerService.delete_plan(e._id).then(() => {
                                   console.log('plan is Deleted')
+                                  deletePlan()
                                 })
                                 page_refresh()
 

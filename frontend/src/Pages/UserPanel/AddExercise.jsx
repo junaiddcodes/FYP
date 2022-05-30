@@ -17,6 +17,8 @@ import { TextField } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const AddExercise = () => {
   const [excerciseCheck, setExcerciseCheck] = useState(true)
@@ -26,19 +28,31 @@ const AddExercise = () => {
     excercise_proteins: 0,
     excercise_carbs: 0,
     excercise_fats: 0,
-  });
-  const [editExcerciselId, setEditExcerciseId] = useState("");
-  const [value, setValue] = useState(null);
-  const location = useLocation();
-  const [excersiseOptions, setExcerciseOptions] = useState([]);
-  const [excersiseData, setExcerciseData] = useState([]);
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
-  const navigate = useNavigate();
-  var user_id = userService.getLoggedInUser()._id;
-  const [userDetails, setUserDetails] = useState(location.state?.userData);
-  const [calorieData, setCalorieData] = useState(location.state?.currentCalorie);
+  })
+  const [editExcerciselId, setEditExcerciseId] = useState('')
+  const [value, setValue] = useState(null)
+  const location = useLocation()
+  const [excersiseOptions, setExcerciseOptions] = useState([])
+  const [excersiseData, setExcerciseData] = useState([])
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false)
+  const [editModalOpen, setEditModalOpen] = useState(false)
+  const navigate = useNavigate()
+  var user_id = userService.getLoggedInUser()._id
+  const [userDetails, setUserDetails] = useState(location.state?.userData)
+  const [calorieData, setCalorieData] = useState(location.state?.currentCalorie)
+  const Edited = () => {
+    // Calling toast method by passing string
+    toast.success('Exercise Edit')
+  }
+  const Add = () => {
+    // Calling toast method by passing string
+    toast.success('Exercise Added')
+  }
+  const Delete = () => {
+    // Calling toast method by passing string
+    toast.success('Exercise Deleted')
+  }
   const schema = yup.object().shape({
     time_minute: yup
       .number()
@@ -86,6 +100,7 @@ const AddExercise = () => {
           setEditModalOpen(false)
           getExcerciseData()
           console.log('Excercise Update Successfully')
+          Edited()
         })
         .catch((err) => {
           console.log(err)
@@ -143,6 +158,7 @@ const AddExercise = () => {
           setModalOpen(false)
           getExcerciseData()
           console.log('Excercise Posted Successfully')
+          Add()
         })
         .catch((err) => {
           console.log(err)
@@ -227,7 +243,7 @@ const AddExercise = () => {
       <Button
         className="m-2"
         onClick={() => {
-          navigate(-1);
+          navigate(-1)
         }}
       >
         <i class="bx bx-arrow-back m-1"></i> Back
@@ -305,7 +321,10 @@ const AddExercise = () => {
             >
               <i class="bx bx-x"></i>
             </a>
-            <form onSubmit={handleSubmit(postExcercise)} className="d-flex flex-column">
+            <form
+              onSubmit={handleSubmit(postExcercise)}
+              className="d-flex flex-column"
+            >
               <div>
                 <Dropdown
                   prompt="Select Excercise (E.g. 'Push ups')"
@@ -530,7 +549,10 @@ const AddExercise = () => {
                                   >
                                     <i class="bx bx-x"></i>
                                   </a>
-                                  <h3>Are you sure you want to delete the exercise?</h3>
+                                  <h3>
+                                    Are you sure you want to delete the
+                                    exercise?
+                                  </h3>
                                   <p>Select yes to delete the item</p>
                                 </div>
                                 <div className="d-flex">
@@ -538,10 +560,13 @@ const AddExercise = () => {
                                     className="btn-dark m-3"
                                     type="submit "
                                     onClick={() => {
-                                      userService.deleteExcerciseData(e._id).then(() => {
-                                        console.log("Excercise is Deleted");
-                                        getExcerciseData();
-                                      });
+                                      userService
+                                        .deleteExcerciseData(e._id)
+                                        .then(() => {
+                                          console.log('Excercise is Deleted')
+                                          getExcerciseData()
+                                          Delete()
+                                        })
 
                                       setConfirmDelete(false)
                                     }}
