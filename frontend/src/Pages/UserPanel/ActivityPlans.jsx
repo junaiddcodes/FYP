@@ -65,12 +65,14 @@ const ActivityPlans = () => {
       <Button
         className="m-2"
         onClick={() => {
-          navigate(-1);
+          navigate(-1)
         }}
       >
         <i class="bx bx-arrow-back m-1"></i> Back
       </Button>
-      <h2>Activity Plans by {location.state.trainerDetails.user_id.full_name}</h2>
+      <h2>
+        Activity Plans by {location.state.trainerDetails.user_id.full_name}
+      </h2>
       <div className=" mt-5">
         {allPlans.length == 0 ? (
           <h2>No plans</h2>
@@ -78,8 +80,9 @@ const ActivityPlans = () => {
           allPlans.map((e, index) => {
             return (
               <div
+                key={index}
                 onClick={() => {
-                  navigate("/activity-plan-details", { state: { e, name } });
+                  navigate('/activity-plan-details', { state: { e, name } })
                 }}
                 className="activity-grid-container d-flex flex-container m-3"
               >
