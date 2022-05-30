@@ -5,7 +5,6 @@ const { orderDetails } = require("../models/orderDetails");
 const { createPlanModel } = require("../models/create_plan");
 const { customerDetails } = require("../models/customerDetails");
 const { trainerDetails } = require("../models/trainerDetails");
-const { userSchema } = require("../models/userModel");
 
 // //use to get all data from db
 const getAllData = async (req, res) => {
@@ -50,14 +49,10 @@ const createData = async (req, res) => {
 const updateData = async (req, res) => {
   try {
     const { orderId: crudId } = req.params;
-    const crud = await orderDetails.findByIdAndUpdate(
-      { _id: crudId },
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    const crud = await orderDetails.findByIdAndUpdate({ _id: crudId }, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!crud) {
       return res.status(404).json({ message: "item does not exist" });
@@ -100,6 +95,8 @@ const getOneData = async (req, res) => {
   }
 };
 
+
+
 //use to get only one data from db
 const getbyUser = async (req, res) => {
   try {
@@ -137,11 +134,9 @@ const checkUserOrder = async (req, res) => {
     });
     if (crud.length == 0) {
       return res.status(404).json({ message: "item does not exist" });
-    }else{
-      res.status(200).json({  crud });
-
+    } else {
+      res.status(200).json({ crud });
     }
-
   } catch (error) {
     res.status(500).json({ message: error });
   }
@@ -155,17 +150,30 @@ const getOrderbyPlan = async (req, res) => {
     });
     if (crud.length == 0) {
       return res.status(404).json({ message: "item does not exist" });
-    }else{
-      res.status(200).json({  crud });
-
+    } else {
+      res.status(200).json({ crud });
     }
-
   } catch (error) {
     res.status(500).json({ message: error });
   }
 };
 
-
+const getOrderUserPlan = async (req, res) => {
+  try {
+    //const { planId: crudId } = req.params;
+    const crud = await orderDetails.findOne({
+      plan_id: req.params.planId,
+      user_id: req.params.userId,
+    });
+    if (crud.length == 0) {
+      return res.status(404).json({ message: "item does not exist" });
+    } else {
+      res.status(200).json({ crud });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
 
 const getTrainersSale = async (req, res) => {
   try {
@@ -176,77 +184,74 @@ const getTrainersSale = async (req, res) => {
     });
     if (crud.length == 0) {
       return res.status(404).json({ message: "item does not exist" });
-    }else{
+    } else {
       res.status(200).json({ crud });
-
     }
-
   } catch (error) {
     res.status(500).json({ message: error });
   }
 };
 
-const postRevew = async (req, res) =>{
+const postRevew = async (req, res) => {
   try {
     const order = await orderDetails.findOne({
       _id: req.body.order_id,
     });
 
-    var rating=0
-    var reviewCount=0
+    var rating = 0;
+    var reviewCount = 0;
 
-    if(!order){
-      return res.status(404).json({ message: "item does not exist" })
+    if (!order) {
+      return res.status(404).json({ message: "item does not exist" });
     }
-    order.review = req.body.review
-    order.review_comment = req.body.review_comment
+
+    if (order.review) {
+      return res.status(404).json({ message: "Already Reviewed" });
+    }
+    order.review = req.body.review;
+    order.review_comment = req.body.review_comment;
 
     const trainerOrders = await orderDetails.find({
-      trainer_id: order.trainer_id
-    })
-
-    trainerOrders.map((e)=>{
-      if(e.review)
-      {
-        rating = rating + e.review;
-        reviewCount++
-      }
-    })
-
-    rating = rating / reviewCount
-
-    console.log(trainerOrders)
-    console.log(reviewCount)
-
-    let trainer = await trainerDetails.findOne({ _id: order.trainer_id})
-    trainer.numReview = rating;
-    trainer.countReview = reviewCount;
-    await trainerDetails.findByIdAndUpdate({ _id: order.trainer_id }, trainer, {
-      new: true,
-      runValidators: true,
+      trainer_id: order.trainer_id,
     });
 
+    trainerOrders.map((e) => {
+      if (e.review) {
+        rating = rating + e.review;
+        reviewCount++;
+      }
+    });
 
-    const crud = await orderDetails.findByIdAndUpdate(
-      { _id: order._id },
-      order,
+    rating = rating / reviewCount;
+
+    console.log(trainerOrders);
+    console.log(reviewCount);
+
+    let trainer = await trainerDetails.findOne({ _id: order.trainer_id });
+    trainer.numReview = rating;
+    trainer.countReview = reviewCount;
+    await trainerDetails.findByIdAndUpdate(
+      { _id: trainer._id },
+      { $set: trainer },
       {
         new: true,
         runValidators: true,
       }
     );
+
+    const crud = await orderDetails.findByIdAndUpdate({ _id: order._id }, order, {
+      new: true,
+      runValidators: true,
+    });
     if (!crud) {
       return res.status(404).json({ message: "item does not exist" });
     }
 
     res.status(200).json({ crud });
-
-
-
   } catch (error) {
     res.status(500).json({ message: error });
   }
-}
+};
 
 module.exports = {
   getAllData,
@@ -258,5 +263,6 @@ module.exports = {
   checkUserOrder,
   getTrainersSale,
   postRevew,
-  getOrderbyPlan
+  getOrderbyPlan,
+  getOrderUserPlan,
 };

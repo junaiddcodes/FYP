@@ -22,7 +22,7 @@ const CARD_OPTIONS = {
   },
 }
 
-export default function PaymentForm({ payment, action }) {
+export default function PaymentForm({ payment, action, description }) {
   const [success, setSuccess] = useState(false)
   const stripe = useStripe()
   const elements = useElements()
@@ -39,6 +39,7 @@ export default function PaymentForm({ payment, action }) {
         const response = await axios.post('http://localhost:4000/payment', {
           amount: payment,
           id,
+          description: description
         })
 
         if (response.data.success) {
@@ -59,7 +60,7 @@ export default function PaymentForm({ payment, action }) {
       {!success ? (
         <form onSubmit={handleSubmit}>
           <fieldset className="FormGroup">
-            <div className="FormRow">
+            <div className="FormRow my-4">
               <CardElement options={CARD_OPTIONS} />
             </div>
           </fieldset>
