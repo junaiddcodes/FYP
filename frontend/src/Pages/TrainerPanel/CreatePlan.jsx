@@ -28,7 +28,7 @@ const planDescSchema = yup.object().shape({
     .typeError('Plan duration is required!')
     .positive('Plan duration should be a positive number')
     .min(1, 'plan can not be less then 1 week')
-    .max(6, 'plan can not be more then 6 week')
+    .max(8, 'plan can not be more then 8 week')
     .required('Plan duration price is required!'),
   plan_price: yup
     .number()
@@ -46,30 +46,44 @@ const planDescSchema = yup.object().shape({
 const planSchema = yup.object().shape({
   monday_activity: yup
     .string()
+    .min(5, 'the activity should be of min 5 character')
+    .max(200, 'the activity should be of max 200 character')
 
     .required("Activity details can't be empty"),
   tuesday_activity: yup
     .string()
+    .min(5, 'the activity should be of min 5 character')
+    .max(200, 'the activity should be of max 200 character')
 
     .required("Activity details can't be empty"),
   wednesday_activity: yup
     .string()
+    .min(5, 'the activity should be of min 5 character')
+    .max(200, 'the activity should be of max 200 character')
 
     .required("Activity details can't be empty"),
   thursday_activity: yup
     .string()
+    .min(5, 'the activity should be of min 5 character')
+    .max(200, 'the activity should be of max 200 character')
 
     .required("Activity details can't be empty"),
   friday_activity: yup
     .string()
+    .min(5, 'the activity should be of min 5 character')
+    .max(200, 'the activity should be of max 200 character')
 
     .required("Activity details can't be empty"),
   saturday_activity: yup
     .string()
+    .min(5, 'the activity should be of min 5 character')
+    .max(200, 'the activity should be of max 200 character')
 
     .required("Activity details can't be empty"),
   sunday_activity: yup
     .string()
+    .min(5, 'the activity should be of min 5 character')
+    .max(200, 'the activity should be of max 200 character')
 
     .required("Activity details can't be empty"),
 })

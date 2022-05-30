@@ -40,6 +40,8 @@ import UserProfile from './Pages/UserPanel/UserProfile'
 import GymViewMap from './Pages/UserPanel/GymViewMap'
 import ChangePassword from './Components/ChangePassword'
 import MyPlanDetails from './Pages/UserPanel/MyPlanDetails'
+import ForgotPassword from './Pages/Register/ForgetPassword'
+import ResetPassword from './Pages/Register/ResetPassword'
 function App() {
   return (
     <BrowserRouter>

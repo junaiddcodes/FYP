@@ -354,7 +354,9 @@ const AddFood = () => {
               ) : null}
 
               <div className="mt-3 w-100">
-                {value ? <p>Enter the weight of food eaten</p> : null}
+                {value ? (
+                  <p>Enter the weight of food Taken (in grams)</p>
+                ) : null}
                 <TextField
                   type="number"
                   id="demo-simple-select-2"
