@@ -15,6 +15,10 @@ class GymService extends GenericService {
   get_all_not_listed_gyms = () => this.get("gym/not-listed");
   get_search_gyms = (filter) => this.post("gym/search", filter);
 
+  //order Gym
+  buy_gym_membership = (order) => this.patch("order-gym/orderCreate", order);
+
+
   isLoggedIn = () => {
     return localStorage.getItem("token") ? true : false;
   };

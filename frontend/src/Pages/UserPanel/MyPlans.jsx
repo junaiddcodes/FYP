@@ -74,7 +74,7 @@ const MyPlans = () => {
     <div className="page-container-user">
       <TopBar />
       <SideMenu />
-      <h2>heading 2</h2>
+      <h2>My Plans</h2>
       <div className=" mt-5">
         {allPlans.length == 0 ? (
           <h2>No plans</h2>
@@ -85,7 +85,7 @@ const MyPlans = () => {
                 onClick={() => {
                   navigate("/my-plan-details", { state: { e, name } });
                 }}
-                className="activity-grid-container"
+                className="activity-grid-container d-flex flex-column m-3"
               >
                 <div className="activity-card grid-item p-3">
                   <h4>{e.plan_title} Activity Plan</h4>
