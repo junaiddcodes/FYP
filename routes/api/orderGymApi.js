@@ -7,13 +7,15 @@ const {
     getOneData,
     updateData,
     createData,
-    getOrderCheck
+    getOrderCheck,
+    getbyUser
   } = require("../../controllers/orderGymController");
 
   router.route("/").get(getAllData);
   router.route("/orderCreate").post(Verify, createData);
   router.route("/:orderId").get(getOneData).patch(updateData);
   router.route("/gym/:userId/:gymId").get(getOrderCheck);
+  router.route("/user/:userId").get(getbyUser)
 
   module.exports = router;
 
