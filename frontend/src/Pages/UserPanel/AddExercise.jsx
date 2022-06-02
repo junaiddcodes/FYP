@@ -91,7 +91,6 @@ const AddExercise = () => {
         time_date: new Date().getTime(),
       }
 
-      console.log(excercisePost)
 
       userService
         .editExcerciseData(editExcerciselId, excercisePost)
@@ -108,12 +107,11 @@ const AddExercise = () => {
     }
   }
   function getSingleExcercise(id) {
-    console.log(id)
+
     userService
       .get_single_excercise(id)
       .then((res) => {
         setValue(res.crud)
-        console.log(res)
       })
       .catch((err) => {
         console.log(err)
@@ -126,10 +124,10 @@ const AddExercise = () => {
   }
 
   function postExcercise(data) {
-    setModalOpen(false)
     if (!value) {
       setExcerciseCheck(false)
     } else {
+      setModalOpen(false)
       setExcerciseCheck(true)
 
       var burnedCalories = calorieBurnCalculation(data.time_minute)
@@ -167,7 +165,6 @@ const AddExercise = () => {
   }
 
   function getExcerciseAPIData(e) {
-    console.log(e)
     if (e) {
       var x = e
       var exSet = {
@@ -336,7 +333,7 @@ const AddExercise = () => {
                 />
                 {!excerciseCheck ? (
                   <p id="error-text" style={{ color: 'rgb(255, 34, 34)' }}>
-                    Food cannot be Empty
+                    Excercise must be Selected
                   </p>
                 ) : null}
               </div>
@@ -465,7 +462,7 @@ const AddExercise = () => {
                                           id="error-text"
                                           style={{ color: 'rgb(255, 34, 34)' }}
                                         >
-                                          Food cannot be Empty
+                                          Excercise must be selected
                                         </p>
                                       ) : null}
                                     </div>

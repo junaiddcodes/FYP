@@ -69,6 +69,7 @@ const AddWater = () => {
   function deleteWater(id) {
     userService.deleteWaterData(id).then((e) => {
       console.log('Water delete Successfully')
+      getWaterData()
       setConfirmDelete(false)
     })
   }

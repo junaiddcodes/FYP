@@ -81,7 +81,7 @@ const getOneData = async (req, res) => {
 const getOrderCheck = async (req, res) => {
     try {
     //   const { gymId: crudId } = req.params;
-      const crud = await orderGymDetails.findOne({ user_id: req.params.user_id , gym_id: req.params.gym_id });
+      const crud = await orderGymDetails.findOne({ user_id: req.params.userId , gym_id: req.params.gymId });
   
       if (!crud) {
         return res.status(404).json({ message: "item does not exist" });

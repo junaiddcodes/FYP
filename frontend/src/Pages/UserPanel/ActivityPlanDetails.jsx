@@ -116,6 +116,7 @@ const ActivityPlanDetails = () => {
       .then((data) => {
         console.log(data);
         console.log("plan bought");
+        checkPlan()
         setConfirmDelete(false);
         order.plan_id = location.state.e._id;
         order.user_id = userId;
@@ -225,7 +226,7 @@ const ActivityPlanDetails = () => {
         ) : (
           allPlans.map((e, key) => {
             return e.review ? (
-              <div>
+              <div key={key}>
                 <div className="text-light">
                   <i class="bx bxs-star mr-2 text-warning"></i>
                   <span> {e.review} </span>
@@ -235,7 +236,7 @@ const ActivityPlanDetails = () => {
                 </div>
               </div>
             ) : (
-              <p>Not reviewed Yet</p>
+              null
             );
           })
         )}

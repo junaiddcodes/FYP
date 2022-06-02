@@ -61,6 +61,7 @@ const UserDashboard = () => {
   const submitStatsForm = (data) => {
     console.log("in function");
     const height = data.feet + "." + data.inches;
+    var calorieData = calculation(userData,height,data.weight)
     statsDetails = {
       ...statsDetails,
       user_id: {
@@ -71,10 +72,14 @@ const UserDashboard = () => {
       },
       weight: data.weight,
       height: height,
+      protein: calorieData.protien,
+      carbs: calorieData.carbs,
+      fats: calorieData.fats,
+      calorie_goal: calorieData.calorie,
     };
 
-    // console.log(userProfileDetails);
-    console.log("before update");
+    console.log(statsDetails);
+
     userService
       .update_user(statsDetails, userId)
       .then((data) => {
@@ -99,6 +104,69 @@ const UserDashboard = () => {
     excercise_carbs: 0,
     excercise_fats: 0,
   });
+
+  function getAge(dateString) {
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  }
+  function calculation(customerDetails,height,weight) {
+    var height = height / 0.032808;
+    var weight = weight;
+    var weight_pounds = weight * 2.205;
+    var age = getAge(customerDetails.dob);
+    var gender = customerDetails.gender;
+    var goal = customerDetails.weight_goal;
+    var goal_speed = customerDetails.weekly_goal;
+    var bmr = 0;
+    var calorie = 0;
+    var protien = 0;
+    var fats = 0;
+    var carbs_calorie = 0;
+    var carbs = 0;
+  
+    if (gender == "male") {
+      bmr = 66 + 13.7 * weight + 5 * height - (6.8 - age);
+    } else {
+      bmr = 65.5 + 9.6 * weight + 1.8 * height - (4.7 - age);
+    }
+    var TDEE = customerDetails.activity_level * bmr;
+  
+    if (goal == "lose_weight") {
+      if (goal_speed == 1) {
+        calorie = TDEE - TDEE * 0.2;
+      } else if (goal_speed == 0.5) {
+        calorie = TDEE - TDEE * 0.1;
+      }
+      protien = weight_pounds;
+      fats = weight_pounds / 2;
+      carbs_calorie = calorie - (protien * 4 + fats * 9);
+      carbs = carbs_calorie / 4;
+    } else {
+      if (goal_speed == 1) {
+        calorie = TDEE + TDEE * 0.2;
+      } else if (goal_speed == 0.5) {
+        calorie = TDEE + TDEE * 0.1;
+      }
+      protien = weight_pounds;
+      fats = weight_pounds / 2;
+      carbs_calorie = calorie - (protien * 4 + fats * 9);
+      carbs = carbs_calorie / 4;
+    }
+  
+    // console.log(age)
+    // console.log(protien)
+    // console.log(fats)
+    // console.log(carbs_calorie)
+    // console.log(carbs)
+  
+    return { calorie, protien, fats, carbs };
+  }
 
   const notify = () => {
     // Calling toast method by passing string

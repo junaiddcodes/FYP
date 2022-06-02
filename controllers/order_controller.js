@@ -198,8 +198,8 @@ const postRevew = async (req, res) => {
       _id: req.body.order_id,
     });
 
-    var rating = 0;
-    var reviewCount = 0;
+    var rating = Number(req.body.review);
+    var reviewCount = 1;
 
     if (!order) {
       return res.status(404).json({ message: "item does not exist" });
@@ -215,21 +215,21 @@ const postRevew = async (req, res) => {
       trainer_id: order.trainer_id,
     });
 
-    trainerOrders.map((e) => {
+    trainerOrders.map((e, key) => {
       if (e.review) {
         rating = rating + e.review;
         reviewCount++;
       }
     });
 
+    
     rating = rating / reviewCount;
-
-    console.log(trainerOrders);
-    console.log(reviewCount);
+    
 
     let trainer = await trainerDetails.findOne({ _id: order.trainer_id });
     trainer.numReview = rating;
     trainer.countReview = reviewCount;
+
     await trainerDetails.findByIdAndUpdate(
       { _id: trainer._id },
       { $set: trainer },
