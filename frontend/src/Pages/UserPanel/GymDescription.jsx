@@ -25,12 +25,13 @@ const GymDescription = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const navigate = useNavigate();
+  const gymId = useParams();
   const [pins, SetPins] = useState([31.4878, 74.3646]);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [showItem, setShowItem] = useState(true);
   var order = {
-    user_id: "",
-    gym_id: "",
+    user_id: userService.getLoggedInUser()._id,
+    gym_id: gymId.id,
   };
   const [orderX, SetOrderX] = useState({
     user_id: "",
@@ -39,19 +40,30 @@ const GymDescription = () => {
     time_date: new Date().getTime(),
   });
 
-  function handleBuyMembership(){
-    console.log("Buy Membership")
-    console.log(orderX)
-    gymService.buy_gym_membership(orderX).then((data)=>{
-      console.log(data)
-    }).catch((err)=>{
-      console.log(err)
-    })
-
+  function handleBuyMembership() {
+    console.log("Buy Membership");
+    console.log(orderX);
+    gymService
+      .buy_gym_membership(orderX)
+      .then((data) => {
+        console.log(data);
+        checkGymOrder(order)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
-  function checkGymOrder(){
-    
+  function checkGymOrder(order) {
+    gymService
+      .check_gym_membership(order.user_id, order.gym_id)
+      .then((data) => {
+        setShowItem(false)
+      })
+      .catch((err) => {
+        console.log(err);
+        setShowItem(true)
+      });
   }
 
   useEffect(() => {
@@ -69,6 +81,8 @@ const GymDescription = () => {
         navigate("/login");
       }
     }
+    getGym();
+    checkGymOrder(order);
   }, []);
   const [gymDetails, setGymDetails] = useState({
     user_id: { full_name: "", email: "" },
@@ -83,24 +97,20 @@ const GymDescription = () => {
     },
     gym_photos: [{ photo_url: "" }],
   });
-  const gymId = useParams();
   function getGym() {
     gymService.get_one_gym(gymId.id).then((data) => {
-      console.log("User ID", userService.getLoggedInUser()._id)
       SetOrderX({
         user_id: userService.getLoggedInUser()._id,
         gym_id: gymId.id,
         price: data.crud.gym_membership_price,
         time_date: new Date().getTime(),
-      })
+      });
       setGymDetails(data.crud);
-      console.log(data);
       var temp = [data.crud.cordinates.lat, data.crud.cordinates.long];
-      console.log(temp);
       SetPins(temp);
     });
   }
-  useEffect(getGym, []);
+
   return (
     <div className="page-container-user">
       <TopBar />
@@ -139,62 +149,67 @@ const GymDescription = () => {
         </div>
         <div className="gym-contact d-flex flex-column ">
           <div>
-            <div className="modal-container">
-              <Modal
-                style={{
-                  overlay: {
-                    position: "fixed",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
+            {showItem ? (
+              <div>
+                <div className="modal-container">
+                  <Modal
+                    style={{
+                      overlay: {
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
 
-                    backgroundColor: "rgba(0, 0, 0, 0.75)",
-                  },
-                  content: {
-                    color: "white",
-                    position: "absolute",
-                    top: "40px",
-                    left: "40px",
-                    right: "40px",
-                    bottom: "40px",
-                    background: "rgba(0,30,60,1)",
-                    overflow: "auto",
-                    WebkitOverflowScrolling: "touch",
-                    borderRadius: "1rem",
-                    outline: "none",
-                    padding: "20px",
-                  },
-                }}
-                className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
-                isOpen={confirmDelete}
-                onRequestClose={() => {
-                  setConfirmDelete(false);
-                }}
-              >
-                <div className="modal-inner w-75 d-flex flex-column">
-                  <a
-                    onClick={() => {
+                        backgroundColor: "rgba(0, 0, 0, 0.75)",
+                      },
+                      content: {
+                        color: "white",
+                        position: "absolute",
+                        top: "40px",
+                        left: "40px",
+                        right: "40px",
+                        bottom: "40px",
+                        background: "rgba(0,30,60,1)",
+                        overflow: "auto",
+                        WebkitOverflowScrolling: "touch",
+                        borderRadius: "1rem",
+                        outline: "none",
+                        padding: "20px",
+                      },
+                    }}
+                    className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+                    isOpen={confirmDelete}
+                    onRequestClose={() => {
                       setConfirmDelete(false);
                     }}
                   >
-                    <i class="bx bx-x"></i>
-                  </a>
-                  <StripeContainer
-                    amount={gymDetails.gym_membership_price}
-                    action={handleBuyMembership}
-                    description="Gym Membership Payment"
-                  />
+                    <div className="modal-inner w-75 d-flex flex-column">
+                      <a
+                        onClick={() => {
+                          setConfirmDelete(false);
+                        }}
+                      >
+                        <i class="bx bx-x"></i>
+                      </a>
+                      <StripeContainer
+                        amount={gymDetails.gym_membership_price}
+                        action={handleBuyMembership}
+                        description="Gym Membership Payment"
+                      />
+                    </div>
+                  </Modal>
                 </div>
-              </Modal>
-            </div>
-            {showItem ? (
-                      <Button className="w-50 m-3" onClick={() => setConfirmDelete(true)}>
-                        Buy Membership
-                      </Button>
-                    ) : (
-                      <p className="text-success">You are Member</p>
-                    )}
+                <Button
+                  className="w-50 m-3"
+                  onClick={() => setConfirmDelete(true)}
+                >
+                  Buy Membership
+                </Button>
+              </div>
+            ) : (
+              <p className="text-success">You are a Member</p>
+            )}
           </div>
           <h4>Contact No.</h4>
           <p>{gymDetails.gym_contact_no}</p>

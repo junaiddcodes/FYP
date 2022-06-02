@@ -14,7 +14,7 @@ import TopBar from "../../Components/TopBar";
 import SideMenu from "../../Components/SideMenu";
 import { useNavigate, useLocation } from "react-router-dom";
 import userService from "../../services/UserService";
-import trainerService from "../../services/TrainerService";
+import gymService from "../../services/GymService";
 
 const MyMembership = () => {
   const navigate = useNavigate();
@@ -40,18 +40,18 @@ const MyMembership = () => {
       }
     }
 
-    // const get_membership = () => {
-    //   userService
-    //     .get_bought_membership(userId)
-    //     .then((data) => {
-    //       console.log("plan data = ", data);
-    //       setMembership(data);
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // };
-    // get_membership();
+    const get_membership = () => {
+      gymService
+        .get_user_membership(userId)
+        .then((data) => {
+          console.log("plan data = ", data);
+          setMembership(data.plans);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    get_membership();
   }, []);
   return (
     <div className="page-container-user">
@@ -62,32 +62,32 @@ const MyMembership = () => {
         {membership.length == 0 ? (
           <h2>No membership</h2>
         ) : (
-          membership.map((e, index) => {
-            return (
-              <div
-                onClick={() => {
-                  //   navigate("/my-plan-details", { state: { e, name } });
-                }}
-                className="activity-grid-container d-flex flex-column m-3"
-              >
-                <div className="activity-card grid-item p-3">
-                  <h4>{e.plan_title} Activity Plan</h4>
-                  <h4>Description</h4>
-                  <p className="text-light">{e.plan_desc}</p>
-                  <div className="d-flex justify-content-between">
-                    <div>
-                      <h4>Duration:</h4>
-                      <p className="text-light">{e.plan_duration} weeks</p>
-                    </div>
-                    <div>
-                      <h4>Price:</h4>
-                      <p className="text-light">{e.plan_price} PKR</p>
-                    </div>
-                  </div>
+          <div
+            onClick={() => {
+              //   navigate("/my-plan-details", { state: { e, name } });
+            }}
+            className="activity-grid-container d-flex flex-column m-3"
+          >
+            <div className="activity-card grid-item p-3">
+              <h4>{membership.user_id.full_name} Activity Plan</h4>
+              <h4>Description</h4>
+              <p className="text-light">{membership.gym_desc}</p>
+              <div className="d-flex justify-content-between">
+                <div>
+                  <h4>Gender Facilitation:</h4>
+                  <p className="text-light">
+                    {membership.gender_facilitation} weeks
+                  </p>
+                </div>
+                <div>
+                  <h4>Price:</h4>
+                  <p className="text-light">
+                    {membership.gym_membership_price} PKR
+                  </p>
                 </div>
               </div>
-            );
-          })
+            </div>
+          </div>
         )}
       </div>
     </div>
