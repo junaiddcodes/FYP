@@ -438,6 +438,8 @@ const Home = () => {
                       <Form.Label>Enter Inches</Form.Label>
                       <Form.Control
                         type="number"
+                        min="0"
+                        max="11"
                         placeholder="Enter Height (Inches)"
                         onChange={(e) => {
                           SetInches(e.target.value);
