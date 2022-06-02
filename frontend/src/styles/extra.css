@@ -3,13 +3,91 @@ tr.activity-box td {
   height: 10rem;
 }
 
-.custom-map{
+.custom-map {
   width: 100%;
   height: 400px !important;
   background-color: #777;
 }
-.custom-map .leaflet-containe{
-  width: 100%;
-  height: 200px !important;
+.custom-map .leaflet-container {
+  height: 200px;
+}
 
+.carousel .thumb.selected,
+.carousel .thumb,
+.carousel .thumb:hover {
+  border: 3px solid #333;
+  height: 100px;
+}
+.reference {
+  height: 7rem;
+  width: 20rem;
+  border: 2px solid white;
+  border-radius: 5px;
+  margin: 1rem;
+  padding: 0.5rem;
+  position: fixed;
+  right: 0;
+  bottom: 0;
+}
+.reference p {
+  font-size: 13px;
+}
+.color-sphere-red {
+  height: 1rem;
+  width: 1rem;
+  border-radius: 2rem;
+  background: #e32636;
+}
+.color-sphere-red p {
+  margin-left: 1rem;
+  width: 60%;
+}
+.color-sphere-green p {
+  margin-left: 1rem;
+  width: 60%;
+}
+.color-sphere-yellow p {
+  margin-left: 1rem;
+  width: 60%;
+}
+.color-sphere-light-green p {
+  margin-left: 1rem;
+  width: 60%;
+}
+
+.color-sphere-yellow {
+  height: 1rem;
+  width: 1rem;
+  border-radius: 2rem;
+  background: #f7de3a;
+}
+.color-sphere-light-green {
+  height: 1rem;
+  width: 1rem;
+  border-radius: 2rem;
+  background: #a4de02;
+}
+.color-sphere-green {
+  height: 1rem;
+  width: 1rem;
+  border-radius: 2rem;
+  background: #4c9a2a;
+}
+
+.progress-colors {
+  width: 25rem;
+}
+.progress-colors span {
+  font-weight: 500;
+}
+.stats-panel {
+  background: #0a1929;
+  width: 100rem;
+  border: 1px solid #007fff;
+  height: 20rem;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+.stats-panel p {
+  color: white;
 }

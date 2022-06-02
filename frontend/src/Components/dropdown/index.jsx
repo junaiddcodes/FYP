@@ -26,15 +26,11 @@ export default function Dropdown({
   }
 
   function addClickHandlers() {
-    ["click", "touchend"].map((e) =>
-      document.addEventListener(e, toggle, false)
-    );
+    ["click", "touchend"].map((e) => document.addEventListener(e, toggle, false));
   }
 
   function removeClickHandlers() {
-    ["click", "touchend"].map((e) =>
-      document.addEventListener(e, toggle, false)
-    );
+    ["click", "touchend"].map((e) => document.addEventListener(e, toggle, false));
   }
 
   function toggle(e) {

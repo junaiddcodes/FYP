@@ -290,7 +290,7 @@ const UserDashboard = () => {
       <SideMenu />
 
       <h2 className="m-2">Today's Progress</h2>
-      <div className="user-box d-flex flex-column p-3">
+      <div className="mb-3 user-box d-flex flex-column p-3">
         <div className="d-flex flex-column">
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
@@ -514,15 +514,88 @@ const UserDashboard = () => {
               <div className="w-100 d-flex justify-content-between">
                 <h4>Water Intake (litres) </h4>
                 <div>
-                  <h4 className="text-light">{waterAmount + "/" + 6} </h4>
+                  <h4 className="text-light">{waterAmount + "/" + 3} </h4>
                 </div>
               </div>
-              <Progress done={Math.floor((waterAmount * 100) / 6)} heading="Calorie Goal" />
+              <Progress done={Math.floor((waterAmount * 100) / 3)} heading="Calorie Goal" />
             </div>
           </div>
         </div>
       </div>
+
       <ToastContainer />
+      <h2 className="m-2">Statistics</h2>
+      <div className="user-box mt-1 pb-3 d-flex p-3">
+        <div className="w-50 d-flex flex-column">
+          <h4 className="text-light">What the colours in the bars mean</h4>
+          <div className=" mt-2 progress-colors d-flex justify-content-between">
+            <div className="mt-1 color-sphere-red w-25"></div>
+            <p className="text-light">
+              {" "}
+              <span> Red zone</span> - either too low or too high{" "}
+            </p>
+          </div>
+          <div className="mt-2 progress-colors d-flex justify-content-between   ">
+            <div className="mt-1 color-sphere-yellow w-25"></div>
+            <p className="text-light ">
+              {" "}
+              <span> Yellow zone</span> - some progress is made{" "}
+            </p>
+          </div>
+          <div className="mt-2  progress-colors d-flex justify-content-between   ">
+            <div className="mt-1 color-sphere-light-green w-25"></div>
+            <p className="text-light">
+              {" "}
+              <span> Light green zone</span> - you are almost there{" "}
+            </p>
+          </div>
+          <div className="mt-2  progress-colors d-flex justify-content-between   ">
+            <div className="mt-1 color-sphere-green w-25"></div>
+            <p className="text-light">
+              {" "}
+              <span> Green zone</span> - goals achieved{" "}
+            </p>
+          </div>
+        </div>
+        <div className="w-50 d-flex flex-column">
+          <h3 className="text-light">Todos</h3>
+          <div className="mt-2 stats-panel w-100">
+            {currentCalorie.food_calories < userData.calorie_goal ? (
+              <p>- You need to consume more calories</p>
+            ) : currentCalorie.food_calories > userData.calorie_goal ? (
+              <p>
+                - You need to not eat more and burn{" "}
+                {Math.floor(currentCalorie.food_calories) - Math.floor(userData.calorie_goal)}{" "}
+                calories by working out
+              </p>
+            ) : (
+              <p>- Do not consume more calories</p>
+            )}
+            {currentCalorie.food_proteins < userData.protein ? (
+              <p>- You need to consume more protein rich foods</p>
+            ) : currentCalorie.food_proteins > userData.protein ? (
+              <p>- Do not consume more proteins</p>
+            ) : (
+              <p>- Do not consume more proteins</p>
+            )}
+            {currentCalorie.food_carbs < userData.carbs ? (
+              <p>- You need to consume more carbohydrate rich foods</p>
+            ) : currentCalorie.food_carbs > userData.carbs ? (
+              <p>- Do not consume more carbohydrates</p>
+            ) : (
+              <p>- Do not consume more carbohydrates</p>
+            )}
+            {currentCalorie.food_fats < userData.fats ? (
+              <p>- You need to consume more fat rich foods</p>
+            ) : currentCalorie.food_fats > userData.fats ? (
+              <p>- Do not consume more fats</p>
+            ) : (
+              <p>- Do not consume more fats</p>
+            )}
+            {waterAmount < 3 ? <p>- You need to consume more water</p> : null}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

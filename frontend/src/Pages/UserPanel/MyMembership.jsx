@@ -16,10 +16,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import userService from "../../services/UserService";
 import trainerService from "../../services/TrainerService";
 
-const MyPlans = () => {
+const MyMembership = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [allPlans, setAllPlans] = useState([]);
+  const [membership, setMembership] = useState([]);
   var name = "";
   // const data = location.state.e;
   var userId = "";
@@ -40,18 +40,18 @@ const MyPlans = () => {
       }
     }
 
-    const get_plans = () => {
-      userService
-        .get_bought_plans(userId)
-        .then((data) => {
-          console.log("plan data = ", data);
-          setAllPlans(data.plans);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-    get_plans();
+    // const get_membership = () => {
+    //   userService
+    //     .get_bought_membership(userId)
+    //     .then((data) => {
+    //       console.log("plan data = ", data);
+    //       setMembership(data);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // };
+    // get_membership();
   }, []);
   return (
     <div className="page-container-user">
@@ -59,14 +59,14 @@ const MyPlans = () => {
       <SideMenu />
       <h2>My Plans</h2>
       <div className=" mt-5">
-        {allPlans.length == 0 ? (
-          <h2>No plans</h2>
+        {membership.length == 0 ? (
+          <h2>No membership</h2>
         ) : (
-          allPlans.map((e, index) => {
+          membership.map((e, index) => {
             return (
               <div
                 onClick={() => {
-                  navigate("/my-plan-details", { state: { e, name } });
+                  //   navigate("/my-plan-details", { state: { e, name } });
                 }}
                 className="activity-grid-container d-flex flex-column m-3"
               >
@@ -94,4 +94,4 @@ const MyPlans = () => {
   );
 };
 
-export default MyPlans;
+export default MyMembership;
