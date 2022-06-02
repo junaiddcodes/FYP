@@ -143,9 +143,13 @@ const SearchTrainer = () => {
                 });
               }}
             >
-              <MenuItem value="cardio">Cardio Trainer</MenuItem>
-              <MenuItem value="gym">Gym Trainer</MenuItem>
-              <MenuItem value="yoga">Yoga Trainer</MenuItem>
+              <MenuItem value="cardio">Cardio</MenuItem>
+              <MenuItem value="gym">Gym</MenuItem>
+              <MenuItem value="stretching">Stretching</MenuItem>
+              <MenuItem value="boxing">boxing</MenuItem>
+              <MenuItem value="aerobics">Aerobics</MenuItem>
+              <MenuItem value="kickboxing">Kickboxing</MenuItem>
+              <MenuItem value="swimming">Swimming</MenuItem>
             </Select>
           </FormControl>
 

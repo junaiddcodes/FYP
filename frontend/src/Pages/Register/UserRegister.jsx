@@ -84,9 +84,10 @@ function calculation(customerDetails, genderie, dob) {
 const step1Schema = yup.object().shape({
   full_name: yup
     .string()
-    .min(4, "Name must be of at least 4 characters")
+    .min(3, "Name must be of at least 3 characters")
     .max(25, "Name must be of at most 25 characters")
     .required()
+    .strict()
     .matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for name "),
 
   email: yup
@@ -108,9 +109,9 @@ const step1Schema = yup.object().shape({
   dob: yup
     .string()
     .required("DOB is Required")
-    .test("DOB", "You must be more than 18 years old and less than 100 years old ", (value) => {
+    .test("DOB", "You must be more than 14 years old and less than 100 years old ", (value) => {
       return (
-        moment().diff(moment(value), "years") >= 18 || moment().diff(moment(value), "years") < 100
+        moment().diff(moment(value), "years") >= 14 || moment().diff(moment(value), "years") < 100
       );
     }),
 });
@@ -359,7 +360,7 @@ const UserRegister = () => {
                     className="date-input"
                     type="date"
                     min="1930-01-01"
-                    max="2004-01-01"
+                    max="2008-01-01"
                     placeholder="dd-mm-yyyy"
                     name="dob"
                     // value={customerDetails.dob}
@@ -663,13 +664,13 @@ const UserRegister = () => {
                   {...controlStep4("weekly_goal")}
                 />
                 <div className="d-flex flex-column w-75 ">
-                  <h4>{goalText} 0.5 pounds per week (Recommended)</h4>
+                  <h4>{goalText} 0.22 kgs per week (Recommended)</h4>
                 </div>
               </div>
               <div className="activity-btn2 d-flex justify-content-between">
                 <input type="radio" name="weekly_goal" value="1" {...controlStep4("weekly_goal")} />
                 <div className="d-flex flex-column w-75">
-                  <h4>{goalText} 1 pound per week</h4>
+                  <h4>{goalText} 0.45 kgs per week</h4>
                 </div>
               </div>
               <p>{errorsStep4.weekly_goal?.message}</p>
@@ -690,6 +691,17 @@ const UserRegister = () => {
           </form>
         </div>
       ) : null}
+      {step4 && (
+        <div className="reference">
+          <h5 className="text-light">Reference</h5>
+          <p>
+            The weight steps are taken from
+            <a href="https://steelfitusa.com/blogs/health-and-wellness/calculate-tdee">
+              https://steelfitusa.com/blogs/health-and-wellness/calculate-tdee
+            </a>
+          </p>
+        </div>
+      )}
     </div>
   );
 };

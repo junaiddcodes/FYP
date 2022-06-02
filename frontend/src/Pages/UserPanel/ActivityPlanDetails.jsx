@@ -16,6 +16,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import userService from "../../services/UserService";
 import trainerService from "../../services/TrainerService";
 import StripeContainer from "../../Components/Stripe/StripeContainer";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ActivityPlanDetails = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -50,7 +52,10 @@ const ActivityPlanDetails = () => {
         console.log(err);
       });
   };
-
+  const notify = () => {
+    // Calling toast method by passing string
+    toast.success("Plan bought and moved to my plans");
+  };
   const checkPlan = () => {
     userService
       .check_plan(order)
@@ -108,7 +113,7 @@ const ActivityPlanDetails = () => {
 
     // console.log(location.state.e);
   }, []);
-  
+
   const handleBuyPlan = () => {
     console.log(orderX);
     userService
@@ -120,6 +125,7 @@ const ActivityPlanDetails = () => {
         order.plan_id = location.state.e._id;
         order.user_id = userId;
         setShowItem(false);
+        notify();
       })
       .catch((err) => {
         console.log(err);
@@ -201,10 +207,7 @@ const ActivityPlanDetails = () => {
                     <h4>Description: </h4>
                     <p> {data.plan_desc}</p>
                     {showItem ? (
-                      <Button
-                        className="w-25 m-3"
-                        onClick={() => setConfirmDelete(true)}
-                      >
+                      <Button className="w-25 m-3" onClick={() => setConfirmDelete(true)}>
                         Buy plan
                       </Button>
                     ) : (

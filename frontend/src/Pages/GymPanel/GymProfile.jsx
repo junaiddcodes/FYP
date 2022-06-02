@@ -335,7 +335,7 @@ const GymProfile = () => {
                 <p>{errorsGymProfile.gym_membership_price?.message}</p>
               </div>
               <label for="fname">Gender Facilitation</label>
-              <FormControl className="m-3 w-100 dropdown-trainer">
+              <FormControl className="m-3 w-50 dropdown-trainer">
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
@@ -486,33 +486,100 @@ const GymProfile = () => {
                 >
                   Edit Pictures
                 </Button>
+
                 <Button
                   className="mt-5"
                   onClick={() => {
-                    gymProfileDetails = {
-                      ...gymProfileDetails,
-                      location: "",
-                      gym_desc: "",
-                      gym_contact_no: "",
-                      gym_membership_price: "",
-                      gender_facilitation: "",
-                      gym_photo: "",
-                    };
-                    gymService
-                      .update_gym(gymProfileDetails, loggedInId)
-                      .then((data) => {
-                        console.log(data);
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                      });
-                    console.log(gymProfileDetails + "deleted");
-                    setIsAsk(true);
-                    setIsProfile(false);
+                    setConfirmDelete(true);
                   }}
                 >
                   Delete
                 </Button>
+                <div className="modal-container">
+                  <Modal
+                    style={{
+                      overlay: {
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+
+                        backgroundColor: "rgba(0, 0, 0, 0.75)",
+                      },
+                      content: {
+                        color: "white",
+                        position: "absolute",
+                        top: "40px",
+                        left: "40px",
+                        right: "40px",
+                        bottom: "40px",
+                        background: "rgba(0,30,60,1)",
+                        overflow: "auto",
+                        WebkitOverflowScrolling: "touch",
+                        borderRadius: "1rem",
+                        outline: "none",
+                        padding: "20px",
+                      },
+                    }}
+                    className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+                    isOpen={confirmDelete}
+                    onRequestClose={() => {
+                      setConfirmDelete(false);
+                    }}
+                  >
+                    <div className="modal-inner w-75 d-flex flex-column">
+                      <a
+                        onClick={() => {
+                          setConfirmDelete(false);
+                        }}
+                      >
+                        <i class="bx bx-x"></i>
+                      </a>
+                      <h3>Are you sure you want to delete the profile?</h3>
+                      <p>Select yes to delete the profile</p>
+                    </div>
+                    <div className="d-flex">
+                      <Button
+                        className="btn-dark m-3"
+                        type="submit "
+                        onClick={() => {
+                          gymProfileDetails = {
+                            ...gymProfileDetails,
+                            location: "",
+                            gym_desc: "",
+                            gym_contact_no: "",
+                            gym_membership_price: "",
+                            gender_facilitation: "",
+                            gym_photo: "",
+                          };
+                          gymService
+                            .update_gym(gymProfileDetails, loggedInId)
+                            .then((data) => {
+                              console.log(data);
+                            })
+                            .catch((err) => {
+                              console.log(err);
+                            });
+                          console.log(gymProfileDetails + "deleted");
+                          setIsAsk(true);
+                          setIsProfile(false);
+                        }}
+                      >
+                        Yes
+                      </Button>
+                      <Button
+                        className="m-3"
+                        type="submit"
+                        onClick={() => {
+                          setConfirmDelete(false);
+                        }}
+                      >
+                        No
+                      </Button>
+                    </div>
+                  </Modal>
+                </div>
               </div>
             </div>
           </div>

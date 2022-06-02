@@ -1,12 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMap,
-  useMapEvent,
-} from "react-leaflet";
+import { Button } from "react-bootstrap";
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvent } from "react-leaflet";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./mapstyling.css";
 // import { Icon } from "leaflet";
@@ -14,18 +8,18 @@ import "./mapstyling.css";
 
 const GymViewMap = () => {
   let arrayOfPins = [
-    [31.4868, 74.3636],
-    [31.4878, 74.3646],
-    [31.4888, 74.3656],
-    [31.4898, 74.3666],
-    [31.4889, 74.3676]
+    [31.4005, 74.2093],
+    [31.4025, 74.2033],
+    [31.4035, 74.2043],
+    [31.4848, 74.3656],
+    [31.4859, 74.3666],
   ];
   const navigate = useNavigate();
   const location = useLocation();
   const [mapPin, setMapPin] = useState([]);
   function SetViewOnClick({ animateRef }) {
     const map = useMap();
-    map.setView(mapPin, map.getZoom(), {
+    map.setView([31.4005, 74.2093], map.getZoom(), {
       animate: animateRef.current || false,
     });
 
@@ -46,33 +40,42 @@ const GymViewMap = () => {
 
   // var data = location.state.e;
   return (
-    <div className="map-pop">
-      {mapPin}
+    <div>
+      <Button
+        className="m-2"
+        onClick={() => {
+          navigate(-1);
+        }}
+      >
+        <i class="bx bx-arrow-back m-1"></i> Back
+      </Button>
+      <div className="map-pop">
+        {mapPin}
 
-      <MapContainer center={[21.5, 73.5]} zoom={13} scrollWheelZoom={true}>
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <SetViewOnClick animateRef={animateRef} />
+        <MapContainer center={[21.5, 73.5]} zoom={13} scrollWheelZoom={true}>
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          <SetViewOnClick animateRef={animateRef} />
 
-        {arrayOfPins.map((e)=>{
-          return(
-            <Marker position={e}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
-          )
+          {arrayOfPins.map((e) => {
+            return (
+              <Marker position={e}>
+                <Popup>
+                  A pretty CSS3 popup. <br /> Easily customizable.
+                </Popup>
+              </Marker>
+            );
+          })}
 
-        })}
-
-        {/* <Marker position={[51.405, -0.08]}>
+          {/* <Marker position={[51.405, -0.08]}>
           <Popup>
             A pretty CSS3 popup. <br /> Easily customizable.
           </Popup>
         </Marker> */}
-      </MapContainer>
+        </MapContainer>
+      </div>
     </div>
   );
 
