@@ -24,6 +24,16 @@ import jwtDecode from "jwt-decode";
 import trainerService from "../../services/TrainerService";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Link } from "react-router-dom";
+import { ClimbingBoxLoader, BarLoader, CircleLoader } from "react-spinners";
+import { css } from "@emotion/react";
+import ClipLoader from "react-spinners/ClipLoader";
+
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+  color: blue;
+`;
 
 const UserProfileSchema = yup.object().shape({
   full_name: yup
@@ -70,6 +80,8 @@ const UserProfile = () => {
   const [trainerAge, setTrainerAge] = useState(10);
   const [selectedValue, setSelectedValue] = useState(10);
   const [inches, setInches] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const [feet, setFeet] = useState("");
   var trainersAge = "";
   var loginId = "";
@@ -125,6 +137,7 @@ const UserProfile = () => {
 
           setIsProfile(false);
         }
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -132,6 +145,7 @@ const UserProfile = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     // userService.getLoggedInUser();
     setLoggedInId(userService.getLoggedInUser()._id);
     loginId = userService.getLoggedInUser()._id;
@@ -210,7 +224,7 @@ const UserProfile = () => {
     <div className="page-container-gym">
       <TopBar />
       <SideMenu />
-
+      {loading ? <BarLoader loading={loading} color="#063be9" css={override} size={150} /> : null}
       <h2>User Profile</h2>
       {isAsk ? (
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">

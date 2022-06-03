@@ -26,7 +26,16 @@ import jwtDecode from "jwt-decode";
 import gymService from "../../services/GymService";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Link } from "react-router-dom";
+import { ClimbingBoxLoader, BarLoader, CircleLoader } from "react-spinners";
+import { css } from "@emotion/react";
+import ClipLoader from "react-spinners/ClipLoader";
 
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+  color: blue;
+`;
 const gymProfileSchema = yup.object().shape({
   full_name: yup
     .string()
@@ -62,6 +71,7 @@ const GymProfile = () => {
   const [fileName1, setFileName] = React.useState([]);
   const [previewImage, setPreviewImage] = React.useState([]);
 
+  const [loading, setLoading] = useState(false);
   const [isProfile, setIsProfile] = useState(false);
   const [isAsk, setIsAsk] = useState(false);
   // const [male, setMale] = useState(false);
@@ -118,6 +128,7 @@ const GymProfile = () => {
           setIsGymPicForm(false);
           setIsProfile(false);
         }
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -125,6 +136,7 @@ const GymProfile = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     if (userService.isLoggedIn() == false) {
       navigate("/login");
     } else {
@@ -248,6 +260,7 @@ const GymProfile = () => {
     <div className="page-container-gym">
       <TopBar />
       <SideMenuGym />
+      {loading ? <BarLoader loading={loading} color="#063be9" css={override} size={150} /> : null}
 
       <h2>Gym Profile</h2>
       {isAsk ? (

@@ -202,12 +202,19 @@ const SearchTrainer = () => {
                   <h6 className="m-1">No reviews yet</h6>
                 ) : (
                   <h6 className="m-1">
-                    Rating: {e.numReview} <span className='text-secondary'>{"("+e.countReview+")"}</span> <i class="mt-1 text-warning bx bxs-star"></i>
+                    Rating: {e.numReview}{" "}
+                    <span className="text-secondary">{"(" + e.countReview + ")"}</span>{" "}
+                    <i class="mt-1 text-warning bx bxs-star"></i>
                   </h6>
                 )}
                 <div className="d-flex m-1 mb-0">
                   <p className="text-light" style={{ fontWeight: "bold" }}>
                     Specializing in: {e.exercise_type}
+                  </p>
+                </div>
+                <div className="d-flex m-1 mb-0">
+                  <p className="text-light" style={{ fontWeight: "bold" }}>
+                    Location: {e.location?.city}, {e.location?.state}
                   </p>
                 </div>
               </div>
