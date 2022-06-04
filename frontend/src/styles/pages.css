@@ -537,7 +537,7 @@
 }
 
 .outer-box-password h2 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   font-weight: 700;
   font-size: 2rem;
@@ -551,7 +551,7 @@
 }
 
 .inner-box-password h3 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   font-weight: 600;
   font-size: 1.25rem;
@@ -571,7 +571,7 @@
   border-radius: 0.5rem;
   border: none;
   color: white;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   padding-left: 10px;
 }
 
@@ -585,7 +585,7 @@
 }
 
 .outer-box-forgot h2 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
   font-weight: 700;
   font-size: 2rem;
@@ -603,7 +603,7 @@
   margin: auto;
   background: #001e3c;
   border-radius: 0.5rem;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: white;
 }
 
@@ -1535,6 +1535,11 @@
 }
 
 .menu-item:hover {
+  background-color: #007fff;
+  color: white;
+}
+
+.active {
   background-color: #007fff;
   color: white;
 }

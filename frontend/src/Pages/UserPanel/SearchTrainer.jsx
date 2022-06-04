@@ -143,9 +143,13 @@ const SearchTrainer = () => {
                 });
               }}
             >
-              <MenuItem value="cardio">Cardio Trainer</MenuItem>
-              <MenuItem value="gym">Gym Trainer</MenuItem>
-              <MenuItem value="yoga">Yoga Trainer</MenuItem>
+              <MenuItem value="cardio">Cardio</MenuItem>
+              <MenuItem value="gym">Gym</MenuItem>
+              <MenuItem value="stretching">Stretching</MenuItem>
+              <MenuItem value="boxing">boxing</MenuItem>
+              <MenuItem value="aerobics">Aerobics</MenuItem>
+              <MenuItem value="kickboxing">Kickboxing</MenuItem>
+              <MenuItem value="swimming">Swimming</MenuItem>
             </Select>
           </FormControl>
 
@@ -180,7 +184,7 @@ const SearchTrainer = () => {
                   <h6 className="m-1">No reviews yet</h6>
                 ) : (
                   <h6 className="m-1">
-                    Rating: {e.numReview} <i class="mt-1 text-warning bx bxs-star"></i>
+                    Rating: {e.numReview} <span className='text-secondary'>{"("+e.countReview+")"}</span> <i class="mt-1 text-warning bx bxs-star"></i>
                   </h6>
                 )}
                 <div className="d-flex m-1 mb-0">

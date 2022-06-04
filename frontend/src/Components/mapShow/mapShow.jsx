@@ -16,13 +16,11 @@ const GymViewMap = ({mapPin}) => {
   const animateRef = useRef(false);
   function SetViewOnClick({ animateRef }) {
     const map = useMap();
-    console.log("In",mapPin)
     if(mapPin.lenght == 0){
       SetPins([31.4878, 74.3646])
     }else{
       SetPins(mapPin)
     }
-    console.log("pins",pins)
     map.setView(pins, map.getZoom(), {
       animate: animateRef.current || false,
     });

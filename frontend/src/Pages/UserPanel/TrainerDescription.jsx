@@ -112,7 +112,13 @@ const TrainerDescription = () => {
                 <h4>Age: {getAge(trainerDetails.dob)}</h4>
                 <h4>Gender: {trainerDetails.gender}</h4>
                 <h4>
-                  Rating: 4 <i class="mt-1 text-warning bx bxs-star"></i>
+                {!trainerDetails.numReview ? (
+                  <h6 className="m-1">No reviews yet</h6>
+                ) : (
+                  <h6 className="m-1">
+                    Rating: {trainerDetails.numReview} <span className='text-secondary'>({trainerDetails.countReview})</span> <i class="mt-1 text-warning bx bxs-star"></i>
+                  </h6>
+                )}
                 </h4>
               </div>
             </div>

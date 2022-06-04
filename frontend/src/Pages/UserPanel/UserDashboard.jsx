@@ -61,6 +61,7 @@ const UserDashboard = () => {
   const submitStatsForm = (data) => {
     console.log("in function");
     const height = data.feet + "." + data.inches;
+    var calorieData = calculation(userData,height,data.weight)
     statsDetails = {
       ...statsDetails,
       user_id: {
@@ -71,10 +72,14 @@ const UserDashboard = () => {
       },
       weight: data.weight,
       height: height,
+      protein: calorieData.protien,
+      carbs: calorieData.carbs,
+      fats: calorieData.fats,
+      calorie_goal: calorieData.calorie,
     };
 
-    // console.log(userProfileDetails);
-    console.log("before update");
+    console.log(statsDetails);
+
     userService
       .update_user(statsDetails, userId)
       .then((data) => {
@@ -99,6 +104,69 @@ const UserDashboard = () => {
     excercise_carbs: 0,
     excercise_fats: 0,
   });
+
+  function getAge(dateString) {
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  }
+  function calculation(customerDetails,height,weight) {
+    var height = height / 0.032808;
+    var weight = weight;
+    var weight_pounds = weight * 2.205;
+    var age = getAge(customerDetails.dob);
+    var gender = customerDetails.gender;
+    var goal = customerDetails.weight_goal;
+    var goal_speed = customerDetails.weekly_goal;
+    var bmr = 0;
+    var calorie = 0;
+    var protien = 0;
+    var fats = 0;
+    var carbs_calorie = 0;
+    var carbs = 0;
+  
+    if (gender == "male") {
+      bmr = 66 + 13.7 * weight + 5 * height - (6.8 - age);
+    } else {
+      bmr = 65.5 + 9.6 * weight + 1.8 * height - (4.7 - age);
+    }
+    var TDEE = customerDetails.activity_level * bmr;
+  
+    if (goal == "lose_weight") {
+      if (goal_speed == 1) {
+        calorie = TDEE - TDEE * 0.2;
+      } else if (goal_speed == 0.5) {
+        calorie = TDEE - TDEE * 0.1;
+      }
+      protien = weight_pounds;
+      fats = weight_pounds / 2;
+      carbs_calorie = calorie - (protien * 4 + fats * 9);
+      carbs = carbs_calorie / 4;
+    } else {
+      if (goal_speed == 1) {
+        calorie = TDEE + TDEE * 0.2;
+      } else if (goal_speed == 0.5) {
+        calorie = TDEE + TDEE * 0.1;
+      }
+      protien = weight_pounds;
+      fats = weight_pounds / 2;
+      carbs_calorie = calorie - (protien * 4 + fats * 9);
+      carbs = carbs_calorie / 4;
+    }
+  
+    // console.log(age)
+    // console.log(protien)
+    // console.log(fats)
+    // console.log(carbs_calorie)
+    // console.log(carbs)
+  
+    return { calorie, protien, fats, carbs };
+  }
 
   const notify = () => {
     // Calling toast method by passing string
@@ -222,7 +290,7 @@ const UserDashboard = () => {
       <SideMenu />
 
       <h2 className="m-2">Today's Progress</h2>
-      <div className="user-box d-flex flex-column p-3">
+      <div className="mb-3 user-box d-flex flex-column p-3">
         <div className="d-flex flex-column">
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
@@ -446,15 +514,88 @@ const UserDashboard = () => {
               <div className="w-100 d-flex justify-content-between">
                 <h4>Water Intake (litres) </h4>
                 <div>
-                  <h4 className="text-light">{waterAmount + "/" + 6} </h4>
+                  <h4 className="text-light">{waterAmount + "/" + 3} </h4>
                 </div>
               </div>
-              <Progress done={Math.floor((waterAmount * 100) / 6)} heading="Calorie Goal" />
+              <Progress done={Math.floor((waterAmount * 100) / 3)} heading="Calorie Goal" />
             </div>
           </div>
         </div>
       </div>
+
       <ToastContainer />
+      <h2 className="m-2">Statistics</h2>
+      <div className="user-box mt-1 pb-3 d-flex p-3">
+        <div className="w-50 d-flex flex-column">
+          <h4 className="text-light">What the colours in the bars mean</h4>
+          <div className=" mt-2 progress-colors d-flex justify-content-between">
+            <div className="mt-1 color-sphere-red w-25"></div>
+            <p className="text-light">
+              {" "}
+              <span> Red zone</span> - either too low or too high{" "}
+            </p>
+          </div>
+          <div className="mt-2 progress-colors d-flex justify-content-between   ">
+            <div className="mt-1 color-sphere-yellow w-25"></div>
+            <p className="text-light ">
+              {" "}
+              <span> Yellow zone</span> - some progress is made{" "}
+            </p>
+          </div>
+          <div className="mt-2  progress-colors d-flex justify-content-between   ">
+            <div className="mt-1 color-sphere-light-green w-25"></div>
+            <p className="text-light">
+              {" "}
+              <span> Light green zone</span> - you are almost there{" "}
+            </p>
+          </div>
+          <div className="mt-2  progress-colors d-flex justify-content-between   ">
+            <div className="mt-1 color-sphere-green w-25"></div>
+            <p className="text-light">
+              {" "}
+              <span> Green zone</span> - goals achieved{" "}
+            </p>
+          </div>
+        </div>
+        <div className="w-50 d-flex flex-column">
+          <h3 className="text-light">Todos</h3>
+          <div className="mt-2 stats-panel w-100">
+            {currentCalorie.food_calories < userData.calorie_goal ? (
+              <p>- You need to consume more calories</p>
+            ) : currentCalorie.food_calories > userData.calorie_goal ? (
+              <p>
+                - You need to not eat more and burn{" "}
+                {Math.floor(currentCalorie.food_calories) - Math.floor(userData.calorie_goal)}{" "}
+                calories by working out
+              </p>
+            ) : (
+              <p>- Do not consume more calories</p>
+            )}
+            {currentCalorie.food_proteins < userData.protein ? (
+              <p>- You need to consume more protein rich foods</p>
+            ) : currentCalorie.food_proteins > userData.protein ? (
+              <p>- Do not consume more proteins</p>
+            ) : (
+              <p>- Do not consume more proteins</p>
+            )}
+            {currentCalorie.food_carbs < userData.carbs ? (
+              <p>- You need to consume more carbohydrate rich foods</p>
+            ) : currentCalorie.food_carbs > userData.carbs ? (
+              <p>- Do not consume more carbohydrates</p>
+            ) : (
+              <p>- Do not consume more carbohydrates</p>
+            )}
+            {currentCalorie.food_fats < userData.fats ? (
+              <p>- You need to consume more fat rich foods</p>
+            ) : currentCalorie.food_fats > userData.fats ? (
+              <p>- Do not consume more fats</p>
+            ) : (
+              <p>- Do not consume more fats</p>
+            )}
+            {waterAmount < 3 ? <p>- You need to consume more water</p> : null}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

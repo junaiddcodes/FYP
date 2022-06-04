@@ -16,6 +16,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import userService from "../../services/UserService";
 import trainerService from "../../services/TrainerService";
 import StripeContainer from "../../Components/Stripe/StripeContainer";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ActivityPlanDetails = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -50,7 +52,10 @@ const ActivityPlanDetails = () => {
         console.log(err);
       });
   };
-
+  const notify = () => {
+    // Calling toast method by passing string
+    toast.success("Plan bought and moved to my plans");
+  };
   const checkPlan = () => {
     userService
       .check_plan(order)
@@ -108,7 +113,7 @@ const ActivityPlanDetails = () => {
 
     // console.log(location.state.e);
   }, []);
-  
+
   const handleBuyPlan = () => {
     console.log(orderX);
     userService
@@ -116,10 +121,12 @@ const ActivityPlanDetails = () => {
       .then((data) => {
         console.log(data);
         console.log("plan bought");
+        checkPlan()
         setConfirmDelete(false);
         order.plan_id = location.state.e._id;
         order.user_id = userId;
         setShowItem(false);
+        notify();
       })
       .catch((err) => {
         console.log(err);
@@ -201,10 +208,7 @@ const ActivityPlanDetails = () => {
                     <h4>Description: </h4>
                     <p> {data.plan_desc}</p>
                     {showItem ? (
-                      <Button
-                        className="w-25 m-3"
-                        onClick={() => setConfirmDelete(true)}
-                      >
+                      <Button className="w-25 m-3" onClick={() => setConfirmDelete(true)}>
                         Buy plan
                       </Button>
                     ) : (
@@ -225,7 +229,7 @@ const ActivityPlanDetails = () => {
         ) : (
           allPlans.map((e, key) => {
             return e.review ? (
-              <div>
+              <div key={key}>
                 <div className="text-light">
                   <i class="bx bxs-star mr-2 text-warning"></i>
                   <span> {e.review} </span>
@@ -235,7 +239,7 @@ const ActivityPlanDetails = () => {
                 </div>
               </div>
             ) : (
-              <p>Not reviewed Yet</p>
+              null
             );
           })
         )}
