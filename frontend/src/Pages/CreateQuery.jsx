@@ -42,6 +42,7 @@ const CreateQuery = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [editModalOpen, setEditModalOpen] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
+  var adminId = '6266eb268caccab814c54c85'
   const notify = () => {
     // Calling toast method by passing string
     toast.success('Query Added')
@@ -125,14 +126,17 @@ const CreateQuery = () => {
     console.log('after request')
     // page_refresh();
   }
-  function createConversation() {
-    console.log(trainerDetails._id)
-    console.log(convo)
-    userService.createConvo(convo).then((data) => {
-      console.log(data)
-    })
-    navigate('/Messenger')
-  }
+  // function createConversation() {
+  //   console.log(convo)
+  //   userService.createConvo(convo).then((data) => {
+  //     console.log(data)
+  //   })
+  //   navigate('/Messenger')
+  // }
+  // var convo = {
+  //   senderId: userService.getLoggedInUser()._id,
+  //   receiverId: adminId,
+  // }
 
   return (
     <div className='page-container-admin'>
@@ -151,15 +155,14 @@ const CreateQuery = () => {
       <div className='admin-box mt-3'>
         <div className='user-box d-flex flex-column p-3'>
           <div className='d-flex flex-column'>
-            <Button
+            {/* <Button
               className='mt-5'
               onClick={() => {
                 createConversation()
-                Add()
               }}
             >
               Message
-            </Button>
+            </Button> */}
             <div class='table-wrapper-scroll-y my-custom-scrollbar'>
               <table className='table'>
                 <thead>

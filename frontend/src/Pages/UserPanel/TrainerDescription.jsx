@@ -80,6 +80,7 @@ const TrainerDescription = () => {
     console.log(convo)
     userService.createConvo(convo).then((data) => {
       console.log(data)
+      Add()
     })
     navigate('/Messenger')
   }
@@ -90,51 +91,54 @@ const TrainerDescription = () => {
   }
   useEffect(getTrainer, [])
   return (
-    <div className="page-container-user">
+    <div className='page-container-user'>
       <TopBar />
       <SideMenu />
       <Button
-        className="m-2"
+        className='m-2'
         onClick={() => {
           navigate(-1)
         }}
       >
-        <i class="bx bx-arrow-back m-1"></i> Back
+        <i class='bx bx-arrow-back m-1'></i> Back
       </Button>
       <h2>Trainer Description</h2>
-      <div className="trainer-desc mt-3 d-flex flex-column">
-        <div className="d-flex ">
-          <div className="d-flex w-75 justify-content-between">
-            <div className="trainer-img d-flex">
-              <img src={trainerDetails.trainer_photo} alt="" width="400" />
-              <div className="d-flex mt-5 flex-column">
+      <div className='trainer-desc mt-3 d-flex flex-column'>
+        <div className='d-flex '>
+          <div className='d-flex w-75 justify-content-between'>
+            <div className='trainer-img d-flex'>
+              <img src={trainerDetails.trainer_photo} alt='' width='400' />
+              <div className='d-flex mt-5 flex-column'>
                 <h4>{trainerDetails.user_id.full_name}</h4>
                 <h4>Age: {getAge(trainerDetails.dob)}</h4>
                 <h4>Gender: {trainerDetails.gender}</h4>
                 <h4>
-                {!trainerDetails.numReview ? (
-                  <h6 className="m-1">No reviews yet</h6>
-                ) : (
-                  <h6 className="m-1">
-                    Rating: {trainerDetails.numReview} <span className='text-secondary'>({trainerDetails.countReview})</span> <i class="mt-1 text-warning bx bxs-star"></i>
-                  </h6>
-                )}
+                  {!trainerDetails.numReview ? (
+                    <h6 className='m-1'>No reviews yet</h6>
+                  ) : (
+                    <h6 className='m-1'>
+                      Rating: {trainerDetails.numReview}{' '}
+                      <span className='text-secondary'>
+                        ({trainerDetails.countReview})
+                      </span>{' '}
+                      <i class='mt-1 text-warning bx bxs-star'></i>
+                    </h6>
+                  )}
                 </h4>
               </div>
             </div>
-            <div className="trainer-btn d-flex flex-column">
+            <div className='trainer-btn d-flex flex-column'>
               <Button
-                className="mt-5"
+                className='mt-5'
                 onClick={() => {
                   createConversation()
-                  Add()
                 }}
               >
                 Message
               </Button>
 
               <Button
-                className="mt-5"
+                className='mt-5'
                 onClick={() => {
                   console.log('on click = ', trainerDetails)
                   handlePlan(trainerDetails)
@@ -145,7 +149,7 @@ const TrainerDescription = () => {
             </div>
           </div>
         </div>
-        <div className="m-4 d-flex flex-column">
+        <div className='m-4 d-flex flex-column'>
           <h4>Certification: {trainerDetails.qualification}</h4>
           <h4>Exercise Type: {trainerDetails.exercise_type}</h4>
           <h4>Trainer Avaibility: {trainerDetails.trainer_availblity}</h4>

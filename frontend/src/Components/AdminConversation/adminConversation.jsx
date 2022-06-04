@@ -1,8 +1,8 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import '../conversaion/conversation.css'
+import '../AdminConversation/adminConversation.css'
 
-const Conversation = ({
+const AdminConversation = ({
   conversation,
   currentUser,
   currentUserType,
@@ -18,7 +18,8 @@ const Conversation = ({
     if (currentUserType == 'customer') {
       const getUser = async () => {
         try {
-          const res = await axios.get('trainer/' + friendId)
+          const res = await axios.get('admin/' + friendId)
+          console.log(res.data.crud.user_id.full_name)
 
           setUser(res.data)
           setName(res.data.crud.user_id.full_name)
@@ -30,7 +31,7 @@ const Conversation = ({
     } else if (currentUserType == 'trainer') {
       const getUser = async () => {
         try {
-          const res = await axios.get('customer/' + friendId)
+          const res = await axios.get('admin/' + friendId)
 
           setUser(res.data)
           setName(res.data.crud.user_id.full_name)
@@ -55,4 +56,4 @@ const Conversation = ({
   )
 }
 
-export default Conversation
+export default AdminConversation
