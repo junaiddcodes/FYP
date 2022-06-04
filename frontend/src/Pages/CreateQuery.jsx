@@ -125,9 +125,17 @@ const CreateQuery = () => {
     console.log('after request')
     // page_refresh();
   }
+  function createConversation() {
+    console.log(trainerDetails._id)
+    console.log(convo)
+    userService.createConvo(convo).then((data) => {
+      console.log(data)
+    })
+    navigate('/Messenger')
+  }
 
   return (
-    <div className="page-container-admin">
+    <div className='page-container-admin'>
       <TopBar />
       {user_type == 'customer' ? (
         <SideMenu />
@@ -139,12 +147,21 @@ const CreateQuery = () => {
         <SideMenuBack />
       )}
 
-      <h3 id="gym-reqs">Your Queries</h3>
-      <div className="admin-box mt-3">
-        <div className="user-box d-flex flex-column p-3">
-          <div className="d-flex flex-column">
-            <div class="table-wrapper-scroll-y my-custom-scrollbar">
-              <table className="table">
+      <h3 id='gym-reqs'>Your Queries</h3>
+      <div className='admin-box mt-3'>
+        <div className='user-box d-flex flex-column p-3'>
+          <div className='d-flex flex-column'>
+            <Button
+              className='mt-5'
+              onClick={() => {
+                createConversation()
+                Add()
+              }}
+            >
+              Message
+            </Button>
+            <div class='table-wrapper-scroll-y my-custom-scrollbar'>
+              <table className='table'>
                 <thead>
                   <tr>
                     <th>Query Id</th>
@@ -171,7 +188,7 @@ const CreateQuery = () => {
                             <td>Completed</td>
                           )}
                           <td>
-                            <div className="d-flex align-items-center">
+                            <div className='d-flex align-items-center'>
                               <Button
                                 onClick={(event) => {
                                   handleRouteQuery(e)
@@ -191,16 +208,16 @@ const CreateQuery = () => {
           </div>
         </div>
       </div>
-      <div className="d-flex align-items-center">
+      <div className='d-flex align-items-center'>
         <Button
-          className="m-3"
+          className='m-3'
           onClick={() => {
             setEditModalOpen(true)
           }}
         >
           Add Query
         </Button>
-        <div className="modal-container">
+        <div className='modal-container'>
           <Modal
             style={{
               overlay: {
@@ -227,43 +244,43 @@ const CreateQuery = () => {
                 padding: '20px',
               },
             }}
-            className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+            className='w-50 d-flex flex-column justify-content-around align-items-center add-food-modal'
             isOpen={editModalOpen}
             onRequestClose={() => {
               setEditModalOpen(false)
             }}
           >
-            <div className="modal-inner w-75 d-flex flex-column">
+            <div className='modal-inner w-75 d-flex flex-column'>
               <a
                 onClick={() => {
                   setEditModalOpen(false)
                 }}
               >
-                <i class="bx bx-x"></i>
+                <i class='bx bx-x'></i>
               </a>
 
-              <div className="query-box mt-3 d-flex flex-column align-items-left">
+              <div className='query-box mt-3 d-flex flex-column align-items-left'>
                 <form
                   onSubmit={handleSubmitQuery(submitQueryForm)}
-                  className="d-flex flex-column"
+                  className='d-flex flex-column'
                 >
-                  <div className="input-text d-flex flex-column">
-                    <label for="">Query Subject</label>
+                  <div className='input-text d-flex flex-column'>
+                    <label for=''>Query Subject</label>
                     <input
-                      type="text"
-                      name="query_subject"
+                      type='text'
+                      name='query_subject'
                       {...controlQuery('query_subject')}
                     />
                     <p>{errorsQuery.query_subject?.message}</p>
                   </div>
-                  <label for="">Description</label>
+                  <label for=''>Description</label>
                   <textarea
-                    className="text-field mt-2"
-                    name="query_desc"
+                    className='text-field mt-2'
+                    name='query_desc'
                     {...controlQuery('query_desc')}
                   />
                   <p>{errorsQuery.query_desc?.message}</p>
-                  <Button className="w-50" type="submit ">
+                  <Button className='w-50' type='submit '>
                     Submit Query
                   </Button>
                 </form>
