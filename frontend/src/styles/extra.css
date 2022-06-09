@@ -91,3 +91,8 @@ tr.activity-box td {
 .stats-panel p {
   color: white;
 }
+
+.ReactModalPortal{
+  z-index: 500;
+  position: relative;
+}

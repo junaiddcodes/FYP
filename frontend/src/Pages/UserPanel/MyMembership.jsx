@@ -64,13 +64,13 @@ const MyMembership = () => {
         ) : (
           <div
             onClick={() => {
-              //   navigate("/my-plan-details", { state: { e, name } });
+                navigate("/gym-description/"+membership._id);
             }}
             className="activity-grid-container d-flex flex-column m-3"
           >
             <div className="activity-card grid-item p-3">
-              <h4>{membership.user_id.full_name} Activity Plan</h4>
-              <h4>Description</h4>
+              <h4>{membership.user_id.full_name}</h4>
+              <h4 className="mt-3">Description</h4>
               <p className="text-light">{membership.gym_desc}</p>
               <div className="d-flex justify-content-between">
                 <div>

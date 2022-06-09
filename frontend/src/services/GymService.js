@@ -14,6 +14,7 @@ class GymService extends GenericService {
   update_gym_photo = (formData, id) => this.patch("gym/image/" + id, formData);
   get_all_not_listed_gyms = () => this.get("gym/not-listed");
   get_search_gyms = (filter) => this.post("gym/search", filter);
+  post_gym_review = (gym_id,review) => this.post("gym/review/"+gym_id, review);
 
   //order Gym
   buy_gym_membership = (order) => this.post("order-gym/orderCreate", order);
