@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { GoogleMap, useLoadScript, Marker, Autocomplete } from "@react-google-maps/api";
 
+import useGeoLocation from "../custom-hooks/useGeoLocation";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import Modal from "react-modal";
@@ -67,6 +69,10 @@ const gymProfileSchema = yup.object().shape({
 });
 
 const GymProfile = () => {
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: "AIzaSyBdLc31kclLs_2r72Uh0G88vBfYConu4BU",
+    libraries: ["places"],
+  });
   const navigate = useNavigate();
   const [fileName1, setFileName] = React.useState([]);
   const [previewImage, setPreviewImage] = React.useState([]);
@@ -86,6 +92,7 @@ const GymProfile = () => {
   const [loggedInId, setLoggedInId] = useState("");
   const [file, setFile] = useState(null);
   const [errorPic, setPicError] = useState(false);
+  const location = useGeoLocation();
 
   var loginId = "";
 
@@ -292,6 +299,21 @@ const GymProfile = () => {
               className="d-flex flex-column"
             >
               <div className="input-text d-flex flex-column">
+                <GoogleMap
+                  zoom={12}
+                  styles={{ width: "80%", height: "50%" }}
+                  onClick={(e) => {
+                    let lat = e.latLng.lat();
+                    let lng = e.latLng.lat();
+                    console.log(lat, lng);
+                  }}
+                  center={{ lat: location.coordinates.lat, lng: location.coordinates.lng }}
+                  mapContainerClassName="map-container"
+                >
+                  <Marker
+                    position={{ lat: location.coordinates.lat, lng: location.coordinates.lng }}
+                  />
+                </GoogleMap>
                 {/* <p>{gymProfileDetails.user_id.full_name}</p> */}
                 {/* <p>{gymProfileDetails.location}</p> */}
                 {/* <p>{loggedInId}</p> */}
@@ -312,22 +334,27 @@ const GymProfile = () => {
                   defaultValue={getGym.location?.state}
                   {...controlGymProfile("state")}
                 />
+
                 <p>{errorsGymProfile.state?.message}</p>
                 <label for="">City</label>
-                <input
-                  type="text"
-                  name="city"
-                  defaultValue={getGym.location?.city}
-                  {...controlGymProfile("city")}
-                />
+                <Autocomplete>
+                  <input
+                    type="text"
+                    name="city"
+                    defaultValue={getGym.location?.city}
+                    {...controlGymProfile("city")}
+                  />
+                </Autocomplete>
                 <p>{errorsGymProfile.city?.message}</p>
                 <label for="">Address</label>
-                <input
-                  type="text"
-                  name="address"
-                  defaultValue={getGym.location?.address}
-                  {...controlGymProfile("address")}
-                />
+                <Autocomplete>
+                  <input
+                    type="text"
+                    name="address"
+                    defaultValue={getGym.location?.address}
+                    {...controlGymProfile("address")}
+                  />
+                </Autocomplete>
                 <p>{errorsGymProfile.address?.message}</p>
 
                 <label for="">Gym Contact Number</label>
