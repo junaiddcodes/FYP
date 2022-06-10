@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { GoogleMap, useLoadScript, Marker, Autocomplete } from "@react-google-maps/api";
 
+import useGeoLocation from "../custom-hooks/useGeoLocation";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import Modal from "react-modal";
@@ -26,9 +28,17 @@ import jwtDecode from "jwt-decode";
 import gymService from "../../services/GymService";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Link } from "react-router-dom";
+import { ClimbingBoxLoader, BarLoader, CircleLoader } from "react-spinners";
+import { css } from "@emotion/react";
+import ClipLoader from "react-spinners/ClipLoader";
 import moment from "moment";
 
-
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+  color: blue;
+`;
 const gymProfileSchema = yup.object().shape({
   full_name: yup
     .string()
@@ -62,10 +72,15 @@ const gymProfileSchema = yup.object().shape({
 });
 
 const GymProfile = () => {
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: "AIzaSyBdLc31kclLs_2r72Uh0G88vBfYConu4BU",
+    libraries: ["places"],
+  });
   const navigate = useNavigate();
   const [fileName1, setFileName] = React.useState([]);
   const [previewImage, setPreviewImage] = React.useState([]);
 
+  const [loading, setLoading] = useState(false);
   const [isProfile, setIsProfile] = useState(false);
   const [isAsk, setIsAsk] = useState(false);
   // const [male, setMale] = useState(false);
@@ -81,6 +96,7 @@ const GymProfile = () => {
   const [file, setFile] = useState(null);
   const [errorPic, setPicError] = useState(false);
   const [boughtPlans, setBoughtPlans] = useState([])
+  const location = useGeoLocation();
 
   var loginId = "";
 
@@ -132,6 +148,7 @@ const GymProfile = () => {
           setIsGymPicForm(false);
           setIsProfile(false);
         }
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -139,6 +156,7 @@ const GymProfile = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     if (userService.isLoggedIn() == false) {
       navigate("/login");
     } else {
@@ -261,6 +279,7 @@ const GymProfile = () => {
     <div className="page-container-gym">
       <TopBar />
       <SideMenuGym />
+      {loading ? <BarLoader loading={loading} color="#063be9" css={override} size={150} /> : null}
 
       <h3>Customer Name</h3>
       <div className="admin-box mt-3">
@@ -332,6 +351,21 @@ const GymProfile = () => {
               className="d-flex flex-column"
             >
               <div className="input-text d-flex flex-column">
+                <GoogleMap
+                  zoom={12}
+                  styles={{ width: "80%", height: "50%" }}
+                  onClick={(e) => {
+                    let lat = e.latLng.lat();
+                    let lng = e.latLng.lat();
+                    console.log(lat, lng);
+                  }}
+                  center={{ lat: location.coordinates.lat, lng: location.coordinates.lng }}
+                  mapContainerClassName="map-container"
+                >
+                  <Marker
+                    position={{ lat: location.coordinates.lat, lng: location.coordinates.lng }}
+                  />
+                </GoogleMap>
                 {/* <p>{gymProfileDetails.user_id.full_name}</p> */}
                 {/* <p>{gymProfileDetails.location}</p> */}
                 {/* <p>{loggedInId}</p> */}
@@ -352,22 +386,27 @@ const GymProfile = () => {
                   defaultValue={getGym.location?.state}
                   {...controlGymProfile("state")}
                 />
+
                 <p>{errorsGymProfile.state?.message}</p>
                 <label for="">City</label>
-                <input
-                  type="text"
-                  name="city"
-                  defaultValue={getGym.location?.city}
-                  {...controlGymProfile("city")}
-                />
+                <Autocomplete>
+                  <input
+                    type="text"
+                    name="city"
+                    defaultValue={getGym.location?.city}
+                    {...controlGymProfile("city")}
+                  />
+                </Autocomplete>
                 <p>{errorsGymProfile.city?.message}</p>
                 <label for="">Address</label>
-                <input
-                  type="text"
-                  name="address"
-                  defaultValue={getGym.location?.address}
-                  {...controlGymProfile("address")}
-                />
+                <Autocomplete>
+                  <input
+                    type="text"
+                    name="address"
+                    defaultValue={getGym.location?.address}
+                    {...controlGymProfile("address")}
+                  />
+                </Autocomplete>
                 <p>{errorsGymProfile.address?.message}</p>
 
                 <label for="">Gym Contact Number</label>

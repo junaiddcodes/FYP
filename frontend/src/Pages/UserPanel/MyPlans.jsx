@@ -15,15 +15,26 @@ import SideMenu from "../../Components/SideMenu";
 import { useNavigate, useLocation } from "react-router-dom";
 import userService from "../../services/UserService";
 import trainerService from "../../services/TrainerService";
+import { ClimbingBoxLoader, BarLoader, CircleLoader } from "react-spinners";
+import { css } from "@emotion/react";
+import ClipLoader from "react-spinners/ClipLoader";
 
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+  color: blue;
+`;
 const MyPlans = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [allPlans, setAllPlans] = useState([]);
+  const [loading, setLoading] = useState([]);
   var name = "";
   // const data = location.state.e;
   var userId = "";
   useEffect(() => {
+    setLoading(true);
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
@@ -46,6 +57,7 @@ const MyPlans = () => {
         .then((data) => {
           console.log("plan data = ", data);
           setAllPlans(data.plans);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
@@ -59,6 +71,8 @@ const MyPlans = () => {
       <SideMenu />
       <h2>My Plans</h2>
       <div className=" mt-5">
+        {loading ? <BarLoader loading={loading} color="#063be9" css={override} size={150} /> : null}
+
         {allPlans.length == 0 ? (
           <h2>No plans</h2>
         ) : (
@@ -72,6 +86,7 @@ const MyPlans = () => {
               >
                 <div className="activity-card grid-item p-3">
                   <h4>{e.plan_title} Activity Plan</h4>
+                  <h4>Trainer name:</h4>
                   <h4>Description</h4>
                   <p className="text-light">{e.plan_desc}</p>
                   <div className="d-flex justify-content-between">

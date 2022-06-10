@@ -43,6 +43,8 @@ import MyPlanDetails from "./Pages/UserPanel/MyPlanDetails";
 import ForgotPassword from "./Pages/Register/ForgetPassword";
 import ResetPassword from "./Pages/Register/ResetPassword";
 import MyMembership from "./Pages/UserPanel/MyMembership";
+import { MapContainer } from "react-leaflet";
+import MapPage from "./Pages/UserPanel/MapPage";
 function App() {
   return (
     <BrowserRouter>
@@ -79,6 +81,7 @@ function App() {
           <Route path="/user-profile" element={<UserProfile />} />
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/my-plan-details" element={<MyPlanDetails />} />
+          <Route path="/map" element={<MapPage />} />
 
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
