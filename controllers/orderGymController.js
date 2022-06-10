@@ -119,13 +119,35 @@ const getbyUser = async (req, res) => {
   }
 };
 
+const getGymSale = async (req, res) => {
+  try {
+    const { gymId: crudId } = req.params;
+
+    const crud = await orderGymDetails.find({
+      gym_id: crudId,
+    }).populate({
+      path:"user_id",
+      model:"Customer_Details",
+      select:"user_id.full_name"
+    });
+    if (crud.length == 0) {
+      return res.status(404).json({ message: "item does not exist" });
+    } else {
+      res.status(200).json({ crud });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
   module.exports = {
     getAllData,
     getOneData,
     updateData,
     createData,
     getOrderCheck,
-    getbyUser
+    getbyUser,
+    getGymSale
   };
 
 

@@ -11,7 +11,7 @@ const cloudinary = require("../utils/cloudinary");
 //use to get all data from db
 const getAllData = async (req, res) => {
   try {
-    const crud = await gymDetails.find({ listed: "listed" }).limit(9);
+    const crud = await gymDetails.find({ listed: "listed" }).sort({numReview: -1}).limit(9);
     res.status(200).json({ crud });
   } catch (error) {
     res.status(500).json({ message: error });

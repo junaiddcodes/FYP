@@ -29,7 +29,7 @@ function validateMeal(data) {
     food_carbs: Joi.number().positive().required(),
     food_fats: Joi.number().positive().required(),
     food_weight_selected: Joi.number().positive().required(),
-    time_date: Joi.date().required(),
+    time_date: Joi.date().required()
   });
   return schema.validate(data);
 }

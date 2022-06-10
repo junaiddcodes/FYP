@@ -37,7 +37,7 @@ const SearchGym = () => {
       .then((response) => response.json())
       .then((data) => {
         setDetails(data);
-        navigate("/nearby-gyms", { state: { data } })
+        navigate("/nearby-gyms", { state: { data } });
       });
     console.log("Nearby");
   }
@@ -200,10 +200,23 @@ const SearchGym = () => {
               >
                 <img src={e.gym_photos[0]?.photo_url} alt="" height="250" />
                 <h4 className="m-1">{e.user_id.full_name}</h4>
-                <h6 className="m-1">Membership price: {e.gym_membership_price} PKR</h6>
                 <h6 className="m-1">
-                  Rating: 4 <i class="mt-1 text-warning bx bxs-star"></i>
+                  Membership price: {e.gym_membership_price} PKR
                 </h6>
+                {!e.numReview ? (
+                  <h6 className="m-1">No reviews yet</h6>
+                ) : (
+                  <h6 className="m-1">
+                    Rating: {e.numReview}{" "}
+                    <span className="text-secondary">
+                      ({e.countReview})
+                    </span>{" "}
+                    <i class="mt-1 text-warning bx bxs-star"></i>
+                  </h6>
+                )}
+                {/* <h6 className="m-1">
+                  Rating: 4 <i class="mt-1 text-warning bx bxs-star"></i>
+                </h6> */}
                 <div className="d-flex m-2 mb-0">
                   <MdLocationPin className="" />
                   <p className="text-light" style={{ fontWeight: "bold" }}>

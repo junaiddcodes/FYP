@@ -59,21 +59,20 @@ const GymDescription = () => {
   });
 
   const submitReviewForm = (data) => {
-
-    console.log("Submit Review")
+    console.log("Submit Review");
     var tempObject = {
       user_id: userService.getLoggedInUser()._id,
       rating: data.rating,
       comment: data.comment,
     };
 
-    console.log(tempObject)
+    console.log(tempObject);
 
     gymService
-      .post_gym_review(gymId.id,tempObject)
+      .post_gym_review(gymId.id, tempObject)
       .then((data) => {
         console.log(data);
-        setEditModalOpen(false)
+        setEditModalOpen(false);
       })
       .catch((err) => {
         console.log(err);
@@ -148,6 +147,7 @@ const GymDescription = () => {
       setGymDetails(data.crud);
       var temp = [data.crud.cordinates.lat, data.crud.cordinates.long];
       SetPins(temp);
+      console.log(data.crud)
     });
   }
 
@@ -182,6 +182,15 @@ const GymDescription = () => {
             </Carousel>
           </div>
           {/* <img src={gymDetails.gym_photos?.photo_url} alt="" /> */}
+          {!gymDetails.numReview ? (
+            <h6 className="m-1">No reviews yet</h6>
+          ) : (
+            <h6 className="m-1">
+              Rating: {gymDetails.numReview}{" "}
+              <span className="text-secondary">({gymDetails.countReview})</span>{" "}
+              <i class="mt-1 text-warning bx bxs-star"></i>
+            </h6>
+          )}
           <h4>{gymDetails.user_id.full_name}</h4>
           <h4>Membership Price:{gymDetails.gym_membership_price}</h4>
           <h4>Gender:{gymDetails.gender_facilitation}</h4>

@@ -26,6 +26,8 @@ import jwtDecode from "jwt-decode";
 import gymService from "../../services/GymService";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Link } from "react-router-dom";
+import moment from "moment";
+
 
 const gymProfileSchema = yup.object().shape({
   full_name: yup
@@ -53,7 +55,9 @@ const gymProfileSchema = yup.object().shape({
     .min(1000, "Price should not be less than Rs 1,000")
     .required("Gym membership price is required!"),
 
-  gender_facilitation: yup.string().required("Gender facilitation can't be empty"),
+  gender_facilitation: yup
+    .string()
+    .required("Gender facilitation can't be empty"),
   gym_photo: yup.string(),
 });
 
@@ -76,6 +80,7 @@ const GymProfile = () => {
   const [loggedInId, setLoggedInId] = useState("");
   const [file, setFile] = useState(null);
   const [errorPic, setPicError] = useState(false);
+  const [boughtPlans, setBoughtPlans] = useState([])
 
   var loginId = "";
 
@@ -94,6 +99,15 @@ const GymProfile = () => {
     gym_photo: "photo",
     listed: "not-listed",
   };
+
+  function getGymSales(){
+    gymService.get_gym_membership(loginId).then((res)=>{
+      setBoughtPlans(res.crud)
+      console.log(res)
+    }).catch((err)=>{
+      console.log(err)
+    })
+  }
 
   const get_gym = () => {
     gymService
@@ -139,6 +153,7 @@ const GymProfile = () => {
       }
     }
     get_gym();
+    getGymSales();
     // if (getGym.gender_facilitation == "male") {
     //   setMale(true);
     // }
@@ -149,8 +164,6 @@ const GymProfile = () => {
     //   setBoth(true);
     // }
   }, [loginId]);
-
-  const onChangeFile = (e) => {};
 
   const changeOnClick = (e) => {
     e.preventDefault();
@@ -249,10 +262,50 @@ const GymProfile = () => {
       <TopBar />
       <SideMenuGym />
 
+      <h3>Customer Name</h3>
+      <div className="admin-box mt-3">
+        <div className="user-box d-flex flex-column p-3">
+          <div className="d-flex flex-column">
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Membership ID</th>
+                    <th>Activity Plan Title</th>
+                    <th>Earnings (Rs)</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {boughtPlans.length == 0 ? (
+                    <tr>
+                      <td>There are no Sales for now</td>
+                    </tr>
+                  ) : (
+                    boughtPlans.map((e, key) => {
+                      return (
+                        <tr key={key}>
+                          <td>{e._id}</td>
+                          <td>{e.user_id.user_id.full_name}</td>
+                          <td>{e.price}</td>
+                          <td>{moment(e.time_date).format("DD/MM/YYYY")}</td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <h2>Gym Profile</h2>
       {isAsk ? (
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
-          <h4>There is no profile present. Click below to create a gym profile:</h4>
+          <h4>
+            There is no profile present. Click below to create a gym profile:
+          </h4>
           <Button
             className="w-25 mt-4"
             onClick={() => {
@@ -386,7 +439,8 @@ const GymProfile = () => {
               </form> */}
 
               <p className="mt-3 general-p">
-                Submit Profile to the Admin. Admin will review your profile and Approve it:
+                Submit Profile to the Admin. Admin will review your profile and
+                Approve it:
               </p>
               <Button type="submit" className="w-25">
                 Submit
@@ -408,7 +462,9 @@ const GymProfile = () => {
             <p className="general-p">Please upload at least 3 gym pictures</p>
 
             {errorPic ? (
-              <p className="text-danger">Please Enter Right Format (PNG,JPEG,JPG)</p>
+              <p className="text-danger">
+                Please Enter Right Format (PNG,JPEG,JPG)
+              </p>
             ) : null}
 
             <form onSubmit={changeOnClick} encType="multipart/form-data">
@@ -457,8 +513,8 @@ const GymProfile = () => {
                 <div className="m-4 d-flex mt-5 flex-column">
                   <h4>Gym Name: {getGym.user_id.full_name}</h4>
                   <h4>
-                    Location: {getGym.location?.address}, {getGym.location?.city},{" "}
-                    {getGym.location?.state}{" "}
+                    Location: {getGym.location?.address},{" "}
+                    {getGym.location?.city}, {getGym.location?.state}{" "}
                   </h4>
                   <h4>Gender: {getGym.gender_facilitation}</h4>
                   <h4>Status: {getGym.listed}</h4>

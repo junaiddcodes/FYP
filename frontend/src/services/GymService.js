@@ -20,6 +20,7 @@ class GymService extends GenericService {
   buy_gym_membership = (order) => this.post("order-gym/orderCreate", order);
   check_gym_membership = (userId, gymId) => this.get("order-gym/gym/"+ userId +"/"+ gymId)
   get_user_membership = (userId) => this.get("order-gym/user/"+ userId)
+  get_gym_membership = (gymId) => this.get("order-gym/getgym/"+gymId)
 
 
   isLoggedIn = () => {
