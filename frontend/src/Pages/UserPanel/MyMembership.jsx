@@ -62,32 +62,35 @@ const MyMembership = () => {
         {membership.length == 0 ? (
           <h2>No membership</h2>
         ) : (
-          <div
-            onClick={() => {
-                navigate("/gym-description/"+membership._id);
-            }}
-            className="activity-grid-container d-flex flex-column m-3"
-          >
-            <div className="activity-card grid-item p-3">
-              <h4>{membership.user_id.full_name}</h4>
-              <h4 className="mt-3">Description</h4>
-              <p className="text-light">{membership.gym_desc}</p>
-              <div className="d-flex justify-content-between">
-                <div>
-                  <h4>Gender Facilitation:</h4>
-                  <p className="text-light">
-                    {membership.gender_facilitation} weeks
-                  </p>
-                </div>
-                <div>
-                  <h4>Price:</h4>
-                  <p className="text-light">
-                    {membership.gym_membership_price} PKR
-                  </p>
+          membership.map((e, key) => {
+            return (
+              <div
+                key={key}
+                onClick={() => {
+                  navigate("/gym-description/" + e._id);
+                }}
+                className="activity-grid-container d-flex flex-column m-3"
+              >
+                <div className="activity-card grid-item p-3">
+                  <h4>{e.user_id.full_name}</h4>
+                  <h4 className="mt-3">Description </h4>
+                  <p className="text-light">{e.gym_desc}</p>
+                  <div className="d-flex justify-content-between">
+                    <div>
+                      <h4>Gender Facilitation: </h4>
+                      <p className="text-light">
+                        {e.gender_facilitation} weeks
+                      </p>
+                    </div>
+                    <div>
+                      <h4>Price: </h4>
+                      <p className="text-light">{e.gym_membership_price} PKR</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            );
+          })
         )}
       </div>
     </div>

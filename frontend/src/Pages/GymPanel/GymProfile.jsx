@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { GoogleMap, useLoadScript, Marker, Autocomplete } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  useLoadScript,
+  Marker,
+  Autocomplete,
+} from "@react-google-maps/api";
 
 import useGeoLocation from "../custom-hooks/useGeoLocation";
 import axios from "axios";
@@ -32,6 +37,7 @@ import { ClimbingBoxLoader, BarLoader, CircleLoader } from "react-spinners";
 import { css } from "@emotion/react";
 import ClipLoader from "react-spinners/ClipLoader";
 import moment from "moment";
+import StripeContainer from "../../Components/Stripe/StripeContainer";
 
 const override = css`
   display: block;
@@ -90,13 +96,14 @@ const GymProfile = () => {
   const [isGymForm, setIsGymForm] = useState(false);
   const [gymPhotos, setGymPhotos] = useState([]);
   const [isGymPicForm, setIsGymPicForm] = useState(false);
-  const [isListed, setIsListed] = useState("");
+  const [isListed, setIsListed] = useState("default");
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [loggedInId, setLoggedInId] = useState("");
   const [file, setFile] = useState(null);
   const [errorPic, setPicError] = useState(false);
-  const [boughtPlans, setBoughtPlans] = useState([])
+  const [boughtPlans, setBoughtPlans] = useState([]);
   const location = useGeoLocation();
+  const [confirmDeleteX, setConfirmDeleteX] = useState(false);
 
   var loginId = "";
 
@@ -116,13 +123,24 @@ const GymProfile = () => {
     listed: "not-listed",
   };
 
-  function getGymSales(){
-    gymService.get_gym_membership(loginId).then((res)=>{
-      setBoughtPlans(res.crud)
-      console.log(res)
-    }).catch((err)=>{
-      console.log(err)
-    })
+  function handleBuyMembership() {
+    var mem = { membership: true };
+    gymService.update_gym(mem, loggedInId).then((data) => {
+      console.log(data);
+      get_gym();
+    });
+  }
+
+  function getGymSales() {
+    gymService
+      .get_gym_membership(loginId)
+      .then((res) => {
+        setBoughtPlans(res.crud);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   const get_gym = () => {
@@ -139,9 +157,15 @@ const GymProfile = () => {
           setIsGymPicForm(false);
           setIsAsk(false);
           setIsGymForm(false);
-          if (getGym.listed == true) {
+          if (res.crud.listed == "listed") {
             setIsListed("listed");
+          } else if (res.crud.listed == "rejected") {
+            setIsListed("rejected");
           } else setIsListed("not-listed");
+
+          if (res.crud.membership && res.crud.listed == "listed") {
+            setIsListed("default");
+          }
         } else {
           setIsAsk(true);
           setIsGymForm(false);
@@ -279,7 +303,14 @@ const GymProfile = () => {
     <div className="page-container-gym">
       <TopBar />
       <SideMenuGym />
-      {loading ? <BarLoader loading={loading} color="#063be9" css={override} size={150} /> : null}
+      {loading ? (
+        <BarLoader
+          loading={loading}
+          color="#063be9"
+          css={override}
+          size={150}
+        />
+      ) : null}
 
       <h3>Customer Name</h3>
       <div className="admin-box mt-3">
@@ -320,6 +351,79 @@ const GymProfile = () => {
       </div>
 
       <h2>Gym Profile</h2>
+      {isListed == "default" ? null : isListed == "not-listed" ? (
+        <div className="gym-box mt-3 d-flex flex-column justify-content-start">
+          <h4>Your Profile is Reviewing By Admin</h4>
+        </div>
+      ) : isListed == "rejected" ? (
+        <div className="gym-box mt-3 d-flex flex-column justify-content-start">
+          <h4>Your Profile is Rejected By Admin</h4>
+        </div>
+      ) : isListed == "listed" ? (
+        <div className="gym-box mt-3 d-flex flex-column justify-content-start">
+          <h4>
+            You Have Been Approved by Admin. For Become a Trainer You need to
+            pay one Time Fee of Rs 1000.
+          </h4>
+          <div>
+            <div className="modal-container">
+              <Modal
+                style={{
+                  overlay: {
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+
+                    backgroundColor: "rgba(0, 0, 0, 0.75)",
+                  },
+                  content: {
+                    color: "white",
+                    position: "absolute",
+                    top: "40px",
+                    left: "40px",
+                    right: "40px",
+                    bottom: "40px",
+                    background: "rgba(0,30,60,1)",
+                    overflow: "auto",
+                    WebkitOverflowScrolling: "touch",
+                    borderRadius: "1rem",
+                    outline: "none",
+                    padding: "20px",
+                  },
+                }}
+                className="modal-x w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+                isOpen={confirmDeleteX}
+                onRequestClose={() => {
+                  setConfirmDeleteX(false);
+                }}
+              >
+                <div className="modal-inner w-75 d-flex flex-column">
+                  <a
+                    onClick={() => {
+                      setConfirmDeleteX(false);
+                    }}
+                  >
+                    <i class="bx bx-x"></i>
+                  </a>
+                  <StripeContainer
+                    amount={1000}
+                    action={handleBuyMembership}
+                    description="Trainer Listing Fees"
+                  />
+                </div>
+              </Modal>
+            </div>
+            <Button
+              className="w-50 m-3"
+              onClick={() => setConfirmDeleteX(true)}
+            >
+              Get Listed
+            </Button>
+          </div>
+        </div>
+      ) : null}
       {isAsk ? (
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
           <h4>
@@ -359,11 +463,17 @@ const GymProfile = () => {
                     let lng = e.latLng.lat();
                     console.log(lat, lng);
                   }}
-                  center={{ lat: location.coordinates.lat, lng: location.coordinates.lng }}
+                  center={{
+                    lat: location.coordinates.lat,
+                    lng: location.coordinates.lng,
+                  }}
                   mapContainerClassName="map-container"
                 >
                   <Marker
-                    position={{ lat: location.coordinates.lat, lng: location.coordinates.lng }}
+                    position={{
+                      lat: location.coordinates.lat,
+                      lng: location.coordinates.lng,
+                    }}
                   />
                 </GoogleMap>
                 {/* <p>{gymProfileDetails.user_id.full_name}</p> */}

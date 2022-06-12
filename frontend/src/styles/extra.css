@@ -95,3 +95,7 @@ tr.activity-box td {
   width: 100%;
   height: 100vh;
 }
+
+.page-container-user{
+  padding-bottom: 35px;
+}

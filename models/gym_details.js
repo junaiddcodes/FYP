@@ -29,6 +29,7 @@ var gymDetailsSchema = mongoose.Schema({
   gender_facilitation: String,
   cordinates: { lat: String, long: String },
   gym_photos: [{ photo_url: String, cloudinary_id: String }],
+  membership: Boolean,
   reviews: [reviewSchema],
   rating: {
     type: Number,
@@ -62,6 +63,7 @@ function validateGym(data) {
     gym_contact_no: Joi.string().min(5),
     gym_membership_price: Joi.number().positive(),
     gender_facilitation: Joi.string(),
+    membership: Joi.boolean(),
     gym_photos: Joi.array().items(
       Joi.object({
         photo_url: Joi.string(),

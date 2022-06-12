@@ -24,7 +24,7 @@ const MapPage = () => {
         <h3>User denied location</h3>
       ) : (
         <GoogleMap
-          zoom={12}
+          zoom={15}
           onClick={(e) => {
             let lat = e.latLng.lat();
             let lng = e.latLng.lat();

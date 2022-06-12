@@ -17,6 +17,7 @@ import gymService from "../../services/GymService";
 import { ClimbingBoxLoader, BarLoader, CircleLoader } from "react-spinners";
 import { css } from "@emotion/react";
 import ClipLoader from "react-spinners/ClipLoader";
+import pakCities from "../../Data/pakCities"
 
 const override = css`
   display: block;
@@ -81,6 +82,8 @@ const SearchGym = () => {
       // console.log("log in first");
     }
 
+    console.log(pakCities)
+
     getFeatureGyms();
   }, []);
   return (
@@ -134,10 +137,16 @@ const SearchGym = () => {
                 setSearchGym({ ...searchGym, city: e.target.value });
               }}
             >
-              <MenuItem value="Islamabad">Islamabad</MenuItem>
+              {pakCities.map((e,key)=>{
+                return(
+                  <MenuItem key={key} value={e.name}>{e.name}</MenuItem>
+
+                )
+              })}
+              {/* <MenuItem value="Islamabad">Islamabad</MenuItem>
               <MenuItem value="Lahore">Lahore</MenuItem>
               <MenuItem value="Karachi">Karachi</MenuItem>
-              <MenuItem value="Chichawatni">Chichawatni</MenuItem>
+              <MenuItem value="Chichawatni">Chichawatni</MenuItem> */}
             </Select>
           </FormControl>
           <FormControl className="m-4 w-25 dropdown-modal">
@@ -194,15 +203,15 @@ const SearchGym = () => {
                 <h6 className="m-1">
                   Membership price: {e.gym_membership_price} PKR
                 </h6>
-                {!e.numReview ? (
+                {!e.numReviews ? (
                   <h6 className="m-1">No reviews yet</h6>
                 ) : (
                   <h6 className="m-1">
-                    Rating: {e.numReview}{" "}
+                    <i class="mt-1 text-warning bx bxs-star"></i> {e.rating}{" "}
                     <span className="text-secondary">
-                      ({e.countReview})
+                      ({e.numReviews})
                     </span>{" "}
-                    <i class="mt-1 text-warning bx bxs-star"></i>
+                    
                   </h6>
                 )}
                 {/* <h6 className="m-1">
