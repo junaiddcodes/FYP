@@ -35,7 +35,7 @@ const getOneData = async (req, res) => {
     }
 
     var startDate = getYear + '-' + getMonth + '-' + (getDate)
-    var endDate = getYear + '-' + getMonth + '-' + (getDate+1)
+    var endDate = getYear + '-' + getMonth + '-' + (parseInt(getDate)+1)
     console.log(startDate + ' and ' + endDate)
 
     const { waterId: crudId } = req.params

@@ -113,4 +113,7 @@ tr.activity-box td {
   &:hover {
     z-index: 1;
   }
+
+.page-container-user{
+  padding-bottom: 35px;
 }

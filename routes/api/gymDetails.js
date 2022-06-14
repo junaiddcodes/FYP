@@ -19,6 +19,7 @@ const {
   gymNotListed,
   gymSearchFilter,
   changePassword,
+  createReview
 } = require('../../controllers/gym_Controller')
 
 router.route('/gymregister').post(Verify, Hash, createData)
@@ -30,6 +31,7 @@ router.route('/image/:gymId').patch(upload.array('gym'), gymImage)
 router.route('/login').post(loginGym)
 router.route('/log').post(Auth, checkUser)
 router.route('/password').post(changePassword)
+router.route('/review/:id').post(createReview)
 
 module.exports = router
 
