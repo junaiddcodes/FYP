@@ -63,6 +63,15 @@ const gymProfileSchema = yup.object().shape({
     .max(50000, "Price should not be more than Rs 50,000")
     .min(1000, "Price should not be less than Rs 1,000")
     .required("Gym membership price is required!"),
+  latitude: yup.number().typeError("Latitude is required!").required("Latitude is required!"),
+  longitude: yup
+    .number()
+    .typeError("Longitude is required!")
+    .positive()
+
+    .max(78, "Longitude can not be more than 78")
+    .min(60, "Longitude can not be less than 60")
+    .required("Longitude is required!"),
 
   gender_facilitation: yup.string().required("Gender facilitation can't be empty"),
   gym_photo: yup.string(),
@@ -76,7 +85,7 @@ const GymProfile = () => {
   const navigate = useNavigate();
   const [fileName1, setFileName] = React.useState([]);
   const [previewImage, setPreviewImage] = React.useState([]);
-
+  const [mapError, setMapError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isProfile, setIsProfile] = useState(false);
   const [isAsk, setIsAsk] = useState(false);
@@ -93,17 +102,18 @@ const GymProfile = () => {
   const [file, setFile] = useState(null);
   const [errorPic, setPicError] = useState(false);
   const location = useGeoLocation();
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
 
   var loginId = "";
 
   var gymProfileDetails = {
     user_id: {
       full_name: "",
-      email: "",
-      password: "",
       user_type: "trainer",
     },
     location: { state: "", city: "", address: "" },
+    coordinates: { lat: "", long: "" },
     gym_desc: "",
     gym_contact_no: "",
     gym_membership_price: "",
@@ -219,7 +229,7 @@ const GymProfile = () => {
   };
 
   const submitGymProfileForm = (data) => {
-    // console.log("aaaaaaa");
+    console.log("hello");
     // setStep3(false);
     // setStep4(true);
     // setTrainerDetails({ ...trainerDetails, weekly_goal: data.weekly_goal });
@@ -240,6 +250,10 @@ const GymProfile = () => {
         state: data.state,
         city: data.city,
         address: data.address,
+      },
+      coordinates: {
+        lat: latitude,
+        long: longitude,
       },
       gym_desc: data.gym_desc,
       gym_contact_no: data.gym_contact_no,
@@ -299,33 +313,55 @@ const GymProfile = () => {
               className="d-flex flex-column"
             >
               <div className="input-text d-flex flex-column">
+                <label className="mb-2">Choose gym location on map</label>
                 <GoogleMap
                   zoom={12}
-                  styles={{ width: "80%", height: "50%" }}
+                  // styles={{ width: "70%", height: "40%" }}
                   onClick={(e) => {
-                    let lat = e.latLng.lat();
-                    let lng = e.latLng.lat();
-                    console.log(lat, lng);
+                    setLatitude(e.latLng.lat());
+                    setLongitude(e.latLng.lng());
+                    let lati = e.latLng.lat();
+                    let lngi = e.latLng.lat();
+                    console.log(lati, lngi);
                   }}
                   center={{ lat: location.coordinates.lat, lng: location.coordinates.lng }}
-                  mapContainerClassName="map-container"
+                  mapContainerClassName="map-container-gym"
                 >
-                  <Marker
+                  {/* <Marker
                     position={{ lat: location.coordinates.lat, lng: location.coordinates.lng }}
-                  />
+                  /> */}
+                  <Marker position={{ lat: latitude, lng: longitude }} />
                 </GoogleMap>
+                {/* {mapError ? <p>{mapError}</p> : null} */}
                 {/* <p>{gymProfileDetails.user_id.full_name}</p> */}
                 {/* <p>{gymProfileDetails.location}</p> */}
                 {/* <p>{loggedInId}</p> */}
-                <label>Your Name</label>
+                {/* <label>Or enter manually</label>
+                <label>Latitude</label>
                 <input
-                  type="text"
+                  type="number"
                   id=""
-                  name="full_name"
-                  {...controlGymProfile("full_name")}
-                  defaultValue={getGym.user_id.full_name}
+                  name="latitude"
+                  {...controlGymProfile("latitude")}
+                  defaultValue={latitude}
+                  // onChange={(e) => {
+                  //   setLatitude(e.target.value);
+                  // }}
                 />
-                <p>{errorsGymProfile.full_name?.message}</p>
+                <p>{errorsGymProfile.latitude?.message}</p>
+                <label>Longitude</label>
+                <input
+                  type="number"
+                  id=""
+                  name="longitude"
+                  {...controlGymProfile("longitude")}
+                  value={longitude}
+                  // onChange={(e) => {
+                  //   setLongitude(e.target.value);
+                  // }}
+                />
+                <p>{errorsGymProfile.longitude?.message}</p> */}
+
                 <label for="">Gym Location</label>
                 <label for="">State</label>
                 <input
@@ -337,26 +373,34 @@ const GymProfile = () => {
 
                 <p>{errorsGymProfile.state?.message}</p>
                 <label for="">City</label>
-                <Autocomplete>
-                  <input
-                    type="text"
-                    name="city"
-                    defaultValue={getGym.location?.city}
-                    {...controlGymProfile("city")}
-                  />
-                </Autocomplete>
+
+                <input
+                  type="text"
+                  name="city"
+                  defaultValue={getGym.location?.city}
+                  {...controlGymProfile("city")}
+                />
+
                 <p>{errorsGymProfile.city?.message}</p>
                 <label for="">Address</label>
-                <Autocomplete>
-                  <input
-                    type="text"
-                    name="address"
-                    defaultValue={getGym.location?.address}
-                    {...controlGymProfile("address")}
-                  />
-                </Autocomplete>
+
+                <input
+                  type="text"
+                  name="address"
+                  defaultValue={getGym.location?.address}
+                  {...controlGymProfile("address")}
+                />
                 <p>{errorsGymProfile.address?.message}</p>
 
+                <label>Gym Name</label>
+                <input
+                  type="text"
+                  id=""
+                  name="full_name"
+                  {...controlGymProfile("full_name")}
+                  defaultValue={getGym.user_id.full_name}
+                />
+                <p>{errorsGymProfile.full_name?.message}</p>
                 <label for="">Gym Contact Number</label>
                 <input
                   type="text"
