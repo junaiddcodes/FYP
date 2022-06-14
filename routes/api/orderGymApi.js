@@ -8,7 +8,8 @@ const {
     updateData,
     createData,
     getOrderCheck,
-    getbyUser
+    getbyUser,
+    getGymSale
   } = require("../../controllers/orderGymController");
 
   router.route("/").get(getAllData);
@@ -16,6 +17,7 @@ const {
   router.route("/:orderId").get(getOneData).patch(updateData);
   router.route("/gym/:userId/:gymId").get(getOrderCheck);
   router.route("/user/:userId").get(getbyUser)
+  router.route("/getgym/:gymId").get(getGymSale)
 
   module.exports = router;
 

@@ -17,6 +17,7 @@ import gymService from "../../services/GymService";
 import { ClimbingBoxLoader, BarLoader, CircleLoader } from "react-spinners";
 import { css } from "@emotion/react";
 import ClipLoader from "react-spinners/ClipLoader";
+import pakCities from "../../Data/pakCities"
 
 const override = css`
   display: block;
@@ -81,6 +82,8 @@ const SearchGym = () => {
       // console.log("log in first");
     }
 
+    console.log(pakCities)
+
     getFeatureGyms();
   }, []);
   return (
@@ -134,10 +137,16 @@ const SearchGym = () => {
                 setSearchGym({ ...searchGym, city: e.target.value });
               }}
             >
-              <MenuItem value="Islamabad">Islamabad</MenuItem>
+              {pakCities.map((e,key)=>{
+                return(
+                  <MenuItem key={key} value={e.name}>{e.name}</MenuItem>
+
+                )
+              })}
+              {/* <MenuItem value="Islamabad">Islamabad</MenuItem>
               <MenuItem value="Lahore">Lahore</MenuItem>
               <MenuItem value="Karachi">Karachi</MenuItem>
-              <MenuItem value="Chichawatni">Chichawatni</MenuItem>
+              <MenuItem value="Chichawatni">Chichawatni</MenuItem> */}
             </Select>
           </FormControl>
           <FormControl className="m-4 w-25 dropdown-modal">
@@ -191,11 +200,24 @@ const SearchGym = () => {
               >
                 <img src={e.gym_photos[0]?.photo_url} alt="" height="250" />
                 <h4 className="m-1">{e.user_id.full_name}</h4>
-                <h6 className="m-1">Membership price: {e.gym_membership_price} PKR</h6>
                 <h6 className="m-1">
-                  Rating: 4 <i class="mt-1 text-warning bx bxs-star"></i>
+                  Membership price: {e.gym_membership_price} PKR
                 </h6>
-                <div className="d-flex m-1 mb-0">
+                {!e.numReviews ? (
+                  <h6 className="m-1">No reviews yet</h6>
+                ) : (
+                  <h6 className="m-1">
+                    <i class="mt-1 text-warning bx bxs-star"></i> {e.rating}{" "}
+                    <span className="text-secondary">
+                      ({e.numReviews})
+                    </span>{" "}
+                    
+                  </h6>
+                )}
+                {/* <h6 className="m-1">
+                  Rating: 4 <i class="mt-1 text-warning bx bxs-star"></i>
+                </h6> */}
+                <div className="d-flex m-2 mb-0">
                   <MdLocationPin className="" />
                   <p className="text-light" style={{ fontWeight: "bold" }}>
                     {e.location.city}

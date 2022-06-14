@@ -37,6 +37,8 @@ const AddExercise = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteId, setDeleteId]=useState('')
+
   const navigate = useNavigate();
   var user_id = userService.getLoggedInUser()._id;
   const [userDetails, setUserDetails] = useState(location.state?.userData);
@@ -491,6 +493,7 @@ const AddExercise = () => {
                               className="delete-icon"
                               onClick={() => {
                                 setConfirmDelete(true);
+                                setDeleteId(e._id)
                               }}
                             >
                               <ImCross />
@@ -544,7 +547,7 @@ const AddExercise = () => {
                                     className="btn-dark m-3"
                                     type="submit "
                                     onClick={() => {
-                                      userService.deleteExcerciseData(e._id).then(() => {
+                                      userService.deleteExcerciseData(deleteId).then(() => {
                                         console.log("Excercise is Deleted");
                                         getExcerciseData();
                                         Delete();

@@ -7,15 +7,7 @@ const MapPage = () => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyBdLc31kclLs_2r72Uh0G88vBfYConu4BU",
   });
-  const addMarker = (location, map) => {
-    this.setState((prev) => ({
-      fields: {
-        ...prev.fields,
-        location,
-      },
-    }));
-    map.panTo(location);
-  };
+
   if (!isLoaded) return <div>Loading...</div>;
   return (
     <div>

@@ -20,15 +20,28 @@ import { Carousel } from "react-responsive-carousel";
 import GymViewMap from "../../Components/mapShow/mapShow";
 import { template } from "lodash";
 import StripeContainer from "../../Components/Stripe/StripeContainer";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const GymDescription = () => {
+  const reviewSchema = yup.object().shape({
+    rating: yup.string().required("rating can't be empty"),
+    comment: yup
+      .string()
+      .min(10, "Comment must be at least 10 characters!")
+      .required("Comment can't be empty"),
+  });
   const [modalOpen, setModalOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const navigate = useNavigate();
   const gymId = useParams();
   const [pins, SetPins] = useState([31.4878, 74.3646]);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [showItem, setShowItem] = useState(true);
+  const [showItem, setShowItem] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [isReview, SetIsReview] = useState(false);
+  const [reviews, SetReviews] = useState([]);
   var order = {
     user_id: userService.getLoggedInUser()._id,
     gym_id: gymId.id,
@@ -39,6 +52,34 @@ const GymDescription = () => {
     price: 0,
     time_date: new Date().getTime(),
   });
+  const {
+    register: controlReview,
+    handleSubmit: handleSubmitReview,
+    formState: { errors: errorsReview },
+  } = useForm({
+    resolver: yupResolver(reviewSchema),
+  });
+
+  const submitReviewForm = (data) => {
+    console.log("Submit Review");
+    var tempObject = {
+      user_id: userService.getLoggedInUser()._id,
+      rating: data.rating,
+      comment: data.comment,
+    };
+
+    console.log(tempObject);
+
+    gymService
+      .post_gym_review(gymId.id, tempObject)
+      .then((data) => {
+        console.log(data);
+        setEditModalOpen(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   function handleBuyMembership() {
     console.log("Buy Membership");
@@ -47,10 +88,10 @@ const GymDescription = () => {
       .buy_gym_membership(orderX)
       .then((data) => {
         console.log(data);
-        checkGymOrder(order)
+        checkGymOrder(order);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.message);
       });
   }
 
@@ -58,11 +99,11 @@ const GymDescription = () => {
     gymService
       .check_gym_membership(order.user_id, order.gym_id)
       .then((data) => {
-        setShowItem(false)
+        setShowItem(true);
       })
       .catch((err) => {
-        console.log(err);
-        setShowItem(true)
+        console.log(err.message);
+        setShowItem(false);
       });
   }
 
@@ -105,9 +146,23 @@ const GymDescription = () => {
         price: data.crud.gym_membership_price,
         time_date: new Date().getTime(),
       });
+      const alreadyReviewed = data.crud.reviews.find(
+        (r) =>
+          r.user.toString() === userService.getLoggedInUser()._id.toString()
+      );
+
+      if (alreadyReviewed) {
+        SetIsReview(true);
+      } else {
+        SetIsReview(false);
+      }
+      console.log("reviews", data.crud.reviews);
+      SetReviews(data.crud.reviews);
       setGymDetails(data.crud);
-      var temp = [data.crud.cordinates.lat, data.crud.cordinates.long];
-      SetPins(temp);
+      if (data.crud.cordinates) {
+        var temp = [data.crud.cordinates.lat, data.crud.cordinates.long];
+        SetPins(temp);
+      }
     });
   }
 
@@ -142,14 +197,24 @@ const GymDescription = () => {
             </Carousel>
           </div>
           {/* <img src={gymDetails.gym_photos?.photo_url} alt="" /> */}
+          {!gymDetails.numReviews ? (
+            <h6 className="m-1 text-light">No reviews yet</h6>
+          ) : (
+            <h6 className="m-1 text-light">
+              Rating: <i class="mt-1 text-warning bx bxs-star"></i>{" "}
+              {gymDetails.rating}{" "}
+              <span className="text-secondary">({gymDetails.numReviews})</span>{" "}
+            </h6>
+          )}
           <h4>{gymDetails.user_id.full_name}</h4>
-          <h4>Membership Price:{gymDetails.gym_membership_price}</h4>
-          <h4>Gender:{gymDetails.gender_facilitation}</h4>
+          <h4>Membership Price: {gymDetails.gym_membership_price}</h4>
+          <h4>Gender: {gymDetails.gender_facilitation}</h4>
           <p>{gymDetails.gym_desc}</p>
         </div>
         <div className="gym-contact d-flex flex-column ">
           <div>
-            {showItem ? (
+            {showItem ? <p className="text-success">You are a Member</p> : null}
+            {!showItem ? (
               <div>
                 <div className="modal-container">
                   <Modal
@@ -178,7 +243,7 @@ const GymDescription = () => {
                         padding: "20px",
                       },
                     }}
-                    className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+                    className="modal-x w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
                     isOpen={confirmDelete}
                     onRequestClose={() => {
                       setConfirmDelete(false);
@@ -207,9 +272,98 @@ const GymDescription = () => {
                   Buy Membership
                 </Button>
               </div>
-            ) : (
-              <p className="text-success">You are a Member</p>
-            )}
+            ) : !isReview ? (
+              <div>
+                <Button
+                  className="m-2 btn-warning"
+                  onClick={() => {
+                    setEditModalOpen(true);
+                  }}
+                >
+                  Review plan
+                </Button>
+                <div className="modal-container">
+                  <Modal
+                    style={{
+                      overlay: {
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+
+                        backgroundColor: "rgba(0, 0, 0, 0.75)",
+                      },
+                      content: {
+                        color: "white",
+                        position: "absolute",
+                        top: "40px",
+                        left: "40px",
+                        right: "40px",
+                        bottom: "40px",
+                        background: "rgba(0,30,60,1)",
+                        overflow: "auto",
+                        WebkitOverflowScrolling: "touch",
+                        borderRadius: "1rem",
+                        outline: "none",
+                        padding: "20px",
+                      },
+                    }}
+                    className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+                    isOpen={editModalOpen}
+                    onRequestClose={() => {
+                      setEditModalOpen(false);
+                    }}
+                  >
+                    <div className="modal-inner w-75 d-flex flex-column">
+                      <a
+                        onClick={() => {
+                          setEditModalOpen(false);
+                        }}
+                      >
+                        <i class="bx bx-x"></i>
+                      </a>
+
+                      <div className="query-box mt-3 d-flex flex-column align-items-left">
+                        <form
+                          onSubmit={handleSubmitReview(submitReviewForm)}
+                          className="d-flex flex-column"
+                        >
+                          <label for="fname">Select rating</label>
+                          <FormControl className="m-3 w-100 dropdown-trainer">
+                            <Select
+                              labelId="demo-simple-select-label"
+                              id="demo-simple-select"
+                              name="rating"
+                              {...controlReview("rating")}
+                              defaultValue="5"
+                            >
+                              <MenuItem value="1">1</MenuItem>
+                              <MenuItem value="2">2</MenuItem>
+                              <MenuItem value="3">3</MenuItem>
+                              <MenuItem value="4">4</MenuItem>
+                              <MenuItem value="5">5</MenuItem>
+                            </Select>
+                          </FormControl>
+                          <p>{errorsReview.rating?.message}</p>
+                          <label for="">Comment</label>
+                          <textarea
+                            className="text-field mt-2"
+                            name="comment"
+                            {...controlReview("comment")}
+                          />
+                          <p>{errorsReview.comment?.message}</p>
+                          <Button className="w-50" type="submit ">
+                            Submit review
+                          </Button>
+                        </form>
+                      </div>
+                    </div>
+                    <div></div>
+                  </Modal>
+                </div>
+              </div>
+            ) : null}
           </div>
           <h4>Contact No.</h4>
           <p>{gymDetails.gym_contact_no}</p>
@@ -222,6 +376,36 @@ const GymDescription = () => {
           </div>
         </div>
       </div>
+
+      {!showItem ? (
+        <div>
+          <h2 className="mt-3"> Reviews</h2>
+          <div className="trainer-desc mt-3 d-flex flex-column p-4">
+            {reviews.length === 0 ? (
+              <p className="text-light">Not reviewed Yet</p>
+            ) : (
+              reviews.map((e, key) => {
+                return (
+                  <div key={key}>
+                    <div className="text-light d-flex align-items-center">
+                      <div>
+                        <i class="bx bxs-star mr-2 text-warning"></i>
+                        <span> {e.rating} </span>
+                      </div>
+                      <div>
+                        <p className="font-weight-bold">{e.name}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <p>{e.comment}</p>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };

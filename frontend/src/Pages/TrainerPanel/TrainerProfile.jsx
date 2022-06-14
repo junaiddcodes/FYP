@@ -29,6 +29,7 @@ import { Link } from "react-router-dom";
 import { ClimbingBoxLoader, BarLoader, CircleLoader } from "react-spinners";
 import { css } from "@emotion/react";
 import ClipLoader from "react-spinners/ClipLoader";
+import StripeContainer from "../../Components/Stripe/StripeContainer";
 
 const override = css`
   display: block;
@@ -87,8 +88,9 @@ const TrainerProfile = () => {
   const [isProfilePicForm, setIsProfilePicForm] = useState(false);
   const [isAsk, setIsAsk] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [confirmDeleteX, setConfirmDeleteX] = useState(false);
   const [getCustomer, setGetCustomer] = useState("");
-  const [isListed, setIsListed] = useState("");
+  const [isListed, setIsListed] = useState("default");
   const [trainerAge, setTrainerAge] = useState(10);
   const [selectedValue, setSelectedValue] = useState(10);
   const [errorPic, setPicError] = useState(false);
@@ -140,12 +142,21 @@ const TrainerProfile = () => {
     }
     return age;
   }
+
+  function handleBuyMembership() {
+    var mem = { membership: true };
+    trainerService.update_trainer(mem, loggedInId).then((data) => {
+      console.log(data);
+      get_customer();
+    });
+  }
   const get_customer = () => {
     trainerService
       .get_one_trainer(loginId)
       .then((res) => {
         console.log(res);
         setGetCustomer(res.crud);
+
         if (res.crud.designation) {
           setIsProfile(true);
           setIsProfilePicForm(false);
@@ -154,9 +165,15 @@ const TrainerProfile = () => {
           console.log(getCustomer.dob);
           setTrainerAge(getAge(res.crud.dob));
           console.log(trainerAge);
-          if (getCustomer.listed == true) {
+          if (res.crud.listed == "listed") {
             setIsListed("listed");
+          } else if (res.crud.listed == "rejected") {
+            setIsListed("rejected");
           } else setIsListed("not-listed");
+
+          if (res.crud.membership && res.crud.listed == "listed") {
+            setIsListed("default");
+          }
         } else {
           setIsAsk(true);
           setIsTrainerForm(false);
@@ -280,12 +297,97 @@ const TrainerProfile = () => {
     <div className="page-container-gym">
       <TopBar />
       <SideMenuTrainer />
-      {loading ? <BarLoader loading={loading} color="#063be9" css={override} size={150} /> : null}
+      {loading ? (
+        <BarLoader
+          loading={loading}
+          color="#063be9"
+          css={override}
+          size={150}
+        />
+      ) : null}
 
       <h2>Trainer Profile</h2>
+
+      {isListed == "default" ? null : isListed == "not-listed" ? (
+        <div className="gym-box mt-3 d-flex flex-column justify-content-start">
+          <h4>Your Profile is Reviewing By Admin</h4>
+        </div>
+      ) : isListed == "rejected" ? (
+        <div className="gym-box mt-3 d-flex flex-column justify-content-start">
+          <h4>Your Profile is Rejected By Admin</h4>
+        </div>
+      ) : isListed == "listed" ? (
+        <div className="gym-box mt-3 d-flex flex-column justify-content-start">
+          <h4>
+            You Have Been Approved by Admin. For Become a Trainer You need to
+            pay one Time Fee of Rs 1000.
+          </h4>
+          <div>
+            <div className="modal-container">
+              <Modal
+                style={{
+                  overlay: {
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+
+                    backgroundColor: "rgba(0, 0, 0, 0.75)",
+                  },
+                  content: {
+                    color: "white",
+                    position: "absolute",
+                    top: "40px",
+                    left: "40px",
+                    right: "40px",
+                    bottom: "40px",
+                    background: "rgba(0,30,60,1)",
+                    overflow: "auto",
+                    WebkitOverflowScrolling: "touch",
+                    borderRadius: "1rem",
+                    outline: "none",
+                    padding: "20px",
+                  },
+                }}
+                className="modal-x w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+                isOpen={confirmDeleteX}
+                onRequestClose={() => {
+                  setConfirmDeleteX(false);
+                }}
+              >
+                <div className="modal-inner w-75 d-flex flex-column">
+                  <a
+                    onClick={() => {
+                      setConfirmDeleteX(false);
+                    }}
+                  >
+                    <i class="bx bx-x"></i>
+                  </a>
+                  <StripeContainer
+                    amount={1000}
+                    action={handleBuyMembership}
+                    description="Trainer Listing Fees"
+                  />
+                </div>
+              </Modal>
+            </div>
+            <Button
+              className="w-50 m-3"
+              onClick={() => setConfirmDeleteX(true)}
+            >
+              Get Listed
+            </Button>
+          </div>
+        </div>
+      ) : null}
+
       {isAsk ? (
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
-          <h4>There is no profile present. Click below to create a trainer profile:</h4>
+          <h4>
+            There is no profile present. Click below to create a trainer
+            profile:
+          </h4>
           <Button
             className="w-25 mt-4"
             onClick={() => {
@@ -394,7 +496,8 @@ const TrainerProfile = () => {
                         Unarmed Combat & Bayonet Fighting Course (UCBC)
                       </MenuItem>
                       <MenuItem value="                        Advance Unarmed Combat & Bayonet Fighting Course (Adv UCBC)">
-                        Advance Unarmed Combat & Bayonet Fighting Course (Adv UCBC)
+                        Advance Unarmed Combat & Bayonet Fighting Course (Adv
+                        UCBC)
                       </MenuItem>
                       <MenuItem value="                        Sports Coaching Courses army school of training">
                         Sports Coaching Courses army school of training
@@ -417,7 +520,9 @@ const TrainerProfile = () => {
                 />
 
                 <p>{errorsTrainerProfile.company_name?.message}</p>
-                <label for="lname">Enter your designation in the current company </label>
+                <label for="lname">
+                  Enter your designation in the current company{" "}
+                </label>
                 <input
                   type="text"
                   id=""
@@ -454,7 +559,8 @@ const TrainerProfile = () => {
             <p className="general-p">Please upload your profile picture</p>
           <input type="file" /> */}
               <p className="general-p mt-5">
-                Submit Profile to the Admin. Admin will review your profile and Approve it:
+                Submit Profile to the Admin. Admin will review your profile and
+                Approve it:
               </p>
               <Button
                 type="submit"
@@ -512,15 +618,19 @@ const TrainerProfile = () => {
           <div className="d-flex ">
             <div className="d-flex w-75 justify-content-between">
               <div className="trainer-photo d-flex">
-                <img clasName="trainer-photo" src={getCustomer.trainer_photo} alt="" />
+                <img
+                  clasName="trainer-photo"
+                  src={getCustomer.trainer_photo}
+                  alt=""
+                />
                 <div className="d-flex mt-5 flex-column">
                   <h4>Name: {getCustomer.user_id.full_name}</h4>
                   <h4>Age: {trainerAge}</h4>
                   <h4>Gender: {getCustomer.gender}</h4>
                   <h4>
                     {" "}
-                    Location: {getCustomer.location?.address}, {getCustomer.location?.city},{" "}
-                    {getCustomer.location?.state}{" "}
+                    Location: {getCustomer.location?.address},{" "}
+                    {getCustomer.location?.city}, {getCustomer.location?.state}{" "}
                   </h4>
                   <h4>Status: {getCustomer.listed}</h4>
                 </div>
@@ -618,6 +728,7 @@ const TrainerProfile = () => {
                             .update_trainer(trainerProfileDetails, loggedInId)
                             .then((data) => {
                               console.log(data);
+                              setIsListed("default");
                             })
                             .catch((err) => {
                               console.log(err);

@@ -99,7 +99,7 @@ const updateData = async (req, res) => {
     console.log(req.body)
     const crud = await trainerDetails.findByIdAndUpdate(
       { _id: crudId },
-      req.body,
+      { $set: req.body },
       {
         new: true,
         runValidators: true,

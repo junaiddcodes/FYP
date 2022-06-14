@@ -78,7 +78,7 @@ const UserDashboard = () => {
       calorie_goal: calorieData.calorie,
     };
 
-    console.log(statsDetails);
+
 
     userService
       .update_user(statsDetails, userId)
