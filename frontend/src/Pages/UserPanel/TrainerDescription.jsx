@@ -75,20 +75,20 @@ const TrainerDescription = () => {
       console.log(res)
     })
   }
-  // function createConversation() {
-  //   console.log(trainerDetails._id)
-  //   console.log(convo)
-  //   userService.createConvo(convo).then((data) => {
-  //     console.log(data)
-  //     Add()
-  //   })
-  //   navigate('/Messenger')
-  // }
+  function createConversation() {
+    console.log(trainerDetails._id)
+    console.log(convo)
+    userService.createConvo(convo).then((data) => {
+      console.log(data)
+      Add()
+    })
+    navigate('/Messenger')
+  }
 
-  // var convo = {
-  //   senderId: userService.getLoggedInUser()._id,
-  //   receiverId: trainerDetails._id,
-  // }
+  var convo = {
+    senderId: userService.getLoggedInUser()._id,
+    receiverId: trainerDetails._id,
+  }
   useEffect(getTrainer, [])
   return (
     <div className='page-container-user'>

@@ -39,6 +39,18 @@ const Conversation = ({
         }
       }
       getUser()
+    } else if (currentUserType == 'customer') {
+      const getUser = async () => {
+        try {
+          const res = await axios.get('admin/' + friendId)
+
+          setUser(res.data)
+          setName(res.data.crud.user_id.full_name)
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      getUser()
     }
 
     // console.log(friendId)

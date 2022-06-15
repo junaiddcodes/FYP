@@ -43,6 +43,21 @@ const CreateQuery = () => {
   const [editModalOpen, setEditModalOpen] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
   var adminId = '6266eb268caccab814c54c85'
+
+  function tawk() {
+    var Tawk_API = Tawk_API || {},
+      Tawk_LoadStart = new Date()
+    ;(function () {
+      var s1 = document.createElement('script'),
+        s0 = document.getElementsByTagName('script')[0]
+      s1.async = true
+      s1.src = 'https://embed.tawk.to/62a8451fb0d10b6f3e773c1b/1g5gks1i3'
+      s1.charset = 'UTF-8'
+      s1.setAttribute('crossorigin', '*')
+      s0.parentNode.insertBefore(s1, s0)
+    })()
+  }
+
   const notify = () => {
     // Calling toast method by passing string
     toast.success('Query Added')
@@ -126,17 +141,17 @@ const CreateQuery = () => {
     console.log('after request')
     // page_refresh();
   }
-  // function createConversation() {
-  //   console.log(convo)
-  //   userService.createConvo(convo).then((data) => {
-  //     console.log(data)
-  //   })
-  //   navigate('/Messenger')
-  // }
-  // var convo = {
-  //   senderId: userService.getLoggedInUser()._id,
-  //   receiverId: adminId,
-  // }
+  function createConversation() {
+    console.log(convo)
+    userService.createConvo(convo).then((data) => {
+      console.log(data)
+    })
+    navigate('/Messenger')
+  }
+  var convo = {
+    senderId: userService.getLoggedInUser()._id,
+    receiverId: adminId,
+  }
 
   return (
     <div className='page-container-admin'>

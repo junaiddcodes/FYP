@@ -227,23 +227,23 @@ const AddFood = () => {
   const [confirmDelete, setConfirmDelete] = useState(false)
 
   return (
-    <div className="page-container-user">
+    <div className='page-container-user'>
       <TopBar />
       <SideMenu />
       <Button
-        className="m-2"
+        className='m-2'
         onClick={() => {
           navigate(-1)
         }}
       >
-        <i class="bx bx-arrow-back m-1"></i> Back
+        <i class='bx bx-arrow-back m-1'></i> Back
       </Button>
       <h2>Add Food</h2>
 
-      <div className="user-box d-flex flex-column p-3">
-        <div className="d-flex flex-column">
-          <div className="d-flex">
-            <div className="d-flex w-50 flex-column">
+      <div className='user-box d-flex flex-column p-3'>
+        <div className='d-flex flex-column'>
+          <div className='d-flex'>
+            <div className='d-flex w-50 flex-column'>
               <h4>Calories Gained: {currentCalorie?.food_calories}</h4>
               <h4>
                 Calories Burnt:{Math.floor(calorieBurn.excercise_calories)}
@@ -256,22 +256,22 @@ const AddFood = () => {
               <Button>Add Water<c/Button>
             </div> */}
           </div>
-          <div className="d-flex flex-column mt-3"></div>
+          <div className='d-flex flex-column mt-3'></div>
         </div>
       </div>
-      <div className="d-flex justify-content-between">
-        <h2 className="mt-3">Today's Meals</h2>
+      <div className='d-flex justify-content-between'>
+        <h2 className='mt-3'>Today's Meals</h2>
         <Button
           onClick={() => {
             setModalOpen(true)
             setValue(null)
           }}
-          className="m-3"
+          className='m-3'
         >
           + Add Food
         </Button>
       </div>
-      <div className="modal-container">
+      <div className='modal-container'>
         <Modal
           style={{
             overlay: {
@@ -298,97 +298,97 @@ const AddFood = () => {
               padding: '20px',
             },
           }}
-          className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+          className='w-50 d-flex flex-column justify-content-around align-items-center add-food-modal'
           isOpen={modalOpen}
           onRequestClose={() => {
             setModalOpen(false)
           }}
         >
-          <div className="modal-inner w-75 d-flex flex-column">
+          <div className='modal-inner w-75 d-flex flex-column'>
             <a
               onClick={() => {
                 setModalOpen(false)
               }}
             >
-              <i class="bx bx-x"></i>
+              <i class='bx bx-x'></i>
             </a>
             <form
               onSubmit={handleSubmit(submitForm)}
-              className="d-flex flex-column"
+              className='d-flex flex-column'
             >
-              <FormControl className="w-100 dropdown-trainer mb-2">
-                <InputLabel id="demo-simple-select-label-x">
+              <FormControl className='w-100 dropdown-trainer mb-2'>
+                <InputLabel id='demo-simple-select-label-x'>
                   Select Meal
                 </InputLabel>
                 <Select
-                  labelId="demo-simple-select-label"
-                  placeholder="Select Meal"
-                  id="demo-simple-select-2"
-                  name="meal_name"
-                  label="Select Meal"
+                  labelId='demo-simple-select-label'
+                  placeholder='Select Meal'
+                  id='demo-simple-select-2'
+                  name='meal_name'
+                  label='Select Meal'
                   {...register('meal_name')}
                 >
-                  <MenuItem value="breakfast">Breakfast</MenuItem>
-                  <MenuItem value="lunch">Lunch</MenuItem>
-                  <MenuItem value="snacks">Snacks</MenuItem>
-                  <MenuItem value="dinner">Dinner</MenuItem>
+                  <MenuItem value='breakfast'>Breakfast</MenuItem>
+                  <MenuItem value='lunch'>Lunch</MenuItem>
+                  <MenuItem value='snacks'>Snacks</MenuItem>
+                  <MenuItem value='dinner'>Dinner</MenuItem>
                 </Select>
               </FormControl>
-              <p id="error-text" style={{ color: 'rgb(255, 34, 34)' }}>
+              <p id='error-text' style={{ color: 'rgb(255, 34, 34)' }}>
                 {errors.meal_name?.message}
               </p>
 
               <Dropdown
-                className="w-100 "
-                prompt="Select Food"
+                className='w-100 '
+                prompt='Select Food'
                 value={value}
                 onChange={setValue}
                 options={foodOptions}
-                label="food_name"
+                label='food_name'
                 getData={getFoodData}
               />
               {!foodCheck ? (
-                <p id="error-text" style={{ color: 'rgb(255, 34, 34)' }}>
+                <p id='error-text' style={{ color: 'rgb(255, 34, 34)' }}>
                   Food cannot be Empty
                 </p>
               ) : null}
 
-              <div className="mt-3 w-100">
+              <div className='mt-3 w-100'>
                 {value ? (
                   <p>Enter the weight of food Taken (in grams)</p>
                 ) : null}
                 <TextField
-                  type="number"
-                  id="demo-simple-select-2"
-                  className="w-100"
+                  type='number'
+                  id='demo-simple-select-2'
+                  className='w-100'
                   InputProps={{ inputProps: { min: 10, max: 1000 } }}
                   // min="10"
                   // max="1000"
-                  label="Food weight"
-                  variant="outlined"
-                  name="food_weight_selected"
+                  label='Food weight'
+                  variant='outlined'
+                  name='food_weight_selected'
                   {...register('food_weight_selected')}
-                  placeholder="Enter weight in grams"
+                  placeholder='Enter weight in grams'
                   InputLabelProps={{
                     style: { color: '#777' },
                   }}
                 />
               </div>
 
-              <p id="error-text" style={{ color: 'rgb(255, 34, 34)' }}>
+              <p id='error-text' style={{ color: 'rgb(255, 34, 34)' }}>
                 {errors.food_weight_selected?.message}
               </p>
-              <div className="mb-3">
+              <div className='mb-3'>
                 <div>
-                  <label htmlFor="time">
+                  <label htmlFor='time'>
                     Enter time of your meal {'(' + 'Optional' + ')'}
                   </label>
                 </div>
                 <div>
                   <input
-                    name="time"
-                    className="time-input mb-1 py-3"
-                    type="time"
+                    name='time'
+                    className='time-input mb-1 py-3'
+                    type='time'
                   />
                 </div>
               </div>
@@ -398,16 +398,16 @@ const AddFood = () => {
             //   options={quantityOptions}
             // /> */}
               <div>
-                <Button type="submit">Add Food</Button>
+                <Button type='submit'>Add Food</Button>
               </div>
             </form>
           </div>
         </Modal>
       </div>
-      <div className="user-box d-flex flex-column p-3">
-        <div className="d-flex flex-column">
-          <div class="table-wrapper-scroll-y my-custom-scrollbar">
-            <table className="table">
+      <div className='user-box d-flex flex-column p-3'>
+        <div className='d-flex flex-column'>
+          <div class='table-wrapper-scroll-y my-custom-scrollbar'>
+            <table className='table'>
               <thead>
                 <tr>
                   <th>Meal</th>
@@ -432,9 +432,9 @@ const AddFood = () => {
                         <td>{e.food_calories}</td>
 
                         <td>
-                          <div className="d-flex align-items-center">
+                          <div className='d-flex align-items-center'>
                             <Button
-                              className="btn btn-warning edit-btn"
+                              className='btn btn-warning edit-btn'
                               onClick={() => {
                                 setEditModalOpen(true)
                                 setEditMealId(e._id)
@@ -445,7 +445,7 @@ const AddFood = () => {
                             >
                               Edit
                             </Button>
-                            <div className="modal-container">
+                            <div className='modal-container'>
                               <Modal
                                 style={{
                                   overlay: {
@@ -472,72 +472,72 @@ const AddFood = () => {
                                     padding: '20px',
                                   },
                                 }}
-                                className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+                                className='w-50 d-flex flex-column justify-content-around align-items-center add-food-modal'
                                 isOpen={editModalOpen}
                                 onRequestClose={() => {
                                   setEditModalOpen(false)
                                 }}
                               >
-                                <div className="modal-inner w-75 py-3">
+                                <div className='modal-inner w-75 py-3'>
                                   <a
                                     onClick={() => {
                                       setEditModalOpen(false)
                                     }}
                                   >
-                                    <i class="bx bx-x"></i>
+                                    <i class='bx bx-x'></i>
                                   </a>
 
-                                  <div className="mt-2">
+                                  <div className='mt-2'>
                                     <form
                                       onSubmit={handleSubmit(updateForm)}
-                                      className="d-flex flex-column"
+                                      className='d-flex flex-column'
                                     >
-                                      <FormControl className="w-100 dropdown-trainer mb-2">
-                                        <InputLabel id="demo-simple-select-label-x">
+                                      <FormControl className='w-100 dropdown-trainer mb-2'>
+                                        <InputLabel id='demo-simple-select-label-x'>
                                           Select Meal
                                         </InputLabel>
                                         <Select
                                           defaultValue={editData.meal_name}
-                                          labelId="demo-simple-select-label"
-                                          placeholder="Select Meal"
-                                          id="demo-simple-select-2"
-                                          name="meal_name"
-                                          label="Select Meal"
+                                          labelId='demo-simple-select-label'
+                                          placeholder='Select Meal'
+                                          id='demo-simple-select-2'
+                                          name='meal_name'
+                                          label='Select Meal'
                                           {...register('meal_name')}
                                         >
-                                          <MenuItem value="breakfast">
+                                          <MenuItem value='breakfast'>
                                             Breakfast
                                           </MenuItem>
-                                          <MenuItem value="lunch">
+                                          <MenuItem value='lunch'>
                                             Lunch
                                           </MenuItem>
-                                          <MenuItem value="snacks">
+                                          <MenuItem value='snacks'>
                                             Snacks
                                           </MenuItem>
-                                          <MenuItem value="dinner">
+                                          <MenuItem value='dinner'>
                                             Dinner
                                           </MenuItem>
                                         </Select>
                                       </FormControl>
                                       <p
-                                        id="error-text"
+                                        id='error-text'
                                         style={{ color: 'rgb(255, 34, 34)' }}
                                       >
                                         {errors.meal_name?.message}
                                       </p>
 
                                       <Dropdown
-                                        className="w-100 "
-                                        prompt="Selec Food"
+                                        className='w-100 '
+                                        prompt='Selec Food'
                                         value={value}
                                         onChange={setValue}
                                         options={foodOptions}
-                                        label="food_name"
+                                        label='food_name'
                                         getData={getFoodData}
                                       />
                                       {!foodCheck ? (
                                         <p
-                                          id="error-text"
+                                          id='error-text'
                                           style={{
                                             color: 'rgb(255, 34, 34)',
                                           }}
@@ -546,7 +546,7 @@ const AddFood = () => {
                                         </p>
                                       ) : null}
 
-                                      <div className="mt-3 w-100">
+                                      <div className='mt-3 w-100'>
                                         {value ? (
                                           <p>
                                             Enter the Quantity of meal per{' '}
@@ -554,16 +554,16 @@ const AddFood = () => {
                                           </p>
                                         ) : null}
                                         <TextField
-                                          id="demo-simple-select-2"
-                                          className="w-100"
-                                          label="Quantity"
-                                          variant="outlined"
-                                          name="food_weight_selected"
+                                          id='demo-simple-select-2'
+                                          className='w-100'
+                                          label='Quantity'
+                                          variant='outlined'
+                                          name='food_weight_selected'
                                           defaultValue={
                                             editData.food_weight_selected
                                           }
                                           {...register('food_weight_selected')}
-                                          placeholder="Select Quantity"
+                                          placeholder='Select Quantity'
                                           InputLabelProps={{
                                             style: { color: '#777' },
                                           }}
@@ -571,29 +571,29 @@ const AddFood = () => {
                                       </div>
 
                                       <p
-                                        id="error-text"
+                                        id='error-text'
                                         style={{ color: 'rgb(255, 34, 34)' }}
                                       >
                                         {errors.food_weight_selected?.message}
                                       </p>
-                                      <div className="mb-3">
+                                      <div className='mb-3'>
                                         <div>
-                                          <label htmlFor="time">
+                                          <label htmlFor='time'>
                                             Enter time of your meal{' '}
                                             {'(' + 'Optional' + ')'}
                                           </label>
                                         </div>
                                         <div>
                                           <input
-                                            name="time"
-                                            className="time-input mb-1 py-3"
-                                            type="time"
+                                            name='time'
+                                            className='time-input mb-1 py-3'
+                                            type='time'
                                           />
                                         </div>
                                       </div>
 
                                       <div>
-                                        <Button type="submit">Edit Food</Button>
+                                        <Button type='submit'>Edit Food</Button>
                                       </div>
                                     </form>
                                   </div>
@@ -601,14 +601,14 @@ const AddFood = () => {
                               </Modal>
                             </div>
                             <a
-                              className="delete-icon"
+                              className='delete-icon'
                               onClick={() => {
                                 setConfirmDelete(true)
                               }}
                             >
                               <ImCross />
                             </a>
-                            <div className="modal-container">
+                            <div className='modal-container'>
                               <Modal
                                 style={{
                                   overlay: {
@@ -635,29 +635,29 @@ const AddFood = () => {
                                     padding: '20px',
                                   },
                                 }}
-                                className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+                                className='w-50 d-flex flex-column justify-content-around align-items-center add-food-modal'
                                 isOpen={confirmDelete}
                                 onRequestClose={() => {
                                   setConfirmDelete(false)
                                 }}
                               >
-                                <div className="modal-inner w-75 d-flex flex-column">
+                                <div className='modal-inner w-75 d-flex flex-column'>
                                   <a
                                     onClick={() => {
                                       setConfirmDelete(false)
                                     }}
                                   >
-                                    <i class="bx bx-x"></i>
+                                    <i class='bx bx-x'></i>
                                   </a>
                                   <h3>
                                     Are you sure you want to delete the food?
                                   </h3>
                                   <p>Select yes to delete the item</p>
                                 </div>
-                                <div className="d-flex">
+                                <div className='d-flex'>
                                   <Button
-                                    className="btn-dark m-3"
-                                    type="submit "
+                                    className='btn-dark m-3'
+                                    type='submit '
                                     onClick={() => {
                                       userService
                                         .deleteMealData(e._id)
@@ -673,8 +673,8 @@ const AddFood = () => {
                                     Yes
                                   </Button>
                                   <Button
-                                    className="m-3"
-                                    type="submit"
+                                    className='m-3'
+                                    type='submit'
                                     onClick={() => {
                                       setConfirmDelete(false)
                                     }}
