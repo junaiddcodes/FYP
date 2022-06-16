@@ -61,7 +61,7 @@ const UserDashboard = () => {
   const submitStatsForm = (data) => {
     console.log("in function");
     const height = data.feet + "." + data.inches;
-    var calorieData = calculation(userData,height,data.weight)
+    var calorieData = calculation(userData, height, data.weight);
     statsDetails = {
       ...statsDetails,
       user_id: {
@@ -78,7 +78,7 @@ const UserDashboard = () => {
       calorie_goal: calorieData.calorie,
     };
 
-    console.log(statsDetails);
+
 
     userService
       .update_user(statsDetails, userId)
@@ -115,7 +115,7 @@ const UserDashboard = () => {
     }
     return age;
   }
-  function calculation(customerDetails,height,weight) {
+  function calculation(customerDetails, height, weight) {
     var height = height / 0.032808;
     var weight = weight;
     var weight_pounds = weight * 2.205;
@@ -129,14 +129,14 @@ const UserDashboard = () => {
     var fats = 0;
     var carbs_calorie = 0;
     var carbs = 0;
-  
+
     if (gender == "male") {
       bmr = 66 + 13.7 * weight + 5 * height - (6.8 - age);
     } else {
       bmr = 65.5 + 9.6 * weight + 1.8 * height - (4.7 - age);
     }
     var TDEE = customerDetails.activity_level * bmr;
-  
+
     if (goal == "lose_weight") {
       if (goal_speed == 1) {
         calorie = TDEE - TDEE * 0.2;
@@ -158,13 +158,13 @@ const UserDashboard = () => {
       carbs_calorie = calorie - (protien * 4 + fats * 9);
       carbs = carbs_calorie / 4;
     }
-  
+
     // console.log(age)
     // console.log(protien)
     // console.log(fats)
     // console.log(carbs_calorie)
     // console.log(carbs)
-  
+
     return { calorie, protien, fats, carbs };
   }
 
@@ -315,7 +315,7 @@ const UserDashboard = () => {
                     });
                   }}
                 >
-                  Add Food
+                  Food log
                 </Button>
 
                 <Button
@@ -325,11 +325,11 @@ const UserDashboard = () => {
                     });
                   }}
                 >
-                  Add Exercise
+                  Exercise log
                 </Button>
 
                 <Link to="/user-add-water">
-                  <Button>Add Water</Button>
+                  <Button>Water log</Button>
                 </Link>
               </div>
               <div className="m-4 w-50 h-50 d-flex flex-column">

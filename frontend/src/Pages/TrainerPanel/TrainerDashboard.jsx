@@ -23,10 +23,22 @@ const TrainerDashboard = () => {
   const navigate = useNavigate();
   const userId = userService.getLoggedInUser()._id
   const [boughtPlans, setBoughtPlans] = useState([])
+  const [totalEarning, setTotalEarning] = useState([])
+  const [withdrawAmount, setWithdrawAmount] = useState([])
 
   function getTrainerSales(){
+    var totalPrice =0
+    var withdrawPrice = 0
     trainerService.get_bought_plans(userId).then((res)=>{
       setBoughtPlans(res.crud)
+      res.crud.map((e)=>{
+        totalPrice = e.price + totalPrice
+        if(e.withdraw){
+          withdrawPrice = withdrawPrice + e.price
+        }
+      })
+      setTotalEarning(totalPrice)
+      setWithdrawAmount(withdrawPrice)
       console.log(res)
     }).catch((err)=>{
       console.log(err)
@@ -54,6 +66,14 @@ const TrainerDashboard = () => {
       <TopBar />
       <SideMenuTrainer />
       <h3>Recent Plan Sales</h3>
+      <div className="admin-box mt-3">
+        <div className="user-box d-flex flex-column p-3">
+          <div className="d-flex flex-column">
+            <p className="font-weight-bold">Available to Withdraw (Rs): {withdrawAmount}</p>
+            <p className="font-weight-bold">Total Earning (Rs): {totalEarning}</p>
+          </div>
+        </div>
+      </div>
       <div className="admin-box mt-3">
         <div className="user-box d-flex flex-column p-3">
           <div className="d-flex flex-column">

@@ -77,6 +77,7 @@ const MyPlanDetails = () => {
       .postReview(tempObject)
       .then((data) => {
         console.log(data);
+        setEditModalOpen(false)
       })
       .catch((err) => {
         console.log(err);

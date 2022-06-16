@@ -15,14 +15,26 @@ import SideMenu from "../../Components/SideMenu";
 import { useNavigate } from "react-router-dom";
 import userService from "../../services/UserService";
 import trainerService from "../../services/TrainerService";
+import { ClimbingBoxLoader, BarLoader, CircleLoader } from "react-spinners";
+import { css } from "@emotion/react";
+import ClipLoader from "react-spinners/ClipLoader";
+
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+  color: blue;
+`;
 
 const SearchTrainer = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [filterOpen, setFilterOpen] = useState(false);
   const [searchResults, setSearchResults] = useState(false);
   const [isSearched, setIsSearched] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
+    setLoading(true);
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
@@ -52,6 +64,7 @@ const SearchTrainer = () => {
       .then((res) => {
         setSearchedTrainer(res.crud);
         setIsSearched(false);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -168,6 +181,11 @@ const SearchTrainer = () => {
       )}
       <div className=" mt-5">
         {isSearched ? <h2>Searched Trainers</h2> : <h2>Featured Trainers</h2>}
+        <div className="w-100 h-100 d-flex justify-content-center">
+          {loading ? (
+            <BarLoader loading={loading} color="#063be9" css={override} size={150} />
+          ) : null}
+        </div>
         <div className="gym-grid-container pb-3">
           {searchResults ? <p className="text-light w-100">Search Results not Found</p> : null}
           {searchedTrainer.map((e, key) => {
@@ -184,12 +202,19 @@ const SearchTrainer = () => {
                   <h6 className="m-1">No reviews yet</h6>
                 ) : (
                   <h6 className="m-1">
-                    Rating: {e.numReview} <span className='text-secondary'>{"("+e.countReview+")"}</span> <i class="mt-1 text-warning bx bxs-star"></i>
+                    Rating: {e.numReview}{" "}
+                    <span className="text-secondary">{"(" + e.countReview + ")"}</span>{" "}
+                    <i class="mt-1 text-warning bx bxs-star"></i>
                   </h6>
                 )}
                 <div className="d-flex m-1 mb-0">
                   <p className="text-light" style={{ fontWeight: "bold" }}>
                     Specializing in: {e.exercise_type}
+                  </p>
+                </div>
+                <div className="d-flex m-1 mb-0">
+                  <p className="text-light" style={{ fontWeight: "bold" }}>
+                    Location: {e.location?.city}, {e.location?.state}
                   </p>
                 </div>
               </div>

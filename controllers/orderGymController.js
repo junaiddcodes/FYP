@@ -98,22 +98,48 @@ const getbyUser = async (req, res) => {
   try {
     
     const { userId: crudId } = req.params;
-    const crud = await orderGymDetails.findOne({ user_id: crudId });
+    const crud = await orderGymDetails.find({ user_id: crudId });
+    var tempArr =[]
 
-
-
-    console.log(crud);
-
-    var plans = await gymDetails.findOne({
-      _id: crud.gym_id,
-    });
 
     if (!crud) {
       return res.status(404).json({ message: "item does not exist" });
     }
+
+    console.log(crud);
+
+    crud.map((e)=>{
+      tempArr.push(e.gym_id)
+    })
+
+    var plans = await gymDetails.find({
+      _id: tempArr,
+    });
+
     console.log(plans)
 
     res.status(200).json({ plans });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
+const getGymSale = async (req, res) => {
+  try {
+    const { gymId: crudId } = req.params;
+
+    const crud = await orderGymDetails.find({
+      gym_id: crudId,
+    }).populate({
+      path:"user_id",
+      model:"Customer_Details",
+      select:"user_id.full_name"
+    });
+    if (crud.length == 0) {
+      return res.status(404).json({ message: "item does not exist" });
+    } else {
+      res.status(200).json({ crud });
+    }
   } catch (error) {
     res.status(500).json({ message: error });
   }
@@ -125,7 +151,8 @@ const getbyUser = async (req, res) => {
     updateData,
     createData,
     getOrderCheck,
-    getbyUser
+    getbyUser,
+    getGymSale
   };
 
 

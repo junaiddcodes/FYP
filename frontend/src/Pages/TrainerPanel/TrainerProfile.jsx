@@ -26,7 +26,17 @@ import jwtDecode from 'jwt-decode'
 import trainerService from '../../services/TrainerService'
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
 import { Link } from 'react-router-dom'
+import { ClimbingBoxLoader, BarLoader, CircleLoader } from 'react-spinners'
+import { css } from '@emotion/react'
+import ClipLoader from 'react-spinners/ClipLoader'
+import StripeContainer from '../../Components/Stripe/StripeContainer'
 
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+  color: blue;
+`
 const trainerProfileSchema = yup.object().shape({
   full_name: yup
     .string()
@@ -37,7 +47,9 @@ const trainerProfileSchema = yup.object().shape({
   //   listed: yup.boolean(),
   exercise_type: yup.string().required("Exercise type can't be empty"),
   qualification: yup.string().required("certification can't be empty"),
-
+  state: yup.string().required(),
+  city: yup.string().required(),
+  address: yup.string().required(),
   company_name: yup
     .string()
     .min(2, 'Company name must be of at least 2 characters')
@@ -71,12 +83,14 @@ const TrainerProfile = () => {
   const [previewImage, setPreviewImage] = React.useState('')
   const [isProfile, setIsProfile] = useState(false)
   const [loggedInId, setLoggedInId] = useState('')
+  const [loading, setLoading] = useState(false)
   const [isTrainerForm, setIsTrainerForm] = useState(false)
   const [isProfilePicForm, setIsProfilePicForm] = useState(false)
   const [isAsk, setIsAsk] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [confirmDeleteX, setConfirmDeleteX] = useState(false)
   const [getCustomer, setGetCustomer] = useState('')
-  const [isListed, setIsListed] = useState('')
+  const [isListed, setIsListed] = useState('default')
   const [trainerAge, setTrainerAge] = useState(10)
   const [selectedValue, setSelectedValue] = useState(10)
   const [errorPic, setPicError] = useState(false)
@@ -105,6 +119,8 @@ const TrainerProfile = () => {
       password: '',
       user_type: 'trainer',
     },
+    location: { state: '', city: '', address: '' },
+
     exercise_type: '',
     listed: 'not-listed',
     company_name: '',
@@ -126,12 +142,21 @@ const TrainerProfile = () => {
     }
     return age
   }
+
+  function handleBuyMembership() {
+    var mem = { membership: true }
+    trainerService.update_trainer(mem, loggedInId).then((data) => {
+      console.log(data)
+      get_customer()
+    })
+  }
   const get_customer = () => {
     trainerService
       .get_one_trainer(loginId)
       .then((res) => {
         console.log(res)
         setGetCustomer(res.crud)
+
         if (res.crud.designation) {
           setIsProfile(true)
           setIsProfilePicForm(false)
@@ -140,15 +165,22 @@ const TrainerProfile = () => {
           console.log(getCustomer.dob)
           setTrainerAge(getAge(res.crud.dob))
           console.log(trainerAge)
-          if (getCustomer.listed == true) {
+          if (res.crud.listed == 'listed') {
             setIsListed('listed')
+          } else if (res.crud.listed == 'rejected') {
+            setIsListed('rejected')
           } else setIsListed('not-listed')
+
+          if (res.crud.membership && res.crud.listed == 'listed') {
+            setIsListed('default')
+          }
         } else {
           setIsAsk(true)
           setIsTrainerForm(false)
           setIsProfilePicForm(false)
           setIsProfile(false)
         }
+        setLoading(false)
       })
       .catch((err) => {
         console.log(err)
@@ -156,6 +188,7 @@ const TrainerProfile = () => {
   }
 
   useEffect(() => {
+    setLoading(true)
     // userService.getLoggedInUser();
     setLoggedInId(userService.getLoggedInUser()._id)
     loginId = userService.getLoggedInUser()._id
@@ -224,6 +257,12 @@ const TrainerProfile = () => {
         password: getCustomer.user_id.password,
         user_type: 'trainer',
       },
+      location: {
+        ...trainerProfileDetails,
+        state: data.state,
+        city: data.city,
+        address: data.address,
+      },
       exercise_type: data.exercise_type,
       // listed: "",
       company_name: data.company_name,
@@ -235,7 +274,7 @@ const TrainerProfile = () => {
       // certificate_file: "",
       // trainer_photo: "",
     }
-
+    notify()
     trainerService
       .update_trainer(trainerProfileDetails, loggedInId)
       .then((data) => {
@@ -258,7 +297,91 @@ const TrainerProfile = () => {
     <div className='page-container-gym'>
       <TopBar />
       <SideMenuTrainer />
+      {loading ? (
+        <BarLoader
+          loading={loading}
+          color='#063be9'
+          css={override}
+          size={150}
+        />
+      ) : null}
+
       <h2>Trainer Profile</h2>
+
+      {isListed == 'default' ? null : isListed == 'not-listed' ? (
+        <div className='gym-box mt-3 d-flex flex-column justify-content-start'>
+          <h4>Your Profile is Reviewing By Admin</h4>
+        </div>
+      ) : isListed == 'rejected' ? (
+        <div className='gym-box mt-3 d-flex flex-column justify-content-start'>
+          <h4>Your Profile is Rejected By Admin</h4>
+        </div>
+      ) : isListed == 'listed' ? (
+        <div className='gym-box mt-3 d-flex flex-column justify-content-start'>
+          <h4>
+            You Have Been Approved by Admin. For Become a Trainer You need to
+            pay one Time Fee of Rs 1000.
+          </h4>
+          <div>
+            <div className='modal-container'>
+              <Modal
+                style={{
+                  overlay: {
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+
+                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                  },
+                  content: {
+                    color: 'white',
+                    position: 'absolute',
+                    top: '40px',
+                    left: '40px',
+                    right: '40px',
+                    bottom: '40px',
+                    background: 'rgba(0,30,60,1)',
+                    overflow: 'auto',
+                    WebkitOverflowScrolling: 'touch',
+                    borderRadius: '1rem',
+                    outline: 'none',
+                    padding: '20px',
+                  },
+                }}
+                className='modal-x w-50 d-flex flex-column justify-content-around align-items-center add-food-modal'
+                isOpen={confirmDeleteX}
+                onRequestClose={() => {
+                  setConfirmDeleteX(false)
+                }}
+              >
+                <div className='modal-inner w-75 d-flex flex-column'>
+                  <a
+                    onClick={() => {
+                      setConfirmDeleteX(false)
+                    }}
+                  >
+                    <i class='bx bx-x'></i>
+                  </a>
+                  <StripeContainer
+                    amount={1000}
+                    action={handleBuyMembership}
+                    description='Trainer Listing Fees'
+                  />
+                </div>
+              </Modal>
+            </div>
+            <Button
+              className='w-50 m-3'
+              onClick={() => setConfirmDeleteX(true)}
+            >
+              Get Listed
+            </Button>
+          </div>
+        </div>
+      ) : null}
+
       {isAsk ? (
         <div className='gym-box mt-3 d-flex flex-column justify-content-start'>
           <h4>
@@ -301,8 +424,32 @@ const TrainerProfile = () => {
                     {...controlTrainerProfile('full_name')}
                     defaultValue={getCustomer.user_id.full_name}
                   />
-
                   <p>{errorsTrainerProfile.full_name?.message}</p>
+                  <label for=''>Gym Location</label>
+                  <label for=''>State</label>
+                  <input
+                    type='text'
+                    name='state'
+                    defaultValue={getCustomer.location?.state}
+                    {...controlTrainerProfile('state')}
+                  />
+                  <p>{errorsTrainerProfile.state?.message}</p>
+                  <label for=''>City</label>
+                  <input
+                    type='text'
+                    name='city'
+                    defaultValue={getCustomer.location?.city}
+                    {...controlTrainerProfile('city')}
+                  />
+                  <p>{errorsTrainerProfile.city?.message}</p>
+                  <label for=''>Address</label>
+                  <input
+                    type='text'
+                    name='address'
+                    defaultValue={getCustomer.location?.address}
+                    {...controlTrainerProfile('address')}
+                  />
+                  <p>{errorsTrainerProfile.address?.message}</p>
                   <label for='fname'>Select your exercise type</label>
                   <FormControl className='m-3 w-100 dropdown-trainer'>
                     <Select
@@ -480,6 +627,11 @@ const TrainerProfile = () => {
                   <h4>Name: {getCustomer.user_id.full_name}</h4>
                   <h4>Age: {trainerAge}</h4>
                   <h4>Gender: {getCustomer.gender}</h4>
+                  <h4>
+                    {' '}
+                    Location: {getCustomer.location?.address},{' '}
+                    {getCustomer.location?.city}, {getCustomer.location?.state}{' '}
+                  </h4>
                   <h4>Status: {getCustomer.listed}</h4>
                 </div>
               </div>
@@ -571,11 +723,12 @@ const TrainerProfile = () => {
                             certificate_file: '',
                             trainer_photo: '',
                           }
-
+                          notify()
                           trainerService
                             .update_trainer(trainerProfileDetails, loggedInId)
                             .then((data) => {
                               console.log(data)
+                              setIsListed('default')
                             })
                             .catch((err) => {
                               console.log(err)

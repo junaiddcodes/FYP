@@ -147,6 +147,10 @@ const getOrderbyPlan = async (req, res) => {
     const { planId: crudId } = req.params;
     const crud = await orderDetails.find({
       plan_id: crudId,
+    }).populate({
+      path:"user_id",
+      model:"Customer_Details",
+      select:"user_id.full_name"
     });
     if (crud.length == 0) {
       return res.status(404).json({ message: "item does not exist" });
@@ -181,6 +185,10 @@ const getTrainersSale = async (req, res) => {
 
     const crud = await orderDetails.find({
       trainer_id: crudId,
+    }).populate({
+      path:"user_id",
+      model:"Customer_Details",
+      select:"user_id.full_name"
     });
     if (crud.length == 0) {
       return res.status(404).json({ message: "item does not exist" });

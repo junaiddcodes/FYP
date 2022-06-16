@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { GoogleMap, useLoadScript, Marker, Autocomplete } from "@react-google-maps/api";
 
+import useGeoLocation from "../custom-hooks/useGeoLocation";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import Modal from "react-modal";
@@ -26,7 +28,18 @@ import jwtDecode from "jwt-decode";
 import gymService from "../../services/GymService";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Link } from "react-router-dom";
+import { ClimbingBoxLoader, BarLoader, CircleLoader } from "react-spinners";
+import { css } from "@emotion/react";
+import ClipLoader from "react-spinners/ClipLoader";
+import moment from "moment";
+import StripeContainer from "../../Components/Stripe/StripeContainer";
 
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+  color: blue;
+`;
 const gymProfileSchema = yup.object().shape({
   full_name: yup
     .string()
@@ -52,16 +65,30 @@ const gymProfileSchema = yup.object().shape({
     .max(50000, "Price should not be more than Rs 50,000")
     .min(1000, "Price should not be less than Rs 1,000")
     .required("Gym membership price is required!"),
+  latitude: yup.number().typeError("Latitude is required!").required("Latitude is required!"),
+  longitude: yup
+    .number()
+    .typeError("Longitude is required!")
+    .positive()
+
+    .max(78, "Longitude can not be more than 78")
+    .min(60, "Longitude can not be less than 60")
+    .required("Longitude is required!"),
 
   gender_facilitation: yup.string().required("Gender facilitation can't be empty"),
   gym_photo: yup.string(),
 });
 
 const GymProfile = () => {
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: "AIzaSyBdLc31kclLs_2r72Uh0G88vBfYConu4BU",
+    libraries: ["places"],
+  });
   const navigate = useNavigate();
   const [fileName1, setFileName] = React.useState([]);
   const [previewImage, setPreviewImage] = React.useState([]);
-
+  const [mapError, setMapError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [isProfile, setIsProfile] = useState(false);
   const [isAsk, setIsAsk] = useState(false);
   // const [male, setMale] = useState(false);
@@ -71,22 +98,26 @@ const GymProfile = () => {
   const [isGymForm, setIsGymForm] = useState(false);
   const [gymPhotos, setGymPhotos] = useState([]);
   const [isGymPicForm, setIsGymPicForm] = useState(false);
-  const [isListed, setIsListed] = useState("");
+  const [isListed, setIsListed] = useState("default");
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [loggedInId, setLoggedInId] = useState("");
   const [file, setFile] = useState(null);
   const [errorPic, setPicError] = useState(false);
+  const [boughtPlans, setBoughtPlans] = useState([]);
+  const location = useGeoLocation();
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
+  const [confirmDeleteX, setConfirmDeleteX] = useState(false);
 
   var loginId = "";
 
   var gymProfileDetails = {
     user_id: {
       full_name: "",
-      email: "",
-      password: "",
       user_type: "trainer",
     },
     location: { state: "", city: "", address: "" },
+    coordinates: { lat: "", long: "" },
     gym_desc: "",
     gym_contact_no: "",
     gym_membership_price: "",
@@ -94,6 +125,26 @@ const GymProfile = () => {
     gym_photo: "photo",
     listed: "not-listed",
   };
+
+  function handleBuyMembership() {
+    var mem = { membership: true };
+    gymService.update_gym(mem, loggedInId).then((data) => {
+      console.log(data);
+      get_gym();
+    });
+  }
+
+  function getGymSales() {
+    gymService
+      .get_gym_membership(loginId)
+      .then((res) => {
+        setBoughtPlans(res.crud);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   const get_gym = () => {
     gymService
@@ -109,15 +160,22 @@ const GymProfile = () => {
           setIsGymPicForm(false);
           setIsAsk(false);
           setIsGymForm(false);
-          if (getGym.listed == true) {
+          if (res.crud.listed == "listed") {
             setIsListed("listed");
+          } else if (res.crud.listed == "rejected") {
+            setIsListed("rejected");
           } else setIsListed("not-listed");
+
+          if (res.crud.membership && res.crud.listed == "listed") {
+            setIsListed("default");
+          }
         } else {
           setIsAsk(true);
           setIsGymForm(false);
           setIsGymPicForm(false);
           setIsProfile(false);
         }
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -125,6 +183,7 @@ const GymProfile = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     if (userService.isLoggedIn() == false) {
       navigate("/login");
     } else {
@@ -139,6 +198,7 @@ const GymProfile = () => {
       }
     }
     get_gym();
+    getGymSales();
     // if (getGym.gender_facilitation == "male") {
     //   setMale(true);
     // }
@@ -149,8 +209,6 @@ const GymProfile = () => {
     //   setBoth(true);
     // }
   }, [loginId]);
-
-  const onChangeFile = (e) => {};
 
   const changeOnClick = (e) => {
     e.preventDefault();
@@ -200,7 +258,7 @@ const GymProfile = () => {
   };
 
   const submitGymProfileForm = (data) => {
-    // console.log("aaaaaaa");
+    console.log("hello");
     // setStep3(false);
     // setStep4(true);
     // setTrainerDetails({ ...trainerDetails, weekly_goal: data.weekly_goal });
@@ -221,6 +279,10 @@ const GymProfile = () => {
         state: data.state,
         city: data.city,
         address: data.address,
+      },
+      coordinates: {
+        lat: latitude,
+        long: longitude,
       },
       gym_desc: data.gym_desc,
       gym_contact_no: data.gym_contact_no,
@@ -248,8 +310,117 @@ const GymProfile = () => {
     <div className="page-container-gym">
       <TopBar />
       <SideMenuGym />
+      {loading ? <BarLoader loading={loading} color="#063be9" css={override} size={150} /> : null}
+
+      <h3>Customer Name</h3>
+      <div className="admin-box mt-3">
+        <div className="user-box d-flex flex-column p-3">
+          <div className="d-flex flex-column">
+            <div class="table-wrapper-scroll-y my-custom-scrollbar">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Membership ID</th>
+                    <th>Activity Plan Title</th>
+                    <th>Earnings (Rs)</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {boughtPlans.length == 0 ? (
+                    <tr>
+                      <td>There are no Sales for now</td>
+                    </tr>
+                  ) : (
+                    boughtPlans.map((e, key) => {
+                      return (
+                        <tr key={key}>
+                          <td>{e._id}</td>
+                          <td>{e.user_id.user_id.full_name}</td>
+                          <td>{e.price}</td>
+                          <td>{moment(e.time_date).format("DD/MM/YYYY")}</td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <h2>Gym Profile</h2>
+      {isListed == "default" ? null : isListed == "not-listed" ? (
+        <div className="gym-box mt-3 d-flex flex-column justify-content-start">
+          <h4>Your Profile is Reviewing By Admin</h4>
+        </div>
+      ) : isListed == "rejected" ? (
+        <div className="gym-box mt-3 d-flex flex-column justify-content-start">
+          <h4>Your Profile is Rejected By Admin</h4>
+        </div>
+      ) : isListed == "listed" ? (
+        <div className="gym-box mt-3 d-flex flex-column justify-content-start">
+          <h4>
+            You Have Been Approved by Admin. For Become a Trainer You need to pay one Time Fee of Rs
+            1000.
+          </h4>
+          <div>
+            <div className="modal-container">
+              <Modal
+                style={{
+                  overlay: {
+                    position: "fixed",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+
+                    backgroundColor: "rgba(0, 0, 0, 0.75)",
+                  },
+                  content: {
+                    color: "white",
+                    position: "absolute",
+                    top: "40px",
+                    left: "40px",
+                    right: "40px",
+                    bottom: "40px",
+                    background: "rgba(0,30,60,1)",
+                    overflow: "auto",
+                    WebkitOverflowScrolling: "touch",
+                    borderRadius: "1rem",
+                    outline: "none",
+                    padding: "20px",
+                  },
+                }}
+                className="modal-x w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+                isOpen={confirmDeleteX}
+                onRequestClose={() => {
+                  setConfirmDeleteX(false);
+                }}
+              >
+                <div className="modal-inner w-75 d-flex flex-column">
+                  <a
+                    onClick={() => {
+                      setConfirmDeleteX(false);
+                    }}
+                  >
+                    <i class="bx bx-x"></i>
+                  </a>
+                  <StripeContainer
+                    amount={1000}
+                    action={handleBuyMembership}
+                    description="Trainer Listing Fees"
+                  />
+                </div>
+              </Modal>
+            </div>
+            <Button className="w-50 m-3" onClick={() => setConfirmDeleteX(true)}>
+              Get Listed
+            </Button>
+          </div>
+        </div>
+      ) : null}
       {isAsk ? (
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
           <h4>There is no profile present. Click below to create a gym profile:</h4>
@@ -279,18 +450,55 @@ const GymProfile = () => {
               className="d-flex flex-column"
             >
               <div className="input-text d-flex flex-column">
+                <label className="mb-2">Choose gym location on map</label>
+                <GoogleMap
+                  zoom={12}
+                  // styles={{ width: "70%", height: "40%" }}
+                  onClick={(e) => {
+                    setLatitude(e.latLng.lat());
+                    setLongitude(e.latLng.lng());
+                    let lati = e.latLng.lat();
+                    let lngi = e.latLng.lat();
+                    console.log(lati, lngi);
+                  }}
+                  center={{ lat: location.coordinates.lat, lng: location.coordinates.lng }}
+                  mapContainerClassName="map-container-gym"
+                >
+                  {/* <Marker
+                    position={{ lat: location.coordinates.lat, lng: location.coordinates.lng }}
+                  /> */}
+                  <Marker position={{ lat: latitude, lng: longitude }} />
+                </GoogleMap>
+                {/* {mapError ? <p>{mapError}</p> : null} */}
                 {/* <p>{gymProfileDetails.user_id.full_name}</p> */}
                 {/* <p>{gymProfileDetails.location}</p> */}
                 {/* <p>{loggedInId}</p> */}
-                <label>Your Name</label>
+                {/* <label>Or enter manually</label>
+                <label>Latitude</label>
                 <input
-                  type="text"
+                  type="number"
                   id=""
-                  name="full_name"
-                  {...controlGymProfile("full_name")}
-                  defaultValue={getGym.user_id.full_name}
+                  name="latitude"
+                  {...controlGymProfile("latitude")}
+                  defaultValue={latitude}
+                  // onChange={(e) => {
+                  //   setLatitude(e.target.value);
+                  // }}
                 />
-                <p>{errorsGymProfile.full_name?.message}</p>
+                <p>{errorsGymProfile.latitude?.message}</p>
+                <label>Longitude</label>
+                <input
+                  type="number"
+                  id=""
+                  name="longitude"
+                  {...controlGymProfile("longitude")}
+                  value={longitude}
+                  // onChange={(e) => {
+                  //   setLongitude(e.target.value);
+                  // }}
+                />
+                <p>{errorsGymProfile.longitude?.message}</p> */}
+
                 <label for="">Gym Location</label>
                 <label for="">State</label>
                 <input
@@ -299,16 +507,20 @@ const GymProfile = () => {
                   defaultValue={getGym.location?.state}
                   {...controlGymProfile("state")}
                 />
+
                 <p>{errorsGymProfile.state?.message}</p>
                 <label for="">City</label>
+
                 <input
                   type="text"
                   name="city"
                   defaultValue={getGym.location?.city}
                   {...controlGymProfile("city")}
                 />
+
                 <p>{errorsGymProfile.city?.message}</p>
                 <label for="">Address</label>
+
                 <input
                   type="text"
                   name="address"
@@ -317,6 +529,15 @@ const GymProfile = () => {
                 />
                 <p>{errorsGymProfile.address?.message}</p>
 
+                <label>Gym Name</label>
+                <input
+                  type="text"
+                  id=""
+                  name="full_name"
+                  {...controlGymProfile("full_name")}
+                  defaultValue={getGym.user_id.full_name}
+                />
+                <p>{errorsGymProfile.full_name?.message}</p>
                 <label for="">Gym Contact Number</label>
                 <input
                   type="text"

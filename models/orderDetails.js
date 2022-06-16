@@ -9,7 +9,8 @@ var orderShema = mongoose.Schema({
     price: Number,
     time_date: Date,
     review: Number,
-    review_comment: String
+    review_comment: String,
+    withdraw: Boolean
   });
 
 
@@ -24,7 +25,8 @@ var orderShema = mongoose.Schema({
       price: Joi.number(),
       time_date: Joi.date(),
       review: Joi.number(),
-      review_comment: Joi.string()
+      review_comment: Joi.string(),
+      withdraw: Joi.boolean()
     });
     return schema.validate(data);
   }
