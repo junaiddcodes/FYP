@@ -8,7 +8,6 @@ import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
 import TopBar from '../../Components/TopBar'
 import SideMenu from '../../Components/SideMenu'
-import { func } from 'joi'
 import userService from '../../services/UserService'
 import { useNavigate } from 'react-router-dom'
 import { getAccordionDetailsUtilityClass, TextField } from '@mui/material'
@@ -28,6 +27,8 @@ const AddWater = () => {
   const [modalOpen, setModalOpen] = useState(false)
   const [editModalOpen, setEditModalOpen] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [deleteId, setDeleteId] = useState('')
+
   const navigate = useNavigate()
   const Edited = () => {
     // Calling toast method by passing string
@@ -259,6 +260,7 @@ const AddWater = () => {
                               className='delete-icon'
                               onClick={() => {
                                 setConfirmDelete(true)
+                                setDeleteId(e._id)
                               }}
                             >
                               <ImCross />
@@ -314,7 +316,7 @@ const AddWater = () => {
                                     className='btn-dark m-3'
                                     type='submit '
                                     onClick={() => {
-                                      deleteWater(e._id)
+                                      deleteWater(deleteId)
                                       Delete()
                                     }}
                                   >

@@ -15,15 +15,26 @@ import SideMenu from "../../Components/SideMenu";
 import { useNavigate, useLocation } from "react-router-dom";
 import userService from "../../services/UserService";
 import trainerService from "../../services/TrainerService";
+import { ClimbingBoxLoader, BarLoader, CircleLoader } from "react-spinners";
+import { css } from "@emotion/react";
+import ClipLoader from "react-spinners/ClipLoader";
 
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+  color: blue;
+`;
 const ActivityPlans = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [allPlans, setAllPlans] = useState([]);
+  const [loading, setLoading] = useState([]);
   var name = "";
   // const data = location.state.e;
   var userId = "";
   useEffect(() => {
+    setLoading(true);
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
     // console.log(localStorage.getItem("token"));
@@ -49,6 +60,7 @@ const ActivityPlans = () => {
         .then((data) => {
           console.log("plan data = ", data);
           setAllPlans(data.crud);
+          setLoading(false);
         })
         .catch((err) => {
           console.log(err);
@@ -65,15 +77,15 @@ const ActivityPlans = () => {
       <Button
         className="m-2"
         onClick={() => {
-          navigate(-1)
+          navigate(-1);
         }}
       >
         <i class="bx bx-arrow-back m-1"></i> Back
       </Button>
-      <h2>
-        Activity Plans by {location.state.trainerDetails.user_id.full_name}
-      </h2>
+      <h2>Activity Plans by {location.state.trainerDetails.user_id.full_name}</h2>
       <div className=" mt-5">
+        {loading ? <BarLoader loading={loading} color="#063be9" css={override} size={150} /> : null}
+
         {allPlans.length == 0 ? (
           <h2>No plans</h2>
         ) : (
@@ -82,7 +94,7 @@ const ActivityPlans = () => {
               <div
                 key={index}
                 onClick={() => {
-                  navigate('/activity-plan-details', { state: { e, name } })
+                  navigate("/activity-plan-details", { state: { e, name } });
                 }}
                 className="activity-grid-container d-flex flex-container m-3"
               >

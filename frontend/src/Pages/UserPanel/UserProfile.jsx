@@ -24,6 +24,16 @@ import jwtDecode from "jwt-decode";
 import trainerService from "../../services/TrainerService";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Link } from "react-router-dom";
+import { ClimbingBoxLoader, BarLoader, CircleLoader } from "react-spinners";
+import { css } from "@emotion/react";
+import ClipLoader from "react-spinners/ClipLoader";
+
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+  color: blue;
+`;
 
 const UserProfileSchema = yup.object().shape({
   full_name: yup
@@ -33,7 +43,14 @@ const UserProfileSchema = yup.object().shape({
     .required("Name is required"),
 
   weight: yup.number().positive().required().nullable(),
-  feet: yup.number().typeError("feet is required").min(4).max(8).positive().required().nullable(),
+  feet: yup
+    .number()
+    .typeError("feet is required")
+    .min(4)
+    .max(8)
+    .positive()
+    .required()
+    .nullable(),
   inches: yup
     .number()
     .typeError("inches are required")
@@ -70,6 +87,8 @@ const UserProfile = () => {
   const [trainerAge, setTrainerAge] = useState(10);
   const [selectedValue, setSelectedValue] = useState(10);
   const [inches, setInches] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const [feet, setFeet] = useState("");
   var trainersAge = "";
   var loginId = "";
@@ -104,6 +123,68 @@ const UserProfile = () => {
     }
     return age;
   }
+  function getAge(dateString) {
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  }
+  function calculation(customerDetails) {
+    var height = customerDetails.height / 0.032808;
+    var weight = customerDetails.weight;
+    var weight_pounds = weight * 2.205;
+    var age = getAge(getCustomer.dob);
+    var gender = getCustomer.gender;
+    var goal = customerDetails.weight_goal;
+    var goal_speed = customerDetails.weekly_goal;
+    var bmr = 0;
+    var calorie = 0;
+    var protien = 0;
+    var fats = 0;
+    var carbs_calorie = 0;
+    var carbs = 0;
+
+    if (gender == "male") {
+      bmr = 66 + 13.7 * weight + 5 * height - (6.8 - age);
+    } else {
+      bmr = 65.5 + 9.6 * weight + 1.8 * height - (4.7 - age);
+    }
+    var TDEE = customerDetails.activity_level * bmr;
+
+    if (goal == "lose_weight") {
+      if (goal_speed == 1) {
+        calorie = TDEE - TDEE * 0.2;
+      } else if (goal_speed == 0.5) {
+        calorie = TDEE - TDEE * 0.1;
+      }
+      protien = weight_pounds;
+      fats = weight_pounds / 2;
+      carbs_calorie = calorie - (protien * 4 + fats * 9);
+      carbs = carbs_calorie / 4;
+    } else {
+      if (goal_speed == 1) {
+        calorie = TDEE + TDEE * 0.2;
+      } else if (goal_speed == 0.5) {
+        calorie = TDEE + TDEE * 0.1;
+      }
+      protien = weight_pounds;
+      fats = weight_pounds / 2;
+      carbs_calorie = calorie - (protien * 4 + fats * 9);
+      carbs = carbs_calorie / 4;
+    }
+
+    // console.log(age)
+    // console.log(protien)
+    // console.log(fats)
+    // console.log(carbs_calorie)
+    // console.log(carbs)
+
+    return { calorie, protien, fats, carbs };
+  }
   const get_customer = () => {
     userService
       .getoneUser(loginId)
@@ -125,6 +206,7 @@ const UserProfile = () => {
 
           setIsProfile(false);
         }
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -132,6 +214,7 @@ const UserProfile = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     // userService.getLoggedInUser();
     setLoggedInId(userService.getLoggedInUser()._id);
     loginId = userService.getLoggedInUser()._id;
@@ -162,6 +245,7 @@ const UserProfile = () => {
   });
 
   const submitUserProfileForm = (data) => {
+    const height = data.feet + "." + data.inches;
     // console.log("aaaaaaa");
     // setStep3(false);
     // setStep4(true);
@@ -178,7 +262,7 @@ const UserProfile = () => {
         password: getCustomer.user_id.password,
       },
       weight: data.weight,
-      height: data.height,
+      height: height,
       activity_level: data.activity_level,
       weight_goal: data.weight_goal,
       weekly_goal: data.weekly_goal,
@@ -186,8 +270,14 @@ const UserProfile = () => {
       // trainer_photo: "",
     };
 
-    console.log(userProfileDetails);
-    console.log("before update");
+    var calorieData = calculation(userProfileDetails);
+
+    userProfileDetails.protein= calorieData.protien
+    userProfileDetails.carbs= calorieData.carbs
+    userProfileDetails.fats= calorieData.fats
+    userProfileDetails.calorie_goal= calorieData.calorie
+
+    
     userService
       .update_user(userProfileDetails, loggedInId)
       .then((data) => {
@@ -200,8 +290,6 @@ const UserProfile = () => {
         console.log(err);
       });
 
-    console.log(userProfileDetails);
-    console.log("after request");
   };
   const handleChange = (e) => {
     setSelectedValue(e.value);
@@ -210,11 +298,21 @@ const UserProfile = () => {
     <div className="page-container-gym">
       <TopBar />
       <SideMenu />
-
+      {loading ? (
+        <BarLoader
+          loading={loading}
+          color="#063be9"
+          css={override}
+          size={150}
+        />
+      ) : null}
       <h2>User Profile</h2>
       {isAsk ? (
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
-          <h4>There is no profile present. Click below to create a trainer profile:</h4>
+          <h4>
+            There is no profile present. Click below to create a trainer
+            profile:
+          </h4>
           <Button
             className="w-25 mt-4"
             onClick={() => {
@@ -317,12 +415,16 @@ const UserProfile = () => {
                     >
                       <MenuItem value="1.2" className="d-flex flex-column">
                         <h4>Not Very Active</h4>
-                        <p>Spend most of the day sitting ( e.g. bank teller, desk job) </p>
+                        <p>
+                          Spend most of the day sitting ( e.g. bank teller, desk
+                          job){" "}
+                        </p>
                       </MenuItem>
                       <MenuItem value="1.375" className="d-flex flex-column">
                         <h4>Lightly Active</h4>
                         <p>
-                          Spend a good part of your day on your feet ( e.g. teacher, salesperson )
+                          Spend a good part of your day on your feet ( e.g.
+                          teacher, salesperson )
                         </p>
                       </MenuItem>
                       <MenuItem value="1.55" className="d-flex flex-column">
@@ -330,16 +432,16 @@ const UserProfile = () => {
                         <h4>Active</h4>
                         <p>
                           {" "}
-                          Spend a good part of your day doing some physical activity ( e.g. food
-                          server, postal carrier )
+                          Spend a good part of your day doing some physical
+                          activity ( e.g. food server, postal carrier )
                         </p>
                       </MenuItem>
                       <MenuItem value="1.725" className="d-flex flex-column">
                         {" "}
                         <h4>Very Active</h4>
                         <p>
-                          Spend a good part of the day doing heavy physical activity ( e.g. bike
-                          messenger, carpenter )
+                          Spend a good part of the day doing heavy physical
+                          activity ( e.g. bike messenger, carpenter )
                         </p>
                       </MenuItem>
                     </Select>
@@ -372,8 +474,12 @@ const UserProfile = () => {
                       {...controlUserProfile("weekly_goal")}
                       defaultValue={getCustomer.weekly_goal}
                     >
-                      <MenuItem value="0.5">gain / lose 0.5 pound per week</MenuItem>
-                      <MenuItem value="1">gain / lose 1 pound per week</MenuItem>
+                      <MenuItem value="0.5">
+                        gain / lose 0.5 pound per week
+                      </MenuItem>
+                      <MenuItem value="1">
+                        gain / lose 1 pound per week
+                      </MenuItem>
                     </Select>
                   </FormControl>{" "}
                 </div>
@@ -448,7 +554,9 @@ const UserProfile = () => {
             </h4>
             <h4>
               Weight goal:{" "}
-              {getCustomer.weight_goal == "gain_weight" ? " Gain weight" : "Lose weight  "}
+              {getCustomer.weight_goal == "gain_weight"
+                ? " Gain weight"
+                : "Lose weight  "}
             </h4>
             <h4>
               Weekly goal:{" "}

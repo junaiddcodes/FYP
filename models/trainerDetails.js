@@ -22,6 +22,7 @@ var trainerDetailsSchema = mongoose.Schema({
 
   trainer_photo: String,
   cloudinary_id: String,
+  membership: Boolean
 })
 
 var trainerDetails = mongoose.model('Trainer_Details', trainerDetailsSchema)
@@ -54,6 +55,7 @@ function validateTrainer(data) {
     },
     trainer_photo: Joi.string(),
     cloudinary_id: Joi.string(),
+    membership: Joi.boolean()
   })
   return schema.validate(data)
 }

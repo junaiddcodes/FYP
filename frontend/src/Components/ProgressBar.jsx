@@ -17,7 +17,7 @@ const Progress = ({ done }) => {
       <div className="progress">
         <div
           className={`progress-done ${
-            done <= 20
+            done <= 20 || done > 105
               ? "red-bar"
               : done >= 20 && done <= 60
               ? "yellow-bar"

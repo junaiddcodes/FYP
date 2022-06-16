@@ -121,7 +121,7 @@ const ActivityPlanDetails = () => {
       .then((data) => {
         console.log(data);
         console.log("plan bought");
-        checkPlan()
+        checkPlan();
         setConfirmDelete(false);
         order.plan_id = location.state.e._id;
         order.user_id = userId;
@@ -208,7 +208,10 @@ const ActivityPlanDetails = () => {
                     <h4>Description: </h4>
                     <p> {data.plan_desc}</p>
                     {showItem ? (
-                      <Button className="w-25 m-3" onClick={() => setConfirmDelete(true)}>
+                      <Button
+                        className="w-25 m-3"
+                        onClick={() => setConfirmDelete(true)}
+                      >
                         Buy plan
                       </Button>
                     ) : (
@@ -224,23 +227,26 @@ const ActivityPlanDetails = () => {
 
       <h2 className="mt-3"> Reviews</h2>
       <div className="trainer-desc mt-3 d-flex flex-column p-4">
-        {!allPlans ? (
+        {allPlans.length === 0 ? (
           <p>Not reviewed Yet</p>
         ) : (
           allPlans.map((e, key) => {
             return e.review ? (
               <div key={key}>
-                <div className="text-light">
-                  <i class="bx bxs-star mr-2 text-warning"></i>
-                  <span> {e.review} </span>
+                <div className="text-light d-flex align-items-center">
+                  <div>
+                    <i class="bx bxs-star mr-2 text-warning"></i>
+                    <span> {e.review} </span>
+                  </div>
+                  <div>
+                    <p className="font-weight-bold">{e.user_id.user_id.full_name}</p>
+                  </div>
                 </div>
                 <div>
                   <p>{e.review_comment}</p>
                 </div>
               </div>
-            ) : (
-              null
-            );
+            ) : null;
           })
         )}
       </div>

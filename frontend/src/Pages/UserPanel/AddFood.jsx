@@ -23,6 +23,7 @@ const AddFood = () => {
   const [foodCheck, setFoodCheck] = useState(true)
   const [showEdit, setShowEdit] = useState(false)
   const [editMealId, setEditMealId] = useState('')
+  const [deleteId, setDeleteId]=useState('')
   const location = useLocation()
   var [currentCalorie, setCurrentCalorie] = useState({
     food_calories: 0,
@@ -604,6 +605,7 @@ const AddFood = () => {
                               className='delete-icon'
                               onClick={() => {
                                 setConfirmDelete(true)
+                                setDeleteId(e._id)
                               }}
                             >
                               <ImCross />
@@ -660,7 +662,7 @@ const AddFood = () => {
                                     type='submit '
                                     onClick={() => {
                                       userService
-                                        .deleteMealData(e._id)
+                                        .deleteMealData(deleteId)
                                         .then(() => {
                                           console.log('Meal is Deleted')
                                           getMealData()

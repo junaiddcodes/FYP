@@ -80,7 +80,6 @@ const TrainerDescription = () => {
     console.log(convo)
     userService.createConvo(convo).then((data) => {
       console.log(data)
-      Add()
     })
     navigate('/Messenger')
   }
@@ -113,6 +112,11 @@ const TrainerDescription = () => {
                 <h4>Age: {getAge(trainerDetails.dob)}</h4>
                 <h4>Gender: {trainerDetails.gender}</h4>
                 <h4>
+                  Location: {trainerDetails.location?.address},{' '}
+                  {trainerDetails.location?.city},{' '}
+                  {trainerDetails.location?.state}
+                </h4>
+                <h4>
                   {!trainerDetails.numReview ? (
                     <h6 className='m-1'>No reviews yet</h6>
                   ) : (
@@ -132,6 +136,7 @@ const TrainerDescription = () => {
                 className='mt-5'
                 onClick={() => {
                   createConversation()
+                  Add()
                 }}
               >
                 Message
