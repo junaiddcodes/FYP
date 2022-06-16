@@ -69,13 +69,13 @@ const SideMenu = () => {
             </i>
           </NavLink>
         </li>
-        <li>
+        {/* <li>
           <NavLink to='/query' activeClassName='active'>
             <i class='bx bx-question-mark'>
               <span className='links_name'>Query</span>
             </i>
           </NavLink>
-        </li>
+        </li> */}
         {/* <li>
           <NavLink to="/activity-plans">
             <i class="bx bx-run">
