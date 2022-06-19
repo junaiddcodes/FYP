@@ -17,7 +17,7 @@ import gymService from "../../services/GymService";
 import { ClimbingBoxLoader, BarLoader, CircleLoader } from "react-spinners";
 import { css } from "@emotion/react";
 import ClipLoader from "react-spinners/ClipLoader";
-import pakCities from "../../Data/pakCities"
+import pakCities from "../../Data/pakCities";
 
 const override = css`
   display: block;
@@ -82,7 +82,7 @@ const SearchGym = () => {
       // console.log("log in first");
     }
 
-    console.log(pakCities)
+    console.log(pakCities);
 
     getFeatureGyms();
   }, []);
@@ -137,11 +137,12 @@ const SearchGym = () => {
                 setSearchGym({ ...searchGym, city: e.target.value });
               }}
             >
-              {pakCities.map((e,key)=>{
-                return(
-                  <MenuItem key={key} value={e.name}>{e.name}</MenuItem>
-
-                )
+              {pakCities.map((e, key) => {
+                return (
+                  <MenuItem key={key} value={e.name}>
+                    {e.name}
+                  </MenuItem>
+                );
               })}
               {/* <MenuItem value="Islamabad">Islamabad</MenuItem>
               <MenuItem value="Lahore">Lahore</MenuItem>
@@ -167,7 +168,12 @@ const SearchGym = () => {
             </Select>
           </FormControl>
           <Tooltip title="Use your current location">
-            <button className="location-btn">
+            <button
+              className="location-btn"
+              onClick={() => {
+                navigate("/nearby-gyms");
+              }}
+            >
               <MdMyLocation className="location-icon" />
             </button>
           </Tooltip>
@@ -200,20 +206,16 @@ const SearchGym = () => {
               >
                 <img src={e.gym_photos[0]?.photo_url} alt="" height="250" />
                 <h4 className="m-1">{e.user_id.full_name}</h4>
-                <h6 className="m-1">
-                  Membership price: {e.gym_membership_price} PKR
-                </h6>
+                <h6 className="m-1">Membership price: {e.gym_membership_price} PKR</h6>
                 {!e.numReviews ? (
                   <h6 className="m-1">No reviews yet</h6>
                 ) : (
                   <h6 className="m-1">
                     <i class="mt-1 text-warning bx bxs-star"></i> {e.rating}{" "}
-                    <span className="text-secondary">
-                      ({e.numReviews})
-                    </span>{" "}
-                    
+                    <span className="text-secondary">({e.numReviews})</span>{" "}
                   </h6>
                 )}
+
                 {/* <h6 className="m-1">
                   Rating: 4 <i class="mt-1 text-warning bx bxs-star"></i>
                 </h6> */}

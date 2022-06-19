@@ -41,11 +41,11 @@ const override = css`
   color: blue;
 `;
 const gymProfileSchema = yup.object().shape({
-  full_name: yup
-    .string()
-    .min(3, "Name must be of at least 3 characters")
-    .max(30, "Name must be of at most 30 characters")
-    .required("Name is required"),
+  // full_name: yup
+  //   .string()
+  //   .min(3, "Name must be of at least 3 characters")
+  //   .max(30, "Name must be of at most 30 characters")
+  //   .required("Name is required"),
   state: yup.string().required(),
   city: yup.string().required(),
   address: yup.string().required(),
@@ -65,15 +65,15 @@ const gymProfileSchema = yup.object().shape({
     .max(50000, "Price should not be more than Rs 50,000")
     .min(1000, "Price should not be less than Rs 1,000")
     .required("Gym membership price is required!"),
-  latitude: yup.number().typeError("Latitude is required!").required("Latitude is required!"),
-  longitude: yup
-    .number()
-    .typeError("Longitude is required!")
-    .positive()
+  // latitude: yup.number().typeError("Latitude is required!").required("Latitude is required!"),
+  // longitude: yup
+  //   .number()
+  //   .typeError("Longitude is required!")
+  //   .positive()
 
-    .max(78, "Longitude can not be more than 78")
-    .min(60, "Longitude can not be less than 60")
-    .required("Longitude is required!"),
+  //   .max(78, "Longitude can not be more than 78")
+  //   .min(60, "Longitude can not be less than 60")
+  //   .required("Longitude is required!"),
 
   gender_facilitation: yup.string().required("Gender facilitation can't be empty"),
   gym_photo: yup.string(),
@@ -82,7 +82,6 @@ const gymProfileSchema = yup.object().shape({
 const GymProfile = () => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyBdLc31kclLs_2r72Uh0G88vBfYConu4BU",
-    libraries: ["places"],
   });
   const navigate = useNavigate();
   const [fileName1, setFileName] = React.useState([]);
@@ -113,7 +112,6 @@ const GymProfile = () => {
 
   var gymProfileDetails = {
     user_id: {
-      full_name: "",
       user_type: "trainer",
     },
     location: { state: "", city: "", address: "" },
@@ -252,11 +250,6 @@ const GymProfile = () => {
   } = useForm({
     resolver: yupResolver(gymProfileSchema),
   });
-
-  const page_refresh = () => {
-    window.location.reload(true);
-  };
-
   const submitGymProfileForm = (data) => {
     console.log("hello");
     // setStep3(false);
@@ -269,7 +262,7 @@ const GymProfile = () => {
       ...gymProfileDetails,
 
       user_id: {
-        full_name: data.full_name,
+        full_name: getGym.user_id.full_name,
         email: getGym.user_id.email,
         password: getGym.user_id.password,
         user_type: "gym",
@@ -306,49 +299,15 @@ const GymProfile = () => {
     console.log("after request");
   };
 
+  const page_refresh = () => {
+    window.location.reload(true);
+  };
+
   return (
     <div className="page-container-gym">
       <TopBar />
       <SideMenuGym />
       {loading ? <BarLoader loading={loading} color="#063be9" css={override} size={150} /> : null}
-
-      <h3>Customer Name</h3>
-      <div className="admin-box mt-3">
-        <div className="user-box d-flex flex-column p-3">
-          <div className="d-flex flex-column">
-            <div class="table-wrapper-scroll-y my-custom-scrollbar">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Membership ID</th>
-                    <th>Activity Plan Title</th>
-                    <th>Earnings (Rs)</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {boughtPlans.length == 0 ? (
-                    <tr>
-                      <td>There are no Sales for now</td>
-                    </tr>
-                  ) : (
-                    boughtPlans.map((e, key) => {
-                      return (
-                        <tr key={key}>
-                          <td>{e._id}</td>
-                          <td>{e.user_id.user_id.full_name}</td>
-                          <td>{e.price}</td>
-                          <td>{moment(e.time_date).format("DD/MM/YYYY")}</td>
-                        </tr>
-                      );
-                    })
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <h2>Gym Profile</h2>
       {isListed == "default" ? null : isListed == "not-listed" ? (
@@ -362,7 +321,7 @@ const GymProfile = () => {
       ) : isListed == "listed" ? (
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
           <h4>
-            You Have Been Approved by Admin. For Become a Trainer You need to pay one Time Fee of Rs
+            You have been approved by admin. To list the gym you need to pay one time fee of Rs
             1000.
           </h4>
           <div>
@@ -444,31 +403,28 @@ const GymProfile = () => {
           >
             back
           </Button>
+          <label className="mb-2">Choose gym location on map</label>
+          <GoogleMap
+            zoom={12}
+            // styles={{ width: "70%", height: "40%" }}
+            onClick={(e) => {
+              setLatitude(e.latLng.lat());
+              setLongitude(e.latLng.lng());
+              let lati = e.latLng.lat();
+              let lngi = e.latLng.lng();
+              console.log(lati, lngi);
+            }}
+            center={{ lat: location.coordinates.lat, lng: location.coordinates.lng }}
+            mapContainerClassName="map-container-gym"
+          >
+            <Marker position={{ lat: latitude, lng: longitude }} />
+          </GoogleMap>
           <div className="gym-box mt-3 d-flex flex-column align-items-left">
             <form
               onSubmit={handleSubmitGymProfile(submitGymProfileForm)}
               className="d-flex flex-column"
             >
               <div className="input-text d-flex flex-column">
-                <label className="mb-2">Choose gym location on map</label>
-                <GoogleMap
-                  zoom={12}
-                  // styles={{ width: "70%", height: "40%" }}
-                  onClick={(e) => {
-                    setLatitude(e.latLng.lat());
-                    setLongitude(e.latLng.lng());
-                    let lati = e.latLng.lat();
-                    let lngi = e.latLng.lat();
-                    console.log(lati, lngi);
-                  }}
-                  center={{ lat: location.coordinates.lat, lng: location.coordinates.lng }}
-                  mapContainerClassName="map-container-gym"
-                >
-                  {/* <Marker
-                    position={{ lat: location.coordinates.lat, lng: location.coordinates.lng }}
-                  /> */}
-                  <Marker position={{ lat: latitude, lng: longitude }} />
-                </GoogleMap>
                 {/* {mapError ? <p>{mapError}</p> : null} */}
                 {/* <p>{gymProfileDetails.user_id.full_name}</p> */}
                 {/* <p>{gymProfileDetails.location}</p> */}
@@ -528,7 +484,7 @@ const GymProfile = () => {
                   {...controlGymProfile("address")}
                 />
                 <p>{errorsGymProfile.address?.message}</p>
-
+                {/* 
                 <label>Gym Name</label>
                 <input
                   type="text"
@@ -537,7 +493,7 @@ const GymProfile = () => {
                   {...controlGymProfile("full_name")}
                   defaultValue={getGym.user_id.full_name}
                 />
-                <p>{errorsGymProfile.full_name?.message}</p>
+                <p>{errorsGymProfile.full_name?.message}</p> */}
                 <label for="">Gym Contact Number</label>
                 <input
                   type="text"
@@ -766,7 +722,6 @@ const GymProfile = () => {
                         type="submit "
                         onClick={() => {
                           gymProfileDetails = {
-                            ...gymProfileDetails,
                             location: "",
                             gym_desc: "",
                             gym_contact_no: "",
