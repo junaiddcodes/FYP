@@ -27,7 +27,7 @@ var gymDetailsSchema = mongoose.Schema({
   gym_contact_no: String,
   gym_membership_price: Number,
   gender_facilitation: String,
-  coordinates: { lat: String, long: String },
+  coordinates: { lat: Number, long: Number },
   gym_photos: [{ photo_url: String, cloudinary_id: String }],
   rating: {
     type: Number,

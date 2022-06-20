@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import React from "react";
+import { Link, NavLink } from "react-router-dom";
 
 const SideMenuGym = () => {
   return (
@@ -24,6 +24,13 @@ const SideMenuGym = () => {
           <NavLink to="/query" activeClassName="active">
             <i class="bx bx-question-mark">
               <span className="links_name">Query</span>
+            </i>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/gym-profile" activeClassName="active">
+            <i class="bx bx-question-mark">
+              <span className="links_name">Profile</span>
             </i>
           </NavLink>
         </li>
