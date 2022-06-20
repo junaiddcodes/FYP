@@ -28,7 +28,12 @@ const createData = async (req, res) => {
         trainer_id: req.body.user_id,
         withdraw: true,
       });
-    }
+    }else if (req.body.user_type == "gym") {
+        user_type = await orderGymDetails.find({
+          trainer_id: req.body.user_id,
+          withdraw: true,
+        });
+      }
     if (user_type.length == 0) {
       return res.status(400).send("User dont have any amount to withdraw");
     }
@@ -113,7 +118,18 @@ const updateData = async (req, res) => {
         }
       );
       console.log(update)
-    }
+    } else if(req.body.use_type == "gym") {
+        const update = await orderGymDetails.updateMany(
+          {
+            gym_id: req.body.user_id,
+            withdraw: true,
+          },
+          {
+            $set: { withdraw: false },
+          }
+        );
+        console.log(update)
+      }
 
 
 

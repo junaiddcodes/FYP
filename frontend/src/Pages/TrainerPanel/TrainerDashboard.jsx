@@ -46,6 +46,24 @@ const TrainerDashboard = () => {
     resolver: yupResolver(schema),
   });
 
+  function withdrawRequest() {
+
+    var withdrawReq = {
+      user_id: userId,
+      amount: withdrawAmount,
+      user_type: "trainer",
+    };
+
+    trainerService
+      .withdraw_request(withdrawReq)
+      .then((res) => {
+        console.log("Withdraw Request Confirmed");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   function getTrainerSales() {
     var totalPrice = 0;
     var withdrawPrice = 0;
@@ -273,12 +291,13 @@ const TrainerDashboard = () => {
                     </p>
                   )}
                 </div>
-                {withdrawAmount >= 10000 && isBank? (
+                {withdrawAmount >= 10000 && isBank ? (
                   <div className="mt-2">
                     <Button
                       className="btn btn-primary edit-btn"
                       onClick={() => {
                         console.log("Text");
+                        withdrawRequest()
                       }}
                     >
                       Confirm Withdraw

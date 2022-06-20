@@ -32,14 +32,16 @@ var gymDetailsSchema = mongoose.Schema({
   rating: {
     type: Number,
   },
+  membership: { type: Boolean, default: false },
+
   numReviews: {
     type: Number,
   },
-  bank_details:{
+  bank_details: {
     bank_name: String,
     account_number: String,
-    account_name: String
-  }
+    account_name: String,
+  },
 });
 
 var gymDetails = mongoose.model("Gym_Details", gymDetailsSchema);

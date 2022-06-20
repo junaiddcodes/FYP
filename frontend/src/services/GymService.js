@@ -21,6 +21,8 @@ class GymService extends GenericService {
   check_gym_membership = (userId, gymId) => this.get("order-gym/gym/"+ userId +"/"+ gymId)
   get_user_membership = (userId) => this.get("order-gym/user/"+ userId)
   get_gym_membership = (gymId) => this.get("order-gym/getgym/"+gymId)
+  //Withdraw request
+  withdraw_request = (requestData)=>this.post("withdraw/create", requestData)
 
 
   isLoggedIn = () => {

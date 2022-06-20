@@ -54,6 +54,8 @@ const AdminDashboard = () => {
       .update_withdraw(id, withdrawReq)
       .then((e) => {
         console.log("Withdraw Updated");
+        setEditModalOpen(false);
+        getWithdrawDetails()
       })
       .catch((err) => {
         console.log(err);
