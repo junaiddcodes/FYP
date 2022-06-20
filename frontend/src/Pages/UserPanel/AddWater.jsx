@@ -27,7 +27,7 @@ const AddWater = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
-  const [deleteId, setDeleteId]=useState('')
+  const [deleteId, setDeleteId] = useState("");
 
   const navigate = useNavigate();
   const Edited = () => {
@@ -46,9 +46,10 @@ const AddWater = () => {
   const schema = yup.object().shape({
     water: yup
       .number()
-      .min(0.1, "Water cannot be less than 0.1 Ltrs")
-      .max(6, "Water cannot be less than 6 Ltrs at one time")
-      .required("Water cannot be Empty"),
+      .typeError("Amount of water is required!")
+      .min(0.1, "Amount of water cannot be less than 0.1 litres")
+      .max(4, "Amount of water cannot be more than 4 litres at one time")
+      .required("Amount of water cannot be Empty"),
   });
 
   const {
@@ -69,10 +70,10 @@ const AddWater = () => {
 
   function deleteWater(id) {
     userService.deleteWaterData(id).then((e) => {
-      console.log('Water delete Successfully')
-      getWaterData()
-      setConfirmDelete(false)
-    })
+      console.log("Water delete Successfully");
+      getWaterData();
+      setConfirmDelete(false);
+    });
   }
 
   function getWaterData() {
@@ -145,7 +146,7 @@ const AddWater = () => {
           <div className="d-flex">
             <div className="d-flex w-50 flex-column">
               <h4 className="mt-2 mb-2">Water Taken (ltrs): {waterAmount}</h4>
-              <h4 className="mt-2">Water Goal (ltrs): 6 </h4>
+              <h4 className="mt-2">Water Goal (ltrs): 4 </h4>
             </div>
           </div>
           <div className="d-flex flex-column mt-3"></div>
@@ -256,7 +257,7 @@ const AddWater = () => {
                               className="delete-icon"
                               onClick={() => {
                                 setConfirmDelete(true);
-                                setDeleteId(e._id)
+                                setDeleteId(e._id);
                               }}
                             >
                               <ImCross />
@@ -302,7 +303,7 @@ const AddWater = () => {
                                   >
                                     <i class="bx bx-x"></i>
                                   </a>
-                                  <h3>Are you sure you want to delete the food?</h3>
+                                  <h3>Are you sure you want to delete this water entry?</h3>
                                   <p>Select yes to delete the item</p>
                                 </div>
                                 <div className="d-flex">

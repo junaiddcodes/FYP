@@ -127,9 +127,9 @@ const GymViewMap = () => {
                           <span className="text-secondary">({e.numReviews})</span>{" "}
                         </h6>
                       )}
-                      <div className="d-flex mb-0">
-                        <MdLocationPin className="" />
-                        <p className="" style={{ fontWeight: "bold" }}>
+                      <div className="d-flex  mb-0">
+                        <MdLocationPin className="m-1" style={{ height: "1rem", width: "1rem" }} />
+                        <p className="m-0" style={{ fontWeight: "bold" }}>
                           {e.location.city}
                         </p>
                       </div>

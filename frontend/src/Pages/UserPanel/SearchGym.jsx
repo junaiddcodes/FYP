@@ -108,7 +108,7 @@ const SearchGym = () => {
 
           <FaSearch className="search-icon" />
         </div>
-        <div className="w-25 d-flex justify-content-around">
+        <div className="w-50 d-flex justify-content-around">
           <Button
             className="search-btns"
             onClick={() => {
@@ -123,6 +123,13 @@ const SearchGym = () => {
             }}
           >
             + Filters
+          </Button>
+          <Button
+            onClick={() => {
+              navigate("/nearby-gyms");
+            }}
+          >
+            Nearby Gyms
           </Button>
         </div>
       </div>
@@ -167,16 +174,6 @@ const SearchGym = () => {
               <MenuItem value="Both">Both</MenuItem>
             </Select>
           </FormControl>
-          <Tooltip title="Use your current location">
-            <button
-              className="location-btn"
-              onClick={() => {
-                navigate("/nearby-gyms");
-              }}
-            >
-              <MdMyLocation className="location-icon" />
-            </button>
-          </Tooltip>
 
           <ImCross
             className="m-3 close-icon"

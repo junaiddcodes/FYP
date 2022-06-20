@@ -15,8 +15,8 @@ const SideMenuGym = () => {
       <ul className="nav_list">
         <li>
           <NavLink to="/gym-dashboard" activeClassName="active">
-            <i class="bx bxs-home-circle">
-              <span className="links_name">Home</span>
+            <i class="bx bx-grid-alt">
+              <span className="links_name">Dashbaord</span>
             </i>
           </NavLink>
         </li>
@@ -29,7 +29,7 @@ const SideMenuGym = () => {
         </li>
         <li>
           <NavLink to="/gym-profile" activeClassName="active">
-            <i class="bx bx-question-mark">
+            <i class="bx bxs-user">
               <span className="links_name">Profile</span>
             </i>
           </NavLink>

@@ -195,7 +195,7 @@ const GymDashboard = () => {
         navigate("/login");
       }
     }
-    // get_gym();
+    get_gym();
     getGymSales();
     // if (getGym.gender_facilitation == "male") {
     //   setMale(true);
