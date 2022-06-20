@@ -35,6 +35,11 @@ var gymDetailsSchema = mongoose.Schema({
   numReviews: {
     type: Number,
   },
+  bank_details:{
+    bank_name: String,
+    account_number: String,
+    account_name: String
+  }
 });
 
 var gymDetails = mongoose.model("Gym_Details", gymDetailsSchema);
@@ -52,6 +57,11 @@ function validateGym(data) {
       city: Joi.string(),
       address: Joi.string(),
       state: Joi.string(),
+    },
+    bank_details: {
+      bank_name: Joi.string(),
+      account_number: Joi.string(),
+      account_name: Joi.string(),
     },
     cordinates: { lat: Joi.number(), long: Joi.number() },
 

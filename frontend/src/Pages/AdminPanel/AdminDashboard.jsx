@@ -24,7 +24,65 @@ const AdminDashboard = () => {
   const [allGyms, setAllGyms] = useState([]);
   const [allTrainers, setAllTrainers] = useState([]);
   const [allQueries, setAllQueries] = useState([]);
+  const [withdrawTrainer, setWithdrawTrainer] = useState([]);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [withdrawUser, setWithdrawUser] = useState("");
+  const [withdrawData, setWithdrawData] = useState("");
   const navigate = useNavigate();
+
+  function withdrawDatas(id) {
+    adminService
+      .get_withdraw_request(id)
+      .then((data) => {
+        setWithdrawData(data.crud);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function submitWithdraw(id, user_type, amount, user_id) {
+    var withdrawReq = {
+      use_type: user_type,
+      amount: amount,
+      user_id: user_id,
+    };
+
+    console.log(withdrawReq)
+
+    adminService
+      .update_withdraw(id, withdrawReq)
+      .then((e) => {
+        console.log("Withdraw Updated");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function getUser(id, user_type) {
+    if (user_type == "trainer") {
+      trainerService
+        .get_one_trainer(id)
+        .then((data) => {
+          setWithdrawUser(data.crud);
+          console.log(data.crud);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else if (user_type == "gym") {
+      gymService
+        .get_one_gym(id)
+        .then((data) => {
+          setWithdrawUser(data.crud);
+          console.log(data.crud);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }
 
   const handleRouteGym = (e) => {
     console.log(e);
@@ -38,6 +96,13 @@ const AdminDashboard = () => {
     console.log(e);
     navigate("/admin-query-details", { state: { e } });
   };
+
+  function getWithdrawDetails() {
+    adminService.get_withdraw().then((data) => {
+      setWithdrawTrainer(data.crud);
+      console.log(data);
+    });
+  }
   useEffect(() => {
     // userService.getLoggedInUser();
     // setLoggedInId(userService.getLoggedInUser()._id);
@@ -82,6 +147,8 @@ const AdminDashboard = () => {
       .catch((err) => {
         console.log(err);
       });
+
+    getWithdrawDetails();
 
     console.log("after request");
   }, []);
@@ -241,60 +308,145 @@ const AdminDashboard = () => {
               <table className="table">
                 <thead>
                   <tr>
-                    <th>Trainer Id</th>
-                    <th>Trainer Name</th>
-
+                    <th>Id</th>
+                    <th>User Type</th>
+                    <th>Withdraw Amount (Rs)</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>001</td>
-                    <td>Hamza Kasim</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        {/* <Link to="/admin-query-details"> */}
-                        <Button>View Details</Button>
-                        {/* </Link> */}
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Payment Issue</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>View Details</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Payment Issue</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>View Details</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Payment Issue</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>View Details</Button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>001</td>
-                    <td>Payment Issue</td>
-                    <td>
-                      <div className="d-flex align-items-center">
-                        <Button>View Details</Button>
-                      </div>
-                    </td>
-                  </tr>
+                  {withdrawTrainer.length == 0 ? (
+                    <tr>
+                      <p>Not any Request</p>
+                    </tr>
+                  ) : (
+                    withdrawTrainer.map((e, key) => {
+                      return (
+                        <tr key={key}>
+                          <td>{e.user_id}</td>
+                          <td>{e.user_type}</td>
+                          <td>{e.amount}</td>
+                          <td>
+                            <div className="d-flex align-items-center">
+                              <div>
+                                <Button
+                                  className="btn btn-primary edit-btn"
+                                  onClick={() => {
+                                    setEditModalOpen(true);
+                                    getUser(e.user_id, e.user_type);
+                                    withdrawDatas(e._id);
+                                  }}
+                                >
+                                  Withdraw
+                                </Button>
+                                <div className="modal-container">
+                                  <Modal
+                                    style={{
+                                      overlay: {
+                                        position: "fixed",
+                                        top: 0,
+                                        left: 0,
+                                        right: 0,
+                                        bottom: 0,
+
+                                        backgroundColor: "rgba(0, 0, 0, 0.75)",
+                                      },
+                                      content: {
+                                        color: "white",
+                                        position: "absolute",
+                                        top: "40px",
+                                        left: "40px",
+                                        right: "40px",
+                                        bottom: "40px",
+                                        background: "rgba(0,30,60,1)",
+                                        overflow: "auto",
+                                        WebkitOverflowScrolling: "touch",
+                                        borderRadius: "1rem",
+                                        outline: "none",
+                                        padding: "20px",
+                                      },
+                                    }}
+                                    className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+                                    isOpen={editModalOpen}
+                                    onRequestClose={() => {
+                                      setEditModalOpen(false);
+                                    }}
+                                  >
+                                    <div className="modal-inner w-75 py-3 text-light">
+                                      <a
+                                        onClick={() => {
+                                          setEditModalOpen(false);
+                                        }}
+                                      >
+                                        <i class="bx bx-x"></i>
+                                      </a>
+
+                                      <h2>Withdraw Request</h2>
+                                      {withdrawUser != "" ? (
+                                        <div className="mt-2 text-light">
+                                          <p className="text-light">
+                                            Id: {withdrawUser._id}
+                                          </p>
+                                          <p className="text-light">
+                                            {withdrawUser.user_id.user_type}{" "}
+                                            Name:{" "}
+                                            {withdrawUser.user_id.full_name}
+                                          </p>
+                                          <p className="text-light">
+                                            Email: {withdrawUser.user_id.email}
+                                          </p>
+                                          <p className="text-light">
+                                            Bank Name:{" "}
+                                            {
+                                              withdrawUser.bank_details
+                                                .bank_name
+                                            }
+                                          </p>
+                                          <p className="text-light">
+                                            Account Number:{" "}
+                                            {
+                                              withdrawUser.bank_details
+                                                .account_number
+                                            }
+                                          </p>
+                                          <p className="text-light">
+                                            Account Name:{" "}
+                                            {
+                                              withdrawUser.bank_details
+                                                .account_name
+                                            }
+                                          </p>
+                                          <p className="text-light">
+                                            Withdraw Amount(Rs):{" "}
+                                            {withdrawData.amount}
+                                          </p>
+                                          <div className="mt-3">
+                                            <Button
+                                              onClick={() => {
+                                                submitWithdraw(
+                                                  withdrawData._id,
+                                                  withdrawUser.user_id.user_type,
+                                                  withdrawData.amount,
+                                                  withdrawUser._id
+                                                );
+                                                console.log("test");
+                                              }}
+                                            >
+                                              Submit
+                                            </Button>
+                                          </div>
+                                        </div>
+                                      ) : null}
+                                    </div>
+                                  </Modal>
+                                </div>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
                 </tbody>
               </table>
             </div>
