@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { GoogleMap, useLoadScript, Marker, Autocomplete } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  useLoadScript,
+  Marker,
+  Autocomplete,
+} from "@react-google-maps/api";
 
 import useGeoLocation from "../custom-hooks/useGeoLocation";
 import axios from "axios";
@@ -33,6 +38,7 @@ import { css } from "@emotion/react";
 import ClipLoader from "react-spinners/ClipLoader";
 import moment from "moment";
 import StripeContainer from "../../Components/Stripe/StripeContainer";
+import { TextField } from "@mui/material";
 
 const override = css`
   display: block;
@@ -40,44 +46,9 @@ const override = css`
   border-color: red;
   color: blue;
 `;
-const gymProfileSchema = yup.object().shape({
-  // full_name: yup
-  //   .string()
-  //   .min(3, "Name must be of at least 3 characters")
-  //   .max(30, "Name must be of at most 30 characters")
-  //   .required("Name is required"),
-  state: yup.string().required(),
-  city: yup.string().required(),
-  address: yup.string().required(),
-  gym_desc: yup
-    .string()
-    .min(200, "Description must be at least 200 characters!")
-    .required("Gym description can't be empty"),
-  gym_contact_no: yup
-    .string()
-    .min(11, "Contact number must be at least 11 digits!")
-    .max(11, "Contact number must be at Most 11 digits!")
-    .required(),
-  gym_membership_price: yup
-    .number()
-    .typeError("Membership price is required!")
-    .positive("Membership price should be a positive number")
-    .max(50000, "Price should not be more than Rs 50,000")
-    .min(1000, "Price should not be less than Rs 1,000")
-    .required("Gym membership price is required!"),
-  // latitude: yup.number().typeError("Latitude is required!").required("Latitude is required!"),
-  // longitude: yup
-  //   .number()
-  //   .typeError("Longitude is required!")
-  //   .positive()
 
-  //   .max(78, "Longitude can not be more than 78")
-  //   .min(60, "Longitude can not be less than 60")
-  //   .required("Longitude is required!"),
 
-  gender_facilitation: yup.string().required("Gender facilitation can't be empty"),
-  gym_photo: yup.string(),
-});
+
 
 const GymDashboard = () => {
   const { isLoaded } = useLoadScript({
@@ -93,7 +64,7 @@ const GymDashboard = () => {
   // const [male, setMale] = useState(false);
   // const [female, setFemale] = useState(false);
   // const [both, setBoth] = useState(false);
-  const [getGym, setGetGym] = useState("");
+  // const [getGym, setGetGym] = useState("");
   const [isGymForm, setIsGymForm] = useState(false);
   const [gymPhotos, setGymPhotos] = useState([]);
   const [isGymPicForm, setIsGymPicForm] = useState(false);
@@ -103,76 +74,103 @@ const GymDashboard = () => {
   const [file, setFile] = useState(null);
   const [errorPic, setPicError] = useState(false);
   const [boughtPlans, setBoughtPlans] = useState([]);
+  const [totalEarning, setTotalEarning] = useState([]);
+  const [withdrawAmount, setWithdrawAmount] = useState([]);
   const location = useGeoLocation();
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
   const [confirmDeleteX, setConfirmDeleteX] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editBankOpen, setEditBankOpen] = useState(false);
+  const [isBank, setIsBank] = useState(false);
+  const schema = yup.object().shape({
+    bank_name: yup.string().required("Bank Name is Required"),
+    account_number: yup.string().required("Account Number is Required"),
+    account_name: yup.string().required("Account Name is Required"),
+  });
+  const [getGym, setGetGym] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
   var loginId = "";
 
-  var gymProfileDetails = {
-    user_id: {
-      user_type: "trainer",
-    },
-    location: { state: "", city: "", address: "" },
-    coordinates: { lat: "", long: "" },
-    gym_desc: "",
-    gym_contact_no: "",
-    gym_membership_price: "",
-    gender_facilitation: "",
-    gym_photo: "photo",
-    listed: "not-listed",
-  };
-
-  function handleBuyMembership() {
-    var mem = { membership: true };
-    gymService.update_gym(mem, loggedInId).then((data) => {
-      console.log(data);
-      get_gym();
-    });
-  }
 
   function getGymSales() {
+    var totalPrice = 0;
+    var withdrawPrice = 0;
     gymService
       .get_gym_membership(loginId)
       .then((res) => {
         setBoughtPlans(res.crud);
+        res.crud.map((e) => {
+          totalPrice = e.price + totalPrice;
+          if (e.withdraw) {
+            withdrawPrice = withdrawPrice + e.price;
+          }
+        });
+        setTotalEarning(totalPrice);
+        setWithdrawAmount(withdrawPrice);
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
       });
   }
+  function withdrawRequest() {
+    var userId = userService.getLoggedInUser()._id
+
+    var withdrawReq = {
+      user_id: userId,
+      amount: withdrawAmount,
+      user_type: "gym",
+    };
+
+    gymService
+      .withdraw_request(withdrawReq)
+      .then((res) => {
+        console.log("Withdraw Request Confirmed");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function handleBanksubmit(data) {
+    loginId = userService.getLoggedInUser()._id;
+    var bankDetails = {
+      bank_details: {
+        bank_name: data.bank_name,
+        account_number: data.account_number,
+        account_name: data.account_name,
+      },
+    };
+
+    gymService
+      .update_gym(bankDetails, loginId)
+      .then((res) => {
+        console.log("Bank Added Successfully");
+        get_gym()
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    console.log("chumi");
+  }
 
   const get_gym = () => {
     gymService
       .get_one_gym(loginId)
       .then((res) => {
-        console.log(res);
-        setGetGym(res.crud);
-        console.log(res.crud.gym_photos);
-        setGymPhotos(res.crud.gym_photos);
-
-        if (res.crud.gym_membership_price) {
-          setIsProfile(true);
-          setIsGymPicForm(false);
-          setIsAsk(false);
-          setIsGymForm(false);
-          if (res.crud.listed == "listed") {
-            setIsListed("listed");
-          } else if (res.crud.listed == "rejected") {
-            setIsListed("rejected");
-          } else setIsListed("not-listed");
-
-          if (res.crud.membership && res.crud.listed == "listed") {
-            setIsListed("default");
-          }
-        } else {
-          setIsAsk(true);
-          setIsGymForm(false);
-          setIsGymPicForm(false);
-          setIsProfile(false);
+        if (res.crud.bank_details) {
+          setIsBank(true);
         }
+        setGetGym(res.crud);
         setLoading(false);
       })
       .catch((err) => {
@@ -208,97 +206,6 @@ const GymDashboard = () => {
     // }
   }, [loginId]);
 
-  const changeOnClick = (e) => {
-    e.preventDefault();
-    console.log("aaaaa");
-    console.log(file);
-    const formData = new FormData();
-    let newArr = [];
-    for (let i = 0; i < file.length; i++) {
-      formData.append("gym", file[i]);
-    }
-    // formData.append("gym", newArr);
-    console.log(formData.get("gym"));
-
-    // formData.append("gym", fileName1);
-    // formData.append("gym", fileName2);
-    // formData.append("gym", fileName3);
-    // console.log("bbbbb");
-    // console.log(formData);
-    gymService
-      .update_gym_photo(formData, loggedInId)
-      .then((data) => {
-        setPicError(false);
-        console.log(data);
-        setIsGymPicForm(false);
-        setIsProfile(true);
-        page_refresh();
-      })
-      .catch((err) => {
-        if (err.response.status == 500) {
-          setPicError(true);
-        }
-      });
-    // setIsProfile(true);
-    // page_refresh();
-    console.log("ccccc");
-  };
-  const {
-    register: controlGymProfile,
-    handleSubmit: handleSubmitGymProfile,
-    formState: { errors: errorsGymProfile },
-  } = useForm({
-    resolver: yupResolver(gymProfileSchema),
-  });
-  const submitGymProfileForm = (data) => {
-    console.log("hello");
-    // setStep3(false);
-    // setStep4(true);
-    // setTrainerDetails({ ...trainerDetails, weekly_goal: data.weekly_goal });
-    // console.log(trainerDetails);
-    // console.log("aaaaaaa");
-    console.log("before request");
-    gymProfileDetails = {
-      ...gymProfileDetails,
-
-      user_id: {
-        full_name: getGym.user_id.full_name,
-        email: getGym.user_id.email,
-        password: getGym.user_id.password,
-        user_type: "gym",
-      },
-      location: {
-        ...gymProfileDetails,
-        state: data.state,
-        city: data.city,
-        address: data.address,
-      },
-      coordinates: {
-        lat: latitude,
-        long: longitude,
-      },
-      gym_desc: data.gym_desc,
-      gym_contact_no: data.gym_contact_no,
-      gym_membership_price: data.gym_membership_price,
-      gender_facilitation: data.gender_facilitation,
-      gym_photos: getGym.gym_photos,
-    };
-
-    gymService
-      .update_gym(gymProfileDetails, loggedInId)
-      .then((data) => {
-        console.log(data);
-        setIsAsk(false);
-        setIsGymForm(false);
-        page_refresh();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    console.log(gymProfileDetails);
-    console.log("after request");
-  };
-
   const page_refresh = () => {
     window.location.reload(true);
   };
@@ -307,19 +214,27 @@ const GymDashboard = () => {
     <div className="page-container-gym">
       <TopBar />
       <SideMenuGym />
-      {loading ? <BarLoader loading={loading} color="#063be9" css={override} size={150} /> : null}
+      {loading ? (
+        <BarLoader
+          loading={loading}
+          color="#063be9"
+          css={override}
+          size={150}
+        />
+      ) : null}
 
-      <h3>Customer Name</h3>
       <div className="admin-box mt-3">
         <div className="user-box d-flex flex-column p-3">
           <div className="d-flex flex-column">
+            <h3 className="text-light">Membership Activity</h3>
             <div class="table-wrapper-scroll-y my-custom-scrollbar">
               <table className="table">
                 <thead>
                   <tr>
                     <th>Membership ID</th>
-                    <th>Activity Plan Title</th>
+                    <th>Member Name</th>
                     <th>Earnings (Rs)</th>
+                    <th>Status</th>
                     <th>Date</th>
                   </tr>
                 </thead>
@@ -335,6 +250,11 @@ const GymDashboard = () => {
                           <td>{e._id}</td>
                           <td>{e.user_id.user_id.full_name}</td>
                           <td>{e.price}</td>
+                          {e.withdraw ? (
+                            <td>Available for Withdraw</td>
+                          ) : (
+                            <td>Withdrawn</td>
+                          )}
                           <td>{moment(e.time_date).format("DD/MM/YYYY")}</td>
                         </tr>
                       );
@@ -343,6 +263,233 @@ const GymDashboard = () => {
                 </tbody>
               </table>
             </div>
+          </div>
+        </div>
+      </div>
+      <div className="mt-3 d-flex">
+        <div>
+          <Button
+            className="btn btn-primary edit-btn"
+            onClick={() => {
+              setEditModalOpen(true);
+            }}
+          >
+            Withdraw
+          </Button>
+          <div className="modal-container">
+            <Modal
+              style={{
+                overlay: {
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+
+                  backgroundColor: "rgba(0, 0, 0, 0.75)",
+                },
+                content: {
+                  color: "white",
+                  position: "absolute",
+                  top: "40px",
+                  left: "40px",
+                  right: "40px",
+                  bottom: "40px",
+                  background: "rgba(0,30,60,1)",
+                  overflow: "auto",
+                  WebkitOverflowScrolling: "touch",
+                  borderRadius: "1rem",
+                  outline: "none",
+                  padding: "20px",
+                },
+              }}
+              className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+              isOpen={editModalOpen}
+              onRequestClose={() => {
+                setEditModalOpen(false);
+              }}
+            >
+              <div className="modal-inner w-75 py-3 text-light">
+                <a
+                  onClick={() => {
+                    setEditModalOpen(false);
+                  }}
+                >
+                  <i class="bx bx-x"></i>
+                </a>
+
+                <div className="mt-2">
+                  <h2>Withdraw</h2>
+                  <p className="text-light">
+                    Withdraw Amount Should be Greater Than Rs 10000
+                  </p>
+                </div>
+                <div className="mt-2">
+                  <p className="text-light">
+                    Withdraw Amount(Rs): {withdrawAmount}
+                  </p>
+                  {withdrawAmount < 10000 ? (
+                    <p className="text-danger">
+                      Withdraw amount is less than Rs 10000
+                    </p>
+                  ) : null}
+                  {isBank ? (
+                    <div>
+                      <p className="text-light">
+                        Bank Name: {getGym.bank_details?.bank_name}
+                      </p>
+                      <p className="text-light">
+                        Account#: {getGym.bank_details?.account_number}
+                      </p>
+                      <p className="text-light">
+                        Account Name: {getGym.bank_details?.account_name}
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="text-light">
+                      Bank is not Added yet.{" "}
+                      <a
+                        className="text-underline"
+                        onClick={() => {
+                          setEditModalOpen(false);
+                          setEditBankOpen(true);
+                        }}
+                      >
+                        Click here to add the Banks
+                      </a>
+                    </p>
+                  )}
+                </div>
+                {withdrawAmount >= 10000 && isBank ? (
+                  <div className="mt-2">
+                    <Button
+                      className="btn btn-primary edit-btn"
+                      onClick={() => {
+                        console.log("Text");
+                        withdrawRequest()
+                      }}
+                    >
+                      Confirm Withdraw
+                    </Button>
+                  </div>
+                ) : null}
+              </div>
+            </Modal>
+          </div>
+        </div>
+
+        <div>
+          <Button
+            className="btn btn-primary edit-btn"
+            onClick={() => {
+              setEditBankOpen(true);
+            }}
+          >
+            Bank Details
+          </Button>
+          <div className="modal-container">
+            <Modal
+              style={{
+                overlay: {
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+
+                  backgroundColor: "rgba(0, 0, 0, 0.75)",
+                },
+                content: {
+                  color: "white",
+                  position: "absolute",
+                  top: "40px",
+                  left: "40px",
+                  right: "40px",
+                  bottom: "40px",
+                  background: "rgba(0,30,60,1)",
+                  overflow: "auto",
+                  WebkitOverflowScrolling: "touch",
+                  borderRadius: "1rem",
+                  outline: "none",
+                  padding: "20px",
+                },
+              }}
+              className="w-50 d-flex flex-column justify-content-around align-items-center add-food-modal"
+              isOpen={editBankOpen}
+              onRequestClose={() => {
+                setEditBankOpen(false);
+              }}
+            >
+              <div className="modal-inner w-75 py-3 text-light">
+                <a
+                  onClick={() => {
+                    setEditBankOpen(false);
+                  }}
+                >
+                  <i class="bx bx-x"></i>
+                </a>
+                <h2 className="text-light">Enter Bank Details</h2>
+                <form
+                  onSubmit={handleSubmit(handleBanksubmit)}
+                  className="d-flex flex-column"
+                >
+                  <div className="mt-2">
+                    <TextField
+                      id="demo-simple-select-2"
+                      className="w-100"
+                      variant="outlined"
+                      name="bank_name"
+                      type="text"
+                      {...register("bank_name")}
+                      placeholder="Enter Bank Name"
+                      InputLabelProps={{
+                        style: { color: "#777" },
+                      }}
+                    />
+                    <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+                      {errors.bank_name?.message}
+                    </p>
+                  </div>
+                  <div className="mt-2">
+                    <TextField
+                      id="demo-simple-select-2"
+                      className="w-100"
+                      variant="outlined"
+                      name="account_number"
+                      type="text"
+                      {...register("account_number")}
+                      placeholder="Enter Account Number"
+                      InputLabelProps={{
+                        style: { color: "#777" },
+                      }}
+                    />
+                    <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+                      {errors.account_number?.message}
+                    </p>
+                  </div>
+                  <div className="my-2">
+                    <TextField
+                      id="demo-simple-select-2"
+                      className="w-100"
+                      variant="outlined"
+                      name="account_name"
+                      type="text"
+                      {...register("account_name")}
+                      placeholder="Enter Account Name"
+                      InputLabelProps={{
+                        style: { color: "#777" },
+                      }}
+                    />
+                    <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+                      {errors.account_name?.message}
+                    </p>
+                  </div>
+                  <div>
+                    <Button type="submit">Submit</Button>
+                  </div>
+                </form>
+              </div>
+            </Modal>
           </div>
         </div>
       </div>
