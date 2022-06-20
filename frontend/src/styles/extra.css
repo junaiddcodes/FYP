@@ -111,8 +111,15 @@ tr.activity-box td {
   user-select: none;
   transform: translate(-50%, -50%);
   /* &:hover {
-    z-index: 1;
-  } */
+    z-index: 1; */
+  }
+
+ 
+a{
+  cursor: pointer;
+}
+.text-underline{
+  text-decoration: underline;
 }
 .page-container-user {
   padding-bottom: 35px;

@@ -20,6 +20,9 @@ class AdminService extends GenericService {
   add_query = (queryDetails) => this.post('query/addquery', queryDetails)
   admin_message = () => this.get('/notification/getNotification')
   update_query = (queryDetails, id) => this.patch('query/' + id, queryDetails)
+  update_withdraw = (id,withdrawDetails) => this.patch('withdraw/update/' + id, withdrawDetails)
+  get_withdraw = ()=>this.get("withdraw")
+  get_withdraw_request = (id)=>this.get("withdraw/"+id)
   isLoggedIn = () => {
     return localStorage.getItem('token') ? true : false
   }

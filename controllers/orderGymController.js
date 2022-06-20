@@ -144,6 +144,35 @@ const getGymSale = async (req, res) => {
     res.status(500).json({ message: error });
   }
 };
+const withdrawRequest = async (req, res) => {
+  try {
+    const withdraw = await orderGymDetails.find({
+      gym_id: req.params.gym_id,
+    });
+    let price = 0;
+
+    if (withdraw.length == 0) {
+      return res
+        .status(404)
+        .json({ message: "Trainer dont have any payment yet" });
+    }
+
+    withdraw.map((e) => {
+      if (e.withdraw) {
+        price = price + e.price;
+      }
+    });
+    if (price == 0) {
+      return res
+        .status(404)
+        .json({ message: "Not have any amount to withdraw" });
+    }
+
+    res.status(200).json({ amount: price });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
 
   module.exports = {
     getAllData,
@@ -152,7 +181,8 @@ const getGymSale = async (req, res) => {
     createData,
     getOrderCheck,
     getbyUser,
-    getGymSale
+    getGymSale,
+    withdrawRequest
   };
 
 

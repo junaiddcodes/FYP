@@ -28,6 +28,7 @@ var PasswordReset = require('./routes/passwordReset')
 var ResetGym = require('./routes/resetGym')
 var ResetTrainer = require('./routes/resetTrainer')
 var OrderGymRouter = require('./routes/api/orderGymApi')
+var WithdrawRouter = require('./routes/api/withdrawApi')
 var app = express()
 
 // view engine setup
@@ -63,6 +64,7 @@ app.use('/api/resetPassword', PasswordReset)
 app.use('/api/resetgym', ResetGym)
 app.use('/api/resettrainer', ResetTrainer)
 app.use('/api/order-gym', OrderGymRouter)
+app.use('/api/withdraw', WithdrawRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))

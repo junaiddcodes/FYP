@@ -132,26 +132,16 @@ const GymProfile = () => {
     });
   }
 
-  function getGymSales() {
-    gymService
-      .get_gym_membership(loginId)
-      .then((res) => {
-        setBoughtPlans(res.crud);
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
   const get_gym = () => {
     gymService
       .get_one_gym(loginId)
       .then((res) => {
         console.log(res);
         setGetGym(res.crud);
-        console.log(res.crud.gym_photos);
-        setGymPhotos(res.crud.gym_photos);
+        if(res.crud.gym_photos){
+
+          setGymPhotos(res.crud.gym_photos);
+        }
 
         if (res.crud.gym_membership_price) {
           setIsProfile(true);
@@ -196,7 +186,6 @@ const GymProfile = () => {
       }
     }
     get_gym();
-    getGymSales();
     // if (getGym.gender_facilitation == "male") {
     //   setMale(true);
     // }
@@ -632,7 +621,7 @@ const GymProfile = () => {
             <div className="d-flex w-75 justify-content-between">
               <div className="trainer-img d-flex">
                 <div className="m-4 d-flex mt-5 flex-column">
-                  <h4>Gym Name: {getGym.user_id.full_name}</h4>
+                  <h4>Gym Name: {getGym.user_id?.full_name}</h4>
                   <h4>
                     Location: {getGym.location?.address}, {getGym.location?.city},{" "}
                     {getGym.location?.state}{" "}
