@@ -23,6 +23,7 @@ import StripeContainer from "../../Components/Stripe/StripeContainer";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import MapShow from "../../Components/mapShow/mapShow";
 
 const GymDescription = () => {
   const reviewSchema = yup.object().shape({
@@ -140,6 +141,7 @@ const GymDescription = () => {
   });
   function getGym() {
     gymService.get_one_gym(gymId.id).then((data) => {
+      setGymDetails(data.crud);
       SetOrderX({
         user_id: userService.getLoggedInUser()._id,
         gym_id: gymId.id,
@@ -147,8 +149,7 @@ const GymDescription = () => {
         time_date: new Date().getTime(),
       });
       const alreadyReviewed = data.crud.reviews.find(
-        (r) =>
-          r.user.toString() === userService.getLoggedInUser()._id.toString()
+        (r) => r.user.toString() === userService.getLoggedInUser()._id.toString()
       );
 
       if (alreadyReviewed) {
@@ -158,7 +159,6 @@ const GymDescription = () => {
       }
       console.log("reviews", data.crud.reviews);
       SetReviews(data.crud.reviews);
-      setGymDetails(data.crud);
       if (data.crud.cordinates) {
         var temp = [data.crud.cordinates.lat, data.crud.cordinates.long];
         SetPins(temp);
@@ -201,8 +201,7 @@ const GymDescription = () => {
             <h6 className="m-1 text-light">No reviews yet</h6>
           ) : (
             <h6 className="m-1 text-light">
-              Rating: <i class="mt-1 text-warning bx bxs-star"></i>{" "}
-              {gymDetails.rating}{" "}
+              Rating: <i class="mt-1 text-warning bx bxs-star"></i> {gymDetails.rating}{" "}
               <span className="text-secondary">({gymDetails.numReviews})</span>{" "}
             </h6>
           )}
@@ -265,10 +264,7 @@ const GymDescription = () => {
                     </div>
                   </Modal>
                 </div>
-                <Button
-                  className="w-50 m-3"
-                  onClick={() => setConfirmDelete(true)}
-                >
+                <Button className="w-50 m-3" onClick={() => setConfirmDelete(true)}>
                   Buy Membership
                 </Button>
               </div>
@@ -372,7 +368,7 @@ const GymDescription = () => {
           <h4>Location</h4>
           <p>{gymDetails.location.address + ", " + gymDetails.location.city}</p>
           <div className="mt-3 custom-map">
-            <GymViewMap mapPin={pins} />
+            <MapShow mapPin={pins} />
           </div>
         </div>
       </div>
