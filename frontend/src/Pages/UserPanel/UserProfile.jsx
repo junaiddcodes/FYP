@@ -43,14 +43,7 @@ const UserProfileSchema = yup.object().shape({
     .required("Name is required"),
 
   weight: yup.number().positive().required().nullable(),
-  feet: yup
-    .number()
-    .typeError("feet is required")
-    .min(4)
-    .max(8)
-    .positive()
-    .required()
-    .nullable(),
+  feet: yup.number().typeError("feet is required").min(4).max(8).positive().required().nullable(),
   inches: yup
     .number()
     .typeError("inches are required")
@@ -134,7 +127,9 @@ const UserProfile = () => {
     return age;
   }
   function calculation(customerDetails) {
-    var height = customerDetails.height / 0.032808;
+    var feets = customerDetails.height / 12;
+    var inch = customerDetails.height % 12;
+    var height = (parseInt(feets) * 12 + parseInt(inch)) * 2.54;
     var weight = customerDetails.weight;
     var weight_pounds = weight * 2.205;
     var age = getAge(getCustomer.dob);
@@ -191,8 +186,8 @@ const UserProfile = () => {
       .then((res) => {
         console.log(res);
         setGetCustomer(res.crud);
-        setFeet(res.crud.height.toString().charAt(0));
-        setInches(getDecimalPart(res.crud.height));
+        setFeet(parseInt(res.crud.height / 12));
+        setInches(res.crud.height % 12);
         if (res.crud.weight) {
           setIsProfile(true);
           //   setIsProfilePicForm(false);
@@ -245,7 +240,7 @@ const UserProfile = () => {
   });
 
   const submitUserProfileForm = (data) => {
-    const height = data.feet + "." + data.inches;
+    const height = data.feet * 12 + data.inches;
     // console.log("aaaaaaa");
     // setStep3(false);
     // setStep4(true);
@@ -272,12 +267,11 @@ const UserProfile = () => {
 
     var calorieData = calculation(userProfileDetails);
 
-    userProfileDetails.protein= calorieData.protien
-    userProfileDetails.carbs= calorieData.carbs
-    userProfileDetails.fats= calorieData.fats
-    userProfileDetails.calorie_goal= calorieData.calorie
+    userProfileDetails.protein = calorieData.protien;
+    userProfileDetails.carbs = calorieData.carbs;
+    userProfileDetails.fats = calorieData.fats;
+    userProfileDetails.calorie_goal = calorieData.calorie;
 
-    
     userService
       .update_user(userProfileDetails, loggedInId)
       .then((data) => {
@@ -289,7 +283,6 @@ const UserProfile = () => {
       .catch((err) => {
         console.log(err);
       });
-
   };
   const handleChange = (e) => {
     setSelectedValue(e.value);
@@ -298,21 +291,11 @@ const UserProfile = () => {
     <div className="page-container-gym">
       <TopBar />
       <SideMenu />
-      {loading ? (
-        <BarLoader
-          loading={loading}
-          color="#063be9"
-          css={override}
-          size={150}
-        />
-      ) : null}
+      {loading ? <BarLoader loading={loading} color="#063be9" css={override} size={150} /> : null}
       <h2>User Profile</h2>
       {isAsk ? (
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
-          <h4>
-            There is no profile present. Click below to create a trainer
-            profile:
-          </h4>
+          <h4>There is no profile present. Click below to create a trainer profile:</h4>
           <Button
             className="w-25 mt-4"
             onClick={() => {
@@ -415,16 +398,12 @@ const UserProfile = () => {
                     >
                       <MenuItem value="1.2" className="d-flex flex-column">
                         <h4>Not Very Active</h4>
-                        <p>
-                          Spend most of the day sitting ( e.g. bank teller, desk
-                          job){" "}
-                        </p>
+                        <p>Spend most of the day sitting ( e.g. bank teller, desk job) </p>
                       </MenuItem>
                       <MenuItem value="1.375" className="d-flex flex-column">
                         <h4>Lightly Active</h4>
                         <p>
-                          Spend a good part of your day on your feet ( e.g.
-                          teacher, salesperson )
+                          Spend a good part of your day on your feet ( e.g. teacher, salesperson )
                         </p>
                       </MenuItem>
                       <MenuItem value="1.55" className="d-flex flex-column">
@@ -432,16 +411,16 @@ const UserProfile = () => {
                         <h4>Active</h4>
                         <p>
                           {" "}
-                          Spend a good part of your day doing some physical
-                          activity ( e.g. food server, postal carrier )
+                          Spend a good part of your day doing some physical activity ( e.g. food
+                          server, postal carrier )
                         </p>
                       </MenuItem>
                       <MenuItem value="1.725" className="d-flex flex-column">
                         {" "}
                         <h4>Very Active</h4>
                         <p>
-                          Spend a good part of the day doing heavy physical
-                          activity ( e.g. bike messenger, carpenter )
+                          Spend a good part of the day doing heavy physical activity ( e.g. bike
+                          messenger, carpenter )
                         </p>
                       </MenuItem>
                     </Select>
@@ -474,12 +453,8 @@ const UserProfile = () => {
                       {...controlUserProfile("weekly_goal")}
                       defaultValue={getCustomer.weekly_goal}
                     >
-                      <MenuItem value="0.5">
-                        gain / lose 0.5 pound per week
-                      </MenuItem>
-                      <MenuItem value="1">
-                        gain / lose 1 pound per week
-                      </MenuItem>
+                      <MenuItem value="0.5">gain / lose 0.5 pound per week</MenuItem>
+                      <MenuItem value="1">gain / lose 1 pound per week</MenuItem>
                     </Select>
                   </FormControl>{" "}
                 </div>
@@ -512,9 +487,7 @@ const UserProfile = () => {
                   <h4>Gender: {getCustomer.gender}</h4>
                   <h4>Weight: {getCustomer.weight} kg</h4>
                   <h4>
-                    Height: {getCustomer.height.toString().charAt(0)} '{" "}
-                    {/* {getDecimalPart(getCustomer.height)}{" "} */}
-                    {(getCustomer.height + "").split(".")[1]}{" "}
+                    Height: {parseInt(getCustomer.height / 12) + " ' " + (getCustomer.height % 12)}{" "}
                   </h4>
                 </div>
               </div>
@@ -554,9 +527,7 @@ const UserProfile = () => {
             </h4>
             <h4>
               Weight goal:{" "}
-              {getCustomer.weight_goal == "gain_weight"
-                ? " Gain weight"
-                : "Lose weight  "}
+              {getCustomer.weight_goal == "gain_weight" ? " Gain weight" : "Lose weight  "}
             </h4>
             <h4>
               Weekly goal:{" "}

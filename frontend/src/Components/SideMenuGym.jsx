@@ -15,18 +15,25 @@ const SideMenuGym = () => {
       <ul className='nav_list'>
         <li>
           <NavLink to='/gym-dashboard' activeClassName='active'>
-            <i class='bx bxs-home-circle'>
-              <span className='links_name'>Home</span>
+            <i class='bx bx-grid-alt'>
+              <span className='links_name'>Dashbaord</span>
             </i>
           </NavLink>
         </li>
-        {/* <li>
-          <NavLink to="/query" activeClassName="active">
-            <i class="bx bx-question-mark">
-              <span className="links_name">Query</span>
+        <li>
+          <NavLink to='/query' activeClassName='active'>
+            <i class='bx bx-question-mark'>
+              <span className='links_name'>Query</span>
             </i>
           </NavLink>
-        </li> */}
+        </li>
+        <li>
+          <NavLink to='/gym-profile' activeClassName='active'>
+            <i class='bx bxs-user'>
+              <span className='links_name'>Profile</span>
+            </i>
+          </NavLink>
+        </li>
       </ul>
 
       <div className='profile_content'>

@@ -33,6 +33,7 @@ class UserService extends GenericService {
   check_plan = (order) => this.post('order/check', order)
   get_user = (id) => this.get('customer/' + id)
   get_bought_plans = (id) => this.get('order/user/' + id)
+  get_order_by_plans = (id) => this.get('order/plan/' + id)
   get_user_plans = (user_id, plan_id) =>
     this.get('order/userplan/' + user_id + '/' + plan_id)
   get_all_plans = (id) => this.get('order/plan/' + id)
@@ -43,6 +44,8 @@ class UserService extends GenericService {
   logout = () => {
     localStorage.removeItem('token')
   }
+  //post review
+  post_review = (order) => this.post('order/review', order)
 
   waterIntake = (water_intake) =>
     this.post('waterIntake/addWaterIntake', water_intake)

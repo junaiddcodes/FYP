@@ -16,14 +16,12 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { TextField } from '@mui/material'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { toast, ToastContainer } from 'react-toastify'
 
 const AddFood = () => {
   const [foodCheck, setFoodCheck] = useState(true)
   const [showEdit, setShowEdit] = useState(false)
   const [editMealId, setEditMealId] = useState('')
-  const [deleteId, setDeleteId]=useState('')
   const location = useLocation()
   var [currentCalorie, setCurrentCalorie] = useState({
     food_calories: 0,
@@ -48,7 +46,7 @@ const AddFood = () => {
   const navigate = useNavigate()
   const notify = () => {
     // Calling toast method by passing string
-    toast.success('Food Edit')
+    toast.success('Food Edited')
   }
   const Add = () => {
     // Calling toast method by passing string
@@ -340,7 +338,7 @@ const AddFood = () => {
               </p>
 
               <Dropdown
-                className='w-100 '
+                className='w-100 mt-2'
                 prompt='Select Food'
                 value={value}
                 onChange={setValue}
@@ -379,27 +377,23 @@ const AddFood = () => {
               <p id='error-text' style={{ color: 'rgb(255, 34, 34)' }}>
                 {errors.food_weight_selected?.message}
               </p>
-              <div className='mb-3'>
+              {/* <div className="mb-3">
                 <div>
-                  <label htmlFor='time'>
-                    Enter time of your meal {'(' + 'Optional' + ')'}
-                  </label>
+                  <label htmlFor="time">Enter time of your meal {"(" + "Optional" + ")"}</label>
                 </div>
                 <div>
-                  <input
-                    name='time'
-                    className='time-input mb-1 py-3'
-                    type='time'
-                  />
+                  <input name="time" className="time-input mb-1 py-3" type="time" />
                 </div>
-              </div>
+              </div> */}
               {/* // <Select
             //   className="select-drop"
             //   placeholder="Select Quantity"
             //   options={quantityOptions}
             // /> */}
               <div>
-                <Button type='submit'>Add Food</Button>
+                <Button className='mt-3' type='submit'>
+                  Add Food
+                </Button>
               </div>
             </form>
           </div>
@@ -421,7 +415,7 @@ const AddFood = () => {
               <tbody>
                 {mealData.length == 0 ? (
                   <tr>
-                    <td>There are no Meal for Today</td>
+                    <td>There are no meals for today</td>
                   </tr>
                 ) : (
                   mealData.map((e, index) => {
@@ -605,7 +599,6 @@ const AddFood = () => {
                               className='delete-icon'
                               onClick={() => {
                                 setConfirmDelete(true)
-                                setDeleteId(e._id)
                               }}
                             >
                               <ImCross />
@@ -662,7 +655,7 @@ const AddFood = () => {
                                     type='submit '
                                     onClick={() => {
                                       userService
-                                        .deleteMealData(deleteId)
+                                        .deleteMealData(e._id)
                                         .then(() => {
                                           console.log('Meal is Deleted')
                                           getMealData()

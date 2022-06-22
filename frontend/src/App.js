@@ -45,6 +45,7 @@ import ResetPassword from "./Pages/Register/ResetPassword";
 import MyMembership from "./Pages/UserPanel/MyMembership";
 import { MapContainer } from "react-leaflet";
 import MapPage from "./Pages/UserPanel/MapPage";
+import GymDashboard from "./Pages/GymPanel/GymDashboard";
 function App() {
   return (
     <BrowserRouter>
@@ -60,7 +61,8 @@ function App() {
           <Route path="/search-gym" element={<SearchGym />} />
           <Route path="/search-trainer" element={<SearchTrainer />} />
           <Route path="/gym-description/:id" element={<GymDescription />} />
-          <Route path="/gym-dashboard" element={<GymProfile />} />
+          <Route path="/gym-dashboard" element={<GymDashboard />} />
+          <Route path="/gym-profile" element={<GymProfile />} />
           <Route path="/trainer-profile" element={<TrainerProfile />} />
           <Route path="/trainer-description/:id" element={<TrainerDescription />} />
           <Route path="/activity-plans" element={<ActivityPlans />} />

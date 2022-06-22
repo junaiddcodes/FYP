@@ -121,7 +121,7 @@ const TrainerDescription = () => {
                     <h6 className='m-1'>No reviews yet</h6>
                   ) : (
                     <h6 className='m-1'>
-                      Rating: {trainerDetails.numReview}{' '}
+                      Rating: {trainerDetails.numReview.toFixed(1)}{' '}
                       <span className='text-secondary'>
                         ({trainerDetails.countReview})
                       </span>{' '}
@@ -157,7 +157,7 @@ const TrainerDescription = () => {
         <div className='m-4 d-flex flex-column'>
           <h4>Certification: {trainerDetails.qualification}</h4>
           <h4>Exercise Type: {trainerDetails.exercise_type}</h4>
-          <h4>Trainer Avaibility: {trainerDetails.trainer_availblity}</h4>
+          {/* <h4>Trainer Avaibility: {trainerDetails.trainer_availblity}</h4> */}
           <h4>About: </h4>
           <p> {trainerDetails.trainer_desc}</p>
         </div>

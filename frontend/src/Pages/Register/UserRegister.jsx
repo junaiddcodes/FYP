@@ -271,7 +271,9 @@ const UserRegister = () => {
       });
   };
   const submitStep2Form = (data) => {
-    const height = data.feet + "." + data.inches;
+    // const height = data.feet + "." + data.inches;
+    const height = data.feet * 12 + data.inches;
+
     console.log(height);
     setCustomerDetails({
       weight: data.weight,
