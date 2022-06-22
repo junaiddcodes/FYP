@@ -47,7 +47,6 @@ const SearchGym = () => {
       .then((res) => {
         setSearchedGyms(res.crud);
         setIsSearched(false);
-        console.log(res.crud);
         setLoading(false);
       })
       .catch((err) => {
@@ -56,14 +55,13 @@ const SearchGym = () => {
   }
 
   function getSeacrhedGyms() {
-    console.log(searchGym);
+
     gymService
       .get_search_gyms(searchGym)
       .then((res) => {
         setSearchedGyms(res.crud);
         setIsSearched(true);
         setSearchResults(false);
-        console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -81,8 +79,6 @@ const SearchGym = () => {
       navigate("/login");
       // console.log("log in first");
     }
-
-    console.log(pakCities);
 
     getFeatureGyms();
   }, []);
@@ -211,7 +207,7 @@ const SearchGym = () => {
                   <h6 className="m-1">No reviews yet</h6>
                 ) : (
                   <h6 className="m-1">
-                    <i class="mt-1 text-warning bx bxs-star"></i> {e.rating}{" "}
+                    <i class="mt-1 text-warning bx bxs-star"></i> {e.rating.toFixed(1)}{" "}
                     <span className="text-secondary">({e.numReviews})</span>{" "}
                   </h6>
                 )}

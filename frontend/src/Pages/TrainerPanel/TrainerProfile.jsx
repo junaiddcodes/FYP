@@ -147,7 +147,9 @@ const TrainerProfile = () => {
     var mem = { membership: true };
     trainerService.update_trainer(mem, loggedInId).then((data) => {
       console.log(data);
-      get_customer();
+      // get_customer();
+      setIsListed("approved")
+      setConfirmDeleteX(false)
     });
   }
   const get_customer = () => {
@@ -316,7 +318,11 @@ const TrainerProfile = () => {
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
           <h4>Your Profile is Rejected By Admin</h4>
         </div>
-      ) : isListed == "listed" ? (
+      ): isListed == "approved" ? (
+        <div className="gym-box mt-3 d-flex flex-column justify-content-start">
+          <h4>Payment Confirmed. Rock and Roll you are now available for our users</h4>
+        </div>
+      )  : isListed == "listed" ? (
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
           <h4>
             You Have Been Approved by Admin. For Become a Trainer You need to

@@ -86,7 +86,7 @@ const MyPlans = () => {
               >
                 <div className="activity-card grid-item p-3">
                   <h4>{e.plan_title} Activity Plan</h4>
-                  <h4>Trainer name:</h4>
+                  <h4>Trainer name: {e.trainer_id.user_id.full_name}</h4>
                   <h4>Description</h4>
                   <p className="text-light">{e.plan_desc}</p>
                   <div className="d-flex justify-content-between">

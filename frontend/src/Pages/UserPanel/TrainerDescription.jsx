@@ -120,7 +120,7 @@ const TrainerDescription = () => {
                     <h6 className="m-1">No reviews yet</h6>
                   ) : (
                     <h6 className="m-1">
-                      Rating: {trainerDetails.numReview}{" "}
+                      Rating: {trainerDetails.numReview.toFixed(1)}{" "}
                       <span className="text-secondary">({trainerDetails.countReview})</span>{" "}
                       <i class="mt-1 text-warning bx bxs-star"></i>
                     </h6>
