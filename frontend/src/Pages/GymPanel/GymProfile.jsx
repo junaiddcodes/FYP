@@ -138,8 +138,7 @@ const GymProfile = () => {
       .then((res) => {
         console.log(res);
         setGetGym(res.crud);
-        if(res.crud.gym_photos){
-
+        if (res.crud.gym_photos) {
           setGymPhotos(res.crud.gym_photos);
         }
 
@@ -301,11 +300,11 @@ const GymProfile = () => {
       <h2>Gym Profile</h2>
       {isListed == "default" ? null : isListed == "not-listed" ? (
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
-          <h4>Your Profile is Reviewing By Admin</h4>
+          <h4>Your profile is being reviewed by admin</h4>
         </div>
       ) : isListed == "rejected" ? (
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
-          <h4>Your Profile is Rejected By Admin</h4>
+          <h4>Your profile was rejected by admin</h4>
         </div>
       ) : isListed == "listed" ? (
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
@@ -392,7 +391,7 @@ const GymProfile = () => {
           >
             back
           </Button>
-          <label className="mb-2">Choose gym location on map</label>
+          <label className="m-3 mb-1">Choose gym location on map</label>
           <GoogleMap
             zoom={12}
             // styles={{ width: "70%", height: "40%" }}
@@ -444,31 +443,43 @@ const GymProfile = () => {
                 />
                 <p>{errorsGymProfile.longitude?.message}</p> */}
 
-                <label for="">Gym Location</label>
-                <label for="">State</label>
+                <label for="" className="m-3 mb-1">
+                  Gym Location
+                </label>
+                <label for="" className="m-3 mb-1">
+                  State
+                </label>
                 <input
                   type="text"
                   name="state"
+                  className="m-3 mt-0"
                   defaultValue={getGym.location?.state}
                   {...controlGymProfile("state")}
                 />
 
                 <p>{errorsGymProfile.state?.message}</p>
-                <label for="">City</label>
+                <label className="m-3 mb-1" for="">
+                  City
+                </label>
 
                 <input
                   type="text"
+                  className="m-3 mt-0"
                   name="city"
                   defaultValue={getGym.location?.city}
                   {...controlGymProfile("city")}
                 />
 
                 <p>{errorsGymProfile.city?.message}</p>
-                <label for="">Address</label>
+                <label for="" className="m-3 mb-1">
+                  Address
+                </label>
 
                 <input
+                  className="m-3 mb-1"
                   type="text"
                   name="address"
+                  className="m-3 mt-0"
                   defaultValue={getGym.location?.address}
                   {...controlGymProfile("address")}
                 />
@@ -483,25 +494,33 @@ const GymProfile = () => {
                   defaultValue={getGym.user_id.full_name}
                 />
                 <p>{errorsGymProfile.full_name?.message}</p> */}
-                <label for="">Gym Contact Number</label>
+                <label for="" className="m-3 mb-1">
+                  Gym Contact Number
+                </label>
                 <input
                   type="text"
+                  className="m-3 mt-0"
                   name="gym_contact_no"
                   defaultValue={getGym.gym_contact_no}
                   {...controlGymProfile("gym_contact_no")}
                 />
                 <p>{errorsGymProfile.gym_contact_no?.message}</p>
-                <label for="">Gym Membership Price (in Rs)</label>
+                <label for="" className="m-3 mb-1">
+                  Gym Membership Price (in Rs)
+                </label>
                 <input
                   type="Number"
+                  className="m-3 mt-0"
                   name="gym_membership_price"
                   defaultValue={getGym.gym_membership_price}
                   {...controlGymProfile("gym_membership_price")}
                 />
                 <p>{errorsGymProfile.gym_membership_price?.message}</p>
               </div>
-              <label for="fname">Gender Facilitation</label>
-              <FormControl className="m-3 w-50 dropdown-trainer">
+              <label for="fname" className="m-3 mb-1">
+                Gender Facilitation
+              </label>
+              <FormControl className="m-3 mt-0 w-50 dropdown-trainer">
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
@@ -516,10 +535,12 @@ const GymProfile = () => {
               </FormControl>
               <p>{errorsGymProfile.gender_facilitation?.message}</p>
 
-              <label for="">Gym Description</label>
+              <label for="" className="m-3 mb-1">
+                Gym Description
+              </label>
 
               <textarea
-                className="text-field mt-2"
+                className="text-field m-3 mt-0 "
                 name="gym_desc"
                 {...controlGymProfile("gym_desc")}
                 defaultValue={getGym.gym_desc}
@@ -551,10 +572,10 @@ const GymProfile = () => {
                 </div>
               </form> */}
 
-              <p className="mt-3 general-p">
+              <p className="m-3 general-p">
                 Submit Profile to the Admin. Admin will review your profile and Approve it:
               </p>
-              <Button type="submit" className="w-25">
+              <Button type="submit" className="w-25 m-3">
                 Submit
               </Button>
             </form>

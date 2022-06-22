@@ -154,7 +154,7 @@ const TrainerDescription = () => {
         <div className="m-4 d-flex flex-column">
           <h4>Certification: {trainerDetails.qualification}</h4>
           <h4>Exercise Type: {trainerDetails.exercise_type}</h4>
-          <h4>Trainer Avaibility: {trainerDetails.trainer_availblity}</h4>
+          {/* <h4>Trainer Avaibility: {trainerDetails.trainer_availblity}</h4> */}
           <h4>About: </h4>
           <p> {trainerDetails.trainer_desc}</p>
         </div>

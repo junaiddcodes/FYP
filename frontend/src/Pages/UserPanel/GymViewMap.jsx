@@ -95,7 +95,7 @@ const GymViewMap = () => {
 
           <MapContainer
             center={[location.coordinates?.lat, location.coordinates?.lng]}
-            zoom={13}
+            zoom={14}
             scrollWheelZoom={true}
           >
             <TileLayer

@@ -276,7 +276,7 @@ const GymDescription = () => {
                     setEditModalOpen(true);
                   }}
                 >
-                  Review plan
+                  Review Gym
                 </Button>
                 <div className="modal-container">
                   <Modal

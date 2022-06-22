@@ -28,9 +28,7 @@ const MapShow = ({ mapPin }) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <Marker position={pins}>
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
+        <Popup>Gym Location</Popup>
       </Marker>
     </MapContainer>
   );
