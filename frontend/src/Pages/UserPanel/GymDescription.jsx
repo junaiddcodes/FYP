@@ -43,6 +43,8 @@ const GymDescription = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [isReview, SetIsReview] = useState(false);
   const [reviews, SetReviews] = useState([]);
+  const [paymentConfirm, setPaymentConfirm] = useState(false);
+  const [reviewConfirm, setReviewtConfirm] = useState(false);
   var order = {
     user_id: userService.getLoggedInUser()._id,
     gym_id: gymId.id,
@@ -62,19 +64,21 @@ const GymDescription = () => {
   });
 
   const submitReviewForm = (data) => {
-    console.log("Submit Review");
     var tempObject = {
       user_id: userService.getLoggedInUser()._id,
       rating: data.rating,
       comment: data.comment,
     };
-
+    
     console.log(tempObject);
-
+    
     gymService
-      .post_gym_review(gymId.id, tempObject)
-      .then((data) => {
+    .post_gym_review(gymId.id, tempObject)
+    .then((data) => {
+        console.log("Submit Review");
         console.log(data);
+        setReviewtConfirm(true)
+        SetIsReview(true)
         setEditModalOpen(false);
       })
       .catch((err) => {
@@ -89,7 +93,11 @@ const GymDescription = () => {
       .buy_gym_membership(orderX)
       .then((data) => {
         console.log(data);
-        checkGymOrder(order);
+        // checkGymOrder(order);
+        setShowItem(false);
+        SetIsReview(false)
+        setConfirmDelete(false)
+        setPaymentConfirm(true)
       })
       .catch((err) => {
         console.log(err.message);
@@ -141,6 +149,7 @@ const GymDescription = () => {
   });
   function getGym() {
     gymService.get_one_gym(gymId.id).then((data) => {
+      console.log(data.crud)
       setGymDetails(data.crud);
       SetOrderX({
         user_id: userService.getLoggedInUser()._id,
@@ -148,21 +157,29 @@ const GymDescription = () => {
         price: data.crud.gym_membership_price,
         time_date: new Date().getTime(),
       });
-      const alreadyReviewed = data.crud.reviews.find(
-        (r) => r.user.toString() === userService.getLoggedInUser()._id.toString()
-      );
+      var alreadyReviewed = false
+      if(data.crud.reviews){
+
+        alreadyReviewed = data.crud.reviews.find(
+          (r) => r.user.toString() === userService.getLoggedInUser()._id.toString()
+        );
+
+        console.log("reviews", data.crud.reviews);
+        SetReviews(data.crud.reviews);
+      }
 
       if (alreadyReviewed) {
         SetIsReview(true);
       } else {
         SetIsReview(false);
       }
-      console.log("reviews", data.crud.reviews);
-      SetReviews(data.crud.reviews);
-      if (data.crud.cordinates) {
-        var temp = [data.crud.cordinates.lat, data.crud.cordinates.long];
+
+      if (data.crud.coordinates) {
+        var temp = [data.crud.coordinates.lat, data.crud.coordinates.long];
         SetPins(temp);
       }
+
+      console.log("here")
     });
   }
 
@@ -178,6 +195,20 @@ const GymDescription = () => {
       >
         <i class="bx bx-arrow-back m-1"></i> Back
       </Button>
+      {paymentConfirm ? (
+        <div className="gym-box my-3 d-flex flex-column justify-content-start">
+          <h4>
+            Payment Confirmed. This Gym Membership is added into your 'My Membership' Tab
+          </h4>
+        </div>
+      ) : null}
+      {reviewConfirm ? (
+        <div className="gym-box my-3 d-flex flex-column justify-content-start">
+          <h4>
+            Review Submitted
+          </h4>
+        </div>
+      ) : null}
       <h2>Gym Description</h2>
       <div className="d-flex">
         <div className="gym-desc d-flex flex-column ">
@@ -201,7 +232,7 @@ const GymDescription = () => {
             <h6 className="m-1 text-light">No reviews yet</h6>
           ) : (
             <h6 className="m-1 text-light">
-              Rating: <i class="mt-1 text-warning bx bxs-star"></i> {gymDetails.rating}{" "}
+              Rating: <i class="mt-1 text-warning bx bxs-star"></i> {gymDetails.rating.toFixed(1)}{" "}
               <span className="text-secondary">({gymDetails.numReviews})</span>{" "}
             </h6>
           )}

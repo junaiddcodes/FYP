@@ -202,7 +202,7 @@ const SearchTrainer = () => {
                   <h6 className="m-1">No reviews yet</h6>
                 ) : (
                   <h6 className="m-1">
-                    Rating: {e.numReview}{" "}
+                    Rating: {e.numReview.toFixed(1)}{" "}
                     <span className="text-secondary">{"(" + e.countReview + ")"}</span>{" "}
                     <i class="mt-1 text-warning bx bxs-star"></i>
                   </h6>

@@ -11,7 +11,10 @@ const cloudinary = require("../utils/cloudinary");
 //use to get all data from db
 const getAllData = async (req, res) => {
   try {
-    const crud = await gymDetails.find({ listed: "listed" }).sort({numReviews: -1}).limit(9);
+    const crud = await gymDetails
+      .find({ listed: "listed", membership: true })
+      .sort({ numReviews: -1 })
+      .limit(9);
     res.status(200).json({ crud });
   } catch (error) {
     res.status(500).json({ message: error });
@@ -225,6 +228,7 @@ const gymSearchFilter = async (req, res) => {
 
     if (req.body.full_name || req.body.city || req.body.gender_facilitation) {
       query.listed = "listed";
+      query.membership = true;
 
       var crud = await gymDetails.find(query);
       if (crud.length == 0) {
@@ -293,37 +297,44 @@ const createReview = async (req, res) => {
     }
 
     const gymReview = await gymDetails.findById(req.params.id);
-
-    if (gymReview) {
-      const alreadyReviewed = gymReview.reviews.find(
-        (r) => r.user.toString() === user._id.toString()
-      );
-
-      if (alreadyReviewed) {
-        return res.status(404).json({ message: "Review already reviewed" });
-      }
-
-      const review = {
-        name: user.user_id.full_name,
-        rating: Number(rating),
-        comment,
-        user: user._id,
-      };
-
-      gymReview.reviews.push(review);
-
-      gymReview.numReviews = gymReview.reviews.length;
-
-      gymReview.rating =
-        gymReview.reviews.reduce((acc, item) => item.rating + acc, 0) /
-        gymReview.reviews.length;
-
-      await gymReview.save();
-      res.status(201).json({ message: "Review added" });
-    } else {
-      res.status(404);
-      throw new Error("Gym not found");
+    if (!gymReview) {
+      return res.status(404).json({ message: "Gym does not exist" });
     }
+
+    if (gymReview.reviews) {
+      if (gymReview.reviews.length != 0) {
+        const alreadyReviewed = gymReview.reviews.find(
+          (r) => r.user.toString() === user._id.toString()
+        );
+
+        if (alreadyReviewed) {
+          return res.status(404).json({ message: "Review already reviewed" });
+        }
+      }
+    } else {
+      // res.status(404);
+      // throw new Error("Gym Reviews not found");
+      console.log("Gym Review 0");
+    }
+
+    const review = {
+      name: user.user_id.full_name,
+      rating: Number(rating),
+      comment: comment,
+      user: user._id,
+    };
+
+    
+ 
+      gymReview.reviews.push(review);
+      gymReview.numReviews = gymReview.reviews.length;
+      
+      gymReview.rating =
+      gymReview.reviews.reduce((acc, item) => item.rating + acc, 0) /
+      gymReview.reviews.length;
+    
+    await gymReview.save();
+    res.status(201).json({ message: "Review added" });
   } catch (error) {
     res.status(500).json({ message: error });
   }

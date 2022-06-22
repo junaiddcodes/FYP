@@ -42,6 +42,7 @@ var gymDetailsSchema = mongoose.Schema({
     account_number: String,
     account_name: String,
   },
+  reviews: [reviewSchema],
 });
 
 var gymDetails = mongoose.model("Gym_Details", gymDetailsSchema);

@@ -47,9 +47,6 @@ const override = css`
   color: blue;
 `;
 
-
-
-
 const GymDashboard = () => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: "AIzaSyBdLc31kclLs_2r72Uh0G88vBfYConu4BU",
@@ -100,7 +97,6 @@ const GymDashboard = () => {
 
   var loginId = "";
 
-
   function getGymSales() {
     var totalPrice = 0;
     var withdrawPrice = 0;
@@ -123,7 +119,7 @@ const GymDashboard = () => {
       });
   }
   function withdrawRequest() {
-    var userId = userService.getLoggedInUser()._id
+    var userId = userService.getLoggedInUser()._id;
 
     var withdrawReq = {
       user_id: userId,
@@ -155,12 +151,11 @@ const GymDashboard = () => {
       .update_gym(bankDetails, loginId)
       .then((res) => {
         console.log("Bank Added Successfully");
-        get_gym()
+        get_gym();
       })
       .catch((err) => {
         console.log(err);
       });
-    console.log("chumi");
   }
 
   const get_gym = () => {
@@ -222,6 +217,19 @@ const GymDashboard = () => {
           size={150}
         />
       ) : null}
+
+      <div className="admin-box mt-3">
+        <div className="user-box d-flex flex-column p-3">
+          <div className="d-flex flex-column">
+            <p className="font-weight-bold text-light">
+              Available to Withdraw (Rs): {withdrawAmount.length !=0?withdrawAmount:0}
+            </p>
+            <p className="font-weight-bold text-light">
+              Total Earning (Rs): {totalEarning.length !=0?totalEarning:0}
+            </p>
+          </div>
+        </div>
+      </div>
 
       <div className="admin-box mt-3">
         <div className="user-box d-flex flex-column p-3">
@@ -366,7 +374,7 @@ const GymDashboard = () => {
                       className="btn btn-primary edit-btn"
                       onClick={() => {
                         console.log("Text");
-                        withdrawRequest()
+                        withdrawRequest();
                       }}
                     >
                       Confirm Withdraw
