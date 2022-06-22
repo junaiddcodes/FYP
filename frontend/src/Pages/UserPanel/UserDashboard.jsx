@@ -60,7 +60,7 @@ const UserDashboard = () => {
   });
   const submitStatsForm = (data) => {
     console.log("in function");
-    const height = data.feet + "." + data.inches;
+    const height = data.feet * 12 + data.inches;
     var calorieData = calculation(userData, height, data.weight);
     statsDetails = {
       ...statsDetails,
@@ -77,8 +77,6 @@ const UserDashboard = () => {
       fats: calorieData.fats,
       calorie_goal: calorieData.calorie,
     };
-
-
 
     userService
       .update_user(statsDetails, userId)
@@ -116,7 +114,10 @@ const UserDashboard = () => {
     return age;
   }
   function calculation(customerDetails, height, weight) {
-    var height = height / 0.032808;
+    var feets = height / 12;
+    var inch = height % 12;
+    var height = (parseInt(feets) * 12 + parseInt(inch)) * 2.54;
+    console.log("Calculation", height, feet, inches);
     var weight = weight;
     var weight_pounds = weight * 2.205;
     var age = getAge(customerDetails.dob);
@@ -207,8 +208,8 @@ const UserDashboard = () => {
 
       .then((data) => {
         setUserData(data.crud);
-        setFeet(data.crud.height.toString().charAt(0));
-        setInches(getDecimalPart(data.crud.height));
+        setFeet(parseInt(data.crud.height / 12));
+        setInches(data.crud.height % 12);
         calculate_bmi(data.crud.height, data.crud.weight);
         console.log("user data = ", data.crud);
       });
@@ -257,7 +258,8 @@ const UserDashboard = () => {
       });
   }
   const calculate_bmi = (height, weight) => {
-    var meterHeight = 73 * 0.0254;
+    console.log(height);
+    var meterHeight = height * 0.0254;
     var sqHeight = meterHeight * meterHeight;
     var bmi = weight / sqHeight;
     console.log(weight / sqHeight);
@@ -335,9 +337,8 @@ const UserDashboard = () => {
               <div className="m-4 w-50 h-50 d-flex flex-column">
                 <h4 className="m-1">Your weight: {userData.weight} kgs</h4>
                 <h4 className="m-1">
-                  Your height: {userData.height?.toString().charAt(0)} '{" "}
-                  {/* {getDecimalPart(getCustomer.height)}{" "} */}
-                  {(userData.height + "").split(".")[1]}{" "}
+                  Your height: Height:{" "}
+                  {parseInt(userData.height / 12) + " ' " + (userData.height % 12)}{" "}
                 </h4>
                 <Button
                   className="btn btn-warning btn-sm w-25"

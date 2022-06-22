@@ -38,6 +38,7 @@ const createData = async (req, res) => {
     if (checkPlan.length != 0) {
       return res.status(404).json({ message: "User already have that Plan" });
     }
+    // req.body.withdraw = true;
     const crud = await orderDetails.create(req.body);
     res.status(201).json({ crud });
   } catch (error) {
@@ -49,10 +50,14 @@ const createData = async (req, res) => {
 const updateData = async (req, res) => {
   try {
     const { orderId: crudId } = req.params;
-    const crud = await orderDetails.findByIdAndUpdate({ _id: crudId }, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const crud = await orderDetails.findByIdAndUpdate(
+      { _id: crudId },
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
     if (!crud) {
       return res.status(404).json({ message: "item does not exist" });
@@ -95,8 +100,6 @@ const getOneData = async (req, res) => {
   }
 };
 
-
-
 //use to get only one data from db
 const getbyUser = async (req, res) => {
   try {
@@ -108,13 +111,18 @@ const getbyUser = async (req, res) => {
       planArr.push(e.plan_id);
     });
 
-    console.log(planArr);
 
     var plans = await createPlanModel.find({
       _id: {
         $in: planArr,
       },
+    }).populate({
+      path: "trainer_id",
+      model: "Trainer_Details",
+      select: "user_id.full_name",
     });
+
+    console.log(plans)
 
     if (!crud) {
       return res.status(404).json({ message: "item does not exist" });
@@ -145,13 +153,15 @@ const checkUserOrder = async (req, res) => {
 const getOrderbyPlan = async (req, res) => {
   try {
     const { planId: crudId } = req.params;
-    const crud = await orderDetails.find({
-      plan_id: crudId,
-    }).populate({
-      path:"user_id",
-      model:"Customer_Details",
-      select:"user_id.full_name"
-    });
+    const crud = await orderDetails
+      .find({
+        plan_id: crudId,
+      })
+      .populate({
+        path: "user_id",
+        model: "Customer_Details",
+        select: "user_id.full_name",
+      });
     if (crud.length == 0) {
       return res.status(404).json({ message: "item does not exist" });
     } else {
@@ -183,13 +193,15 @@ const getTrainersSale = async (req, res) => {
   try {
     const { trainerId: crudId } = req.params;
 
-    const crud = await orderDetails.find({
-      trainer_id: crudId,
-    }).populate({
-      path:"user_id",
-      model:"Customer_Details",
-      select:"user_id.full_name"
-    });
+    const crud = await orderDetails
+      .find({
+        trainer_id: crudId,
+      })
+      .populate({
+        path: "user_id",
+        model: "Customer_Details",
+        select: "user_id.full_name",
+      }).sort({time_date: -1});
     if (crud.length == 0) {
       return res.status(404).json({ message: "item does not exist" });
     } else {
@@ -208,6 +220,7 @@ const postRevew = async (req, res) => {
 
     var rating = Number(req.body.review);
     var reviewCount = 1;
+    console.log(order)
 
     if (!order) {
       return res.status(404).json({ message: "item does not exist" });
@@ -230,9 +243,7 @@ const postRevew = async (req, res) => {
       }
     });
 
-    
     rating = rating / reviewCount;
-    
 
     let trainer = await trainerDetails.findOne({ _id: order.trainer_id });
     trainer.numReview = rating;
@@ -247,13 +258,69 @@ const postRevew = async (req, res) => {
       }
     );
 
-    const crud = await orderDetails.findByIdAndUpdate({ _id: order._id }, order, {
-      new: true,
-      runValidators: true,
-    });
+    const crud = await orderDetails.findByIdAndUpdate(
+      { _id: order._id },
+      order,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
     if (!crud) {
       return res.status(404).json({ message: "item does not exist" });
     }
+
+    res.status(200).json({ crud });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
+const withdrawRequest = async (req, res) => {
+  try {
+    const withdraw = await orderDetails.find({
+      trainer_id: req.params.trainer_id,
+    });
+    let price = 0;
+
+    if (withdraw.length == 0) {
+      return res
+        .status(404)
+        .json({ message: "Trainer dont have any payment yet" });
+    }
+
+    withdraw.map((e) => {
+      if (e.withdraw) {
+        price = price + e.price;
+      }
+    });
+    if (price == 0) {
+      return res
+        .status(404)
+        .json({ message: "Not have any amount to withdraw" });
+    }
+
+    res.status(200).json({ amount: price });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
+const withdrawApproved = async (req, res) => {
+  try {
+    if (req.body.amount < 10000) {
+      return res
+        .status(404)
+        .json({ message: "Amount Should be great than Rs 10000" });
+    }
+
+    const crud = await orderDetails.updateMany({
+      trainer_id: req.body.trainer_id,
+      withdraw: true,
+    },
+    {
+      $set:{withdraw: false}
+    });
 
     res.status(200).json({ crud });
   } catch (error) {
@@ -273,4 +340,6 @@ module.exports = {
   postRevew,
   getOrderbyPlan,
   getOrderUserPlan,
+  withdrawRequest,
+  withdrawApproved
 };

@@ -114,6 +114,28 @@ tr.activity-box td {
     z-index: 1; */
   }
 
-.page-container-user{
+ 
+a{
+  cursor: pointer;
+}
+.text-underline{
+  text-decoration: underline;
+}
+.page-container-user {
   padding-bottom: 35px;
+}
+.marker-gym {
+  color: blue;
+}
+.marker-geo:hover {
+  color: #000;
+  background: #000;
+}
+.marker-popup {
+  background-color: #007fff;
+}
+.see-details {
+  font-weight: 600;
+  text-decoration: underline;
+  color: #007fff;
 }

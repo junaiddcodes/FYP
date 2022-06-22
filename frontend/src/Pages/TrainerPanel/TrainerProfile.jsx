@@ -147,7 +147,9 @@ const TrainerProfile = () => {
     var mem = { membership: true }
     trainerService.update_trainer(mem, loggedInId).then((data) => {
       console.log(data)
-      get_customer()
+      // get_customer();
+      setIsListed('approved')
+      setConfirmDeleteX(false)
     })
   }
   const get_customer = () => {
@@ -310,17 +312,23 @@ const TrainerProfile = () => {
 
       {isListed == 'default' ? null : isListed == 'not-listed' ? (
         <div className='gym-box mt-3 d-flex flex-column justify-content-start'>
-          <h4>Your Profile is Reviewing By Admin</h4>
+          <h4>Your profile is bring reviewed by admin</h4>
         </div>
       ) : isListed == 'rejected' ? (
         <div className='gym-box mt-3 d-flex flex-column justify-content-start'>
-          <h4>Your Profile is Rejected By Admin</h4>
+          <h4>Your profile was rejected by admin</h4>
+        </div>
+      ) : isListed == 'approved' ? (
+        <div className='gym-box mt-3 d-flex flex-column justify-content-start'>
+          <h4>
+            Payment Confirmed. Rock and Roll you are now available for our users
+          </h4>
         </div>
       ) : isListed == 'listed' ? (
         <div className='gym-box mt-3 d-flex flex-column justify-content-start'>
           <h4>
-            You Have Been Approved by Admin. For Become a Trainer You need to
-            pay one Time Fee of Rs 1000.
+            You have been approved by admin. To become a trainer you need to pay
+            one time fee of Rs 1000.
           </h4>
           <div>
             <div className='modal-container'>
@@ -416,42 +424,55 @@ const TrainerProfile = () => {
             >
               <div className='input-text d-flex flex-column'>
                 <div className='w-50 m-0'>
-                  <label>Your Name</label>
+                  <label className='m-3 mb-1'>Your Name</label>
                   <input
                     type='text'
+                    className='m-3 mt-0'
                     id=''
                     name='full_name'
                     {...controlTrainerProfile('full_name')}
                     defaultValue={getCustomer.user_id.full_name}
                   />
                   <p>{errorsTrainerProfile.full_name?.message}</p>
-                  <label for=''>Gym Location</label>
-                  <label for=''>State</label>
+                  <h4 className='m-3 mb-1 font-weight-bold'>Gym Location</h4>
+                  {/* <br /> */}
+                  <label for='' className='m-3 mb-1'>
+                    State
+                  </label>
                   <input
                     type='text'
+                    className='m-3 mt-0'
                     name='state'
                     defaultValue={getCustomer.location?.state}
                     {...controlTrainerProfile('state')}
                   />
                   <p>{errorsTrainerProfile.state?.message}</p>
-                  <label for=''>City</label>
+                  <label for='' className='m-3 mb-1'>
+                    City
+                  </label>
                   <input
                     type='text'
+                    className='m-3 mt-0'
                     name='city'
                     defaultValue={getCustomer.location?.city}
                     {...controlTrainerProfile('city')}
                   />
                   <p>{errorsTrainerProfile.city?.message}</p>
-                  <label for=''>Address</label>
+                  <label className='m-3 mb-1' for=''>
+                    Address
+                  </label>
                   <input
                     type='text'
                     name='address'
+                    className='m-3 mt-0'
                     defaultValue={getCustomer.location?.address}
                     {...controlTrainerProfile('address')}
                   />
                   <p>{errorsTrainerProfile.address?.message}</p>
-                  <label for='fname'>Select your exercise type</label>
-                  <FormControl className='m-3 w-100 dropdown-trainer'>
+                  <label className='m-3 mb-1' for='fname'>
+                    Select your exercise type
+                  </label>
+                  <FormControl className='m-3 mt-0 w-100 dropdown-trainer'>
                     <Select
                       labelId='demo-simple-select-label'
                       id='demo-simple-select'
@@ -480,8 +501,10 @@ const TrainerProfile = () => {
                   {...controlTrainerProfile("exercise_type")}
                 /> */}
                   <p>{errorsTrainerProfile.exercise_type?.message}</p>
-                  <label for='fname'>Enter Your certification</label>
-                  <FormControl className='m-3 w-100 dropdown-trainer'>
+                  <label for='fname' className='m-3 mb-1'>
+                    Enter Your certification
+                  </label>
+                  <FormControl className='m-3 mt-0 w-100 dropdown-trainer'>
                     <Select
                       labelId='demo-simple-select-label'
                       id='demo-simple-select'
@@ -510,22 +533,26 @@ const TrainerProfile = () => {
                   <p>{errorsTrainerProfile.qualification?.message}</p>
                 </div>
 
-                <label>Enter the company you are currently working at</label>
+                <label className='m-3 mb-1'>
+                  Enter the company you are currently working at
+                </label>
                 <input
                   type='text'
                   id=''
+                  className='m-3 mt-0'
                   name='company_name'
                   {...controlTrainerProfile('company_name')}
                   defaultValue={getCustomer.company_name}
                 />
 
                 <p>{errorsTrainerProfile.company_name?.message}</p>
-                <label for='lname'>
+                <label className='m-3 mb-1' for='lname'>
                   Enter your designation in the current company{' '}
                 </label>
                 <input
                   type='text'
                   id=''
+                  className='m-3 mt-0'
                   name='designation'
                   {...controlTrainerProfile('designation')}
                   defaultValue={getCustomer.designation}
@@ -545,10 +572,12 @@ const TrainerProfile = () => {
                 {/* <label for="lname">Your gender</label> */}
               </div>
 
-              <label for='lname'>Your details</label>
+              <label for='lname' className='m-3 mb-1'>
+                Your details
+              </label>
 
               <textarea
-                className='text-field mt-2'
+                className='text-field m-3 mt-0'
                 name='trainer_desc'
                 {...controlTrainerProfile('trainer_desc')}
                 defaultValue={getCustomer.trainer_desc}
@@ -558,13 +587,13 @@ const TrainerProfile = () => {
               {/* <label for="lname">Upload certificate file</label>
             <p className="general-p">Please upload your profile picture</p>
           <input type="file" /> */}
-              <p className='general-p mt-5'>
+              <p className='general-p m-3 mt-5'>
                 Submit Profile to the Admin. Admin will review your profile and
                 Approve it:
               </p>
               <Button
                 type='submit'
-                className='w-25 mt-3'
+                className='w-25 m-3 mt-3'
                 // onClick={() => {
                 //   setIsProfile(true);
                 // }}

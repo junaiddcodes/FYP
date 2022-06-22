@@ -37,7 +37,7 @@ const AddExercise = () => {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [deleteId, setDeleteId]=useState('')
+  const [deleteId, setDeleteId] = useState("");
 
   const navigate = useNavigate();
   var user_id = userService.getLoggedInUser()._id;
@@ -45,7 +45,7 @@ const AddExercise = () => {
   const [calorieData, setCalorieData] = useState(location.state?.currentCalorie);
   const Edited = () => {
     // Calling toast method by passing string
-    toast.success("Exercise Edit");
+    toast.success("Exercise Edited");
   };
   const Add = () => {
     // Calling toast method by passing string
@@ -93,7 +93,6 @@ const AddExercise = () => {
         time_date: new Date().getTime(),
       };
 
-
       userService
         .editExcerciseData(editExcerciselId, excercisePost)
         .then((e) => {
@@ -130,8 +129,8 @@ const AddExercise = () => {
     if (!value) {
       setExcerciseCheck(false);
     } else {
-      setModalOpen(false)
-      setExcerciseCheck(true)
+      setModalOpen(false);
+      setExcerciseCheck(true);
 
       var burnedCalories = calorieBurnCalculation(data.time_minute);
 
@@ -325,7 +324,7 @@ const AddExercise = () => {
                   getData={getExcerciseAPIData}
                 />
                 {!excerciseCheck ? (
-                  <p id="error-text" style={{ color: 'rgb(255, 34, 34)' }}>
+                  <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
                     Excercise must be Selected
                   </p>
                 ) : null}
@@ -453,10 +452,7 @@ const AddExercise = () => {
                                         getData={getExcerciseAPIData}
                                       />
                                       {!excerciseCheck ? (
-                                        <p
-                                          id="error-text"
-                                          style={{ color: 'rgb(255, 34, 34)' }}
-                                        >
+                                        <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
                                           Excercise must be selected
                                         </p>
                                       ) : null}
@@ -493,7 +489,7 @@ const AddExercise = () => {
                               className="delete-icon"
                               onClick={() => {
                                 setConfirmDelete(true);
-                                setDeleteId(e._id)
+                                setDeleteId(e._id);
                               }}
                             >
                               <ImCross />

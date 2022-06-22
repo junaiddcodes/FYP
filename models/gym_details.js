@@ -27,14 +27,22 @@ var gymDetailsSchema = mongoose.Schema({
   gym_contact_no: String,
   gym_membership_price: Number,
   gender_facilitation: String,
-  coordinates: { lat: String, long: String },
+  coordinates: { lat: Number, long: Number },
   gym_photos: [{ photo_url: String, cloudinary_id: String }],
   rating: {
     type: Number,
   },
+  membership: { type: Boolean, default: false },
+
   numReviews: {
     type: Number,
   },
+  bank_details: {
+    bank_name: String,
+    account_number: String,
+    account_name: String,
+  },
+  reviews: [reviewSchema],
 });
 
 var gymDetails = mongoose.model("Gym_Details", gymDetailsSchema);
@@ -52,6 +60,11 @@ function validateGym(data) {
       city: Joi.string(),
       address: Joi.string(),
       state: Joi.string(),
+    },
+    bank_details: {
+      bank_name: Joi.string(),
+      account_number: Joi.string(),
+      account_name: Joi.string(),
     },
     cordinates: { lat: Joi.number(), long: Joi.number() },
 

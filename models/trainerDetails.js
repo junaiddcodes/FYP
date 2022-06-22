@@ -22,7 +22,12 @@ var trainerDetailsSchema = mongoose.Schema({
 
   trainer_photo: String,
   cloudinary_id: String,
-  membership: Boolean
+  membership: Boolean,
+  bank_details:{
+    bank_name: String,
+    account_number: String,
+    account_name: String
+  }
 })
 
 var trainerDetails = mongoose.model('Trainer_Details', trainerDetailsSchema)
@@ -52,6 +57,11 @@ function validateTrainer(data) {
       city: Joi.string(),
       address: Joi.string(),
       state: Joi.string(),
+    },
+    bank_details: {
+      bank_name: Joi.string(),
+      account_number: Joi.string(),
+      account_name: Joi.string(),
     },
     trainer_photo: Joi.string(),
     cloudinary_id: Joi.string(),
