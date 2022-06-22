@@ -2,6 +2,9 @@ import adminService from "../../services/AdminService";
 import React, { useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import "./home.css";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const Home = () => {
   const [inches, SetInches] = useState();
@@ -9,16 +12,36 @@ const Home = () => {
   const [weight, SetWeight] = useState();
   const [bmi, setBmi] = useState();
   const [allQueries, setAllQueries] = useState([]);
+  const schema = yup.object().shape({
+    weight: yup.number().typeError("weight cant be empty").positive().required().nullable(),
+    feet: yup.number().typeError("feet is required").min(4).max(8).positive().required().nullable(),
+    inches: yup
+      .number()
+      .typeError("inches are required")
+      .min(0)
+      .max(11)
 
-  function calculateBMI() {
-    if (inches && feet && weight) {
-      var height = feet * 12 + parseInt(inches);
+      .required()
+      .nullable(),
+    // .nullable(),
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  function calculateBMI(data) {
+    if (data.inches && data.feet && data.weight) {
+      var height = data.feet * 12 + parseInt(data.inches);
       console.log(inches);
       console.log(feet);
       console.log(height);
       var hMeter = height * 0.0254;
       console.log(hMeter);
-      var bmix = weight / (hMeter * hMeter);
+      var bmix = data.weight / (hMeter * hMeter);
       console.log(bmix);
       var bmiA = Math.round(bmix * 100) / 100;
       setBmi(bmiA);
@@ -409,51 +432,53 @@ const Home = () => {
                 </h2>
                 <div className="d-flex justify-content-center mt-4">
                   <div>
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                      <Form.Label className="mb-3 text-left  text-light">
-                        Enter Weight in Kilograms
-                      </Form.Label>
-                      <Form.Control
-                        type="number"
-                        placeholder="Enter Weight (Kgs)"
-                        onChange={(e) => {
-                          SetWeight(e.target.value);
-                        }}
-                      />
-                    </Form.Group>
+                    <form onSubmit={handleSubmit(calculateBMI)} className="d-flex flex-column">
+                      <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Label className="mb-3 text-left  text-light">
+                          Enter Weight in Kilograms
+                        </Form.Label>
+                        <Form.Control
+                          type="number"
+                          placeholder="Enter Weight (Kgs)"
+                          name="weight"
+                          {...register("weight")}
+                        />
+                      </Form.Group>
+                      <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+                        {errors.weight?.message}
+                      </p>
 
-                    <Form.Group className="mb-3 text-light" controlId="formBasicPassword">
-                      <Form.Label>Enter Feets</Form.Label>
-                      <Form.Control
-                        type="number"
-                        placeholder="Enter Height (Feets)"
-                        min="0"
-                        max="5"
-                        onChange={(e) => {
-                          SetFeet(e.target.value);
-                        }}
-                      />
-                    </Form.Group>
-                    <Form.Group className="mb-3 text-light" controlId="formBasicPassword">
-                      <Form.Label>Enter Inches</Form.Label>
-                      <Form.Control
-                        type="number"
-                        min="0"
-                        max="11"
-                        placeholder="Enter Height (Inches)"
-                        onChange={(e) => {
-                          SetInches(e.target.value);
-                        }}
-                      />
-                    </Form.Group>
-                    <Button
-                      variant="primary"
-                      onClick={(e) => {
-                        calculateBMI();
-                      }}
-                    >
-                      Submit
-                    </Button>
+                      <Form.Group className="mb-3 text-light" controlId="formBasicPassword">
+                        <Form.Label>Enter Feets</Form.Label>
+                        <Form.Control
+                          type="number"
+                          placeholder="Enter Height (Feets)"
+                          name="feet"
+                          {...register("feet")}
+                        />
+                      </Form.Group>
+                      <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+                        {errors.feet?.message}
+                      </p>
+                      <Form.Group className="mb-3 text-light" controlId="formBasicPassword">
+                        <Form.Label>Enter Inches</Form.Label>
+                        <Form.Control
+                          type="number"
+                          min="0"
+                          max="11"
+                          placeholder="Enter Height (Inches)"
+                          name="inches"
+                          {...register("inches")}
+                        />
+                      </Form.Group>
+                      <p id="error-text" style={{ color: "rgb(255, 34, 34)" }}>
+                        {errors.inches?.message}
+                      </p>
+
+                      <Button variant="primary" type="submit">
+                        Submit
+                      </Button>
+                    </form>
                     {bmi ? (
                       <div>
                         {" "}

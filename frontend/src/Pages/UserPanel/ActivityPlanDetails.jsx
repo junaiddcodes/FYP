@@ -93,7 +93,7 @@ const ActivityPlanDetails = () => {
     userService
       .get_order_by_plans(id)
       .then((data) => {
-        console.log("x",data);
+        console.log("x", data);
         setAllPlans(data.crud);
       })
       .catch((err) => {
@@ -109,7 +109,13 @@ const ActivityPlanDetails = () => {
       .check_plan(order)
       .then((data) => {
         console.log(data);
-        SetOrderDetails(data.crud[0])
+        console.log(data.crud[0].review);
+        if (data.crud[0].review) {
+          console.log("Sec");
+          SetIsReview(true);
+        }
+
+        SetOrderDetails(data.crud[0]);
         setShowItem(false);
 
         console.log("Plan already Bought");
@@ -198,9 +204,7 @@ const ActivityPlanDetails = () => {
       </Button>
       {paymentConfirm ? (
         <div className="gym-box my-3 d-flex flex-column justify-content-start">
-          <h4>
-            Payment Confirmed. This Plan is added into your 'My plans' Tab
-          </h4>
+          <h4>Payment Confirmed. This Plan is added into your 'My plans' Tab</h4>
         </div>
       ) : null}
       {reviewConfirm ? (
@@ -272,10 +276,7 @@ const ActivityPlanDetails = () => {
                     <h4>Description: </h4>
                     <p> {data.plan_desc}</p>
                     {showItem ? (
-                      <Button
-                        className="w-25 m-3"
-                        onClick={() => setConfirmDelete(true)}
-                      >
+                      <Button className="w-25 m-3" onClick={() => setConfirmDelete(true)}>
                         Buy plan
                       </Button>
                     ) : !isReview ? (
@@ -332,9 +333,7 @@ const ActivityPlanDetails = () => {
 
                               <div className="query-box mt-3 d-flex flex-column align-items-left">
                                 <form
-                                  onSubmit={handleSubmitReview(
-                                    submitReviewForm
-                                  )}
+                                  onSubmit={handleSubmitReview(submitReviewForm)}
                                   className="d-flex flex-column"
                                 >
                                   <label for="fname">Select rating</label>
@@ -398,9 +397,7 @@ const ActivityPlanDetails = () => {
                         <span> {e.review} </span>
                       </div>
                       <div>
-                        <p className="font-weight-bold">
-                          {e.user_id.user_id.full_name}
-                        </p>
+                        <p className="font-weight-bold">{e.user_id.user_id.full_name}</p>
                       </div>
                     </div>
                     <div>
