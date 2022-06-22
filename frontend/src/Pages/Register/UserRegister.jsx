@@ -28,8 +28,10 @@ function getAge(dateString) {
 }
 
 function calculation(customerDetails, genderie, dob) {
-  console.log(genderie);
-  var height = customerDetails.height / 0.032808;
+  var feets = customerDetails.height / 12;
+  var inch = customerDetails.height % 12;
+  var height = (parseInt(feets) * 12 + parseInt(inch)) * 2.54;
+  // var height = customerDetails.height / 0.032808;
   var weight = customerDetails.weight;
   var weight_pounds = weight * 2.205;
   var age = getAge(dob);
