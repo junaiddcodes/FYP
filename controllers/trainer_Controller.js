@@ -8,7 +8,7 @@ const cloudinary = require('../utils/cloudinary')
 //use to get all data from db
 const getAllData = async (req, res) => {
   try {
-    const crud = await trainerDetails.find({ listed: 'listed' }).sort({numReview: -1}).limit(9)
+    const crud = await trainerDetails.find({ listed: 'listed', membership: true }).sort({numReview: -1}).limit(9)
     res.status(200).json({ crud })
   } catch (error) {
     res.status(500).json({ message: error })
@@ -240,6 +240,7 @@ const trainerSearchFilter = async (req, res) => {
 
     if (req.body.full_name || req.body.gender || req.body.exercise_type) {
       query.listed = 'listed'
+      query.membership = true
 
       var crud = await trainerDetails.find(query)
       if (crud.length == 0) {

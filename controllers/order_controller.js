@@ -111,13 +111,18 @@ const getbyUser = async (req, res) => {
       planArr.push(e.plan_id);
     });
 
-    console.log(planArr);
 
     var plans = await createPlanModel.find({
       _id: {
         $in: planArr,
       },
+    }).populate({
+      path: "trainer_id",
+      model: "Trainer_Details",
+      select: "user_id.full_name",
     });
+
+    console.log(plans)
 
     if (!crud) {
       return res.status(404).json({ message: "item does not exist" });
@@ -215,6 +220,7 @@ const postRevew = async (req, res) => {
 
     var rating = Number(req.body.review);
     var reviewCount = 1;
+    console.log(order)
 
     if (!order) {
       return res.status(404).json({ message: "item does not exist" });

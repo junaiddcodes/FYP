@@ -117,7 +117,6 @@ const TrainerDashboard = () => {
       .catch((err) => {
         console.log(err);
       });
-    console.log("chumi");
   }
   useEffect(() => {
     // userService.getLoggedInUser();
@@ -146,10 +145,10 @@ const TrainerDashboard = () => {
         <div className="user-box d-flex flex-column p-3">
           <div className="d-flex flex-column">
             <p className="font-weight-bold">
-              Available to Withdraw (Rs): {withdrawAmount}
+              Available to Withdraw (Rs): {withdrawAmount.length !=0?withdrawAmount:0}
             </p>
             <p className="font-weight-bold">
-              Total Earning (Rs): {totalEarning}
+              Total Earning (Rs): {totalEarning.length !=0?totalEarning:0}
             </p>
           </div>
         </div>

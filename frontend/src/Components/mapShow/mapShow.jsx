@@ -9,6 +9,7 @@ const MapShow = ({ mapPin }) => {
   const animateRef = useRef(false);
   function SetViewOnClick({ animateRef }) {
     const map = useMap();
+    console.log(mapPin)
     if (mapPin.length == 0) {
       SetPins([31.4878, 74.3646]);
     } else {
