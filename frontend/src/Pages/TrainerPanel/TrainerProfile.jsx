@@ -99,11 +99,16 @@ const TrainerProfile = () => {
   var loginId = "";
   const notify = () => {
     // Calling toast method by passing string
-    toast.success("Profile sent to admin");
+    toast.success("Profile send to admin");
   };
   const update = () => {
     // Calling toast method by passing string
-    toast.success("Profile updated");
+    toast.success("Update profile");
+  };
+
+  const deleted = () => {
+    // Calling toast method by passing string
+    toast.success("profile deleted");
   };
   const workoutOptions = [
     { value: "weight-lifting", label: "Weight Lifting" },
@@ -276,7 +281,7 @@ const TrainerProfile = () => {
       // certificate_file: "",
       // trainer_photo: "",
     };
-    notify();
+
     trainerService
       .update_trainer(trainerProfileDetails, loggedInId)
       .then((data) => {
@@ -284,6 +289,7 @@ const TrainerProfile = () => {
         setIsTrainerForm(false);
         setIsProfile(true);
         page_refresh();
+        update();
       })
       .catch((err) => {
         console.log(err);
@@ -728,12 +734,13 @@ const TrainerProfile = () => {
                             certificate_file: "",
                             trainer_photo: "",
                           };
-                          notify();
+                          // notify()
                           trainerService
                             .update_trainer(trainerProfileDetails, loggedInId)
                             .then((data) => {
                               console.log(data);
                               setIsListed("default");
+                              deleted();
                             })
                             .catch((err) => {
                               console.log(err);
