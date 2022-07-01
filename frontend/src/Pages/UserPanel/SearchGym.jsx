@@ -18,6 +18,8 @@ import { ClimbingBoxLoader, BarLoader, CircleLoader } from "react-spinners";
 import { css } from "@emotion/react";
 import ClipLoader from "react-spinners/ClipLoader";
 import pakCities from "../../Data/pakCities";
+import dummyImage from "../../Data/gym-image.png"
+
 
 const override = css`
   display: block;
@@ -55,7 +57,6 @@ const SearchGym = () => {
   }
 
   function getSeacrhedGyms() {
-
     gymService
       .get_search_gyms(searchGym)
       .then((res) => {
@@ -154,7 +155,9 @@ const SearchGym = () => {
             </Select>
           </FormControl>
           <FormControl className="m-4 w-25 dropdown-modal">
-            <InputLabel id="demo-simple-select-label">Gender Preference</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+              Gender Preference
+            </InputLabel>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
@@ -187,9 +190,18 @@ const SearchGym = () => {
       <div className=" mt-5">
         {isSearched ? <h2>Searched Gyms</h2> : <h2>Featured Gyms</h2>}
 
-        {loading ? <BarLoader loading={loading} color="#063be9" css={override} size={150} /> : null}
+        {loading ? (
+          <BarLoader
+            loading={loading}
+            color="#063be9"
+            css={override}
+            size={150}
+          />
+        ) : null}
         <div className="gym-grid-container mt-3">
-          {searchResults ? <p className="text-light w-100">Search Results not Found</p> : null}
+          {searchResults ? (
+            <p className="text-light w-100">Search Results not Found</p>
+          ) : null}
           {searchedGyms.map((e, key) => {
             return (
               <div
@@ -197,14 +209,22 @@ const SearchGym = () => {
                 onClick={() => navigate("/gym-description/" + e._id)}
                 className="gym-card grid-item"
               >
-                <img src={e.gym_photos[0]?.photo_url} alt="" height="250" />
+                {e.gym_photos.length == 0 ? (
+                  <img src={dummyImage} alt="" width="100%" height="250" />
+                ) : (
+                  <img src={e.gym_photos[0]?.photo_url} alt="" height="250" />
+                )}
+      
                 <h4 className="m-1">{e.user_id.full_name}</h4>
-                <h6 className="m-1">Membership price: {e.gym_membership_price} PKR</h6>
+                <h6 className="m-1">
+                  Membership price: {e.gym_membership_price} PKR
+                </h6>
                 {!e.numReviews ? (
                   <h6 className="m-1">No reviews yet</h6>
                 ) : (
                   <h6 className="m-1">
-                    <i class="mt-1 text-warning bx bxs-star"></i> {e.rating.toFixed(1)}{" "}
+                    <i class="mt-1 text-warning bx bxs-star"></i>{" "}
+                    {e.rating.toFixed(1)}{" "}
                     <span className="text-secondary">({e.numReviews})</span>{" "}
                   </h6>
                 )}
@@ -215,7 +235,7 @@ const SearchGym = () => {
                 <div className="d-flex m-2 mb-0">
                   <MdLocationPin className="" />
                   <p className="text-light" style={{ fontWeight: "bold" }}>
-                    {e.location.city}
+                  { e.location.address} , {e.location.city}
                   </p>
                 </div>
               </div>
