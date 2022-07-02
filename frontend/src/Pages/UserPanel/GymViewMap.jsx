@@ -131,7 +131,7 @@ const GymViewMap = () => {
                       <div className="d-flex  mb-0">
                         <MdLocationPin className="m-1" style={{ height: "1rem", width: "1rem" }} />
                         <p className="m-0" style={{ fontWeight: "bold" }}>
-                          {e.location.city}
+                       { e.location.address} , {e.location.city}
                         </p>
                       </div>
                       <p

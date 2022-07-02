@@ -24,6 +24,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import MapShow from "../../Components/mapShow/mapShow";
+import dummyImage from "../../Data/gym-image.png"
 
 const GymDescription = () => {
   const reviewSchema = yup.object().shape({
@@ -211,7 +212,8 @@ const GymDescription = () => {
           <div className="slider-div d-flex justify-content-center p-5">
             <Carousel width="100%">
               {gymDetails.gym_photos.length == 0 ? (
-                <h2>No photos</h2>
+                <img src={dummyImage} alt="" height="250" />
+                
               ) : (
                 gymDetails.gym_photos.map((e, index) => {
                   return (
