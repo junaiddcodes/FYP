@@ -18,6 +18,7 @@ import trainerService from "../../services/TrainerService";
 import { ClimbingBoxLoader, BarLoader, CircleLoader } from "react-spinners";
 import { css } from "@emotion/react";
 import ClipLoader from "react-spinners/ClipLoader";
+import dummyImage from "../../Data/person-dummy.jpg"
 
 const override = css`
   display: block;
@@ -183,11 +184,18 @@ const SearchTrainer = () => {
         {isSearched ? <h2>Searched Trainers</h2> : <h2>Featured Trainers</h2>}
         <div className="w-100 h-100 d-flex justify-content-center">
           {loading ? (
-            <BarLoader loading={loading} color="#063be9" css={override} size={150} />
+            <BarLoader
+              loading={loading}
+              color="#063be9"
+              css={override}
+              size={150}
+            />
           ) : null}
         </div>
         <div className="gym-grid-container pb-3">
-          {searchResults ? <p className="text-light w-100">Search Results not Found</p> : null}
+          {searchResults ? (
+            <p className="text-light w-100">Search Results not Found</p>
+          ) : null}
           {searchedTrainer.map((e, key) => {
             return (
               <div
@@ -195,7 +203,12 @@ const SearchTrainer = () => {
                 onClick={() => navigate("/trainer-description/" + e._id)}
                 className="gym-card grid-item"
               >
-                <img src={e.trainer_photo} alt="" height="250" />
+                {e.trainer_photo ? (
+                  <img src={e.trainer_photo} alt="" height="250" />
+                ) : (
+                  <img src={dummyImage} alt="" width="100%" height="250" />
+                )}
+
                 <h4 className="m-1">{e.user_id.full_name}</h4>
                 <h6 className="m-1">Certification: {e.qualification}</h6>
                 {!e.numReview ? (
@@ -203,7 +216,9 @@ const SearchTrainer = () => {
                 ) : (
                   <h6 className="m-1">
                     Rating: {e.numReview.toFixed(1)}{" "}
-                    <span className="text-secondary">{"(" + e.countReview + ")"}</span>{" "}
+                    <span className="text-secondary">
+                      {"(" + e.countReview + ")"}
+                    </span>{" "}
                     <i class="mt-1 text-warning bx bxs-star"></i>
                   </h6>
                 )}

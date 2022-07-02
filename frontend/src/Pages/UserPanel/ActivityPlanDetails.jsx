@@ -287,7 +287,7 @@ const ActivityPlanDetails = () => {
                             setEditModalOpen(true);
                           }}
                         >
-                          Review plan
+                          Review Trainer
                         </Button>
                         <div className="modal-container">
                           <Modal
@@ -381,7 +381,7 @@ const ActivityPlanDetails = () => {
         </div>
       </div>
 
-      {allPlans.length == 0 ? null : <h2 className="mt-3"> Reviews</h2>}
+      {/* {allPlans.length == 0 ? null : <h2 className="mt-3"> Reviews</h2>}
       <div className="trainer-desc mt-3 d-flex flex-column p-4">
         {allPlans.length == 0 ? (
           <p>Not reviewed Yet</p>
@@ -409,7 +409,7 @@ const ActivityPlanDetails = () => {
             ) : null;
           })
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

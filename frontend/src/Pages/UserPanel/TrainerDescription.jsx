@@ -19,6 +19,7 @@ import { useParams } from "react-router-dom";
 import trainerService from "../../services/TrainerService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import dummyImage from "../../Data/person-dummy.jpg";
 
 const TrainerDescription = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -106,13 +107,18 @@ const TrainerDescription = () => {
         <div className="d-flex ">
           <div className="d-flex w-75 justify-content-between">
             <div className="trainer-img d-flex">
-              <img src={trainerDetails.trainer_photo} alt="" width="400" />
+              {trainerDetails.trainer_photo ? (
+                <img src={trainerDetails.trainer_photo} alt="" height="400" />
+              ) : (
+                <img src={dummyImage} alt="" width="400" height="400" />
+              )}
               <div className="d-flex mt-5 flex-column">
                 <h4>{trainerDetails.user_id.full_name}</h4>
                 <h4>Age: {getAge(trainerDetails.dob)}</h4>
                 <h4>Gender: {trainerDetails.gender}</h4>
                 <h4>
-                  Location: {trainerDetails.location?.address}, {trainerDetails.location?.city},{" "}
+                  Location: {trainerDetails.location?.address},{" "}
+                  {trainerDetails.location?.city},{" "}
                   {trainerDetails.location?.state}
                 </h4>
                 <h4>
@@ -121,7 +127,9 @@ const TrainerDescription = () => {
                   ) : (
                     <h6 className="m-1">
                       Rating: {trainerDetails.numReview.toFixed(1)}{" "}
-                      <span className="text-secondary">({trainerDetails.countReview})</span>{" "}
+                      <span className="text-secondary">
+                        ({trainerDetails.countReview})
+                      </span>{" "}
                       <i class="mt-1 text-warning bx bxs-star"></i>
                     </h6>
                   )}
