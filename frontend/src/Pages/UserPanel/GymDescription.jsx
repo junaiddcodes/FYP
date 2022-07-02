@@ -69,16 +69,16 @@ const GymDescription = () => {
       rating: data.rating,
       comment: data.comment,
     };
-    
+
     console.log(tempObject);
-    
+
     gymService
-    .post_gym_review(gymId.id, tempObject)
-    .then((data) => {
+      .post_gym_review(gymId.id, tempObject)
+      .then((data) => {
         console.log("Submit Review");
         console.log(data);
-        setReviewtConfirm(true)
-        SetIsReview(true)
+        setReviewtConfirm(true);
+        SetIsReview(true);
         setEditModalOpen(false);
       })
       .catch((err) => {
@@ -95,9 +95,9 @@ const GymDescription = () => {
         console.log(data);
         // checkGymOrder(order);
         setShowItem(false);
-        SetIsReview(false)
-        setConfirmDelete(false)
-        setPaymentConfirm(true)
+        SetIsReview(false);
+        setConfirmDelete(false);
+        setPaymentConfirm(true);
       })
       .catch((err) => {
         console.log(err.message);
@@ -149,7 +149,7 @@ const GymDescription = () => {
   });
   function getGym() {
     gymService.get_one_gym(gymId.id).then((data) => {
-      console.log(data.crud)
+      console.log(data.crud);
       setGymDetails(data.crud);
       SetOrderX({
         user_id: userService.getLoggedInUser()._id,
@@ -157,9 +157,8 @@ const GymDescription = () => {
         price: data.crud.gym_membership_price,
         time_date: new Date().getTime(),
       });
-      var alreadyReviewed = false
-      if(data.crud.reviews){
-
+      var alreadyReviewed = false;
+      if (data.crud.reviews) {
         alreadyReviewed = data.crud.reviews.find(
           (r) => r.user.toString() === userService.getLoggedInUser()._id.toString()
         );
@@ -179,7 +178,7 @@ const GymDescription = () => {
         SetPins(temp);
       }
 
-      console.log("here")
+      console.log("here");
     });
   }
 
@@ -189,24 +188,21 @@ const GymDescription = () => {
       <SideMenu />
       <Button
         className="m-2"
+        style={{ borderRadius: "4rem" }}
         onClick={() => {
           navigate(-1);
         }}
       >
-        <i class="bx bx-arrow-back m-1"></i> Back
+        <i class=" bx bx-chevron-left" style={{ fontSize: "1.5rem" }}></i>
       </Button>
       {paymentConfirm ? (
         <div className="gym-box my-3 d-flex flex-column justify-content-start">
-          <h4>
-            Payment Confirmed. This Gym Membership is added into your 'My Membership' Tab
-          </h4>
+          <h4>Payment Confirmed. This Gym Membership is added into your 'My Membership' Tab</h4>
         </div>
       ) : null}
       {reviewConfirm ? (
         <div className="gym-box my-3 d-flex flex-column justify-content-start">
-          <h4>
-            Review Submitted
-          </h4>
+          <h4>Review Submitted</h4>
         </div>
       ) : null}
       <h2>Gym Description</h2>

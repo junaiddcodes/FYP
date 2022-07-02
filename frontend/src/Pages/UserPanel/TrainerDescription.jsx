@@ -95,11 +95,12 @@ const TrainerDescription = () => {
       <SideMenu />
       <Button
         className="m-2"
+        style={{ borderRadius: "4rem" }}
         onClick={() => {
           navigate(-1);
         }}
       >
-        <i class="bx bx-arrow-back m-1"></i> Back
+        <i class=" bx bx-chevron-left" style={{ fontSize: "1.5rem" }}></i>
       </Button>
       <h2>Trainer Description</h2>
       <div className="trainer-desc mt-3 d-flex flex-column">

@@ -196,11 +196,12 @@ const ActivityPlanDetails = () => {
       <SideMenu />
       <Button
         className="m-2"
+        style={{ borderRadius: "4rem" }}
         onClick={() => {
           navigate(-1);
         }}
       >
-        <i class="bx bx-arrow-back m-1"></i> Back
+        <i class=" bx bx-chevron-left" style={{ fontSize: "1.5rem" }}></i>
       </Button>
       {paymentConfirm ? (
         <div className="gym-box my-3 d-flex flex-column justify-content-start">

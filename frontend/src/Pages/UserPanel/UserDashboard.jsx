@@ -474,7 +474,8 @@ const UserDashboard = () => {
                 <h4>Proteins (grams)</h4>
                 <div>
                   <h4 className="text-light font-weight-bold">
-                    {Math.floor(currentCalorie.food_proteins) + "/" + Math.floor(userData.protein)}
+                    {Math.floor(currentCalorie.food_proteins) + "/" + Math.floor(userData.protein)}{" "}
+                    grams
                   </h4>
                 </div>
               </div>
@@ -488,7 +489,7 @@ const UserDashboard = () => {
                 <h4>Carbohydrates (grams)</h4>
                 <div>
                   <h4 className="text-light">
-                    {Math.floor(currentCalorie.food_carbs) + "/" + Math.floor(userData.carbs)}
+                    {Math.floor(currentCalorie.food_carbs) + "/" + Math.floor(userData.carbs)} grams
                   </h4>
                 </div>
               </div>
@@ -502,7 +503,7 @@ const UserDashboard = () => {
                 <h4>Fats (grams)</h4>
                 <div>
                   <h4 className="text-light">
-                    {Math.floor(currentCalorie.food_fats) + "/" + Math.floor(userData.fats)}
+                    {Math.floor(currentCalorie.food_fats) + "/" + Math.floor(userData.fats)} grams
                   </h4>
                 </div>
               </div>
@@ -515,7 +516,7 @@ const UserDashboard = () => {
               <div className="w-100 d-flex justify-content-between">
                 <h4>Water Intake (litres) </h4>
                 <div>
-                  <h4 className="text-light">{waterAmount + "/" + 3} </h4>
+                  <h4 className="text-light">{waterAmount + "/" + 3} litres</h4>
                 </div>
               </div>
               <Progress done={Math.floor((waterAmount * 100) / 3)} heading="Calorie Goal" />
@@ -559,7 +560,7 @@ const UserDashboard = () => {
           </div>
         </div>
         <div className="w-50 d-flex flex-column">
-          <h3 className="text-light">Todos</h3>
+          <h3 className="text-light">To do's</h3>
           <div className="mt-2 stats-panel w-100">
             {currentCalorie.food_calories < userData.calorie_goal ? (
               <p>- You need to consume more calories</p>
