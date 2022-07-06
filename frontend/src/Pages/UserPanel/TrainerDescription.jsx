@@ -79,10 +79,15 @@ const TrainerDescription = () => {
   function createConversation() {
     console.log(trainerDetails._id);
     console.log(convo);
-    userService.createConvo(convo).then((data) => {
-      console.log(data);
-    });
-    navigate("/Messenger");
+    userService
+      .createConvo(convo)
+      .then((data) => {
+        console.log(data);
+        navigate("/Messenger", { state: { trainerDetails } });
+      })
+      .catch((err) => {
+        navigate("/Messenger", { state: { trainerDetails } });
+      });
   }
 
   var convo = {
@@ -142,7 +147,8 @@ const TrainerDescription = () => {
                 className="mt-5"
                 onClick={() => {
                   createConversation();
-                  Add();
+                  // navigate("/Messenger",{state:{trainerDetails}});
+                  // Add();
                 }}
               >
                 Message

@@ -21,6 +21,7 @@ const Messenger = () => {
   const [conversations, setConsversation] = useState([])
   const [currentChat, setCurrentChat] = useState()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const [messages, setMessages] = useState([])
   const [newMessage, setNewMessage] = useState('')
@@ -31,7 +32,6 @@ const Messenger = () => {
 
   const user_name = userService.getLoggedInUser().full_name
 
-  console.log(user_type)
   // useEffect(() => {
   //   setSocket(io('ws://localhost:8900'))
   // }, [])
@@ -47,6 +47,35 @@ const Messenger = () => {
       const res = await axios.get('conversation/' + user_id)
 
       setConsversation(res.data)
+      if(location.state){
+        console.log(res.data)
+        console.log("trainer",location.state.trainerDetails._id)
+        let trainerConvo = res.data.filter((c)=>{
+          return c.members.find((m) => m == location.state.trainerDetails._id)
+        })
+
+        // const el = document.querySelectorAll('[click="contant"]')
+        // console.log(el.length)
+
+        const ex = document.getElementById(trainerConvo[0]._id)
+        console.log(ex)
+        ex.click()    
+      }
+      else{
+        console.log("Not Coming from Trainer")
+      }
+
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const getMessagesX = async (xid) => {
+    try {
+      const res = await axios.get('message/' + xid[0]._id)
+      console.log("XID",res.data)
+      console.log("XID-x",xid[0]._id)
+      setMessages(res.data)
     } catch (err) {
       console.log(err)
     }
@@ -54,19 +83,19 @@ const Messenger = () => {
 
   useEffect(() => {
     getConversations()
-    console.log(user_id)
   }, [user_id])
 
   useEffect(() => {
     const getMessages = async () => {
       try {
         const res = await axios.get('message/' + currentChat._id)
+        console.log("YID",res.data)
+        console.log("YID-x",currentChat._id)
         setMessages(res.data)
       } catch (err) {
         console.log(err)
       }
     }
-
     getMessages()
   }, [currentChat])
 

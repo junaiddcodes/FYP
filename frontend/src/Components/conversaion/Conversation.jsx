@@ -6,7 +6,6 @@ const Conversation = ({ conversation, currentUser, currentUserType, flag, isCurr
   var friendId = 0;
   const [name, setName] = useState();
   const [user, setUser] = useState();
-  console.log("aaaaaagsfsd");
 
   useEffect(() => {
     friendId = conversation.members.find((m) => m != currentUser);
@@ -54,7 +53,7 @@ const Conversation = ({ conversation, currentUser, currentUserType, flag, isCurr
 
   return (
     <>
-      <div className={isCurrent ? "conversationNameSelected" : "conversation"}>
+      <div click="contant" className={isCurrent ? "conversationNameSelected" : "conversation"} id={conversation._id}>
         <span className="conversationName">{name}</span>
       </div>
     </>
