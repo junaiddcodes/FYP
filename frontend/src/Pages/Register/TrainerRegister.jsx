@@ -49,6 +49,7 @@ const trainerSchema = yup.object().shape({
 });
 
 const TrainerRegister = () => {
+  const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
   var trainerDetails = {
     user_id: {
@@ -106,6 +107,8 @@ const TrainerRegister = () => {
       })
       .catch((err) => {
         console.log(err);
+        console.log("user exists");
+        setErrorMsg("User with given email already exists!");
         toast.error(err.response.data, {
           position: toast.POSITION.TOP_LEFT,
         });
@@ -179,6 +182,7 @@ const TrainerRegister = () => {
                 />
                 <p>{errorsTrainer.confirm_password?.message}</p>
               </div>
+              <p>{errorMsg}</p>
             </div>
           </div>
 

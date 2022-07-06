@@ -129,8 +129,8 @@ const GymProfile = () => {
     gymService.update_gym(mem, loggedInId).then((data) => {
       console.log(data);
       //get_gym();
-      setIsListed("approved")
-      setConfirmDeleteX(false)
+      setIsListed("approved");
+      setConfirmDeleteX(false);
     });
   }
 
@@ -308,7 +308,7 @@ const GymProfile = () => {
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
           <h4>Your profile was rejected by admin</h4>
         </div>
-      ): isListed == "approved" ? (
+      ) : isListed == "approved" ? (
         <div className="gym-box mt-3 d-flex flex-column justify-content-start">
           <h4>Payment Confirmed. Rock and Roll you are now available for our users</h4>
         </div>
@@ -609,7 +609,7 @@ const GymProfile = () => {
                 <input
                   multiple
                   style={{ marginTop: "1rem" }}
-                  accept="image/*"
+                  accept="image/png, image/gif, image/jpeg"
                   type="file"
                   filename="gym"
                   // onChange={onChangeFile}

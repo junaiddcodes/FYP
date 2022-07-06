@@ -311,12 +311,13 @@ const UserProfile = () => {
         <div>
           <Button
             className="m-2"
+            style={{ borderRadius: "4rem" }}
             onClick={() => {
               setIsProfile(true);
               setIsTrainerForm(false);
             }}
           >
-            <i class="bx bx-arrow-back m-1"></i> Back
+            <i class=" bx bx-chevron-left" style={{ fontSize: "1.5rem" }}></i>
           </Button>
           <div className="gym-box mt-3 d-flex flex-column align-items-left">
             <form
@@ -325,9 +326,12 @@ const UserProfile = () => {
             >
               <div className="input-text d-flex flex-column">
                 <div className="w-50 m-0">
-                  <label for="lname">Enter your name</label>
+                  <label for="lname" className="m-3 mb-1">
+                    Enter your name
+                  </label>
                   <input
                     type="text"
+                    className="m-3 mt-0"
                     id=""
                     defaultValue={getCustomer.user_id.full_name}
                     name="full_name"
@@ -336,22 +340,25 @@ const UserProfile = () => {
                   <p>{errorsUserProfile.full_name?.message}</p>
                 </div>
 
-                <label>Enter your weight(In Kgs)</label>
+                <label className="m-3 mb-1">Enter your weight(In Kgs)</label>
                 <input
                   type="number"
                   id=""
                   max="200"
                   min="30"
+                  className="m-3 mt-0"
                   name="weight"
                   {...controlUserProfile("weight")}
                   defaultValue={getCustomer.weight}
                 />
-                <label htmlFor="">Height</label>
-                <div className="d-flex justify-content-around ">
-                  <div className="d-flex flex-column w-100">
-                    <h4>feet:</h4>
+                <label htmlFor="" className="m-3 mb-1">
+                  Height
+                </label>
+                <div className="d-flex justify-content-start w-50">
+                  <div className="d-flex flex-column mx-1">
+                    <h4 className="m-3 mb-1">feet:</h4>
                     <input
-                      className="w-25"
+                      className="m-3 mt-0 w-100"
                       defaultValue={feet}
                       type="number"
                       placeholder="Feet"
@@ -360,10 +367,10 @@ const UserProfile = () => {
                       {...controlUserProfile("feet")}
                     />
                   </div>
-                  <div className="d-flex flex-column w-100">
-                    <h4>inches:</h4>
+                  <div className="d-flex flex-column">
+                    <h4 className="m-3 mb-1">inches:</h4>
                     <input
-                      className="w-25"
+                      className="m-3 mt-0 w-100"
                       type="number"
                       defaultValue={inches}
                       placeholder="Inches"
@@ -386,8 +393,10 @@ const UserProfile = () => {
                 </div>
                 <p className="error">{errorsUserProfile.feet?.message}</p>
                 <p className="error">{errorsUserProfile.inches?.message}</p>
-                <label for="fname">Select your activity level</label>
-                <div className="dropdown-container-user">
+                <label for="fname" className="m-3 mb-1">
+                  Select your activity level
+                </label>
+                <div className=" dropdown-container-user">
                   <FormControl className="m-3 w-50 dropdown-user" size="small">
                     <Select
                       labelId="demo-simple-select-label"
@@ -427,7 +436,9 @@ const UserProfile = () => {
                   </FormControl>{" "}
                 </div>
                 <p>{errorsUserProfile.activity_level?.message}</p>
-                <label for="fname">Select your weight goal</label>
+                <label for="fname" className="m-3 mb-1">
+                  Select your weight goal
+                </label>
                 <div className="dropdown-container-user">
                   <FormControl className="m-3 w-50 dropdown-user" size="medium">
                     <Select
@@ -443,7 +454,9 @@ const UserProfile = () => {
                   </FormControl>{" "}
                 </div>
                 <p>{errorsUserProfile.weight_goal?.message}</p>
-                <label for="fname">Select your weekly goal</label>
+                <label for="fname" className="m-3 mb-1">
+                  Select your weekly goal
+                </label>
                 <div className="dropdown-container-user">
                   <FormControl className="m-3 w-50 dropdown-user" size="medium">
                     <Select
@@ -463,7 +476,7 @@ const UserProfile = () => {
 
               <Button
                 type="submit"
-                className="w-25 mt-3"
+                className="w-25 m-3 mb-1"
                 // onClick={() => {
                 //   setIsProfile(true);
                 // }}

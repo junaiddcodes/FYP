@@ -41,6 +41,7 @@ const gymSchema = yup.object().shape({
 
 const GymRegister = () => {
   const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState("");
   const [gymDetails, setGymDetails] = useState({
     user_id: {
       full_name: "",
@@ -99,6 +100,7 @@ const GymRegister = () => {
       })
       .catch((err) => {
         console.log(err);
+        setErrorMsg("User with given email already exists!");
         toast.error(err.response.data, {
           position: toast.POSITION.TOP_LEFT,
         });
@@ -162,6 +164,7 @@ const GymRegister = () => {
             </div>
             <p>{errorsGym.password?.message}</p>
             <p>{errorsGym.confirm_password?.message}</p>
+            <p>{errorMsg}</p>
           </div>
 
           <div className="buttons-gym d-flex justify-content-between mt-3">
