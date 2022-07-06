@@ -14,7 +14,6 @@ const Conversation = ({ conversation, currentUser, currentUserType, flag, isCurr
       const getUser = async () => {
         try {
           const res = await axios.get("trainer/" + friendId);
-
           setUser(res.data);
           setName(res.data.crud.user_id.full_name);
         } catch (err) {

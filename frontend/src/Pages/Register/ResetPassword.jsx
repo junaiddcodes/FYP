@@ -71,6 +71,7 @@ const ResetPassword = () => {
         .then((res) => {
           console.log(res);
           setSentMsg("Password changed");
+          navigate("/login");
         })
         .catch((err) => {
           console.log(err.toString());
@@ -83,6 +84,7 @@ const ResetPassword = () => {
         .then((res) => {
           console.log(res);
           setSentMsg("Password changed");
+          navigate("/login");
         })
         .catch((err) => {
           console.log(err.toString());
@@ -95,6 +97,7 @@ const ResetPassword = () => {
         .then((res) => {
           console.log(res);
           setSentMsg("Password changed");
+          navigate("/login");
         })
         .catch((err) => {
           console.log(err.toString());
@@ -150,7 +153,7 @@ const ResetPassword = () => {
           <div className="btn-sm buttons-gym d-flex justify-content-between mt-3">
             <Button
               onClick={() => {
-                navigate(-1);
+                navigate("/login");
               }}
             >
               back
