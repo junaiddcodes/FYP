@@ -76,11 +76,12 @@ const ActivityPlans = () => {
       <SideMenu />
       <Button
         className="m-2"
+        style={{ borderRadius: "4rem" }}
         onClick={() => {
           navigate(-1);
         }}
       >
-        <i class="bx bx-arrow-back m-1"></i> Back
+        <i class=" bx bx-chevron-left" style={{ fontSize: "1.5rem" }}></i>
       </Button>
       <h2>Activity Plans by {location.state.trainerDetails.user_id.full_name}</h2>
       <div className=" mt-5">

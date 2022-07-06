@@ -145,6 +145,7 @@ const UserRegister = () => {
   const [step2, setStep2] = useState(true);
   const [step3, setStep3] = useState(false);
   const [step4, setStep4] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
   const [goalText, setGoalText] = useState("");
   var calorieObject = "";
@@ -270,6 +271,8 @@ const UserRegister = () => {
       })
       .catch((err) => {
         console.log(err);
+        console.log("already exists");
+        setErrorMsg("User with given email already exists!");
       });
   };
   const submitStep2Form = (data) => {
@@ -431,6 +434,7 @@ const UserRegister = () => {
                   />
                   <p className="p-3">{errorsStep1.confirm_password?.message}</p>
                 </div>
+                <p>{errorMsg}</p>
               </div>
             </div>
 

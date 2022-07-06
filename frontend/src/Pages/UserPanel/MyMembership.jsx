@@ -57,7 +57,8 @@ const MyMembership = () => {
     <div className="page-container-user">
       <TopBar />
       <SideMenu />
-      <h2>My Plans</h2>
+
+      <h2>My Memberships</h2>
       <div className=" mt-5">
         {membership.length == 0 ? (
           <h2>No membership</h2>
@@ -78,9 +79,7 @@ const MyMembership = () => {
                   <div className="d-flex justify-content-between">
                     <div>
                       <h4>Gender Facilitation: </h4>
-                      <p className="text-light">
-                        {e.gender_facilitation} weeks
-                      </p>
+                      <p className="text-light">{e.gender_facilitation} weeks</p>
                     </div>
                     <div>
                       <h4>Price: </h4>

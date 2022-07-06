@@ -83,11 +83,12 @@ const GymViewMap = () => {
     <div>
       <Button
         className="m-2"
+        style={{ borderRadius: "4rem" }}
         onClick={() => {
           navigate(-1);
         }}
       >
-        <i class="bx bx-arrow-back m-1"></i> Back
+        <i class=" bx bx-chevron-left" style={{ fontSize: "1.5rem" }}></i>
       </Button>
       {isLocation ? (
         <div className="map-pop">

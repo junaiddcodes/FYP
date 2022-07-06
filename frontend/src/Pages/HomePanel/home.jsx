@@ -34,7 +34,7 @@ const Home = () => {
   });
 
   function calculateBMI(data) {
-    if (data.inches && data.feet && data.weight) {
+    if (data.feet && data.weight) {
       var height = data.feet * 12 + parseInt(data.inches);
       console.log(inches);
       console.log(feet);
@@ -484,7 +484,7 @@ const Home = () => {
                         {" "}
                         <h3 className="text-light mt-3">BMI : {bmi} </h3>{" "}
                         {bmi < 18.5 ? (
-                          <p>Light weight</p>
+                          <p>Under weight</p>
                         ) : bmi > 25 ? (
                           <p>Over weight</p>
                         ) : bmi > 18.5 && bmi < 25 ? (
