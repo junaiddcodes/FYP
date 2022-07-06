@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, Redirect, BrowserRouter } from "react-router-dom";
+import { Route, Routes, Redirect, BrowserRouter, Navigate } from "react-router-dom";
 
 import "./styles/pages.css";
 import "./styles/extra.css";
@@ -46,6 +46,7 @@ import MyMembership from "./Pages/UserPanel/MyMembership";
 import { MapContainer } from "react-leaflet";
 import MapPage from "./Pages/UserPanel/MapPage";
 import GymDashboard from "./Pages/GymPanel/GymDashboard";
+import NotFound from "./Pages/Register/NotFound";
 function App() {
   return (
     <BrowserRouter>
@@ -84,7 +85,6 @@ function App() {
           <Route path="/change-password" element={<ChangePassword />} />
           <Route path="/my-plan-details" element={<MyPlanDetails />} />
           <Route path="/map" element={<MapPage />} />
-
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -94,6 +94,8 @@ function App() {
           <Route path="/register-user" element={<UserRegister />} />
           <Route path="/register-trainer" element={<TrainerRegister />} />
           <Route path="/register-gym" element={<GymRegister />} />
+          <Route path="/not-found" element={<NotFound />} />
+          \<Route path="*" element={<Navigate to="/not-found" replace />} />
         </Routes>
       </div>
     </BrowserRouter>
