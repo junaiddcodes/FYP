@@ -614,7 +614,7 @@ const TrainerProfile = () => {
             <div className="upload-form">
               <input
                 style={{ marginTop: "1rem" }}
-                accept="image/*"
+                accept="image/png, image/gif, image/jpeg"
                 type="file"
                 filename="trainer"
                 onChange={onChangeFile}
