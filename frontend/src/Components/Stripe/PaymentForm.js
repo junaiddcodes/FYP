@@ -25,6 +25,7 @@ const CARD_OPTIONS = {
 
 export default function PaymentForm({ payment, action, description }) {
   const [success, setSuccess] = useState(false);
+  const [process, setProcess] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
   const handleSubmit = async (e) => {
@@ -35,6 +36,7 @@ export default function PaymentForm({ payment, action, description }) {
     });
 
     if (!error) {
+      setProcess(true);
       try {
         const { id } = paymentMethod;
         const response = await axios.post("http://localhost:4000/payment", {
@@ -44,11 +46,13 @@ export default function PaymentForm({ payment, action, description }) {
         });
 
         if (response.data.success) {
+          setProcess(false);
           console.log("Successful payment");
           action();
           setSuccess(true);
         }
       } catch (error) {
+        setProcess(false);
         console.log("Error", error);
       }
     } else {
@@ -61,6 +65,7 @@ export default function PaymentForm({ payment, action, description }) {
       {!success ? (
         <form onSubmit={handleSubmit}>
           <fieldset className="FormGroup">
+            {process ? <p className="text-light">Payment Processing</p> : null}
             <div className="FormRow my-4">
               <CardElement options={CARD_OPTIONS} />
             </div>

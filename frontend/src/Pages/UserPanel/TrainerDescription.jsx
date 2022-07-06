@@ -29,23 +29,23 @@ const TrainerDescription = () => {
     // Calling toast method by passing string
     toast.success("Chat Created Added");
   };
-  useEffect(() => {
-    // userService.getLoggedInUser();
-    // setLoggedInId(userService.getLoggedInUser()._id);
-    // console.log(localStorage.getItem("token"));
-    if (userService.isLoggedIn() == false) {
-      navigate("/login");
-    } else {
-      if (
-        userService.getLoggedInUser().user_type == "trainer" ||
-        userService.getLoggedInUser().user_type == "gym" ||
-        userService.getLoggedInUser().user_type == "admin"
-      ) {
-        navigate("/login");
-      }
-    }
-  }, []);
+
+  const getAllPlans = (id) => {
+    trainerService
+      .get_bought_plans(id)
+      .then((data) => {
+        console.log("x", data);
+        setAllPlans(data.crud);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+
+
   const trainerId = useParams();
+  const [allPlans, setAllPlans] = useState([]);
   const [trainerDetails, setTrainerDetails] = useState({
     user_id: { full_name: "", email: "" },
     exercise_type: "",
@@ -94,6 +94,24 @@ const TrainerDescription = () => {
     senderId: userService.getLoggedInUser()._id,
     receiverId: trainerDetails._id,
   };
+
+  useEffect(() => {
+    // userService.getLoggedInUser();
+    // setLoggedInId(userService.getLoggedInUser()._id);
+    // console.log(localStorage.getItem("token"));
+    if (userService.isLoggedIn() == false) {
+      navigate("/login");
+    } else {
+      if (
+        userService.getLoggedInUser().user_type == "trainer" ||
+        userService.getLoggedInUser().user_type == "gym" ||
+        userService.getLoggedInUser().user_type == "admin"
+      ) {
+        navigate("/login");
+      }
+    }
+    getAllPlans(trainerId.id)
+  }, []);
   useEffect(getTrainer, []);
   return (
     <div className="page-container-user">
@@ -171,6 +189,38 @@ const TrainerDescription = () => {
           {/* <h4>Trainer Avaibility: {trainerDetails.trainer_availblity}</h4> */}
           <h4>About: </h4>
           <p> {trainerDetails.trainer_desc}</p>
+        </div>
+
+        {allPlans.length == 0 ? null : <h2 className="mt-3"> Reviews</h2>}
+        <div className="trainer-desc mt-3 d-flex flex-column p-4">
+          {allPlans.length == 0 ? (
+            <p>Not reviewed Yet</p>
+          ) : (
+            allPlans.map((e, key) => {
+              return e.review ? (
+                <div>
+                  <div className="trainer-desc mt-3 d-flex flex-column p-4">
+                    <div key={key}>
+                      <div className="text-light d-flex align-items-center">
+                        <div>
+                          <i class="bx bxs-star mr-2 text-warning"></i>
+                          <span> {e.review} </span>
+                        </div>
+                        <div>
+                          <p className="font-weight-bold">
+                            {e.user_id.user_id.full_name}
+                          </p>
+                        </div>
+                      </div>
+                      <div>
+                        <p>{e.review_comment}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : null;
+            })
+          )}
         </div>
       </div>
       <ToastContainer />

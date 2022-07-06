@@ -95,7 +95,7 @@ const GymDescription = () => {
       .then((data) => {
         console.log(data);
         // checkGymOrder(order);
-        setShowItem(false);
+        setShowItem(true);
         SetIsReview(false)
         setConfirmDelete(false)
         setPaymentConfirm(true)
