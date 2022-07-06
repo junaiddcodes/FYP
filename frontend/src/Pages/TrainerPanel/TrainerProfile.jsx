@@ -99,12 +99,12 @@ const TrainerProfile = () => {
   var loginId = "";
   const notify = () => {
     // Calling toast method by passing string
-    toast.success("Profile send to admin");
+    toast.success("Profile sent to admin");
   };
-  const update = () => {
-    // Calling toast method by passing string
-    toast.success("Update profile");
-  };
+  // const update = () => {
+  //   // Calling toast method by passing string
+  //   toast.success("Update profile");
+  // };
 
   const deleted = () => {
     // Calling toast method by passing string
@@ -289,7 +289,6 @@ const TrainerProfile = () => {
         setIsTrainerForm(false);
         setIsProfile(true);
         page_refresh();
-        update();
       })
       .catch((err) => {
         console.log(err);
