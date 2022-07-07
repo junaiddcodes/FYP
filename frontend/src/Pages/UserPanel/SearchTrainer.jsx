@@ -142,7 +142,6 @@ const SearchTrainer = () => {
             >
               <MenuItem value="male">Male</MenuItem>
               <MenuItem value="female">Female</MenuItem>
-              <MenuItem value="trans">Trans</MenuItem>
             </Select>
           </FormControl>
           <FormControl className="m-4 w-25 dropdown-modal">

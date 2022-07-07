@@ -95,10 +95,10 @@ const GymDescription = () => {
       .then((data) => {
         console.log(data);
         // checkGymOrder(order);
-        setShowItem(false);
-        SetIsReview(false);
-        setConfirmDelete(false);
-        setPaymentConfirm(true);
+        setShowItem(true);
+        SetIsReview(false)
+        setConfirmDelete(false)
+        setPaymentConfirm(true)
       })
       .catch((err) => {
         console.log(err.message);
